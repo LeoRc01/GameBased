@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "459325759505",
+    "project_id": "cip-studio",
+    "storage_bucket": "cip-studio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459325759505:android:a623d593d0046ae70811b0",
+        "android_client_info": {
+          "package_name": "com.cip.cipstudio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459325759505-tl175q2a5qocujo8a2p2gorf8ccnmfr8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5zhIv4b_BxvAiy8RG3FZlTD9G4pJj5ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459325759505-tl175q2a5qocujo8a2p2gorf8ccnmfr8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
