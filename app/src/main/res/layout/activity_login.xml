@@ -7,9 +7,21 @@
     android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <TextView
+        android:id="@+id/tvMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_color"
+
+        ></TextView>
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfEmail"
+        android:id="@+id/emailLayout"
         errorEnabled="true"
+        app:startIconDrawable="@drawable/ic_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -25,8 +37,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfPassword"
+        android:id="@+id/pwdLayout"
         errorEnabled="true"
+        app:startIconDrawable="@drawable/ic_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -42,6 +55,15 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tvForgotPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Forgot password?"
+        android:layout_margin="5dp"
+        ></TextView>
+
     <Button
         android:layout_gravity="center"
         android:id="@+id/btnLogin"
@@ -49,6 +71,16 @@
         android:layout_height="wrap_content"
         android:text="LOGIN"
         />
+
+    <TextView
+        android:id="@+id/tvSwitchMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Register"
+        android:textStyle="bold"
+        android:textColor="@color/primary_color"
+        ></TextView>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
