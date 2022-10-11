@@ -1,5 +1,8 @@
 package com.cip.cipstudio.view
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -53,6 +56,8 @@ class LoginActivity : AppCompatActivity() {
 
         // Inizializzo il bottone per il cambio modalità
         initSwitchModeButton()
+
+
 
     }
 

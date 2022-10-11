@@ -1,14 +1,23 @@
 package com.cip.cipstudio.viewmodel
 
+import android.app.ActionBar
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.R
+import com.cip.cipstudio.view.widgets.LoadingSpinner
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -55,7 +64,6 @@ class LoginViewModel : ViewModel(), Observable {
         var canLogin = true
 
         if(!isValidEmail(emailEt.text!!.trim().toString()) || emailEt.text!!.isEmpty()){
-
             emailLayout.error = "Not a valid email."
             canLogin = false
         }
@@ -65,15 +73,24 @@ class LoginViewModel : ViewModel(), Observable {
             pwdLayout.error = "Password is empty."
             canLogin = false
         }
+
+        /** Se ci sono degli errori esco dalla funzione */
         if(!canLogin)
             return
+
+        LoadingSpinner.showLoadingDialog(context)
 
         val email : String = emailEt.text!!.trim().toString()
         val pwd : String = pwdEt.text.toString()
 
         auth.signInWithEmailAndPassword(email, pwd).addOnSuccessListener {
+            LoadingSpinner.dismiss()
             Toast.makeText(context, "Logged in", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener{
+            LoadingSpinner.dismiss()
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
+
     }
 
     /**
@@ -100,21 +117,24 @@ class LoginViewModel : ViewModel(), Observable {
         }
 
         if(pwdEt.text!!.isEmpty()){
-
             pwdLayout.error = "Password is empty."
             canLogin = false
         }
         if(!canLogin)
             return
 
+        LoadingSpinner.showLoadingDialog(context)
+
         val email : String = emailEt.text!!.trim().toString()
         val pwd : String = pwdEt.text.toString()
 
         auth.createUserWithEmailAndPassword(email, pwd)
             .addOnSuccessListener {
+                LoadingSpinner.dismiss()
                 Toast.makeText(context, "Registered", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener{
+                LoadingSpinner.dismiss()
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
     }
