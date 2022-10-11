@@ -24,7 +24,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 
 
-class LoginViewModel : ViewModel(), Observable {
+class LoginViewModel : ViewModel(){
 
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private var isLoginMode : Boolean = true
@@ -151,14 +151,6 @@ class LoginViewModel : ViewModel(), Observable {
         } else {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }
-    }
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        TODO("Not yet implemented")
     }
 
 }
