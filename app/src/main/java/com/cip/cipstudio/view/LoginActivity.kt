@@ -5,15 +5,31 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import okhttp3.RequestBody.Companion.toRequestBody
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.api.igdb.apicalypse.APICalypse
+import com.api.igdb.request.IGDBWrapper
+import com.api.igdb.request.IGDBWrapper.apiProtoRequest
+import com.api.igdb.request.TwitchAuthenticator
+import com.api.igdb.request.games
+import com.api.igdb.utils.Endpoints
+import com.api.igdb.utils.TwitchToken
 import com.cip.cipstudio.R
+import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.viewmodel.LoginViewModel
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Reserved
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import okhttp3.*
+import org.json.JSONObject
+import proto.Game
+import proto.GameResult
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,9 +43,27 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var pwdLayout : TextInputLayout
     private lateinit var tvMode : TextView
 
+
+    // Kotlin example
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val gameRepo : IGDBRepository = IGDBRepository()
+
+        gameRepo.ACCESS_TOKEN.observe(this, Observer{
+            if(it!=null){
+                Log.i("ACCESS_TOKEN", it)
+                IGDBWrapper.setCredentials(gameRepo.getClientID(), it)
+                gameRepo.getGame()
+                // Kotlin Example
+                // val bytes = apiProtoRequest(Endpoints.GAMES,  "fields *;")
+                // val listOfGames: List<Game> = GameResult.parseFrom(bytes).gamesList
+
+            }
+        })
 
         loginBtn  = findViewById<Button>(R.id.btnLogin)
         emailEt = findViewById<TextInputEditText>(R.id.emailEt)
