@@ -1,6 +1,8 @@
 package com.cip.cipstudio.view
 
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.api.igdb.apicalypse.APICalypse
@@ -21,10 +24,12 @@ import com.api.igdb.utils.Endpoints
 import com.api.igdb.utils.TwitchToken
 import com.cip.cipstudio.R
 import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.cip.cipstudio.viewmodel.LoginViewModel
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Reserved
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import okhttp3.*
 import org.json.JSONObject
 import proto.Game
@@ -51,19 +56,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val gameRepo : IGDBRepository = IGDBRepository()
 
-        gameRepo.ACCESS_TOKEN.observe(this, Observer{
-            if(it!=null){
-                Log.i("ACCESS_TOKEN", it)
-                IGDBWrapper.setCredentials(gameRepo.getClientID(), it)
-                gameRepo.getGame()
-                // Kotlin Example
-                // val bytes = apiProtoRequest(Endpoints.GAMES,  "fields *;")
-                // val listOfGames: List<Game> = GameResult.parseFrom(bytes).gamesList
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser!=null){
+            startMainActivity()
+        }
 
-            }
-        })
+
 
         loginBtn  = findViewById<Button>(R.id.btnLogin)
         emailEt = findViewById<TextInputEditText>(R.id.emailEt)
@@ -76,7 +75,8 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar!!.hide()
 
         // Inizializzo il ViewModel
-        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        // loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        loginViewModel = LoginViewModel(this)
 
         loginViewModel.isLoginModeLiveData.observe(this, Observer{
             if (it)
@@ -144,7 +144,9 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn.text = "Login"
         loginBtn.setOnClickListener {
-            loginViewModel.login(this, emailEt, pwdEt, emailLayout, pwdLayout)
+            loginViewModel.execute( emailEt, pwdEt, emailLayout, pwdLayout) {
+                startMainActivity()
+            }
         }
     }
 
@@ -162,7 +164,14 @@ class LoginActivity : AppCompatActivity() {
         val pwdLayout : TextInputLayout = findViewById<TextInputLayout>(R.id.pwdLayout)
         loginBtn.text = "Register"
         loginBtn.setOnClickListener {
-            loginViewModel.register(this, emailEt, pwdEt, emailLayout, pwdLayout)
+            loginViewModel.execute(emailEt, pwdEt, emailLayout, pwdLayout) {
+                startMainActivity()
+            }
         }
+    }
+
+    private fun startMainActivity(){
+        val mainActivity: Intent = Intent(this, MainActivity::class.java)
+        startActivity(mainActivity)
     }
 }

@@ -2,6 +2,8 @@ package com.cip.cipstudio.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.http2.Header
@@ -47,7 +49,7 @@ class IGDBRepository {
         })
     }
 
-    fun getGame(){
+    fun getGame(onSuccess: ()->Unit){
         if(ACCESS_TOKEN.value==null){
             throw Exception("ACCESS_TOKEN is null")
         }
@@ -61,7 +63,6 @@ class IGDBRepository {
             .post(payload.toRequestBody())
             .header("Client-ID", CLIENT_ID)
             .header("Authorization", "Bearer ${ACCESS_TOKEN.value!!}")
-
             .build()
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -77,6 +78,7 @@ class IGDBRepository {
                         val jsonString : String = response.body!!.string()
                         val json = JSONArray(jsonString)
                         Log.i("ASD", jsonString)
+                        onSuccess.invoke()
                     }
                 }
             }
