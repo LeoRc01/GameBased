@@ -1,12 +1,11 @@
 package com.cip.cipstudio.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
+import com.cip.cipstudio.model.data.Game
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.internal.http2.Header
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -17,8 +16,10 @@ class IGDBRepository {
     private val CLIENT_SECRET : String = "4ot4bg1eqxvb2syuko6cewv5ccsn6s"
     private val okHttpClient = OkHttpClient()
 
-    val ACCESS_TOKEN : MutableLiveData<String?> by lazy {
-        MutableLiveData<String?>()
+    companion object{
+        val ACCESS_TOKEN : MutableLiveData<String?> by lazy {
+            MutableLiveData<String?>()
+        }
     }
 
     private val authUrl = "https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials"
@@ -43,20 +44,19 @@ class IGDBRepository {
                         val jsonString : String = response.body!!.string()
                         val json = JSONObject(jsonString)
                         ACCESS_TOKEN.postValue(json.getString("access_token"))
+                        Log.i("TOKEN", ACCESS_TOKEN.value.toString())
                     }
                 }
             }
         })
     }
 
-    fun getGame(onSuccess: ()->Unit){
+
+    fun getMostRatedGames(onSuccess: (ArrayList<Game>)->Unit){
         if(ACCESS_TOKEN.value==null){
             throw Exception("ACCESS_TOKEN is null")
         }
-        val payload = "fields *; where id = 1942;"
-
-        val clientHeader = Header("Client-ID", CLIENT_ID)
-        val accessTokenHeader = Header("Authorization", "Bearer s9kmy0ity8ljiake9en6g1dar5nbjd")
+        val payload = "fields name, cover, total_rating; where total_rating_count > 0 & aggregated_rating_count > 0;sort total_rating desc; "
 
         val request = Request.Builder()
             .url("https://api.igdb.com/v4/games")
@@ -77,12 +77,61 @@ class IGDBRepository {
                     }else{
                         val jsonString : String = response.body!!.string()
                         val json = JSONArray(jsonString)
-                        Log.i("ASD", jsonString)
-                        onSuccess.invoke()
+                        Log.i("OBJECTS", json.toString())
+                        val games : ArrayList<Game> = ArrayList<Game>()
+                        (0 until json.length()).forEach {
+                            val item = json.getJSONObject(it)
+                            val game = Game(item.get("name").toString(), item.get("id") as Int
+                            )
+
+                            games.add(game)
+
+                        }
+                        onSuccess.invoke(games)
                     }
                 }
             }
         })
+    }
+
+    fun getGameCover(gameId : Int, onSuccess:(String) -> Unit){
+        if(ACCESS_TOKEN.value==null){
+            throw Exception("ACCESS_TOKEN is null")
+        }
+        val payload = "fields url; where game = ${gameId};"
+
+        val request = Request.Builder()
+            .url("https://api.igdb.com/v4/covers")
+            .post(payload.toRequestBody())
+            .header("Client-ID", CLIENT_ID)
+            .header("Authorization", "Bearer ${ACCESS_TOKEN.value!!}")
+            .build()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                throw Exception(e.message)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // Handle this
+                response.use {
+                    if(!response.isSuccessful){
+                        Log.i("Error", response.headers.toString())
+                    }else{
+                        try {
+                            val jsonString : String = response.body!!.string()
+                            val json = JSONArray(jsonString)
+                            val cover : JSONObject= json[0] as JSONObject;
+                            onSuccess.invoke(cover.get("url").toString())
+                        }catch (e : Exception){
+                            onSuccess.invoke("NO_COVER")
+                        }
+
+                    }
+                }
+            }
+        })
+
+
     }
 
 
@@ -91,8 +140,10 @@ class IGDBRepository {
         return CLIENT_ID
     }
 
-    init {
-        generateAccessToken()
+    constructor(generate : Boolean = true) {
+        if(generate)
+            generateAccessToken()
     }
+
 
 }
