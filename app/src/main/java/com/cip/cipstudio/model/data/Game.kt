@@ -14,6 +14,7 @@ data class Game(val name : String, val gameId : Int) {
             val gameRepo = IGDBRepository(generate = false)
             gameRepo.getGameCover(gameId){
                 cover_url = it
+                cover_url = cover_url!!.replace("t_thumb", "t_cover_big")
                 onSuccess.invoke(cover_url!!)
             }
         }

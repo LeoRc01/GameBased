@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
+        val base_payload : String = "fields *; where rating_count > 0 & total_rating_count > 0 & aggregated_rating_count > 0;"
+
         val mainActivityViewModel : MainActivityViewModel =
             MainActivityViewModel(this,
                 findViewById<RecyclerView>(R.id.rvMostRatedGames),
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.initializeRecyclerView(
             mainActivityViewModel.mostRatedGamesRecyclerView,
             mainActivityViewModel.mostRatedGamesRecyclerViewAdapter,
-            "fields name, cover, total_rating; where total_rating_count > 0 & aggregated_rating_count > 0; sort total_rating desc;"
+            "$base_payload sort total_rating desc;"
         ){
                runOnUiThread {
                    // Stuff that updates the UI
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.initializeRecyclerView(
             mainActivityViewModel.mostHypedGamesRecyclerView,
             mainActivityViewModel.mostHypedGamesRecyclerViewAdapter,
-            "fields name, cover, total_rating; where total_rating_count > 0 & aggregated_rating_count > 0; sort hypes desc;"
+            "$base_payload sort hypes desc;"
         ){
             runOnUiThread {
                 // Stuff that updates the UI

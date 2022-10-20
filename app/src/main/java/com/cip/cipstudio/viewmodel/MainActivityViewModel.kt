@@ -1,6 +1,7 @@
 package com.cip.cipstudio.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -51,6 +52,7 @@ class MainActivityViewModel(val context : Context,
 
         IGDBRepository.ACCESS_TOKEN.observeForever(Observer{
             if(it!=null){
+                Log.i("TOKEN ", it)
                 gameRepo.getGamesByPayload(payload){
                     updateUI.invoke(it)
                 }
