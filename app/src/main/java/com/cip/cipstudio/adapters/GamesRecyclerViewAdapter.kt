@@ -3,7 +3,6 @@ package com.cip.cipstudio.adapters
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,9 @@ import com.cip.cipstudio.model.data.Game
 import com.squareup.picasso.Picasso
 
 
-class MostRatedGamesRecyclerViewAdapter
+class GamesRecyclerViewAdapter
     (val context : Context, var games : ArrayList<Game>) :
-    RecyclerView.Adapter<MostRatedGamesRecyclerViewAdapter.ViewHolder>() {
+    RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     fun importItems(_games : ArrayList<Game>){
         games = _games
@@ -57,7 +56,6 @@ class MostRatedGamesRecyclerViewAdapter
         games[position].getCover(){
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post(Runnable {
-
                 if(it!="NO_COVER")
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                 else

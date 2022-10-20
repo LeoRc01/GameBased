@@ -1,7 +1,6 @@
 package com.cip.cipstudio.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.model.data.Game
 import okhttp3.*
@@ -52,11 +51,10 @@ class IGDBRepository {
     }
 
 
-    fun getMostRatedGames(onSuccess: (ArrayList<Game>)->Unit){
+    fun getGamesByPayload(payload : String,onSuccess: (ArrayList<Game>)->Unit){
         if(ACCESS_TOKEN.value==null){
             throw Exception("ACCESS_TOKEN is null")
         }
-        val payload = "fields name, cover, total_rating; where total_rating_count > 0 & aggregated_rating_count > 0;sort total_rating desc; "
 
         val request = Request.Builder()
             .url("https://api.igdb.com/v4/games")
@@ -76,14 +74,13 @@ class IGDBRepository {
                         Log.i("Error", response.headers.toString())
                     }else{
                         val jsonString : String = response.body!!.string()
+                        // Prendo l'array di items
                         val json = JSONArray(jsonString)
-                        Log.i("OBJECTS", json.toString())
                         val games : ArrayList<Game> = ArrayList<Game>()
+                        // Looppo su tutta la lista dei jsonObjects
                         (0 until json.length()).forEach {
                             val item = json.getJSONObject(it)
-                            val game = Game(item.get("name").toString(), item.get("id") as Int
-                            )
-
+                            val game = Game(item.get("name").toString(), item.get("id") as Int)
                             games.add(game)
 
                         }
