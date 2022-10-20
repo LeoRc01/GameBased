@@ -28,13 +28,18 @@ class GamesRecyclerViewAdapter
     * (custom ViewHolder).
     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvNoPreview: TextView
+
+        val tvGameName : TextView
         val ivGameCover : ImageView
+        val ivNoPreview : ImageView
 
         init {
             // Define click listener for the ViewHolder's View.
-            tvNoPreview = view.findViewById(R.id.tvNoPreview)
+
+            tvGameName = view.findViewById(R.id.tvGameName)
             ivGameCover = view.findViewById(R.id.ivGameCover)
+            ivNoPreview = view.findViewById(R.id.ivNoPreview)
+
         }
     }
 
@@ -53,13 +58,14 @@ class GamesRecyclerViewAdapter
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         //viewHolder.textView.text = games[position].name
+        viewHolder.tvGameName.text = games[position].name
         games[position].getCover(){
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post(Runnable {
                 if(it!="NO_COVER")
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                 else
-                    viewHolder.tvNoPreview.visibility = View.VISIBLE
+                    viewHolder.ivNoPreview.visibility = View.VISIBLE
             })
 
         }
