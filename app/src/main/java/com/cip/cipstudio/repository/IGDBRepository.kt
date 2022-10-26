@@ -3,6 +3,7 @@ package com.cip.cipstudio.repository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.model.data.Platform
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -91,6 +92,7 @@ class IGDBRepository {
                             }
 
 
+
                             val game = Game(item.get("name").toString(),
                                             item.get("summary").toString(),
                                             item.get("first_release_date") as Int,
@@ -110,11 +112,20 @@ class IGDBRepository {
         })
     }
 
-    fun getPlatforms(platformId : Int, onSuccess: (String)->Unit){
+    fun getPlatforms(platformId : ArrayList<Int>, onSuccess: (JSONArray)->Unit){
         if(ACCESS_TOKEN.value==null){
             throw Exception("ACCESS_TOKEN is null")
         }
-        val payload = "fields name, abbreviation, url; where id = ${platformId};"
+
+        var ids : String = ""
+        platformId.forEach {
+            ids += it.toString() + ","
+        }
+        ids = ids.substring(0, ids.length-1)
+
+        val payload = "fields name, abbreviation, url; where id = (${ids});"
+
+        Log.i("payload", payload)
 
         val request = Request.Builder()
             .url("https://api.igdb.com/v4/platforms")
@@ -137,17 +148,9 @@ class IGDBRepository {
                         try {
                             val jsonString : String = response.body!!.string()
                             val jsonArray = JSONArray(jsonString)
-
-                            if(jsonArray.getJSONObject(0).has("abbreviation")) {
-                                onSuccess.invoke(
-                                    jsonArray.getJSONObject(0).getString("abbreviation")
-                                )
-                            }else{
-                                onSuccess.invoke(
-                                    jsonArray.getJSONObject(0).getString("name")
-                                )
-                            }
-
+                            onSuccess.invoke(
+                                jsonArray
+                            )
                         }catch (e : Exception){
                             throw e
                         }

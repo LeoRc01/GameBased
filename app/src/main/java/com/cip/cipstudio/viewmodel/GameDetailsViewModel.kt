@@ -46,47 +46,52 @@ class GameDetailsViewModel(
     }
 
     init {
-        tvGameDetailsTitle.text = game.name
-        tvGameDetailsDescription.text = game.description
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-        val date = dateFormat.format(Date(game.releaseDate.toLong() * 1000))
-        tvGameDetailsReleaseDate.text = date
+        runBlocking {
+            coroutineScope {
+                tvGameDetailsTitle.text = game.name
+                tvGameDetailsDescription.text = game.description
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+                val date = dateFormat.format(Date(game.releaseDate.toLong() * 1000))
+                tvGameDetailsReleaseDate.text = date
 
-        userRating.progress = game.userRatingValue.toInt()
-        tvUserRatingValue.text = game.userRatingValue.toInt().toString()
-        tvUserRatingCounter.text = "User rating (${ game.userRatingCount.toString() })"
+                userRating.progress = game.userRatingValue.toInt()
+                tvUserRatingValue.text = game.userRatingValue.toInt().toString()
+                tvUserRatingCounter.text = "User rating (${game.userRatingCount.toString()})"
 
-        criticsRating.progress = game.criticsRatingValue.toInt()
-        tvCriticsRatingValue.text = game.criticsRatingValue.toInt().toString()
-        tvCriticsRatingCounter.text = "Critics rating (${ game.criticsRatingCount.toString() })"
+                criticsRating.progress = game.criticsRatingValue.toInt()
+                tvCriticsRatingValue.text = game.criticsRatingValue.toInt().toString()
+                tvCriticsRatingCounter.text =
+                    "Critics rating (${game.criticsRatingCount.toString()})"
 
-        game.platformsId.forEach {
-            igdbRepository.getPlatforms(it){
-                platformsLiveData
-                    .postValue(it +  if (platformsLiveData.value!=null) "/" + platformsLiveData.value else "")
+                igdbRepository.getPlatforms(game.platformsId) { arr ->
+                    (0 until arr.length()).forEach {
+                        val _platform = arr.getJSONObject(it)
+                        platformsLiveData
+                            .postValue(_platform.getString("name") + if (platformsLiveData.value != null) " / " + platformsLiveData.value else "")
+                    }
+                }
+
+
+                platformsLiveData.observeForever {
+                    tvGameDetailsPlatforms.text = it
+                }
+
+                tvShowMoreDescription.setOnClickListener {
+
+                    val params: ViewGroup.LayoutParams = tvGameDetailsDescription.getLayoutParams()
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    tvGameDetailsDescription.setLayoutParams(params);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        tvGameDetailsDescription.foreground = null
+                    }
+                    tvShowMoreDescription.visibility = View.GONE
+
+                }
+
+
+                Picasso.get().load("https:${game.cover_url}").into(ivGameDetailsCover)
             }
         }
-
-
-        platformsLiveData.observeForever{
-            tvGameDetailsPlatforms.text = it
-        }
-
-        tvShowMoreDescription.setOnClickListener {
-
-            val params: ViewGroup.LayoutParams = tvGameDetailsDescription.getLayoutParams()
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            tvGameDetailsDescription.setLayoutParams(params);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tvGameDetailsDescription.foreground = null
-            }
-            tvShowMoreDescription.visibility = View.GONE
-
-        }
-
-
-        Picasso.get().load("https:${game.cover_url}").into(ivGameDetailsCover)
-
     }
 
 }
