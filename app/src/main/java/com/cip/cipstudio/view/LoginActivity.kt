@@ -64,14 +64,6 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-
-        loginBtn  = findViewById<Button>(R.id.btnLogin)
-        emailEt = findViewById<TextInputEditText>(R.id.emailEt)
-        pwdEt  = findViewById<TextInputEditText>(R.id.pwdEt)
-        emailLayout = findViewById<TextInputLayout>(R.id.emailLayout)
-        pwdLayout  = findViewById<TextInputLayout>(R.id.pwdLayout)
-        tvMode = findViewById<TextView>(R.id.tvMode)
-
         // Nascondo l'actionBar
         supportActionBar!!.hide()
 
@@ -80,17 +72,17 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = LoginViewModel(this)
 
         loginViewModel.isLoginModeLiveData.observe(this, Observer{
-            if (it)
-                setUIToLogin()
-            else
-                setUIToRegister()
+            //if (it)
+                // setUIToLogin()
+            //else
+                // setUIToRegister()
         })
 
         // Inizializzo il bottone login
-        initalizeLoginButton()
+        //initalizeLoginButton()
 
         // Inizializzo il bottone per il cambio modalità
-        initSwitchModeButton()
+        //initSwitchModeButton()
 
 
 
@@ -102,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
      *
      * */
 
-    private fun setUIToLogin(){
+    /*private fun setUIToLogin(){
         switchModeButton.text = "Register"
         tvMode.text = "Login"
         findViewById<TextView>(R.id.tvForgotPwd).visibility = View.VISIBLE
@@ -169,7 +161,7 @@ class LoginActivity : AppCompatActivity() {
                 startMainActivity()
             }
         }
-    }
+    }*/
 
     private fun startMainActivity(){
         val mainActivity: Intent = Intent(this, MainActivity::class.java)
