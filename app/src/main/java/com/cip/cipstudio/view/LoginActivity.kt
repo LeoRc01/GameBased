@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.IGDBWrapper.apiProtoRequest
@@ -48,8 +50,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var pwdLayout : TextInputLayout
     private lateinit var tvMode : TextView
 
+    private lateinit var navController: NavController
 
     // Kotlin example
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +66,9 @@ class LoginActivity : AppCompatActivity() {
             startMainActivity()
         }
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
 
+        navController = navHostFragment.navController
 
         // Nascondo l'actionBar
         supportActionBar!!.hide()
