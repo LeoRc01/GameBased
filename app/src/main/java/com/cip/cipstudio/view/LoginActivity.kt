@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 
+
         loginBtn  = findViewById<Button>(R.id.btnLogin)
         emailEt = findViewById<TextInputEditText>(R.id.emailEt)
         pwdEt  = findViewById<TextInputEditText>(R.id.pwdEt)

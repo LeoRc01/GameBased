@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CIP Studio</string>
+    <string name="app_name" translatable="false">CIP Studio</string>
+    <string name="login" translatable="false">Login</string>
+    <string name="register" translatable="true">Register</string>
 </resources>
