@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_color">#28292E</color>
     <color name="grey">#8D99AE</color>
+    <color name="trackColor">#72303030</color>
 </resources>
