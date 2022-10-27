@@ -122,11 +122,7 @@ class LoginViewModel(val context : Context) : ViewModel(){
     * */
 
     fun isValidEmail(email: String): Boolean {
-        return if (TextUtils.isEmpty(email)) {
-            false
-        } else {
-            Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        }
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 }
