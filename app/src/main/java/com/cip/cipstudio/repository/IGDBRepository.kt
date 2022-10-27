@@ -98,7 +98,11 @@ class IGDBRepository {
                                 genreIds.add(genre)
                             }
 
-
+                            val similarGamesIds : ArrayList<Int> = arrayListOf()
+                            (0 until (item.get("similar_games") as JSONArray).length()).forEach{
+                                val similarGame = (item.get("similar_games") as JSONArray).get(it) as Int
+                                similarGamesIds.add(similarGame)
+                            }
 
                             val game = Game(item.get("name").toString(),
                                             item.get("summary").toString(),
@@ -109,6 +113,7 @@ class IGDBRepository {
                                             item.get("total_rating_count") as Int,
                                             platformsIds,
                                             genreIds,
+                                            similarGamesIds,
                                             item.get("id") as Int,
                                 )
                             games.add(game)

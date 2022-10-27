@@ -205,12 +205,25 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <TextView
+                    android:text="@string/similar_games"
+                    android:textStyle="bold"
+                    android:layout_marginVertical="5dp"
+                    android:layout_gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSimilarGames"
+                    android:divider="@null"
+                    android:orientation="horizontal"
+                    app:reverseLayout="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
-
-
         </LinearLayout>
-
 
 </ScrollView>

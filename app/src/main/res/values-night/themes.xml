@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CIPStudio" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:windowBackground">@android:color/black</item>
-
+        <item name="fontFamily">@font/montserrat_regular</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/seconday_color</item>
         <item name="colorPrimaryVariant">@color/primary_color_dark</item>

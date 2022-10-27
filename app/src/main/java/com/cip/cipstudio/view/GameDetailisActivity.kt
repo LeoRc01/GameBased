@@ -33,6 +33,7 @@ class GameDetailisActivity : AppCompatActivity() {
                                         findViewById(R.id.cpiCriticsRating),
                                         findViewById(R.id.glGridGenreLayout),
                                         findViewById(R.id.llPageLayout),
+                                        findViewById(R.id.rvSimilarGames),
                                         findViewById(R.id.ivGameDetailsCover),
             )
     }

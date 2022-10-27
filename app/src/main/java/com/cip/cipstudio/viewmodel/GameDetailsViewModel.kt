@@ -3,12 +3,16 @@ package com.cip.cipstudio.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
@@ -37,16 +41,12 @@ class GameDetailsViewModel(
     val criticsRating: CircularProgressIndicator,
     val glGridGenreLayout : GridLayout,
     val pageLayout : LinearLayout,
+    val rvSimilarGames : RecyclerView,
     val ivGameDetailsCover: ImageView,
 ) : ViewModel() {
 
     val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
-
-    var isDescriptionExpanded : Boolean = false
-
-    val platformsLiveData : MutableLiveData<String> by lazy{
-        MutableLiveData<String>()
-    }
+    private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
 
     init {
         runBlocking {
@@ -57,25 +57,33 @@ class GameDetailsViewModel(
                     runBlocking {
                         coroutineScope {
                             _setPlatforms{
-                                (context as Activity).runOnUiThread {
-                                    tvGameDetailsPlatforms.text = it
-                                    _doRest()
-                                    LoadingSpinner.dismiss()
-                                    pageLayout.visibility = View.VISIBLE
+                                runBlocking {
+                                    coroutineScope {
+                                        _setSimilarGames {
+                                            (context as Activity).runOnUiThread {
+                                                tvGameDetailsPlatforms.text = it
+                                                _doSynchronousActions()
+                                                LoadingSpinner.dismiss()
+                                                pageLayout.visibility = View.VISIBLE
+                                            }
+                                        }
+                                    }
                                 }
-
                             }
                         }
                     }
-
                 }
-
-
             }
         }
     }
 
-    fun _doRest(){
+    /**
+     *
+     * Tutto quello che non richiede azioni asyncrone
+     *
+     */
+
+    fun _doSynchronousActions(){
 
         tvGameDetailsTitle.text = game.name
         tvGameDetailsDescription.text = game.description
@@ -106,6 +114,44 @@ class GameDetailsViewModel(
 
     }
 
+    suspend fun _setSimilarGames(onSuccess: () -> Unit){
+
+        var ids : String = ""
+        game.similarGamesIds.forEach {
+            ids += it.toString() + ","
+        }
+        ids = ids.substring(0, ids.length-1)
+
+        var payload = "fields *; where id = ($ids);"
+
+        Log.i("PAYLOAD", payload)
+
+        // Creo il layout manager (fondamentale)
+        val manager = LinearLayoutManager(context)
+        // Imposto l'orientamento a orizzontale
+        manager.orientation = RecyclerView.HORIZONTAL
+        // Setto il layoutmanager alla RV
+
+
+        igdbRepository.getGamesByPayload(payload){
+            (context as Activity).runOnUiThread {
+                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(context, it)
+                rvSimilarGames.setLayoutManager(manager)
+                rvSimilarGames.setItemViewCacheSize(50)
+                rvSimilarGames.itemAnimator = null
+                rvSimilarGames.adapter = rvSimilarGamesAdapter
+                onSuccess.invoke()
+            }
+
+        }
+    }
+
+    /**
+     * Imposta le piattaforme.
+     * onSuccess è la funzione di callback che viene chiamata quando
+     * la funzione principale ha fatto la sua chiamata
+     */
+
     suspend fun _setPlatforms(onSuccess: (String) -> Unit) {
         var platformsString = ""
         igdbRepository.getPlatforms(game.platformsId) { arr ->
@@ -116,6 +162,12 @@ class GameDetailsViewModel(
             onSuccess.invoke(platformsString)
         }
     }
+
+    /**
+     * Imposta i generi.
+     * onSuccess è la funzione di callback che viene chiamata quando
+     * la funzione principale ha fatto la sua chiamata
+     */
 
     suspend fun _setGenres(onSuccess: ()->Unit){
         var genreStrings :  ArrayList<String> = arrayListOf()
@@ -130,6 +182,10 @@ class GameDetailsViewModel(
             onSuccess.invoke()
         }
     }
+
+    /**
+     * Crea e ritorna il chip
+     */
 
     fun _createChip(label : String) : Chip{
         val chip = Chip(context, null, R.layout.genre_chip)
