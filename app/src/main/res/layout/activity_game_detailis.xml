@@ -7,198 +7,210 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-
-
-        <ImageView
-            android:adjustViewBounds="true"
-            android:foreground="@drawable/fading_gradient"
-            android:id="@+id/ivGameDetailsCover"
-            android:scaleType="centerCrop"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="20dp"
+            android:id="@+id/llPageLayout"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
-        </ImageView>
-
-        <LinearLayout
-            android:orientation="vertical"
             android:gravity="center"
-            android:paddingHorizontal="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvGameDetailsTitle"
-                android:text="GAME TITLE"
-                style="@style/Title"
-                android:layout_marginVertical="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
 
-            <TextView
-                android:id="@+id/tvGameDetailsDescription"
-                android:text="@string/lorem_ipsum"
+            <ImageView
+                android:adjustViewBounds="true"
                 android:foreground="@drawable/fading_gradient"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp">
-            </TextView>
-
-            <TextView
-                android:id="@+id/tvShowMoreDescription"
-                android:layout_gravity="start"
-                android:textColor="@color/primary_color"
-                android:text="@string/show_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/ivGameDetailsCover"
+                android:scaleType="centerCrop"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+            </ImageView>
 
             <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <TextView
-                    android:text="@string/release_date"
+                    android:id="@+id/tvGameDetailsTitle"
+                    android:text="GAME TITLE"
+                    style="@style/Title"
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+                <GridLayout
+                    android:id="@+id/glGridGenreLayout"
+                    android:columnCount="3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </GridLayout>
+
+                <TextView
+                    android:id="@+id/tvGameDetailsDescription"
+                    android:text="@string/lorem_ipsum"
+                    android:foreground="@drawable/fading_gradient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tvShowMoreDescription"
+                    android:layout_gravity="start"
+                    android:textColor="@color/primary_color"
+                    android:text="@string/show_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/release_date"
+                        android:textStyle="bold"
+                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/tvGameDetailsReleaseDate"
+                        android:text="Oct 09, 2012"
+                        android:textColor="@color/primary_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/platforms"
+                        android:textStyle="bold"
+                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/tvGameDetailsPlatforms"
+                        android:textColor="@color/primary_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:text="@string/rating"
+                    android:layout_gravity="start"
                     android:textStyle="bold"
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/tvGameDetailsReleaseDate"
-                    android:text="Oct 09, 2012"
-                    android:textColor="@color/primary_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="@string/platforms"
-                    android:textStyle="bold"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tvGameDetailsPlatforms"
-                    android:textColor="@color/primary_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_marginTop="5dp"
-                android:text="@string/rating"
-                android:layout_gravity="start"
-                android:textStyle="bold"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginVertical="10dp"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/userRating"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/criticRating"
-                    tools:ignore="MissingConstraints">
-                    <RelativeLayout
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tvUserRatingValue"
-                            android:text="85"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <com.google.android.material.progressindicator.CircularProgressIndicator
-                            android:id="@+id/cpiUserRating"
-                            indicatorSize="100dp"
-                            trackCornerRadius="10dp"
-                            trackThickness="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:progress="75"
-                            app:trackColor="@color/trackColor"
-                            />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tvUserRatingCounter"
+                    <LinearLayout
+                        android:id="@+id/userRating"
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User rating (75)"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/criticRating"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/userRating"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:ignore="MissingConstraints">
-                    <RelativeLayout
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tvCriticsRatingValue"
-                            android:text="85"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/criticRating"
+                        tools:ignore="MissingConstraints">
+                        <RelativeLayout
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <com.google.android.material.progressindicator.CircularProgressIndicator
-                            android:id="@+id/cpiCriticsRating"
-                            indicatorSize="100dp"
-                            trackCornerRadius="10dp"
-                            trackThickness="10dp"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/tvUserRatingValue"
+                                android:text="85"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/cpiUserRating"
+                                indicatorSize="100dp"
+                                trackCornerRadius="10dp"
+                                trackThickness="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:progress="75"
+                                app:trackColor="@color/trackColor"
+                                />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvUserRatingCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:progress="75"
-                            app:trackColor="@color/trackColor"
+                            android:text="User rating (75)"
                             />
-                    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tvCriticsRatingCounter"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/criticRating"
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User rating (75)"
-                        />
+                        app:layout_constraintStart_toEndOf="@id/userRating"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints">
+                        <RelativeLayout
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/tvCriticsRatingValue"
+                                android:text="85"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/cpiCriticsRating"
+                                indicatorSize="100dp"
+                                trackCornerRadius="10dp"
+                                trackThickness="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:progress="75"
+                                app:trackColor="@color/trackColor"
+                                />
+                        </RelativeLayout>
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvCriticsRatingCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="User rating (75)"
+                            />
+
+                    </LinearLayout>
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
 
 
-
-    </LinearLayout>
 </ScrollView>

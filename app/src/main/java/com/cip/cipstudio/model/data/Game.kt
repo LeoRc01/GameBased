@@ -16,6 +16,7 @@ data class Game(val name : String,
                 val criticsRatingValue : Double,
                 val criticsRatingCount : Int,
                 val platformsId : ArrayList<Int>,
+                val genreIds : ArrayList<Int>,
                 //val platforms : ArrayList<Platform>,
                 val gameId : Int,
                 ) : Serializable{
