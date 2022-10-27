@@ -14,7 +14,7 @@
         android:theme="@style/Theme.CIPStudio"
         tools:targetApi="31">
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

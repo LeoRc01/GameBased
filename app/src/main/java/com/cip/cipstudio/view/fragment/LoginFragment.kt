@@ -1,4 +1,4 @@
-package com.cip.cipstudio
+package com.cip.cipstudio.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.cip.cipstudio.R
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.AuthViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -31,22 +32,22 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        val changeAuthTextView = view.findViewById<TextView>(R.id.tvSwitchMode)
+        val changeAuthTextView = view.findViewById<TextView>(R.id.f_login_tv_switchMode)
         authViewModel = AuthViewModel(requireContext())
-        loginBtn = view.findViewById(R.id.btLogin)
-        emailEt = view.findViewById(R.id.emailEt)
-        emailLayout = view.findViewById(R.id.emailLayout)
-        pwdEt = view.findViewById(R.id.pwdEt)
-        pwdLayout = view.findViewById(R.id.pwdLayout)
+        loginBtn = view.findViewById(R.id.f_login_btn_login)
+        emailEt = view.findViewById(R.id.f_login_et_email)
+        emailLayout = view.findViewById(R.id.f_login_layout_email)
+        pwdEt = view.findViewById(R.id.f_login_et_pwd)
+        pwdLayout = view.findViewById(R.id.f_login_layout_pwd)
 
         changeAuthTextView.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-        initalizeLoginButton()
+        initializeLoginButton()
         return view
     }
 
-    private fun initalizeLoginButton(){
+    private fun initializeLoginButton(){
         loginBtn.setOnClickListener {
             authViewModel
                 .login( emailEt.text.toString(), pwdEt.text.toString(), emailLayout, pwdLayout) {

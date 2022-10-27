@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">CIP Studio</string>
     <string name="login" translatable="false">Login</string>
-    <string name="register" translatable="true">Register</string>
+    <string name="register">Register</string>
+    <string name="email_placeholder" translatable="false">Email</string>
+    <string name="password_placeholder" translatable="false">Password</string>
+    <string name="repeat_password_placeholder">Repeat password</string>
 </resources>

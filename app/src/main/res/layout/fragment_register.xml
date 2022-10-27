@@ -5,26 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp"
-    tools:context=".RegisterFragment">
+    tools:context=".view.fragment.RegisterFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clRegister"
+        android:id="@+id/f_register_cl_register"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="48dp"
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iwLogo"
+                android:id="@+id/f_register_iw_logo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_color"
@@ -36,22 +36,22 @@
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailLayout"
+            android:id="@+id/f_register_layout_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginEnd="15dp"
-            android:hint="Email"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="12dp"
+            android:hint="@string/email_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
             app:startIconDrawable="@drawable/ic_user">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEt"
+                android:id="@+id/f_register_et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -59,25 +59,25 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pwdLayout"
+            android:id="@+id/f_register_layout_pwd"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:hint="Password"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:hint="@string/password_placeholder"
             app:endIconMode="password_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailLayout"
+            app:layout_constraintTop_toBottomOf="@+id/f_register_layout_email"
             app:layout_constraintVertical_bias="0.0"
             app:startIconDrawable="@drawable/ic_password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pwdEt"
+                android:id="@+id/f_register_et_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -85,26 +85,26 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pwdrLayout"
+            android:id="@+id/f_register_layout_pwdConfirm"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:hint="Repeat Password"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:hint="@string/repeat_password_placeholder"
             app:endIconMode="password_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pwdLayout"
+            app:layout_constraintTop_toBottomOf="@+id/f_register_layout_pwd"
             app:layout_constraintVertical_bias="0.0"
             app:startIconDrawable="@drawable/ic_password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pwdrEt"
+                android:id="@+id/f_register_et_pwdConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -112,32 +112,34 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btRegister"
+            android:id="@+id/f_register_btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:text="@string/register"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/pwdLayout"
+            app:layout_constraintEnd_toEndOf="@+id/f_register_layout_pwd"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="@+id/pwdLayout"
-            app:layout_constraintTop_toBottomOf="@+id/pwdrLayout"
+            app:layout_constraintStart_toStartOf="@+id/f_register_layout_pwd"
+            app:layout_constraintTop_toBottomOf="@+id/f_register_layout_pwdConfirm"
             app:layout_constraintVertical_bias="0.0" />
 
 
         <TextView
-            android:id="@+id/tvSwitchMode"
+            android:id="@+id/f_register_tv_switchMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:text="@string/login"
             android:textColor="@color/primary_color"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btRegister" />
+            app:layout_constraintTop_toBottomOf="@+id/f_register_btn_register"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
