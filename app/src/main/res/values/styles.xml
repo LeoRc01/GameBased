@@ -8,6 +8,7 @@
     </style>
     <style name="genre_chip" parent="@style/Widget.MaterialComponents.Chip.Action">
         <item name="chipStrokeWidth">1dp</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
         <item name="chipBackgroundColor">@color/light_seconday_color</item>
         <item name="chipStrokeColor">@color/primary_color</item>
         <item name="android:clickable">false</item>

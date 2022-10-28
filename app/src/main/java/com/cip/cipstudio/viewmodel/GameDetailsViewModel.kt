@@ -50,7 +50,7 @@ class GameDetailsViewModel(
 
     init {
         runBlocking {
-            coroutineScope {
+
                 pageLayout.visibility = View.GONE
                 LoadingSpinner.showLoadingDialog(context)
                 _setGenres{
@@ -73,7 +73,7 @@ class GameDetailsViewModel(
                         }
                     }
                 }
-            }
+
         }
     }
 
