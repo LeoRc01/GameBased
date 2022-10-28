@@ -26,7 +26,7 @@ class AuthViewModel(val context : Context) : ViewModel(){
         var canLogin = true
 
         if(!isValidEmail(email)){
-            emailLayout.error = "Not a valid email."
+            emailLayout.error = "@string/invalid_email"
             canLogin = false
         }
 

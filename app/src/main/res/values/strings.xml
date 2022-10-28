@@ -5,10 +5,11 @@
     <string name="email_placeholder" translatable="false">Email</string>
     <string name="password_placeholder" translatable="false">Password</string>
     <string name="repeat_password_placeholder">Repeat password</string>
-    <string name="rating">Rating:</string>
-    <string name="platforms">Platforms:</string>
-    <string name="release_date">Release Date:</string>
-    <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
-    <string name="show_more">Show more</string>
-    <string name="similar_games">Similar games:</string>
+    <string name="rating" translatable="false">Rating:</string>
+    <string name="platforms" translatable="false">Platforms:</string>
+    <string name="release_date" translatable="false">Release Date:</string>
+    <string name="lorem_ipsum" translatable="false">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
+    <string name="show_more" translatable="false">Show more</string>
+    <string name="similar_games" translatable="false">Similar games:</string>
+    <string name="invalid_email" translatable="false">Invalid email</string>
 </resources>
