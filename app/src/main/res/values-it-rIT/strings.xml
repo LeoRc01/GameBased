@@ -2,4 +2,18 @@
 <resources>
     <string name="register" translatable="false">Registrati</string>
     <string name="repeat_password_placeholder">Verifica password</string>
+    <string name="platforms" translatable="false">Piattaforme:</string>
+    <string name="release_date">Data di rilascio:</string>
+    <string name="show_more">Mostra di più</string>
+    <string name="similar_games">Giochi simili:</string>
+    <string name="invalid_email">Email non valida</string>
+    <string name="short_password">La password deve essere almeno lunga 8 carartteri</string>
+    <string name="long_password">La password deve essere lunga al massimo 16 caratteri</string>
+    <string name="no_uppercase">La password deve contenere almeno una lettera maiuscola</string>
+    <string name="no_lowercase">La password deve contenere almeno una lettera minuscola</string>
+    <string name="no_number">La password deve contenere almeno un numero</string>
+    <string name="no_special_character">La pssword deve almeno contenere un carattere speciale</string>
+    <string name="invalid_password">Password errata</string>
+    <string name="passwords_not_match">Le password non coincidono</string>
+    <string name="registered">Registrato</string>
 </resources>
