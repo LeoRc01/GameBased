@@ -51,8 +51,11 @@ class RegisterFragment : Fragment() {
 
     private fun initializeRegisterButton(){
         registerBtn.setOnClickListener {
+            emailLayout.error = null
+            pwdLayout.error = null
+            pwdConfirmLayout.error = null
             authViewModel
-                .register( emailEt.text.toString(), pwdEt.text.toString(),
+                .register( emailEt.text.toString().trim(), pwdEt.text.toString(),
                     pwdConfirmEt.text.toString(),
                     emailLayout, pwdLayout, pwdConfirmLayout) {
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

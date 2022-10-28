@@ -49,8 +49,10 @@ class LoginFragment : Fragment() {
 
     private fun initializeLoginButton(){
         loginBtn.setOnClickListener {
+            emailLayout.error = null
+            pwdLayout.error = null
             authViewModel
-                .login( emailEt.text.toString(), pwdEt.text.toString(), emailLayout, pwdLayout) {
+                .login( emailEt.text.toString().trim(), pwdEt.text.toString(), emailLayout, pwdLayout) {
                     val i = Intent(this.requireContext(), MainActivity::class.java)
                     startActivity(i)
                 }
