@@ -1,6 +1,7 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.view.GameDetailisActivity
 import com.squareup.picasso.Picasso
 
 
@@ -62,10 +64,18 @@ class GamesRecyclerViewAdapter
         games[position].getCover(){
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post(Runnable {
-                if(it!="NO_COVER")
+                if(it!="NO_COVER") {
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
-                else
+                    viewHolder.ivGameCover.setOnClickListener {
+                        val gameDetailsIntent: Intent =
+                            Intent(context, GameDetailisActivity::class.java)
+                        gameDetailsIntent.putExtra("game", games[position])
+                        context.startActivity(gameDetailsIntent)
+                    }
+                }
+                else{
                     viewHolder.ivNoPreview.visibility = View.VISIBLE
+                }
             })
 
         }

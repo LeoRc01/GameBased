@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginHorizontal="5dp"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/genreChipWidget"
+        android:fontFamily="@font/montserrat_regular"
+        chipStrokeWidth="1dp"
+        chipBackgroundColor="@color/light_seconday_color"
+        chipStrokeColor="@color/primary_color"
+        android:clickable="false"
+        android:text="Genre"
+        style="@style/Widget.MaterialComponents.Chip.Action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.google.android.material.chip.Chip>
+
+
+</LinearLayout>

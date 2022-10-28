@@ -40,6 +40,7 @@ class MainActivityViewModel(val context : Context,
                                payload : String,
                                updateUI : (ArrayList<Game>)->Unit
     ){
+        Log.i("PAYLOAD", payload)
         // Creo il layout manager (fondamentale)
         val manager = LinearLayoutManager(context)
         // Imposto l'orientamento a orizzontale
