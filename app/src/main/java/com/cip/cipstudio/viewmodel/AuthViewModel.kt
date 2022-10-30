@@ -2,6 +2,7 @@ package com.cip.cipstudio.viewmodel
 
 import android.content.Context
 import android.provider.Settings.Global.getString
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,9 @@ import kotlin.text.Typography.registered
 
 class AuthViewModel(val context : Context) : ViewModel(){
 
+    var email : MutableLiveData<String> = MutableLiveData()
+    var password : MutableLiveData<String> = MutableLiveData()
+
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
 
 
@@ -21,11 +25,15 @@ class AuthViewModel(val context : Context) : ViewModel(){
         MutableLiveData<Boolean>()
     }
 
-    fun login(email : String,
-              password : String,
-              emailLayout : TextInputLayout,
+    fun login(emailLayout : TextInputLayout,
               pwdLayout: TextInputLayout,
               onSuccess: () -> Unit) {
+        val email = this.email.value.toString().trim()
+        val password = this.password.value.toString()
+
+        Log.e("AUTHVIEWMODEL","email: $email")
+        Log.e("AUTHVIEWMODEL","password: $password")
+
         var canLogin = true
 
         if(!isValidEmail(email)){
