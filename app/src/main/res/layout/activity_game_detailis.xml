@@ -27,6 +27,7 @@
 
 
             <ImageView
+                app:imageUrl="@{vm.coverImageUrl}"
                 android:adjustViewBounds="true"
                 android:foreground="@drawable/fading_gradient"
                 android:id="@+id/ivGameDetailsCover"

@@ -1,10 +1,10 @@
 package com.cip.cipstudio.viewmodel
 
 import android.app.Activity
-
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,15 +18,14 @@ import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.squareup.picasso.Picasso
-import kotlin.collections.ArrayList
 
 
 class GameDetailsViewModel(
     val game: Game,
-    val binding: ActivityGameDetailisBinding,
+    private val binding: ActivityGameDetailisBinding,
 ) : ViewModel() {
 
-    val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
+    private val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
     private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
     private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
@@ -39,9 +38,6 @@ class GameDetailsViewModel(
                 _setPlatforms{
                     _setSimilarGames {
                         (binding.root.context as Activity).runOnUiThread {
-                            binding.tvGameDetailsPlatforms.text = it
-                            Picasso.get().load("https:${game.cover_url}").into(binding.ivGameDetailsCover)
-                            //_doSynchronousActions()
                             LoadingSpinner.dismiss()
                             binding.llPageLayout.visibility = View.VISIBLE
                         }
@@ -51,7 +47,24 @@ class GameDetailsViewModel(
         }
     }
 
-    fun _setGameScreenshots(onSuccess: () -> Unit){
+
+    fun getCoverImageUrl(): String? {
+        return "https:${game.cover_url}"
+    }
+
+    companion object{
+        @BindingAdapter("bind:imageUrl")
+        @JvmStatic
+        fun loadImage(view: ImageView, imageUrl: String?) {
+            Picasso.get()
+                .load(imageUrl)
+                .into(view)
+        }
+    }
+
+
+
+    private fun _setGameScreenshots(onSuccess: () -> Unit){
         igdbRepository.getScreenshots(game.screenShotIds){arr->
             val screenshotIds : ArrayList<String> = arrayListOf()
             (0 until arr.length()).forEach{
@@ -75,7 +88,7 @@ class GameDetailsViewModel(
 
     }
 
-    fun _setSimilarGames(onSuccess: () -> Unit){
+    private fun _setSimilarGames(onSuccess: () -> Unit){
 
         var ids : String = ""
         game.similarGamesIds.forEach {
@@ -111,14 +124,15 @@ class GameDetailsViewModel(
      * la funzione principale ha fatto la sua chiamata
      */
 
-    fun _setPlatforms(onSuccess: (String) -> Unit) {
+    private fun _setPlatforms(onSuccess: () -> Unit) {
         var platformsString = ""
         igdbRepository.getPlatforms(game.platformsId) { arr ->
             (0 until arr.length()).forEach {
                 val _platform = arr.getJSONObject(it)
                 platformsString = _platform.getString("name") + if (platformsString != "") " / " + platformsString else ""
             }
-            onSuccess.invoke(platformsString)
+            binding.tvGameDetailsPlatforms.text = platformsString
+            onSuccess.invoke()
         }
     }
 
@@ -128,7 +142,7 @@ class GameDetailsViewModel(
      * la funzione principale ha fatto la sua chiamata
      */
 
-    fun _setGenres(onSuccess: ()->Unit){
+    private fun _setGenres(onSuccess: ()->Unit){
         var genreStrings :  ArrayList<String> = arrayListOf()
         igdbRepository.getGenres(game.genreIds){ arr->
             (0 until arr.length()).forEach {
@@ -146,7 +160,7 @@ class GameDetailsViewModel(
      * Crea e ritorna il chip
      */
 
-    fun _createChip(label : String) : Chip{
+    private fun _createChip(label : String) : Chip{
         val chip = Chip(binding.root.context, null, R.layout.genre_chip)
         val chipDrawable = ChipDrawable.createFromAttributes(
             binding.root.context,
