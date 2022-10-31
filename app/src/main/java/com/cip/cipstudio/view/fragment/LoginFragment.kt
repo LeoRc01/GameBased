@@ -6,16 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentLoginBinding
+import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.AuthViewModel
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 
 class LoginFragment : Fragment() {
@@ -45,10 +43,27 @@ class LoginFragment : Fragment() {
             loginBinding.fLoginLayoutEmail.error = ""
             loginBinding.fLoginLayoutPwd.error = ""
             authViewModel
-                .login(loginBinding.fLoginLayoutEmail, loginBinding.fLoginLayoutPwd) {
-                    val i = Intent(this.requireContext(), MainActivity::class.java)
-                    startActivity(i)
-                }
+                .login(onSuccess = {
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    },
+                    onFailure = {
+                        when(it){
+                            AuthErrorEnum.EMAIL_NOT_VALID, AuthErrorEnum.EMAIL_NOT_REGISTERED -> {
+                                loginBinding.fLoginLayoutEmail.error = it.getErrorMessage(this.requireContext())
+                            }
+                            AuthErrorEnum.PASSWORD_NOT_CORRECT -> {
+                                loginBinding.fLoginLayoutPwd.error = it.getErrorMessage(this.requireContext())
+                            }
+                            AuthErrorEnum.UNKNOWN_ERROR -> {
+                                Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
+                            }
+                            else -> {
+                                Toast.makeText(context, "Internal error", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
         }
     }
 

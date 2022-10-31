@@ -1,19 +1,22 @@
 package com.cip.cipstudio.viewmodel
 
 import android.content.Context
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.R
+import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.text.Typography.registered
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class AuthViewModel(val context : Context) : ViewModel(){
+
+    private val TAG = "AuthViewModel"
 
     var email : MutableLiveData<String> = MutableLiveData()
     var password : MutableLiveData<String> = MutableLiveData()
@@ -21,33 +24,24 @@ class AuthViewModel(val context : Context) : ViewModel(){
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
 
 
-    val isLoginModeLiveData : MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
+    fun login(onSuccess: () -> Unit,
+              onFailure: (AuthErrorEnum) -> Unit = {}) {
 
-    fun login(emailLayout : TextInputLayout,
-              pwdLayout: TextInputLayout,
-              onSuccess: () -> Unit) {
         val email = this.email.value.toString().trim()
         val password = this.password.value.toString()
 
-        Log.e("AUTHVIEWMODEL","email: $email")
-        Log.e("AUTHVIEWMODEL","password: $password")
+        Log.e(TAG,"email: $email")
+        Log.e(TAG,"password: $password")
 
-        var canLogin = true
-
-        if(!isValidEmail(email)){
-            emailLayout.error = context.getString(R.string.invalid_email)
-            canLogin = false
+        if(!isValidEmail(email)) {
+            onFailure(AuthErrorEnum.EMAIL_NOT_VALID)
+            return
         }
 
         if(!isValidPassword(password)){
-            pwdLayout.error = context.getString(R.string.invalid_password)
-            canLogin = false
-        }
-
-        if(!canLogin)
+            onFailure(AuthErrorEnum.PASSWORD_NOT_CORRECT)
             return
+        }
 
         LoadingSpinner.showLoadingDialog(context)
 
@@ -58,7 +52,17 @@ class AuthViewModel(val context : Context) : ViewModel(){
             }
             .addOnFailureListener {
                 LoadingSpinner.dismiss()
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                when(it){
+                    is FirebaseAuthInvalidUserException -> {
+                        onFailure(AuthErrorEnum.EMAIL_NOT_REGISTERED)
+                    }
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        onFailure(AuthErrorEnum.PASSWORD_NOT_CORRECT)
+                    }
+                    else -> {
+                        onFailure(AuthErrorEnum.UNKNOWN_ERROR)
+                    }
+                }
             }
     }
 
@@ -73,18 +77,18 @@ class AuthViewModel(val context : Context) : ViewModel(){
         var canLogin = true
 
         if(!isValidEmail(email)){
-            emailLayout.error = context.getString(R.string.invalid_email)
+            emailLayout.error = context.getString(R.string.email_not_valid)
             canLogin = false
         }
 
         if(!isValidPassword(password)){
             when {
-                password.length < 8 -> pwdLayout.error = context.getString(R.string.short_password)
-                password.length > 20 -> pwdLayout.error = context.getString(R.string.long_password)
-                !password.matches(Regex(".*\\d.*")) -> pwdLayout.error = context.getString(R.string.no_number)
-                !password.matches(Regex(".*[a-z].*")) -> pwdLayout.error = context.getString(R.string.no_lowercase)
-                !password.matches(Regex(".*[A-Z].*")) -> pwdLayout.error = context.getString(R.string.no_uppercase)
-                !password.matches(Regex(".*[!@#\$%^&*()_+].*")) -> pwdLayout.error = context.getString(R.string.no_special_character)
+                password.length < 8 -> pwdLayout.error = context.getString(R.string.password_too_short)
+                password.length > 20 -> pwdLayout.error = context.getString(R.string.password_too_long)
+                !password.matches(Regex(".*\\d.*")) -> pwdLayout.error = context.getString(R.string.password_no_digit)
+                !password.matches(Regex(".*[a-z].*")) -> pwdLayout.error = context.getString(R.string.password_no_lowercase)
+                !password.matches(Regex(".*[A-Z].*")) -> pwdLayout.error = context.getString(R.string.password_no_uppercase)
+                !password.matches(Regex(".*[!@#\$%^&*()_+].*")) -> pwdLayout.error = context.getString(R.string.password_no_special_character)
             }
             canLogin = false
         }

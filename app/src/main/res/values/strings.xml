@@ -11,16 +11,20 @@
     <string name="lorem_ipsum" translatable="false">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
     <string name="show_more">Show more</string>
     <string name="similar_games">Similar games:</string>
-    <string name="invalid_email">Invalid email</string>
-    <string name="short_password">Password must be at least 8 characters long</string>
-    <string name="long_password">Password must be at most 20 characters long</string>
-    <string name="no_uppercase">Password must contain at least one uppercase letter</string>
-    <string name="no_lowercase">Password must contain at least one lowercase letter</string>
-    <string name="no_number">Password must contain at least one number</string>
-    <string name="no_special_character">Password must contain at least one special character</string>
-    <string name="invalid_password">Invalid password</string>
+    <string name="email_not_valid">Invalid email</string>
+    <string name="password_too_short">Password must be at least 8 characters long</string>
+    <string name="password_too_long">Password must be at most 20 characters long</string>
+    <string name="password_no_uppercase">Password must contain at least one uppercase letter</string>
+    <string name="password_no_lowercase">Password must contain at least one lowercase letter</string>
+    <string name="password_no_digit">Password must contain at least one digit</string>
+    <string name="password_no_special_character">Password must contain at least one special character</string>
+    <string name="password_not_valid">Invalid password</string>
     <string name="passwords_not_match">Passwords do not match</string>
     <string name="registered">Registered</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="new_user">New user? Register now</string>
+    <string name="email_already_in_use">Email already in use</string>
+    <string name="email_not_registered">Email not registered</string>
+    <string name="password_not_correct">Password not correct</string>
+    <string name="unknown_error">An error occured during the operation</string>
 </resources>
