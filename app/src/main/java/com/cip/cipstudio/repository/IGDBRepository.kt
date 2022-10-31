@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.model.data.Platform
+import com.cip.cipstudio.model.data.util.toDate
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -104,16 +105,23 @@ class IGDBRepository {
                                 similarGamesIds.add(similarGame)
                             }
 
+                            val screenshotIds : ArrayList<Int> = arrayListOf()
+                            (0 until (item.get("screenshots") as JSONArray).length()).forEach{
+                                val screenshotId = (item.get("screenshots") as JSONArray).get(it) as Int
+                                screenshotIds.add(screenshotId)
+                            }
+
                             val game = Game(item.get("name").toString(),
                                             item.get("summary").toString(),
-                                            item.get("first_release_date") as Int,
-                                            item.get("rating") as Double,
+                                            (item.get("first_release_date") as Int).toDate(),
+                                            (item.get("rating") as Double).toInt(),
                                             item.get("rating_count") as Int,
-                                            item.get("total_rating") as Double,
+                                            (item.get("total_rating") as Double).toInt(),
                                             item.get("total_rating_count") as Int,
                                             platformsIds,
                                             genreIds,
                                             similarGamesIds,
+                                            screenshotIds,
                                             item.get("id") as Int,
                                 )
                             games.add(game)
@@ -142,6 +150,58 @@ class IGDBRepository {
 
         val request = Request.Builder()
             .url("https://api.igdb.com/v4/platforms")
+            .post(payload.toRequestBody())
+            .header("Client-ID", CLIENT_ID)
+            .header("Authorization", "Bearer ${ACCESS_TOKEN.value!!}")
+            .build()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                throw Exception(e.message)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // Handle this
+                response.use {
+                    if(!response.isSuccessful){
+                        Log.i("Error", response.headers.toString())
+                    }else{
+
+                        try {
+                            val jsonString : String = response.body!!.string()
+                            val jsonArray = JSONArray(jsonString)
+                            onSuccess.invoke(
+                                jsonArray
+                            )
+                        }catch (e : Exception){
+                            throw e
+                        }
+
+                    }
+                }
+            }
+        })
+    }
+
+    fun getScreenshots(screenshotIds : ArrayList<Int>, onSuccess: (JSONArray)->Unit){
+        if(ACCESS_TOKEN.value==null){
+            throw Exception("ACCESS_TOKEN is null")
+        }
+
+        var ids : String = ""
+
+        screenshotIds.forEach {
+            ids += it.toString() + ","
+        }
+
+
+        ids = ids.substring(0, ids.length-1)
+
+        val payload = "fields url; where id = (${ids});"
+
+        Log.i("payload", payload)
+
+        val request = Request.Builder()
+            .url("https://api.igdb.com/v4/screenshots")
             .post(payload.toRequestBody())
             .header("Client-ID", CLIENT_ID)
             .header("Authorization", "Bearer ${ACCESS_TOKEN.value!!}")

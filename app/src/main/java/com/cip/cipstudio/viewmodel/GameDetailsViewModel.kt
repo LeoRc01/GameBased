@@ -1,120 +1,81 @@
 package com.cip.cipstudio.viewmodel
 
 import android.app.Activity
-import android.content.Context
-import android.os.Build
+
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
+import com.cip.cipstudio.databinding.ActivityGameDetailisBinding
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlin.collections.ArrayList
 
 
 class GameDetailsViewModel(
-    val context: Context,
     val game: Game,
-    val tvGameDetailsTitle: TextView,
-    val tvGameDetailsDescription: TextView,
-    val tvGameDetailsReleaseDate: TextView,
-    val tvUserRatingValue: TextView,
-    val tvUserRatingCounter: TextView,
-    val tvCriticsRatingValue: TextView,
-    val tvCriticsRatingCounter: TextView,
-    val tvGameDetailsPlatforms: TextView,
-    val tvShowMoreDescription: TextView,
-    val userRating: CircularProgressIndicator,
-    val criticsRating: CircularProgressIndicator,
-    val glGridGenreLayout : GridLayout,
-    val pageLayout : LinearLayout,
-    val rvSimilarGames : RecyclerView,
-    val ivGameDetailsCover: ImageView,
+    val binding: ActivityGameDetailisBinding,
 ) : ViewModel() {
 
     val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
     private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
+    private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
     init {
-        runBlocking {
+        binding.llPageLayout.visibility = View.GONE
+        LoadingSpinner.showLoadingDialog(binding.root.context)
 
-                pageLayout.visibility = View.GONE
-                LoadingSpinner.showLoadingDialog(context)
-                _setGenres{
-                    runBlocking {
-                        coroutineScope {
-                            _setPlatforms{
-                                runBlocking {
-                                    coroutineScope {
-                                        _setSimilarGames {
-                                            (context as Activity).runOnUiThread {
-                                                tvGameDetailsPlatforms.text = it
-                                                _doSynchronousActions()
-                                                LoadingSpinner.dismiss()
-                                                pageLayout.visibility = View.VISIBLE
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+        _setGameScreenshots {
+            _setGenres{
+                _setPlatforms{
+                    _setSimilarGames {
+                        (binding.root.context as Activity).runOnUiThread {
+                            binding.tvGameDetailsPlatforms.text = it
+                            Picasso.get().load("https:${game.cover_url}").into(binding.ivGameDetailsCover)
+                            //_doSynchronousActions()
+                            LoadingSpinner.dismiss()
+                            binding.llPageLayout.visibility = View.VISIBLE
                         }
                     }
                 }
-
-        }
-    }
-
-    /**
-     *
-     * Tutto quello che non richiede azioni asyncrone
-     *
-     */
-
-    fun _doSynchronousActions(){
-
-        tvGameDetailsTitle.text = game.name
-        tvGameDetailsDescription.text = game.description
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-        val date = dateFormat.format(Date(game.releaseDate.toLong() * 1000))
-        tvGameDetailsReleaseDate.text = date
-
-        userRating.progress = game.userRatingValue.toInt()
-        tvUserRatingValue.text = game.userRatingValue.toInt().toString()
-        tvUserRatingCounter.text = "User rating (${game.userRatingCount.toString()})"
-
-        criticsRating.progress = game.criticsRatingValue.toInt()
-        tvCriticsRatingValue.text = game.criticsRatingValue.toInt().toString()
-        tvCriticsRatingCounter.text = "Critics rating (${game.criticsRatingCount.toString()})"
-
-
-        tvShowMoreDescription.setOnClickListener {
-            val params: ViewGroup.LayoutParams = tvGameDetailsDescription.getLayoutParams()
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            tvGameDetailsDescription.setLayoutParams(params);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tvGameDetailsDescription.foreground = null
             }
-            tvShowMoreDescription.visibility = View.GONE
-
         }
-        Picasso.get().load("https:${game.cover_url}").into(ivGameDetailsCover)
+    }
+
+    fun _setGameScreenshots(onSuccess: () -> Unit){
+        igdbRepository.getScreenshots(game.screenShotIds){arr->
+            val screenshotIds : ArrayList<String> = arrayListOf()
+            (0 until arr.length()).forEach{
+                val screenshot = arr.getJSONObject(it)
+                screenshotIds.add(screenshot.getString("url"))
+            }
+            // Creo il layout manager (fondamentale)
+            val manager = LinearLayoutManager(binding.root.context)
+            // Imposto l'orientamento a orizzontale
+            manager.orientation = RecyclerView.HORIZONTAL
+            // Setto il layoutmanager alla RV
+            (binding.root.context as Activity).runOnUiThread {
+                rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, screenshotIds)
+                binding.rvGameDetailsScreenshots.setLayoutManager(manager)
+                binding.rvGameDetailsScreenshots.setItemViewCacheSize(50)
+                binding.rvGameDetailsScreenshots.itemAnimator = null
+                binding.rvGameDetailsScreenshots.adapter = rvGameScreenshotsAdapter
+                onSuccess.invoke()
+            }
+        }
 
     }
 
-    suspend fun _setSimilarGames(onSuccess: () -> Unit){
+    fun _setSimilarGames(onSuccess: () -> Unit){
 
         var ids : String = ""
         game.similarGamesIds.forEach {
@@ -127,22 +88,20 @@ class GameDetailsViewModel(
         Log.i("PAYLOAD", payload)
 
         // Creo il layout manager (fondamentale)
-        val manager = LinearLayoutManager(context)
+        val manager = LinearLayoutManager(binding.root.context)
         // Imposto l'orientamento a orizzontale
         manager.orientation = RecyclerView.HORIZONTAL
         // Setto il layoutmanager alla RV
 
-
         igdbRepository.getGamesByPayload(payload){
-            (context as Activity).runOnUiThread {
-                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(context, it)
-                rvSimilarGames.setLayoutManager(manager)
-                rvSimilarGames.setItemViewCacheSize(50)
-                rvSimilarGames.itemAnimator = null
-                rvSimilarGames.adapter = rvSimilarGamesAdapter
+            (binding.root.context as Activity).runOnUiThread {
+                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it)
+                binding.rvSimilarGames.setLayoutManager(manager)
+                binding.rvSimilarGames.setItemViewCacheSize(50)
+                binding.rvSimilarGames.itemAnimator = null
+                binding.rvSimilarGames.adapter = rvSimilarGamesAdapter
                 onSuccess.invoke()
             }
-
         }
     }
 
@@ -152,7 +111,7 @@ class GameDetailsViewModel(
      * la funzione principale ha fatto la sua chiamata
      */
 
-    suspend fun _setPlatforms(onSuccess: (String) -> Unit) {
+    fun _setPlatforms(onSuccess: (String) -> Unit) {
         var platformsString = ""
         igdbRepository.getPlatforms(game.platformsId) { arr ->
             (0 until arr.length()).forEach {
@@ -169,14 +128,14 @@ class GameDetailsViewModel(
      * la funzione principale ha fatto la sua chiamata
      */
 
-    suspend fun _setGenres(onSuccess: ()->Unit){
+    fun _setGenres(onSuccess: ()->Unit){
         var genreStrings :  ArrayList<String> = arrayListOf()
         igdbRepository.getGenres(game.genreIds){ arr->
             (0 until arr.length()).forEach {
                 val _genre = arr.getJSONObject(it)
                 genreStrings.add(_genre.getString("name"))
-                (context as Activity).runOnUiThread {
-                    glGridGenreLayout.addView(_createChip(_genre.getString("name")))
+                (binding.root.context as Activity).runOnUiThread {
+                    binding.glGridGenreLayout.addView(_createChip(_genre.getString("name")))
                 }
             }
             onSuccess.invoke()
@@ -188,9 +147,9 @@ class GameDetailsViewModel(
      */
 
     fun _createChip(label : String) : Chip{
-        val chip = Chip(context, null, R.layout.genre_chip)
+        val chip = Chip(binding.root.context, null, R.layout.genre_chip)
         val chipDrawable = ChipDrawable.createFromAttributes(
-            context,
+            binding.root.context,
             null,
             0,
             com.cip.cipstudio.R.style.genre_chip

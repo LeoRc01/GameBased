@@ -77,9 +77,7 @@ class GamesRecyclerViewAdapter
                     viewHolder.ivNoPreview.visibility = View.VISIBLE
                 }
             })
-
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
