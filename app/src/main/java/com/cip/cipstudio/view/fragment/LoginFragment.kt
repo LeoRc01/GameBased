@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentLoginBinding
-import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.LoginViewModel
@@ -26,10 +25,11 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         loginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         loginViewModel = LoginViewModel(requireContext())
         loginBinding.loginViewModel = loginViewModel
+        loginBinding.executePendingBindings()
 
 
         loginBinding.fLoginTvSwitchMode.setOnClickListener {
