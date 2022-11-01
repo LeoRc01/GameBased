@@ -45,6 +45,5 @@ enum class AuthErrorEnum {
                     };
 
 
-
     abstract fun getErrorMessage(context: Context) : String
 }

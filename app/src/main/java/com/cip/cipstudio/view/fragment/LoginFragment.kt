@@ -13,13 +13,13 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.MainActivity
-import com.cip.cipstudio.viewmodel.AuthViewModel
+import com.cip.cipstudio.viewmodel.LoginViewModel
 
 
 class LoginFragment : Fragment() {
 
     private lateinit var loginBinding: FragmentLoginBinding
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var loginViewModel: LoginViewModel
 
 
     override fun onCreateView(
@@ -27,8 +27,8 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         loginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        authViewModel = AuthViewModel(requireContext())
-        loginBinding.authViewModel = authViewModel
+        loginViewModel = LoginViewModel(requireContext())
+        loginBinding.loginViewModel = loginViewModel
 
 
         loginBinding.fLoginTvSwitchMode.setOnClickListener {
@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
         loginBinding.fLoginBtnLogin.setOnClickListener {
             loginBinding.fLoginLayoutEmail.error = ""
             loginBinding.fLoginLayoutPwd.error = ""
-            authViewModel
+            loginViewModel
                 .login(onSuccess = {
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
                                 Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
                             }
                             else -> {
-                                Toast.makeText(context, "Internal error", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show()
                             }
                         }
                     })

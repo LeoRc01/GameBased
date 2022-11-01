@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
-class AuthViewModel(val context : Context) : ViewModel(){
+class LoginViewModel(val context : Context) : ViewModel(){
 
-    private val TAG = "AuthViewModel"
+    private val TAG = "LoginViewModel"
 
     var email : MutableLiveData<String> = MutableLiveData()
     var password : MutableLiveData<String> = MutableLiveData()
@@ -63,52 +63,6 @@ class AuthViewModel(val context : Context) : ViewModel(){
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
                 }
-            }
-    }
-
-    fun register(email : String,
-                 password : String,
-                 passwordConfirm: String,
-                 emailLayout : TextInputLayout,
-                 pwdLayout: TextInputLayout,
-                 pwdConfirmLayout: TextInputLayout,
-                 onSuccess: () -> Unit) {
-
-        var canLogin = true
-
-        if(!isValidEmail(email)){
-            emailLayout.error = context.getString(R.string.email_not_valid)
-            canLogin = false
-        }
-
-        if(!isValidPassword(password)){
-            when {
-                password.length < 8 -> pwdLayout.error = context.getString(R.string.password_too_short)
-                password.length > 20 -> pwdLayout.error = context.getString(R.string.password_too_long)
-                !password.matches(Regex(".*\\d.*")) -> pwdLayout.error = context.getString(R.string.password_no_digit)
-                !password.matches(Regex(".*[a-z].*")) -> pwdLayout.error = context.getString(R.string.password_no_lowercase)
-                !password.matches(Regex(".*[A-Z].*")) -> pwdLayout.error = context.getString(R.string.password_no_uppercase)
-                !password.matches(Regex(".*[!@#\$%^&*()_+].*")) -> pwdLayout.error = context.getString(R.string.password_no_special_character)
-            }
-            canLogin = false
-        }
-
-        if(passwordConfirm != password){
-            pwdConfirmLayout.error = context.getString(R.string.passwords_not_match)
-            canLogin = false
-        }
-
-        if(!canLogin)
-            return
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener{
-                onSuccess.invoke()
-                Toast.makeText(context, context.getString(R.string.registered), Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener{
-                LoadingSpinner.dismiss()
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
     }
 

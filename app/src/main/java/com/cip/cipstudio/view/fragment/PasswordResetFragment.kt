@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentPasswordResetBinding
-import com.cip.cipstudio.viewmodel.AuthViewModel
+import com.cip.cipstudio.viewmodel.LoginViewModel
 
 class PasswordResetFragment : Fragment() {
 
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var loginViewModel: LoginViewModel
     private lateinit var resetPasswordResetBinding: FragmentPasswordResetBinding
 
     override fun onCreateView(
@@ -20,9 +20,9 @@ class PasswordResetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         resetPasswordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false)
-        authViewModel = AuthViewModel(requireContext())
+        loginViewModel = LoginViewModel(requireContext())
 
-        resetPasswordResetBinding.authViewModel = authViewModel
+        resetPasswordResetBinding.authViewModel = loginViewModel
 
         resetPasswordResetBinding.fPasswordResetIconBtnBack.setOnClickListener {
             findNavController().navigate(R.id.action_passwordResetFragment_to_loginFragment)

@@ -21,4 +21,10 @@
     <string name="email_already_in_use">Email già in uso</string>
     <string name="email_not_registered">Nessun account per questa email</string>
     <string name="password_not_correct">Password non corretta</string>
+    <string name="unknown_error">Qualcosa è andato storto</string>
+    <string name="reset_password_title">Hai dimenticato la password</string>
+    <string name="reset_password_body">Per resettare la tua password inserisci l\'indirizzo email con cui ti sei registrato. Ti invieremo un link per poter accedere al tuo account</string>
+    <string name="send_email">Inviato</string>
+    <string name="already_have_account">Hai già un account? Login</string>
+    <string name="internal_error">errore interno</string>
 </resources>

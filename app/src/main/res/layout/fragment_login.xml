@@ -5,8 +5,8 @@
 
     <data>
             <variable
-                name="authViewModel"
-                type="com.cip.cipstudio.viewmodel.AuthViewModel" />
+                name="loginViewModel"
+                type="com.cip.cipstudio.viewmodel.LoginViewModel" />
     </data>
 
     <ScrollView
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="@={authViewModel.email}"/>
+                    android:text="@={loginViewModel.email}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:text="@={authViewModel.password}" />
+                    android:text="@={loginViewModel.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
