@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentRegisterBinding
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.viewmodel.LoginViewModel
 import com.cip.cipstudio.viewmodel.RegisterViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -51,20 +52,17 @@ class RegisterFragment : Fragment() {
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 },
                     onFailure = {
-                        when(it){
-                            AuthErrorEnum.EMAIL_NOT_VALID -> {
+                        when(it.getErrorType()){
+                            AuthTypeErrorEnum.EMAIL -> {
                                 registerBinding.fRegisterLayoutEmail.error = it.getErrorMessage(this.requireContext())
                             }
-                            AuthErrorEnum.EMAIL_ALREADY_IN_USE -> {
-                                Toast.makeText(context, R.string.email_already_in_use, Toast.LENGTH_LONG).show()
-                            }
-                            AuthErrorEnum.PASSWORD_NOT_VALID, AuthErrorEnum.PASSWORD_TOO_SHORT, AuthErrorEnum.PASSWORD_TOO_LONG, AuthErrorEnum.PASSWORD_NO_SPECIAL_CHARACTER, AuthErrorEnum.PASSWORD_NO_DIGIT, AuthErrorEnum.PASSWORD_NO_LOWERCASE, AuthErrorEnum.PASSWORD_NO_UPPERCASE -> {
+                            AuthTypeErrorEnum.PASSWORD -> {
                                 registerBinding.fRegisterLayoutPwd.error = it.getErrorMessage(this.requireContext())
                             }
-                            AuthErrorEnum.PASSWORDS_NOT_MATCH -> {
+                            AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
                                 registerBinding.fRegisterLayoutPwdConfirm.error = it.getErrorMessage(this.requireContext())
                             }
-                            AuthErrorEnum.UNKNOWN_ERROR -> {
+                            AuthTypeErrorEnum.UNKNOWN -> {
                                 Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
                             }
                             else -> {

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.LoginViewModel
 
@@ -53,14 +54,14 @@ class LoginFragment : Fragment() {
                         requireActivity().finish()
                     },
                     onFailure = {
-                        when(it){
-                            AuthErrorEnum.EMAIL_NOT_VALID, AuthErrorEnum.EMAIL_NOT_REGISTERED -> {
+                        when(it.getErrorType()){
+                            AuthTypeErrorEnum.EMAIL -> {
                                 loginBinding.fLoginLayoutEmail.error = it.getErrorMessage(this.requireContext())
                             }
-                            AuthErrorEnum.PASSWORD_NOT_CORRECT -> {
+                            AuthTypeErrorEnum.PASSWORD -> {
                                 loginBinding.fLoginLayoutPwd.error = it.getErrorMessage(this.requireContext())
                             }
-                            AuthErrorEnum.UNKNOWN_ERROR -> {
+                            AuthTypeErrorEnum.UNKNOWN -> {
                                 Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
                             }
                             else -> {
