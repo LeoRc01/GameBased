@@ -34,6 +34,10 @@ class LoginFragment : Fragment() {
         loginBinding.fLoginTvSwitchMode.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+        loginBinding.fLoginTvForgotPwd.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_passwordResetFragment)
+        }
+
         initializeLoginButton()
         return loginBinding.root
     }

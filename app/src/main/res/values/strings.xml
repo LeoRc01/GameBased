@@ -27,4 +27,9 @@
     <string name="email_not_registered">Email not registered</string>
     <string name="password_not_correct">Password not correct</string>
     <string name="unknown_error">An error occured during the operation</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reset_password_title">Forgot your password?</string>
+    <string name="reset_password_body">To reset your password, enter the email address that you used to set up your account. We\'ll send you a link to help you get back into your account.</string>
+    <string name="send_email">send</string>
 </resources>
