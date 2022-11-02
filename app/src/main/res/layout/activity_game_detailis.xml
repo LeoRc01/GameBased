@@ -17,14 +17,12 @@
         android:layout_height="match_parent"
         android:background="?colorOnPrimary">
 
-
         <LinearLayout
             android:id="@+id/llPageLayout"
             android:layout_width="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_height="match_parent">
-
 
             <ImageView
                 app:imageUrl="@{vm.coverImageUrl}"
@@ -52,6 +50,22 @@
                     android:layout_marginVertical="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
+
+
+
+                <Button
+                    android:id="@+id/iconButton"
+                    app:strokeWidth="0dp"
+                    app:backgroundTint="@color/light_seconday_color"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.setFavouriteStatus()}"
+                    android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
+                    app:icon="@drawable/ic_favorite_border"
+                    android:textColor="?attr/colorOnSecondary"
+                    />
 
                 <GridLayout
                     android:id="@+id/glGridGenreLayout"

@@ -12,4 +12,9 @@
     <string name="show_more">Show more</string>
     <string name="similar_games">Similar games:</string>
     <string name="screenshots">Screenshots:</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="remove_favourite">Remove favourite</string>
+    <string name="fav_success_add">Game successfully added to favourites!</string>
+    <string name="fav_success_remove">Game successfully removed from favourites!</string>
+    <string name="fav_error">Something went wrong.</string>
 </resources>

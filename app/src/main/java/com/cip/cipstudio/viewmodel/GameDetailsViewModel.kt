@@ -1,19 +1,26 @@
 package com.cip.cipstudio.viewmodel
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cip.cipstudio.BR
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.ActivityGameDetailisBinding
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
@@ -26,6 +33,7 @@ class GameDetailsViewModel(
 ) : ViewModel() {
 
     private val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
+    var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isGameFavourite)
     private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
     private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
@@ -33,26 +41,38 @@ class GameDetailsViewModel(
         binding.llPageLayout.visibility = View.GONE
         LoadingSpinner.showLoadingDialog(binding.root.context)
 
-        _setGameScreenshots {
-            _setGenres{
-                _setPlatforms{
-                    _setSimilarGames {
-                        (binding.root.context as Activity).runOnUiThread {
-                            LoadingSpinner.dismiss()
-                            binding.llPageLayout.visibility = View.VISIBLE
+        MyFirebaseRepository.getInstance().isGameFavourite(game.gameId.toString()).addOnSuccessListener {
+            if(it!=null){
+                if(it.data!=null){
+                    isGameFavourite.postValue(true)
+                }else{
+                    isGameFavourite.postValue(false)
+                }
+                _setGameScreenshots {
+                    _setGenres{
+                        _setPlatforms{
+                            _setSimilarGames {
+                                (binding.root.context as Activity).runOnUiThread {
+                                    LoadingSpinner.dismiss()
+                                    binding.llPageLayout.visibility = View.VISIBLE
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
+
+    }
 
     fun getCoverImageUrl(): String? {
         return "https:${game.cover_url}"
     }
 
+
     companion object{
+
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
         fun loadImage(view: ImageView, imageUrl: String?) {
@@ -61,8 +81,6 @@ class GameDetailsViewModel(
                 .into(view)
         }
     }
-
-
 
     private fun _setGameScreenshots(onSuccess: () -> Unit){
         igdbRepository.getScreenshots(game.screenShotIds){arr->
@@ -177,6 +195,31 @@ class GameDetailsViewModel(
         chip.layoutParams = params
         chip.text = label
         return chip
+    }
+
+    fun setFavouriteStatus(){
+        LoadingSpinner.showLoadingDialog(binding.root.context)
+        if(!isGameFavourite.value!!){
+            // Aggiungere ai preferiti
+            game.setGameToFavourite().addOnSuccessListener {
+                isGameFavourite.postValue(true)
+                LoadingSpinner.dismiss()
+                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_add), Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                LoadingSpinner.dismiss()
+                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+            }
+        }else{
+            // rimuovere dai preferiti
+            game.removeGameFromFavourite().addOnSuccessListener {
+                isGameFavourite.postValue(false)
+                LoadingSpinner.dismiss()
+                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_remove), Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                LoadingSpinner.dismiss()
+                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }

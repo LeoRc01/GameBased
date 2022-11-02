@@ -20,6 +20,7 @@ class GameDetailisActivity : AppCompatActivity() {
             GameDetailsViewModel(currentGame, binding)
         binding.vm = gameDetailsViewModel
         binding.game = currentGame
+        binding.lifecycleOwner = this
 
     }
 }

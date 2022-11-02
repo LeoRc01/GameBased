@@ -111,6 +111,7 @@ class IGDBRepository {
                                 screenshotIds.add(screenshotId)
                             }
 
+                            var isGameFavourite : Boolean = false
                             val game = Game(item.get("name").toString(),
                                             item.get("summary").toString(),
                                             (item.get("first_release_date") as Int).toDate(),
@@ -122,6 +123,7 @@ class IGDBRepository {
                                             genreIds,
                                             similarGamesIds,
                                             screenshotIds,
+                                            isGameFavourite,
                                             item.get("id") as Int,
                                 )
                             games.add(game)
