@@ -20,9 +20,7 @@ object LoadingSpinner {
     }
 
     fun dismiss(){
-        if(loadingDialog != null){
-            loadingDialog.dismiss()
-        }
+        loadingDialog.dismiss()
     }
 
 }
