@@ -2,4 +2,29 @@
 <resources>
     <string name="register" translatable="false">Registrati</string>
     <string name="repeat_password_placeholder">Verifica password</string>
+    <string name="platforms" translatable="false">Piattaforme:</string>
+    <string name="release_date">Data di rilascio:</string>
+    <string name="show_more">Mostra di più</string>
+    <string name="similar_games">Giochi simili:</string>
+    <string name="email_not_valid">Email non valida</string>
+    <string name="password_too_short">La password deve essere almeno lunga 8 carartteri</string>
+    <string name="password_too_long">La password deve essere lunga al massimo 16 caratteri</string>
+    <string name="password_no_uppercase">La password deve contenere almeno una lettera maiuscola</string>
+    <string name="password_no_lowercase">La password deve contenere almeno una lettera minuscola</string>
+    <string name="password_no_digit">La password deve contenere almeno un numero</string>
+    <string name="password_no_special_character">La pssword deve almeno contenere un carattere speciale</string>
+    <string name="password_not_valid">Password errata</string>
+    <string name="passwords_not_match">Le password non coincidono</string>
+    <string name="registered">Registrato</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="new_user">Nuovo utente? Registrati</string>
+    <string name="email_already_in_use">Email già in uso</string>
+    <string name="email_not_registered">Nessun account per questa email</string>
+    <string name="password_not_correct">Password non corretta</string>
+    <string name="unknown_error">Qualcosa è andato storto</string>
+    <string name="reset_password_title">Hai dimenticato la password</string>
+    <string name="reset_password_body">Per resettare la tua password inserisci l\'indirizzo email con cui ti sei registrato. Ti invieremo un link per poter accedere al tuo account</string>
+    <string name="send_email">Inviato</string>
+    <string name="already_have_account">Hai già un account? Login</string>
+    <string name="internal_error">errore interno</string>
 </resources>

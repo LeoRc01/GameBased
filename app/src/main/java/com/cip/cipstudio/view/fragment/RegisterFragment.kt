@@ -7,59 +7,69 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
-import com.cip.cipstudio.viewmodel.AuthViewModel
+import com.cip.cipstudio.databinding.FragmentRegisterBinding
+import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.AuthTypeErrorEnum
+import com.cip.cipstudio.viewmodel.LoginViewModel
+import com.cip.cipstudio.viewmodel.RegisterViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
 class RegisterFragment : Fragment() {
 
-    private lateinit var registerBtn : Button
-    private lateinit var authViewModel: AuthViewModel
-    private lateinit var emailEt : TextInputEditText
-    private lateinit var pwdEt : TextInputEditText
-    private lateinit var emailLayout : TextInputLayout
-    private lateinit var pwdLayout : TextInputLayout
-    private lateinit var pwdConfirmEt : TextInputEditText
-    private lateinit var pwdConfirmLayout : TextInputLayout
+    private lateinit var registerBinding : FragmentRegisterBinding
+    private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
+    ): View {
+        registerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+        registerViewModel = RegisterViewModel(requireContext())
+        registerBinding.registerViewModel = registerViewModel
+        registerBinding.executePendingBindings()
 
-        val changeAuthTextView = view.findViewById<TextView>(R.id.f_register_tv_switchMode)
-        authViewModel = AuthViewModel(requireContext())
-        registerBtn = view.findViewById(R.id.f_register_btn_register)
-        emailEt = view.findViewById(R.id.f_register_et_email)
-        emailLayout = view.findViewById(R.id.f_register_layout_email)
-        pwdEt = view.findViewById(R.id.f_register_et_pwd)
-        pwdLayout = view.findViewById(R.id.f_register_layout_pwd)
-        pwdConfirmEt = view.findViewById(R.id.f_register_et_pwdConfirm)
-        pwdConfirmLayout = view.findViewById(R.id.f_register_layout_pwdConfirm)
-
-        changeAuthTextView.setOnClickListener {
+        registerBinding.fRegisterTvSwitchMode.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
+
         initializeRegisterButton()
-        return view
+        return registerBinding.root
     }
 
     private fun initializeRegisterButton(){
-        registerBtn.setOnClickListener {
-            emailLayout.error = null
-            pwdLayout.error = null
-            pwdConfirmLayout.error = null
-            authViewModel
-                .register( emailEt.text.toString().trim(), pwdEt.text.toString(),
-                    pwdConfirmEt.text.toString(),
-                    emailLayout, pwdLayout, pwdConfirmLayout) {
+        registerBinding.fRegisterBtnRegister.setOnClickListener {
+            registerBinding.fRegisterLayoutEmail.error = ""
+            registerBinding.fRegisterLayoutPwd.error = ""
+            registerBinding.fRegisterLayoutPwdConfirm.error = ""
+            registerViewModel
+                .register(onSuccess = {
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                }
+                },
+                    onFailure = {
+                        when(it.getErrorType()){
+                            AuthTypeErrorEnum.EMAIL -> {
+                                registerBinding.fRegisterLayoutEmail.error = it.getErrorMessage(this.requireContext())
+                            }
+                            AuthTypeErrorEnum.PASSWORD -> {
+                                registerBinding.fRegisterLayoutPwd.error = it.getErrorMessage(this.requireContext())
+                            }
+                            AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
+                                registerBinding.fRegisterLayoutPwdConfirm.error = it.getErrorMessage(this.requireContext())
+                            }
+                            AuthTypeErrorEnum.UNKNOWN -> {
+                                Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
+                            }
+                            else -> {
+                                Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
         }
     }
 }
