@@ -11,6 +11,12 @@
     <string name="lorem_ipsum" translatable="false">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
     <string name="show_more">Show more</string>
     <string name="similar_games">Similar games:</string>
+    <string name="screenshots">Screenshots:</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="remove_favourite">Remove favourite</string>
+    <string name="fav_success_add">Game successfully added to favourites!</string>
+    <string name="fav_success_remove">Game successfully removed from favourites!</string>
+    <string name="fav_error">Something went wrong.</string>
     <string name="email_not_valid">Invalid email</string>
     <string name="password_too_short">Password must be at least 8 characters long</string>
     <string name="password_too_long">Password must be at most 20 characters long</string>
