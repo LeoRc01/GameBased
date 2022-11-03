@@ -14,7 +14,7 @@ import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
 
-class mainPageFragment : Fragment() {
+class MainPageFragment : Fragment() {
 
     private lateinit var viewModel: MainPageViewModel
     private lateinit var gameRepository: IGDBRepository

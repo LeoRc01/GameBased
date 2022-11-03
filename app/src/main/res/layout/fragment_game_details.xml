@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.cip.cipstudio.viewmodel.GameDetailsViewModel" />
+        <variable
+            name="game"
+            type="com.cip.cipstudio.model.data.Game" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorOnPrimary">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/f_gameDetails_cl_pageLayout"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/f_gameDetails_iv_gameDetailsCover"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="20dp"
+                android:foreground="@drawable/fading_gradient"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{vm.coverImageUrl}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_iv_gameDetailsCover">
+
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_gameDetailsTitle"
+                    style="@style/Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:text="@{game.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+                <Button
+                    android:id="@+id/f_gameDetails_btn_favorite"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.setFavouriteStatus()}"
+                    android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
+                    android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="15sp"
+                    app:backgroundTint="@color/light_seconday_color"
+                    app:icon="@drawable/ic_favorite_border"
+                    app:strokeWidth="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"/>
+
+                <GridLayout
+                    android:id="@+id/f_gameDetails_gl_gridGenreLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_btn_favorite"/>
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_gameDetailsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:foreground="@drawable/fading_gradient"
+                    android:text="@{game.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_gl_gridGenreLayout"/>
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_showMoreDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/show_more"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsDescription" />
+
+                <LinearLayout
+                    android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_showMoreDescription">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/release_date"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{game.releaseDate}"
+                        android:textColor="@color/primary_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/f_gameDetails_ll_gameDetails_platforms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate">
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/platforms"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_color" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_ratings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/rating"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/f_gameDetails_cl_ratingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/f_gameDetails_ll_userRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/f_gameDetails_ll_criticRating"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="MissingConstraints">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_userRatingValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="@{Integer.toString(game.userRatingValue)}" />
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/f_gameDetails_cpi_userRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:progress="@{game.userRatingValue}"
+                                app:indicatorSize="75dp"
+                                app:trackColor="@color/trackColor"
+                                app:trackCornerRadius="10dp"
+                                app:trackThickness="10dp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/f_gameDetails_tv_userRatingCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{"User rating (" + game.userRatingCount + ")"}' />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/f_gameDetails_ll_criticRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/f_gameDetails_ll_userRating"
+                        tools:ignore="MissingConstraints">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_criticsRatingValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="@{Integer.toString(game.criticsRatingValue)}" />
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/f__gameDetails_cpi_criticsRating"
+                                app:indicatorSize="75dp"
+                                app:trackCornerRadius="10dp"
+                                app:trackThickness="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:progress="@{game.criticsRatingValue}"
+                                app:trackColor="@color/trackColor" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/f_gameDetails_tv_criticsRatingCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{"Critics rating (" + game.criticsRatingCount + ")"}' />
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_screenshots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/screenshots"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_cl_ratingLayout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_gameDetails_rv_screenshots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_screenshots" />
+
+                <TextView
+                    android:id="@+id/f_gameDetails_tv_similarGames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/similar_games"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_gameDetails_rv_similarGames"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:orientation="horizontal"
+                    app:reverseLayout="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_similarGames"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
+
+
