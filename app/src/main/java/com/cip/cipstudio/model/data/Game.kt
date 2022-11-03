@@ -1,29 +1,25 @@
 package com.cip.cipstudio.model.data
 
 
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.repository.IGDBRepository
 import com.google.android.gms.tasks.Task
 import java.io.Serializable
 
 data class Game(
-    var name : String,
-    val description : String,
-    val releaseDate : String,
-    val userRatingValue : Int,
-    val userRatingCount : Int,
-    val criticsRatingValue : Int,
-    val criticsRatingCount : Int,
-    val platformsId : ArrayList<Int>,
-    val genreIds : ArrayList<Int>,
-    val similarGamesIds : ArrayList<Int>,
-    val screenShotIds : ArrayList<Int>,
-    var isGameFavourite : Boolean,
-    val gameId : Int,
+    var name: String,
+    val description: String,
+    val releaseDate: String?,
+    val userRatingValue: Int?,
+    val userRatingCount: Int?,
+    val criticsRatingValue: Int?,
+    val criticsRatingCount: Int?,
+    val platformsId: ArrayList<Int>,
+    val genreIds: ArrayList<Int>,
+    val similarGamesIds: ArrayList<Int>,
+    val screenShotIds: ArrayList<Int>,
+    var isGameFavourite: Boolean,
+    val gameId: Int,
                 ) : Serializable{
 
     var cover_url : String? = null

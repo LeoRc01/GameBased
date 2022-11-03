@@ -64,7 +64,8 @@
                     android:onClick="@{() -> vm.setFavouriteStatus()}"
                     android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
                     app:icon="@drawable/ic_favorite_border"
-                    android:textColor="?attr/colorOnSecondary"
+                    android:textColor="?colorTertiary"
+                    android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
                     />
 
                 <GridLayout
@@ -103,7 +104,7 @@
 
                     <TextView
                         android:id="@+id/tvGameDetailsReleaseDate"
-                        android:text="@{game.releaseDate}"
+                        android:text='@{game.releaseDate == null ? "TBA" : game.releaseDate}'
                         android:textColor="@color/primary_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -160,7 +161,7 @@
 
                             <TextView
                                 android:id="@+id/tvUserRatingValue"
-                                android:text="@{Integer.toString(game.userRatingValue)}"
+                                android:text='@{game.userRatingValue != null ? Integer.toString(game.userRatingValue) : "N/A"}'
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
                                 android:layout_width="wrap_content"
@@ -181,7 +182,7 @@
                             android:id="@+id/tvUserRatingCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"User rating (" + game.userRatingCount + ")"}'/>
+                            android:text='@{game.userRatingCount != null ? "User rating (" + game.userRatingCount + ")" : "User rating (N/A)" }'/>
 
                     </LinearLayout>
 
@@ -201,7 +202,7 @@
 
                             <TextView
                                 android:id="@+id/tvCriticsRatingValue"
-                                android:text="@{Integer.toString(game.criticsRatingValue)}"
+                                android:text='@{game.criticsRatingValue != null ? Integer.toString(game.criticsRatingValue) : "N/A"}'
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
                                 android:layout_width="wrap_content"
@@ -222,7 +223,7 @@
                             android:id="@+id/tvCriticsRatingCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"Critics rating (" + game.criticsRatingCount + ")"}'/>
+                            android:text='@{game.criticsRatingCount != null ? "Critics rating (" + game.criticsRatingCount + ")" : "Critics rating (N/A)"}'/>
 
                     </LinearLayout>
 
@@ -230,6 +231,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/tvGameDetailsScreenshotsTitle"
                     android:text="@string/screenshots"
                     android:textStyle="bold"
                     android:layout_gravity="start"
@@ -252,12 +254,13 @@
                     android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/rvSimilarGames"
                     android:divider="@null"
                     android:orientation="horizontal"
                     app:reverseLayout="true"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

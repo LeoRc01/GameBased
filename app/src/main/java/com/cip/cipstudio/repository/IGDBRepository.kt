@@ -3,17 +3,12 @@ package com.cip.cipstudio.repository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.model.data.Platform
-import com.cip.cipstudio.model.data.util.toDate
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import com.cip.cipstudio.model.data.util.*
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import java.sql.Timestamp
 
 class IGDBRepository {
 
@@ -85,46 +80,32 @@ class IGDBRepository {
                         val games : ArrayList<Game> = ArrayList<Game>()
                         // Looppo su tutta la lista dei jsonObjects
                         (0 until json.length()).forEach {
+
                             val item = json.getJSONObject(it)
 
-                            val platformsIds : ArrayList<Int> = arrayListOf()
-                            (0 until (item.get("platforms") as JSONArray).length()).forEach{
-                                val plat = (item.get("platforms") as JSONArray).get(it) as Int
-                                platformsIds.add(plat)
-                            }
+                            val platformsIds : ArrayList<Int> = convertIdsToArrayList((item.get("platforms") as JSONArray))
 
-                            val genreIds : ArrayList<Int> = arrayListOf()
-                            (0 until (item.get("genres") as JSONArray).length()).forEach{
-                                val genre = (item.get("genres") as JSONArray).get(it) as Int
-                                genreIds.add(genre)
-                            }
+                            val genreIds : ArrayList<Int> = convertIdsToArrayList((item.get("genres") as JSONArray))
 
-                            val similarGamesIds : ArrayList<Int> = arrayListOf()
-                            (0 until (item.get("similar_games") as JSONArray).length()).forEach{
-                                val similarGame = (item.get("similar_games") as JSONArray).get(it) as Int
-                                similarGamesIds.add(similarGame)
-                            }
+                            val similarGamesIds : ArrayList<Int> = convertIdsToArrayList((item.get("similar_games") as JSONArray))
 
-                            val screenshotIds : ArrayList<Int> = arrayListOf()
-                            (0 until (item.get("screenshots") as JSONArray).length()).forEach{
-                                val screenshotId = (item.get("screenshots") as JSONArray).get(it) as Int
-                                screenshotIds.add(screenshotId)
-                            }
+                            val screenshotIds : ArrayList<Int> = if(item.has("screenshots")) convertIdsToArrayList((item.get("screenshots") as JSONArray)) else arrayListOf()
 
                             var isGameFavourite : Boolean = false
-                            val game = Game(item.get("name").toString(),
-                                            item.get("summary").toString(),
-                                            (item.get("first_release_date") as Int).toDate(),
-                                            (item.get("rating") as Double).toInt(),
-                                            item.get("rating_count") as Int,
-                                            (item.get("total_rating") as Double).toInt(),
-                                            item.get("total_rating_count") as Int,
+
+                            val game = Game(item.getStringField("name")!!,
+                                            item.getStringField("summary")!!,
+                                            item.getDateField("first_release_date"),
+                                            if(item.getDoubleField("rating") != null) item.getDoubleField("rating")!!.toInt() else null,
+                                            item.getIntField("rating_count"),
+                                            if(item.getDoubleField("total_rating") != null) item.getDoubleField("total_rating")!!.toInt() else null,
+                                            item.getIntField("total_rating_count"),
                                             platformsIds,
                                             genreIds,
                                             similarGamesIds,
                                             screenshotIds,
                                             isGameFavourite,
-                                            item.get("id") as Int,
+                                            item.getIntField("id")!!,
                                 )
                             games.add(game)
                         }
@@ -133,6 +114,15 @@ class IGDBRepository {
                 }
             }
         })
+    }
+
+    fun convertIdsToArrayList(items : JSONArray) : ArrayList<Int>{
+        val ids : ArrayList<Int> = arrayListOf()
+        (0 until items.length()).forEach{
+            val id = items.get(it) as Int
+            ids.add(id)
+        }
+        return ids
     }
 
     fun getPlatforms(platformId : ArrayList<Int>, onSuccess: (JSONArray)->Unit){

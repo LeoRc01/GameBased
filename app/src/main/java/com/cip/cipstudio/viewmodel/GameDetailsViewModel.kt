@@ -70,9 +70,7 @@ class GameDetailsViewModel(
         return "https:${game.cover_url}"
     }
 
-
     companion object{
-
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
         fun loadImage(view: ImageView, imageUrl: String?) {
@@ -83,24 +81,31 @@ class GameDetailsViewModel(
     }
 
     private fun _setGameScreenshots(onSuccess: () -> Unit){
-        igdbRepository.getScreenshots(game.screenShotIds){arr->
-            val screenshotIds : ArrayList<String> = arrayListOf()
-            (0 until arr.length()).forEach{
-                val screenshot = arr.getJSONObject(it)
-                screenshotIds.add(screenshot.getString("url"))
-            }
-            // Creo il layout manager (fondamentale)
-            val manager = LinearLayoutManager(binding.root.context)
-            // Imposto l'orientamento a orizzontale
-            manager.orientation = RecyclerView.HORIZONTAL
-            // Setto il layoutmanager alla RV
-            (binding.root.context as Activity).runOnUiThread {
-                rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, screenshotIds)
-                binding.rvGameDetailsScreenshots.setLayoutManager(manager)
-                binding.rvGameDetailsScreenshots.setItemViewCacheSize(50)
-                binding.rvGameDetailsScreenshots.itemAnimator = null
-                binding.rvGameDetailsScreenshots.adapter = rvGameScreenshotsAdapter
-                onSuccess.invoke()
+        if(game.screenShotIds.isEmpty()){
+            // Rimuovo gli screenshot tramite view binding
+            binding.rvGameDetailsScreenshots.visibility = View.GONE
+            binding.tvGameDetailsScreenshotsTitle.visibility = View.GONE
+            onSuccess.invoke()
+        }else{
+            igdbRepository.getScreenshots(game.screenShotIds){arr->
+                val screenshotIds : ArrayList<String> = arrayListOf()
+                (0 until arr.length()).forEach{
+                    val screenshot = arr.getJSONObject(it)
+                    screenshotIds.add(screenshot.getString("url"))
+                }
+                // Creo il layout manager (fondamentale)
+                val manager = LinearLayoutManager(binding.root.context)
+                // Imposto l'orientamento a orizzontale
+                manager.orientation = RecyclerView.HORIZONTAL
+                // Setto il layoutmanager alla RV
+                (binding.root.context as Activity).runOnUiThread {
+                    rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, screenshotIds)
+                    binding.rvGameDetailsScreenshots.setLayoutManager(manager)
+                    binding.rvGameDetailsScreenshots.setItemViewCacheSize(50)
+                    binding.rvGameDetailsScreenshots.itemAnimator = null
+                    binding.rvGameDetailsScreenshots.adapter = rvGameScreenshotsAdapter
+                    onSuccess.invoke()
+                }
             }
         }
 
