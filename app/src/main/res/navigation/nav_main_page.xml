@@ -2,24 +2,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_navigation_graph"
-    app:startDestination="@id/menu_home">
+    android:id="@+id/nav_main_page"
+    app:startDestination="@id/mainPageFragment">
+
     <fragment
-        android:id="@+id/menu_home"
+        android:id="@+id/mainPageFragment"
         android:name="com.cip.cipstudio.view.fragment.MainPageFragment"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" >
         <action
-            android:id="@+id/action_menu_home_to_gameDetailsFragment2"
-            app:destination="@id/gameDetailsFragment2" />
+            android:id="@+id/action_mainPageFragment_to_gameDetailsFragment"
+            app:destination="@id/gameDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/menu_profile"
-        android:name="com.cip.cipstudio.view.fragment.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
-    <fragment
-        android:id="@+id/gameDetailsFragment2"
+        android:id="@+id/gameDetailsFragment"
         android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
         android:label="GameDetailsFragment" />
 </navigation>

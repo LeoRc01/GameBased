@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.cip.cipstudio.R
-import com.cip.cipstudio.databinding.ActivityGameDetailisBinding
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
@@ -25,7 +24,8 @@ class GameDetailsFragment : Fragment() {
         val currentGame : Game = arguments?.get("game") as Game
 
         // TODO: Use the ViewModel (per ora è temporaneo)
-        gameDetailsViewModel = GameDetailsViewModel(currentGame, ActivityGameDetailisBinding.inflate(layoutInflater))
+
+        gameDetailsViewModel = GameDetailsViewModel(currentGame, gameDetailsBinding)
 
         gameDetailsBinding.vm = gameDetailsViewModel
         gameDetailsBinding.game = currentGame
