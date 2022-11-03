@@ -31,5 +31,9 @@
     <fragment
         android:id="@+id/gameDetailsFragment2"
         android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
-        android:label="GameDetailsFragment" />
+        android:label="GameDetailsFragment" >
+        <action
+            android:id="@+id/action_gameDetailsFragment2_self"
+            app:destination="@id/gameDetailsFragment2" />
+    </fragment>
 </navigation>

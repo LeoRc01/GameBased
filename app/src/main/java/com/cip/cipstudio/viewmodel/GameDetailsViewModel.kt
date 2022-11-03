@@ -43,11 +43,9 @@ class GameDetailsViewModel(
 
         MyFirebaseRepository.getInstance().isGameFavourite(game.gameId.toString()).addOnSuccessListener {
             if(it!=null){
-                if(it.data!=null){
-                    isGameFavourite.postValue(true)
-                }else{
-                    isGameFavourite.postValue(false)
-                }
+
+                isGameFavourite.postValue(it.data!=null)
+
                 _setGameScreenshots {
                     _setGenres{
                         _setPlatforms{

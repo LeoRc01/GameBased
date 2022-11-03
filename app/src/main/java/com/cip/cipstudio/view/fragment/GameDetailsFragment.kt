@@ -23,8 +23,6 @@ class GameDetailsFragment : Fragment() {
 
         val currentGame : Game = arguments?.get("game") as Game
 
-        // TODO: Use the ViewModel (per ora è temporaneo)
-
         gameDetailsViewModel = GameDetailsViewModel(currentGame, gameDetailsBinding)
 
         gameDetailsBinding.vm = gameDetailsViewModel
@@ -32,7 +30,7 @@ class GameDetailsFragment : Fragment() {
         gameDetailsBinding.lifecycleOwner = this
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game_details, container, false)
+        return gameDetailsBinding.root
     }
 
 }
