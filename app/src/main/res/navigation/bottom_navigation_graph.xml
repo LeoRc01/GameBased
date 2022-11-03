@@ -19,6 +19,16 @@
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
     <fragment
+        android:id="@+id/menu_favourite"
+        android:name="com.cip.cipstudio.view.fragment.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" />
+    <fragment
+        android:id="@+id/menu_search"
+        android:name="com.cip.cipstudio.view.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
         android:id="@+id/gameDetailsFragment2"
         android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
         android:label="GameDetailsFragment" />

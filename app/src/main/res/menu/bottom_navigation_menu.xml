@@ -6,6 +6,14 @@
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
     <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@android:string/search_go" />
+    <item
+        android:id="@+id/menu_favourite"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favourite" />
+    <item
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_user"
         android:title="@string/profile" />
