@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -65,9 +66,11 @@ class MainPageFragment : Fragment() {
                 mostRatedGamesRecyclerViewAdapter,
                 "$BASE_PAYLOAD sort total_rating desc;"
             ) {
-                mostRatedGamesRecyclerViewAdapter.importItems(it)
-                view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
-                    ?.visibility = View.GONE
+                activity?.runOnUiThread {
+                    mostRatedGamesRecyclerViewAdapter.importItems(it)
+                    view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
+                        ?.visibility = View.GONE
+                }
             }
         }
 
@@ -75,11 +78,13 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mostHypedGamesRecyclerView,
             mostHypedGamesRecyclerViewAdapter,
-            "$BASE_PAYLOAD sort hype desc;"
+            "$BASE_PAYLOAD sort hypes desc;"
         ) {
-            mostHypedGamesRecyclerViewAdapter.importItems(it)
-            view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
-                ?.visibility = View.GONE
+            activity?.runOnUiThread {
+                mostHypedGamesRecyclerViewAdapter.importItems(it)
+                view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostHypedGames)
+                    ?.visibility = View.GONE
+            }
         }
     }
 }
