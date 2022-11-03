@@ -22,8 +22,9 @@ import com.cip.cipstudio.view.fragment.GameDetailsFragment
 import com.squareup.picasso.Picasso
 
 
-class GamesRecyclerViewAdapter
-    (val context : Context, var games : ArrayList<Game>) :
+class GamesRecyclerViewAdapter (val context : Context,
+                                var games : ArrayList<Game>,
+                                private val action: Int) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
@@ -78,7 +79,7 @@ class GamesRecyclerViewAdapter
 
                         val bundle = bundleOf("game" to games[position])
 
-                        viewHolder.itemView.findNavController().navigate(R.id.action_menu_home_to_gameDetailsFragment2, bundle)
+                        viewHolder.itemView.findNavController().navigate(action, bundle)
 
                     }
                 }

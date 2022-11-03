@@ -1,19 +1,14 @@
 package com.cip.cipstudio.viewmodel
 
 import android.app.Activity
-import android.graphics.drawable.Drawable
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cip.cipstudio.BR
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
@@ -65,7 +60,7 @@ class GameDetailsViewModel(
     }
 
     fun getCoverImageUrl(): String? {
-        return "https:${game.cover_url}"
+        return "https:${game.coverUrl}"
     }
 
 
@@ -124,7 +119,7 @@ class GameDetailsViewModel(
 
         igdbRepository.getGamesByPayload(payload){
             (binding.root.context as Activity).runOnUiThread {
-                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it)
+                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it, R.id.action_gameDetailsFragment2_self)
                 binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
                 binding.fGameDetailsRvSimilarGames.setItemViewCacheSize(50)
                 binding.fGameDetailsRvSimilarGames.itemAnimator = null

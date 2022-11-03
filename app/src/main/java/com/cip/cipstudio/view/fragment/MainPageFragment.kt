@@ -1,6 +1,5 @@
 package com.cip.cipstudio.view.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,9 +36,11 @@ class MainPageFragment : Fragment() {
         mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
         mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
         mostRatedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList<Game>())
+            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
+                R.id.action_menu_home_to_gameDetailsFragment2)
         mostHypedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList<Game>())
+            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
+                R.id.action_menu_home_to_gameDetailsFragment2)
         initializeMostHypedGamesRecyclerView()
         initializeMostRatedGamesRecyclerView()
         return view

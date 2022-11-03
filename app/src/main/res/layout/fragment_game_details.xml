@@ -67,6 +67,7 @@
                     style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:onClick="@{() -> vm.setFavouriteStatus()}"
                     android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
                     android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
@@ -74,10 +75,10 @@
                     android:textSize="15sp"
                     app:backgroundTint="@color/light_seconday_color"
                     app:icon="@drawable/ic_favorite_border"
-                    app:strokeWidth="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"/>
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"
+                    app:strokeWidth="0dp" />
 
                 <GridLayout
                     android:id="@+id/f_gameDetails_gl_gridGenreLayout"
@@ -92,11 +93,14 @@
                     android:id="@+id/f_gameDetails_tv_gameDetailsDescription"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
+                    android:layout_marginTop="12dp"
+                    tools:targetApi="m"
                     android:foreground="@drawable/fading_gradient"
                     android:text="@{game.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_gl_gridGenreLayout"/>
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_gl_gridGenreLayout"
+                     />
 
                 <TextView
                     android:id="@+id/f_gameDetails_tv_showMoreDescription"
@@ -158,25 +162,11 @@
                         android:textColor="@color/primary_color" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/f_gameDetails_tv_ratings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/rating"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms"
-                    />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/f_gameDetails_cl_ratingLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,8 +263,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginTop="16dp"
                     android:text="@string/screenshots"
                     android:textStyle="bold"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_cl_ratingLayout" />
@@ -283,6 +275,7 @@
                     android:id="@+id/f_gameDetails_rv_screenshots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:orientation="vertical"
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -294,9 +287,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginTop="12dp"
                     android:text="@string/similar_games"
                     android:textStyle="bold"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
@@ -305,12 +299,14 @@
                     android:id="@+id/f_gameDetails_rv_similarGames"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:divider="@null"
                     android:orientation="horizontal"
-                    app:reverseLayout="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_similarGames"/>
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_similarGames"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:reverseLayout="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

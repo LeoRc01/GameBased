@@ -1,10 +1,5 @@
 package com.cip.cipstudio.model.data
 
-
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.repository.IGDBRepository
 import com.google.android.gms.tasks.Task
@@ -26,15 +21,15 @@ data class Game(
     val gameId : Int,
                 ) : Serializable{
 
-    var cover_url : String? = null
+    var coverUrl : String? = null
 
     fun getCover(onSuccess:(String)->Unit){
-        if(cover_url==null){
+        if(coverUrl==null){
             val gameRepo = IGDBRepository(generate = false)
             gameRepo.getGameCover(gameId){
-                cover_url = it
-                cover_url = cover_url!!.replace("t_thumb", "t_cover_big")
-                onSuccess.invoke(cover_url!!)
+                coverUrl = it
+                coverUrl = coverUrl!!.replace("t_thumb", "t_cover_big")
+                onSuccess.invoke(coverUrl!!)
             }
         }
     }
