@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_main_page" />
     <fragment
         android:id="@+id/menu_profile"
-        android:name="com.cip.cipstudio.UserFragment"
+        android:name="com.cip.cipstudio.view.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
 </navigation>
