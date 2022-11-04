@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso
 
 class GamesRecyclerViewAdapter (val context : Context,
                                 var games : ArrayList<Game>,
-                                private val action: Int) :
+                                private val onClick: (Game)->Unit) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
@@ -76,11 +76,7 @@ class GamesRecyclerViewAdapter (val context : Context,
                 if(it!="NO_COVER") {
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                     viewHolder.ivGameCover.setOnClickListener {
-
-                        val bundle = bundleOf("game" to games[position])
-
-                        viewHolder.itemView.findNavController().navigate(action, bundle)
-
+                        onClick.invoke(games[position])
                     }
                 }
                 else{

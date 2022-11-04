@@ -119,7 +119,7 @@ class GameDetailsViewModel(
 
         igdbRepository.getGamesByPayload(payload){
             (binding.root.context as Activity).runOnUiThread {
-                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it, R.id.action_gameDetailsFragment2_self)
+                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it) {}
                 binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
                 binding.fGameDetailsRvSimilarGames.setItemViewCacheSize(50)
                 binding.fGameDetailsRvSimilarGames.itemAnimator = null

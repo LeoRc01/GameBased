@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -36,11 +38,11 @@ class MainPageFragment : Fragment() {
         mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
         mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
         mostRatedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
-                R.id.action_menu_home_to_gameDetailsFragment2)
+            GamesRecyclerViewAdapter(requireContext(), ArrayList()
+            ) { game -> navToGameDetails(game) }
         mostHypedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
-                R.id.action_menu_home_to_gameDetailsFragment2)
+            GamesRecyclerViewAdapter(requireContext(), ArrayList()
+            ) { game -> navToGameDetails(game) }
         initializeMostHypedGamesRecyclerView()
         initializeMostRatedGamesRecyclerView()
         return view
@@ -87,5 +89,17 @@ class MainPageFragment : Fragment() {
                     ?.visibility = View.GONE
             }
         }
+    }
+
+    private fun navToGameDetails(game: Game) {
+        val bundle = bundleOf("game" to game)
+
+        val gameDetailsFragment = GameDetailsFragment()
+        gameDetailsFragment.arguments = bundle
+        
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.f_mainPage_cl_constraintLayout, gameDetailsFragment)
+            .addToBackStack(this::class.java.simpleName)
+            .commit()
     }
 }
