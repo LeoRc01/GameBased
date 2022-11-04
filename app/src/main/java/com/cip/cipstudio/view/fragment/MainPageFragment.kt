@@ -11,8 +11,12 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment() {
 
@@ -43,6 +47,7 @@ class MainPageFragment : Fragment() {
                 R.id.action_menu_home_to_gameDetailsFragment2)
         initializeMostHypedGamesRecyclerView()
         initializeMostRatedGamesRecyclerView()
+        CoroutineScope(Dispatchers.IO).launch{IGDBWrappermio.init()}
         return view
     }
 

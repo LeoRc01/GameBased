@@ -65,9 +65,6 @@ class RegisterFragment : Fragment() {
                             AuthTypeErrorEnum.UNKNOWN -> {
                                 Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
                             }
-                            else -> {
-                                Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show()
-                            }
                         }
                     })
         }

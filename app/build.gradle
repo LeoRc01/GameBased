@@ -38,15 +38,17 @@ android {
         jvmTarget = '1.8'
     }
     configurations {
-        implementation.exclude module:'protobuf-java'
+        implementation.exclude module:'protobuf-javalite'
+        implementation.exclude module:'proto-google-common-protos'
+        implementation.exclude module:'protolite-well-known-types'
     }
     namespace 'com.cip.cipstudio'
 }
 
 dependencies {
+    implementation 'com.google.protobuf:protobuf-java:3.21.7'
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
-    implementation 'com.google.firebase:firebase-firestore-ktx'
-
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0'
     implementation("com.google.android.material:material:1.8.0-alpha01")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.core:core-ktx:1.7.0'
