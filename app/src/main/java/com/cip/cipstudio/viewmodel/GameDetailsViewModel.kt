@@ -14,7 +14,7 @@ import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
@@ -27,7 +27,7 @@ class GameDetailsViewModel(
     private val binding: FragmentGameDetailsBinding,
 ) : ViewModel() {
 
-    private val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
+    private val igdbRepository : IGDBRepositorydwa = IGDBRepositorydwa(generate = false)
     var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isGameFavourite)
     private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
     private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter

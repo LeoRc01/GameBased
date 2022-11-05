@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class MainPageFragment : Fragment() {
 
     private lateinit var viewModel: MainPageViewModel
-    private lateinit var gameRepository: IGDBRepository
+    private lateinit var gameRepository: IGDBRepositorydwa
     private val BASE_PAYLOAD =
         "fields *; where rating_count > 0 & total_rating_count > 0 & aggregated_rating_count > 0;"
 
@@ -36,7 +36,7 @@ class MainPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_page, container, false)
         viewModel = MainPageViewModel(requireContext())
-        gameRepository = IGDBRepository()
+        gameRepository = IGDBRepositorydwa()
         mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
         mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
         mostRatedGamesRecyclerViewAdapter =

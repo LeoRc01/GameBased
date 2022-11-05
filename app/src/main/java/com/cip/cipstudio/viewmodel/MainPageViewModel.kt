@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBRepositorydwa
 
 class MainPageViewModel(val context: Context) : ViewModel() {
 
     private val TAG = "MainPageViewModel"
 
-    private val gameRepository = IGDBRepository()
+    private val gameRepository = IGDBRepositorydwa()
     /**
      * initializeRecyclerView:
      *
@@ -44,7 +44,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
 
-        IGDBRepository.ACCESS_TOKEN.observeForever(Observer{
+        IGDBRepositorydwa.ACCESS_TOKEN.observeForever(Observer{
             if(it!=null){
                 Log.i("TOKEN ", it)
                 gameRepository.getGamesByPayload(payload){

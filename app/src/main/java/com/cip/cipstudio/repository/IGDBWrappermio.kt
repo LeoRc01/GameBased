@@ -4,12 +4,11 @@ import android.util.Log
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
-import com.api.igdb.request.IGDBWrapper
-import com.api.igdb.request.TwitchAuthenticator
-import com.api.igdb.request.games
+import com.api.igdb.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.google.protobuf.GeneratedMessageLite
+import proto.Game
+import proto.Platform
 
 object IGDBWrappermio {
 
@@ -23,13 +22,34 @@ object IGDBWrappermio {
        IGDBWrapper.setCredentials(CLIENT_ID, token?.access_token.toString())
    }
 
-    suspend fun games() = withContext(Dispatchers.IO) {
-       val apicalypse = APICalypse().fields("*").sort("release_dates.date", Sort.DESCENDING)
-       try{
-           IGDBWrapper.games(apicalypse)
-           Log.w(TAG, "games: ${IGDBWrapper.games(apicalypse)}")
-       } catch(e: RequestException) {
-           // Do something or error
-       }
-   }
+    // API per i giochi in ordine decrescente per data di uscita
+    suspend fun games(): List<Game> = withContext(Dispatchers.IO)  {
+        val apicalypse = APICalypse().fields("*").sort("release_dates.date", Sort.DESCENDING).limit(10)
+        var games : List<Game> = emptyList()
+        try{
+            games = IGDBWrapper.games(apicalypse)
+
+        } catch(e: RequestException) {
+          Log.e(TAG, "Error: ${e.message}")
+        }
+        return@withContext games
+    }
+
+    // API per le piattaforme, con input l'id della piattaforma
+    suspend fun platformsGames(id : String) : List<Platform> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse().fields("*").where("id=$id")
+        var platforms : List<Platform> = emptyList()
+        platforms = IGDBWrapper.platforms(apicalypse)
+        return@withContext platforms
+    }
+
+    // multiquery -> https://api-docs.igdb.com/#multi-query
+    suspend fun prova() : String = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse()
+            .fields("name, platforms.name")
+            .where("platforms !=n & platforms = {48}")
+            .limit(2)
+        return@withContext IGDBWrapper.jsonGames(apicalypse)
+    }
+
 }

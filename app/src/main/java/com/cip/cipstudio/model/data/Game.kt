@@ -1,7 +1,7 @@
 package com.cip.cipstudio.model.data
 
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.google.android.gms.tasks.Task
 import java.io.Serializable
 
@@ -25,7 +25,7 @@ data class Game(
 
     fun getCover(onSuccess:(String)->Unit){
         if(coverUrl==null){
-            val gameRepo = IGDBRepository(generate = false)
+            val gameRepo = IGDBRepositorydwa(generate = false)
             gameRepo.getGameCover(gameId){
                 coverUrl = it
                 coverUrl = coverUrl!!.replace("t_thumb", "t_cover_big")
