@@ -4,17 +4,23 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONArray
 
 class MainPageViewModel(val context: Context) : ViewModel() {
 
     private val TAG = "MainPageViewModel"
 
-    private val gameRepository = IGDBRepositorydwa()
+    private val gameRepository : IGDBRepository = IGDBRepositoryRemote
     /**
      * initializeRecyclerView:
      *
@@ -30,10 +36,9 @@ class MainPageViewModel(val context: Context) : ViewModel() {
      */
     fun initializeRecyclerView(recyclerView : RecyclerView,
                                adapter : GamesRecyclerViewAdapter,
-                               payload : String,
-                               updateUI : (ArrayList<Game>)->Unit
+                               getGames : suspend () -> JSONArray,
+                               updateUI : (JSONArray)->Unit
     ){
-        Log.i("PAYLOAD", payload)
         // Creo il layout manager (fondamentale)
         val manager = LinearLayoutManager(context)
         // Imposto l'orientamento a orizzontale
@@ -44,14 +49,14 @@ class MainPageViewModel(val context: Context) : ViewModel() {
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
 
-        IGDBRepositorydwa.ACCESS_TOKEN.observeForever(Observer{
-            if(it!=null){
-                Log.i("TOKEN ", it)
-                gameRepository.getGamesByPayload(payload){
-                    updateUI.invoke(it)
-                }
+        var games = JSONArray()
+        viewModelScope.launch(Dispatchers.Main) {
+            val job = launch(Dispatchers.IO) {
+                games = getGames.invoke()
             }
-        })
+            job.join()
+            updateUI.invoke(games)
+        }
 
 
     }

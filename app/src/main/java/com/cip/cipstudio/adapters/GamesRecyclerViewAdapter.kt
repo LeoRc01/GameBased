@@ -20,17 +20,21 @@ import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.view.fragment.GameDetailsFragment
 import com.squareup.picasso.Picasso
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class GamesRecyclerViewAdapter (val context : Context,
-                                var games : ArrayList<Game>,
+                                var games : ArrayList<JSONObject>,
                                 private val action: Int) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
 
-    fun importItems(_games : ArrayList<Game>){
-        games = _games
+    fun importItems(gamesJsonArray : JSONArray){
+        for(i in 0 until gamesJsonArray.length()){
+            games.add(gamesJsonArray.getJSONObject(i))
+        }
         notifyDataSetChanged()
     }
 
@@ -69,15 +73,24 @@ class GamesRecyclerViewAdapter (val context : Context,
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
 
-        viewHolder.tvGameName.text = games[position].name
-        games[position].getCover(){
+        viewHolder.tvGameName.text = games[position].get("name").toString()
+        (games[position].get("cover") as JSONObject).get("url").toString().let {
+            if(it!="null"){
+                Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
+            }else{
+                viewHolder.ivGameCover.visibility = View.GONE
+                viewHolder.ivNoPreview.visibility = View.VISIBLE
+            }
+        }
+
+        /*{
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post(Runnable {
                 if(it!="NO_COVER") {
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                     viewHolder.ivGameCover.setOnClickListener {
 
-                        val bundle = bundleOf("game" to games[position])
+                        val bundle = bundleOf("gameId" to games[position].get("id"))
 
                         viewHolder.itemView.findNavController().navigate(action, bundle)
 
@@ -87,7 +100,7 @@ class GamesRecyclerViewAdapter (val context : Context,
                     viewHolder.ivNoPreview.visibility = View.VISIBLE
                 }
             })
-        }
+        }*/
     }
 
     // Return the size of your dataset (invoked by the layout manager)

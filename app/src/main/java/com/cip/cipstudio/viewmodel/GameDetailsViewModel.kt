@@ -117,7 +117,7 @@ class GameDetailsViewModel(
         manager.orientation = RecyclerView.HORIZONTAL
         // Setto il layoutmanager alla RV
 
-        igdbRepository.getGamesByPayload(payload){
+        /*igdbRepository.getGamesByPayload(payload){
             (binding.root.context as Activity).runOnUiThread {
                 rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it, R.id.action_gameDetailsFragment2_self)
                 binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
@@ -126,7 +126,7 @@ class GameDetailsViewModel(
                 binding.fGameDetailsRvSimilarGames.adapter = rvSimilarGamesAdapter
                 onSuccess.invoke()
             }
-        }
+        }*/
     }
 
     /**

@@ -5,8 +5,7 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import proto.Game
 import proto.Platform
 
@@ -22,17 +21,14 @@ object IGDBWrappermio {
        IGDBWrapper.setCredentials(CLIENT_ID, token?.access_token.toString())
    }
 
+    fun getGames()  {
+    }
     // API per i giochi in ordine decrescente per data di uscita
-    suspend fun games(): List<Game> = withContext(Dispatchers.IO)  {
+    suspend fun games(): List<Game>  {
         val apicalypse = APICalypse().fields("*").sort("release_dates.date", Sort.DESCENDING).limit(10)
         var games : List<Game> = emptyList()
-        try{
             games = IGDBWrapper.games(apicalypse)
-
-        } catch(e: RequestException) {
-          Log.e(TAG, "Error: ${e.message}")
-        }
-        return@withContext games
+        return games
     }
 
     // API per le piattaforme, con input l'id della piattaforma

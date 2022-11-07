@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.viewmodel.MainPageViewModel
@@ -17,6 +18,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 
 class MainPageFragment : Fragment() {
 
@@ -54,8 +56,8 @@ class MainPageFragment : Fragment() {
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         adapter: GamesRecyclerViewAdapter,
-        payload: String,
-        updateUI: (ArrayList<Game>) -> Unit
+        getGame: suspend () -> JSONArray,
+        updateUI: (JSONArray) -> Unit
     ) {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -63,14 +65,14 @@ class MainPageFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
-        viewModel.initializeRecyclerView(recyclerView, adapter, payload, updateUI)
+        viewModel.initializeRecyclerView(recyclerView, adapter, getGame, updateUI)
     }
 
     private fun initializeMostRatedGamesRecyclerView() {
             initializeRecyclerView(
                 mostRatedGamesRecyclerView,
                 mostRatedGamesRecyclerViewAdapter,
-                "$BASE_PAYLOAD sort total_rating desc;"
+                { IGDBRepositoryRemote.getGamesMostRated()}
             ) {
                 activity?.runOnUiThread {
                     mostRatedGamesRecyclerViewAdapter.importItems(it)
@@ -84,7 +86,7 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mostHypedGamesRecyclerView,
             mostHypedGamesRecyclerViewAdapter,
-            "$BASE_PAYLOAD sort hypes desc;"
+            { IGDBRepositoryRemote.getGamesMostHyped()}
         ) {
             activity?.runOnUiThread {
                 mostHypedGamesRecyclerViewAdapter.importItems(it)
