@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.model.data.GameDetailsJson
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
@@ -36,8 +37,8 @@ class MainPageViewModel(val context: Context) : ViewModel() {
      */
     fun initializeRecyclerView(recyclerView : RecyclerView,
                                adapter : GamesRecyclerViewAdapter,
-                               getGames : suspend () -> JSONArray,
-                               updateUI : (JSONArray)->Unit
+                               getGames : suspend () -> List<GameDetailsJson>,
+                               updateUI : (List<GameDetailsJson>)->Unit
     ){
         // Creo il layout manager (fondamentale)
         val manager = LinearLayoutManager(context)
@@ -49,7 +50,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
 
-        var games = JSONArray()
+        var games :List<GameDetailsJson> = listOf()
         viewModelScope.launch(Dispatchers.Main) {
             val job = launch(Dispatchers.IO) {
                 games = getGames.invoke()

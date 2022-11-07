@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -14,16 +15,21 @@ import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import org.json.JSONObject
 
 
 class GameDetailsViewModel(
-    val game: Game,
+    val game: JSONObject,
     private val binding: FragmentGameDetailsBinding,
 ) : ViewModel() {
 
@@ -36,7 +42,7 @@ class GameDetailsViewModel(
         binding.fGameDetailsClPageLayout.visibility = View.GONE
         LoadingSpinner.showLoadingDialog(binding.root.context)
 
-        MyFirebaseRepository.getInstance().isGameFavourite(game.gameId.toString()).addOnSuccessListener {
+        MyFirebaseRepository.getInstance().isGameFavourite(game.toString()).addOnSuccessListener {
             if(it!=null){
 
                 isGameFavourite.postValue(it.data!=null)
@@ -59,10 +65,23 @@ class GameDetailsViewModel(
 
     }
 
-    fun getCoverImageUrl(): String? {
-        return "https:${game.coverUrl}"
-    }
 
+    fun initializeView() {
+        binding.fGameDetailsClPageLayout.visibility = View.GONE
+        LoadingSpinner.showLoadingDialog(binding.root.context)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val pref = MyFirebaseRepository.getInstance().isGameFavourite(game.toString()).await()
+            isGameFavourite.postValue(pref?.data != null)
+            val jsonGame = IGDBRepositoryRemote.getGamesDetails(game.getInt("id"))
+
+            viewModelScope.launch(Dispatchers.Main) {
+
+            }
+        }
+
+
+    }
 
     companion object{
 

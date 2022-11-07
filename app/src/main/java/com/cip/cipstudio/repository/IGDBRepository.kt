@@ -1,15 +1,15 @@
 package com.cip.cipstudio.repository
 
-import kotlinx.coroutines.flow.Flow
+import com.cip.cipstudio.model.data.GameDetailsJson
 import org.json.JSONArray
-import org.json.JSONObject
-import proto.Game
 
 
 interface IGDBRepository {
 
-    suspend fun getGamesMostHyped() : JSONArray
+    suspend fun getGamesMostHyped() : List<GameDetailsJson>
 
-    suspend fun getGamesMostRated() : JSONArray
+    suspend fun getGamesMostRated() : List<GameDetailsJson>
+
+    suspend fun getGamesDetails(gameId : Int) : GameDetailsJson
     
 }

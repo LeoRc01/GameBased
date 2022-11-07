@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.model.data.GameDetailsJson
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.IGDBWrappermio
@@ -56,8 +58,8 @@ class MainPageFragment : Fragment() {
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         adapter: GamesRecyclerViewAdapter,
-        getGame: suspend () -> JSONArray,
-        updateUI: (JSONArray) -> Unit
+        getGame: suspend () -> List<GameDetailsJson>,
+        updateUI: (List<GameDetailsJson>) -> Unit
     ) {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -74,7 +76,7 @@ class MainPageFragment : Fragment() {
                 mostRatedGamesRecyclerViewAdapter,
                 { IGDBRepositoryRemote.getGamesMostRated()}
             ) {
-                activity?.runOnUiThread {
+                lifecycleScope.launch(Dispatchers.Main)  {
                     mostRatedGamesRecyclerViewAdapter.importItems(it)
                     view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
                         ?.visibility = View.GONE
@@ -88,7 +90,7 @@ class MainPageFragment : Fragment() {
             mostHypedGamesRecyclerViewAdapter,
             { IGDBRepositoryRemote.getGamesMostHyped()}
         ) {
-            activity?.runOnUiThread {
+            lifecycleScope.launch(Dispatchers.Main) {
                 mostHypedGamesRecyclerViewAdapter.importItems(it)
                 view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostHypedGames)
                     ?.visibility = View.GONE

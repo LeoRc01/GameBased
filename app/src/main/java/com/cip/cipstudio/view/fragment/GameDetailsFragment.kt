@@ -25,7 +25,9 @@ class GameDetailsFragment : Fragment() {
     ): View {
         gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
-        val currentGame : Game = arguments?.get("game") as Game
+        val gameId = arguments?.get("gameId") as String
+        val gameCoverUrl = arguments?.get("gameCoverUrl") as String
+
 
         gameDetailsViewModel = GameDetailsViewModel(currentGame, gameDetailsBinding)
 
@@ -39,11 +41,6 @@ class GameDetailsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeShowMore() {
-        /*if (gameDetailsBinding.fGameDetailsTvGameDetailsDescription.lineCount < 4) {
-            gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.GONE
-            gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = null
-            return
-        }*/
         gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
             val params = gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT
