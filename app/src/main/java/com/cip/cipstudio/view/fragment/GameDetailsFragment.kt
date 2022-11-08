@@ -9,14 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
+    private var gameCurrent: GameDetails? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -25,17 +32,15 @@ class GameDetailsFragment : Fragment() {
     ): View {
         gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
-        val gameId = arguments?.get("gameId") as String
-        val gameCoverUrl = arguments?.get("gameCoverUrl") as String
+        gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
+        LoadingSpinner.showLoadingDialog(requireContext())
 
-
-        gameDetailsViewModel = GameDetailsViewModel(currentGame, gameDetailsBinding)
-
-        gameDetailsBinding.vm = gameDetailsViewModel
-        gameDetailsBinding.game = currentGame
-
-        initializeShowMore()
-
+        initializeFragment(){
+            gameDetailsBinding.vm = gameDetailsViewModel
+            initializeShowMore()
+            LoadingSpinner.dismiss()
+            gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
+        }
         return gameDetailsBinding.root
     }
 
@@ -47,6 +52,23 @@ class GameDetailsFragment : Fragment() {
             gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams = params
             gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.GONE
             gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = null
+        }
+    }
+
+    private fun initializeFragment( onSuccess: () -> Unit = {}) {
+        val gameId = arguments?.get("game_id") as String
+        val jobIO = lifecycleScope.launch(Dispatchers.IO) {
+            gameCurrent = IGDBRepositoryRemote.getGamesDetails(gameId)
+        }
+
+        val jobVm = lifecycleScope.launch(Dispatchers.Main) {
+            jobIO.join()
+            gameDetailsViewModel = GameDetailsViewModel(gameCurrent!!, gameDetailsBinding)
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            jobVm.join()
+            onSuccess.invoke()
         }
     }
 

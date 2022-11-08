@@ -34,16 +34,6 @@ data class Game(
         }
     }
 
-    fun setGameToFavourite() : Task<Void> {
-        return MyFirebaseRepository.getInstance().setGameToFavourite(gameId.toString()).addOnSuccessListener {
-            isGameFavourite = true
-        }
-    }
 
-    fun removeGameFromFavourite() : Task<Void> {
-        return MyFirebaseRepository.getInstance().removeGameFromFavourite(gameId.toString()).addOnSuccessListener {
-            isGameFavourite = false
-        }
-    }
 
 }

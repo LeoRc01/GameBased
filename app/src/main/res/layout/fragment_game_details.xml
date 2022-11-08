@@ -9,9 +9,6 @@
         <variable
             name="vm"
             type="com.cip.cipstudio.viewmodel.GameDetailsViewModel" />
-        <variable
-            name="game"
-            type="com.cip.cipstudio.model.data.Game" />
     </data>
 
     <ScrollView
@@ -35,7 +32,7 @@
                 android:fadingEdgeLength="20dp"
                 android:foreground="@drawable/fading_gradient"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{vm.coverImageUrl}"
+                app:imageUrl="@{vm.game.coverUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:text="@{game.name}"
+                    android:text="@{vm.game.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -96,7 +93,7 @@
                     android:layout_marginTop="12dp"
                     tools:targetApi="m"
                     android:foreground="@drawable/fading_gradient"
-                    android:text="@{game.description}"
+                    android:text="@{vm.game.summary}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_gl_gridGenreLayout"
@@ -133,7 +130,7 @@
                         android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{game.releaseDate}"
+                        android:text="@{vm.game.releaseDate}"
                         android:textColor="@color/primary_color" />
                 </LinearLayout>
 
@@ -170,8 +167,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms"
-                    >
+                    app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms">
 
                     <LinearLayout
                         android:id="@+id/f_gameDetails_ll_userRating"
@@ -193,13 +189,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
-                                android:text="@{Integer.toString(game.userRatingValue)}" />
+                                android:text="@{vm.game.rating}" />
 
                             <com.google.android.material.progressindicator.CircularProgressIndicator
                                 android:id="@+id/f_gameDetails_cpi_userRating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:progress="@{game.userRatingValue}"
+                                android:progress="@{Integer.getInteger(vm.game.rating)}"
                                 app:indicatorSize="75dp"
                                 app:trackColor="@color/trackColor"
                                 app:trackCornerRadius="10dp"
@@ -210,7 +206,7 @@
                             android:id="@+id/f_gameDetails_tv_userRatingCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"User rating (" + game.userRatingCount + ")"}' />
+                            android:text='@{"User rating (" + vm.game.ratingCount + ")"}' />
 
                     </LinearLayout>
 
@@ -234,7 +230,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
-                                android:text="@{Integer.toString(game.criticsRatingValue)}" />
+                                android:text="@{vm.game.totalRating}" />
 
                             <com.google.android.material.progressindicator.CircularProgressIndicator
                                 android:id="@+id/f__gameDetails_cpi_criticsRating"
@@ -243,7 +239,7 @@
                                 app:trackThickness="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:progress="@{game.criticsRatingValue}"
+                                android:progress="@{Integer.getInteger(vm.game.totalRating)}"
                                 app:trackColor="@color/trackColor" />
                         </RelativeLayout>
 
@@ -251,7 +247,7 @@
                             android:id="@+id/f_gameDetails_tv_criticsRatingCounter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"Critics rating (" + game.criticsRatingCount + ")"}' />
+                            android:text='@{"Critics rating (" + vm.game.totalRatingCount + ")"}' />
 
                     </LinearLayout>
 

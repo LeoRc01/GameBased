@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.api.igdb.request.IGDBWrapper
 import com.cip.cipstudio.R
+import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.view.widgets.LoadingSpinner
@@ -53,17 +54,17 @@ class SearchFragment : Fragment() {
     // InvocationTargetException:
     // nel mio caso c'era la chiamata IGDWrappermio.getPlatform qua dentro
     private fun getGames(view : View, onSuccess: () -> Unit) {
-        var games = JSONArray()
-        //games = IGDBWrappermio.getGames()
+        var game : GameDetails ?= null
+
 
         val a = lifecycleScope.launch(Dispatchers.Main) {
-           games = IGDBRepositoryRemote.getGamesMostHyped()
-
+            game = IGDBRepositoryRemote.getGamesDetails("143")
         }
         lifecycleScope.launch(Dispatchers.Main) {
             a.join()
-            Log.i(TAG, "getGames: ${games.length()}")
-            view.findViewById<TextView>(R.id.f_search_tv).text = games.toString()
+            Log.i(TAG, "getGames: ${game?.id}")
+            view.findViewById<TextView>(R.id.f_search_tv).text =
+                "${game?.name}, ${game?.id}, ${game?.summary}, ${game?.coverUrl}"
             onSuccess.invoke()
         }
 

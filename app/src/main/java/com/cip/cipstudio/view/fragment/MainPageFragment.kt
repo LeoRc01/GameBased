@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
-import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.model.data.GameDetailsJson
+import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.IGDBWrappermio
@@ -20,7 +19,6 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 
 class MainPageFragment : Fragment() {
 
@@ -58,8 +56,8 @@ class MainPageFragment : Fragment() {
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         adapter: GamesRecyclerViewAdapter,
-        getGame: suspend () -> List<GameDetailsJson>,
-        updateUI: (List<GameDetailsJson>) -> Unit
+        getGame: suspend () -> List<GameDetails>,
+        updateUI: (List<GameDetails>) -> Unit
     ) {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL

@@ -1,21 +1,16 @@
 package com.cip.cipstudio.viewmodel
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
-import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.model.data.GameDetailsJson
+import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.IGDBRepositorydwa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 
 class MainPageViewModel(val context: Context) : ViewModel() {
 
@@ -37,8 +32,8 @@ class MainPageViewModel(val context: Context) : ViewModel() {
      */
     fun initializeRecyclerView(recyclerView : RecyclerView,
                                adapter : GamesRecyclerViewAdapter,
-                               getGames : suspend () -> List<GameDetailsJson>,
-                               updateUI : (List<GameDetailsJson>)->Unit
+                               getGames : suspend () -> List<GameDetails>,
+                               updateUI : (List<GameDetails>)->Unit
     ){
         // Creo il layout manager (fondamentale)
         val manager = LinearLayoutManager(context)
@@ -50,7 +45,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
 
-        var games :List<GameDetailsJson> = listOf()
+        var games :List<GameDetails> = listOf()
         viewModelScope.launch(Dispatchers.Main) {
             val job = launch(Dispatchers.IO) {
                 games = getGames.invoke()
