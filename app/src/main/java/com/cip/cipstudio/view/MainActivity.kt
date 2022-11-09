@@ -20,14 +20,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     lateinit var bottomNavigationView : BottomNavigationView
-    private lateinit var gameRepo : IGDBRepositorydwa
     private val TAG = "MainActivity"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        gameRepo = IGDBRepositorydwa()
 
         supportActionBar!!.hide()
 
