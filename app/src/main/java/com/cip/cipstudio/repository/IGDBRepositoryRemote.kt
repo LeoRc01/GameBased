@@ -83,5 +83,22 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext GameDetails(JSONArray(IGDBWrapper.jsonGames(apicalypse)).getJSONObject(0))
     }
 
+    override suspend fun getGamesByIds(gameIds: ArrayList<String>): List<GameDetails> = withContext(Dispatchers.IO) {
+        if (!initialToken) {
+            init()
+        }
+        val apicalypse = APICalypse()
+            .fields("name, id, cover.url")
+            .where("id = ${gameIds.toString().replace("[", "(").replace("]", ")")}")
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(
+            JSONArray(
+                IGDBWrapper.jsonGames(
+                    apicalypse
+                )
+            )
+        )
+
+    }
+
 
 }

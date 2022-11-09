@@ -10,5 +10,7 @@ interface IGDBRepository {
     suspend fun getGamesMostRated() : List<GameDetails>
 
     suspend fun getGamesDetails(gameId : String) : GameDetails
+
+    suspend fun getGamesByIds(gameIds : ArrayList<String>) : List<GameDetails>
     
 }

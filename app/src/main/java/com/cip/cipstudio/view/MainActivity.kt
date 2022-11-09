@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.menu_home->{
                     //loadFragment(MainPageFragment())
+
                     navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
+                    navController.clearBackStack("")
                     true
                 }
                 R.id.menu_favourite->{
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     fun loadFragment(fragment: Fragment){
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.a_main_cv_container, fragment, null)
+            .replace(R.id.a_main_cv_container, fragment, "")
             .addToBackStack(null)
             .commit();
     }

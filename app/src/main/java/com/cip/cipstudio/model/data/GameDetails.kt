@@ -83,7 +83,7 @@ class GameDetails(val id: String,
         if (this.has(field)) {
             return this.getDouble(field).roundToInt().toString()
         } else {
-            return ""
+            return "0"
         }
     }
 

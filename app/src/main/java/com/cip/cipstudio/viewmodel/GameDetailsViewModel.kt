@@ -24,7 +24,6 @@ import com.google.android.material.chip.ChipDrawable
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 
 class GameDetailsViewModel(
@@ -43,13 +42,12 @@ class GameDetailsViewModel(
     init {
 
 
-        //MyFirebaseRepository.getInstance().isGameFavourite(game.toString()).addOnSuccessListener {
-            //if(it!=null){
-
-                //isGameFavourite.postValue(it.data!=null)
+        MyFirebaseRepository.getInstance().isGameFavourite(game.id).addOnSuccessListener {
+            if(it!=null){
+                isGameFavourite.postValue(it.exists())
                 initializeView()
-            //}
-        //}
+            }
+        }
 
 
     }
@@ -152,6 +150,7 @@ class GameDetailsViewModel(
             }
         }else{
             // rimuovere dai preferiti
+
             game.removeGameFromFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(false)
                 LoadingSpinner.dismiss()
@@ -160,6 +159,8 @@ class GameDetailsViewModel(
                 LoadingSpinner.dismiss()
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
             }
+
+
         }
     }
 

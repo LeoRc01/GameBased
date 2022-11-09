@@ -14,8 +14,9 @@ import androidx.navigation.findNavController
 import com.cip.cipstudio.R
 import com.squareup.picasso.Picasso
 import com.cip.cipstudio.model.data.Game
+import com.cip.cipstudio.model.data.GameDetails
 
-class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game>) : BaseAdapter() {
+class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<GameDetails>) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
     private lateinit var tvGameTitle : TextView
@@ -55,23 +56,17 @@ class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game
 
         tvGameTitle.text = games[position].name
 
-        games[position].getCover{
-            val uiHandler = Handler(Looper.getMainLooper())
-            uiHandler.post(Runnable {
-                if(it!="NO_COVER") {
-                    Picasso.get().load("https:${it}").into(ivGameCover)
-                    ivGameCover.setOnClickListener {
-
-                        //val bundle = bundleOf("game" to games[position])
-
-                        //convertView!!.findNavController().navigate(action, bundle)
-
-                    }
+        games[position].coverUrl.let {
+            if(!it.isEmpty() && it != "null") {
+                Picasso.get().load(it).into(ivGameCover)
+                ivGameCover.setOnClickListener {
+                    val bundle = bundleOf()
+                    bundle.putString("game_id", games[position].id)
+                    //viewHolder.itemView.findNavController().navigate(action, bundle)
                 }
-                else{
-                    convertView!!.findViewById<ImageView>(R.id.ivNoPreview).visibility = View.VISIBLE
-                }
-            })
+            } else {
+                //viewHolder.ivNoPreview.visibility = View.VISIBLE
+            }
         }
 
         return convertView
