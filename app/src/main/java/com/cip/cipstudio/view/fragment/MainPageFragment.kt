@@ -5,19 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
-import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.repository.IGDBRepositorydwa
+import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment() {
 
     private lateinit var viewModel: MainPageViewModel
-    private lateinit var gameRepository: IGDBRepository
+    private lateinit var gameRepository: IGDBRepositorydwa
     private val BASE_PAYLOAD =
         "fields *; where rating_count > 0 & total_rating_count > 0 & aggregated_rating_count > 0;"
 
@@ -32,7 +38,7 @@ class MainPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_page, container, false)
         viewModel = MainPageViewModel(requireContext())
-        gameRepository = IGDBRepository()
+        gameRepository = IGDBRepositorydwa()
         mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
         mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
         mostRatedGamesRecyclerViewAdapter =
@@ -43,14 +49,15 @@ class MainPageFragment : Fragment() {
                 R.id.action_menu_home_to_gameDetailsFragment2)
         initializeMostHypedGamesRecyclerView()
         initializeMostRatedGamesRecyclerView()
+        CoroutineScope(Dispatchers.IO).launch{IGDBWrappermio.init()}
         return view
     }
 
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         adapter: GamesRecyclerViewAdapter,
-        payload: String,
-        updateUI: (ArrayList<Game>) -> Unit
+        getGame: suspend () -> List<GameDetails>,
+        updateUI: (List<GameDetails>) -> Unit
     ) {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -58,16 +65,16 @@ class MainPageFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
-        viewModel.initializeRecyclerView(recyclerView, adapter, payload, updateUI)
+        viewModel.initializeRecyclerView(recyclerView, adapter, getGame, updateUI)
     }
 
     private fun initializeMostRatedGamesRecyclerView() {
             initializeRecyclerView(
                 mostRatedGamesRecyclerView,
                 mostRatedGamesRecyclerViewAdapter,
-                "$BASE_PAYLOAD sort total_rating desc;"
+                { IGDBRepositoryRemote.getGamesMostRated()}
             ) {
-                activity?.runOnUiThread {
+                lifecycleScope.launch(Dispatchers.Main)  {
                     mostRatedGamesRecyclerViewAdapter.importItems(it)
                     view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
                         ?.visibility = View.GONE
@@ -79,9 +86,9 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mostHypedGamesRecyclerView,
             mostHypedGamesRecyclerViewAdapter,
-            "$BASE_PAYLOAD sort hypes desc;"
+            { IGDBRepositoryRemote.getGamesMostHyped()}
         ) {
-            activity?.runOnUiThread {
+            lifecycleScope.launch(Dispatchers.Main) {
                 mostHypedGamesRecyclerViewAdapter.importItems(it)
                 view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostHypedGames)
                     ?.visibility = View.GONE

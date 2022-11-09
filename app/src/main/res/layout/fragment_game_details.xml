@@ -10,9 +10,6 @@
         <variable
             name="vm"
             type="com.cip.cipstudio.viewmodel.GameDetailsViewModel" />
-        <variable
-            name="game"
-            type="com.cip.cipstudio.model.data.Game" />
     </data>
 
     <RelativeLayout

@@ -7,28 +7,33 @@ import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
-import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 class GameDetailsViewModel(
-    val game: Game,
+    private var game: GameDetails,
     private val binding: FragmentGameDetailsBinding,
 ) : ViewModel() {
 
-    private val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
-    var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isGameFavourite)
+    private val TAG = "GameDetailsViewModel"
+    var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isFavourite)
     val isPageLoading : MutableLiveData<Boolean> by lazy{
         MutableLiveData<Boolean>(true)
     }
@@ -36,36 +41,18 @@ class GameDetailsViewModel(
     private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
     init {
-        MyFirebaseRepository.getInstance().isGameFavourite(game.gameId.toString()).addOnSuccessListener {
-            if(it!=null){
 
-                isGameFavourite.postValue(it.data!=null)
 
-                _setGameScreenshots {
-                    _setGenres{
-                        _setPlatforms{
-                            _setSimilarGames {
-                                isPageLoading.postValue(false)
-                                /*
-                                (binding.root.context as Activity).runOnUiThread {
-                                    //LoadingSpinner.dismiss()
-                                    //binding.fGameDetailsClPageLayout.visibility = View.VISIBLE
-                                }
-                                 */
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        //MyFirebaseRepository.getInstance().isGameFavourite(game.toString()).addOnSuccessListener {
+            //if(it!=null){
+
+                //isGameFavourite.postValue(it.data!=null)
+                initializeView()
+            //}
+        //}
 
 
     }
-
-    fun getCoverImageUrl(): String? {
-        return "https:${game.coverUrl}"
-    }
-
 
     companion object{
 
@@ -78,95 +65,54 @@ class GameDetailsViewModel(
         }
     }
 
-    private fun _setGameScreenshots(onSuccess: () -> Unit){
-        igdbRepository.getScreenshots(game.screenShotIds){arr->
-            val screenshotIds : ArrayList<String> = arrayListOf()
-            (0 until arr.length()).forEach{
-                val screenshot = arr.getJSONObject(it)
-                screenshotIds.add(screenshot.getString("url"))
-            }
-            // Creo il layout manager (fondamentale)
-            val manager = LinearLayoutManager(binding.root.context)
-            // Imposto l'orientamento a orizzontale
-            manager.orientation = RecyclerView.HORIZONTAL
-            // Setto il layoutmanager alla RV
-            (binding.root.context as Activity).runOnUiThread {
-                rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, screenshotIds)
-                binding.fGameDetailsRvScreenshots.setLayoutManager(manager)
-                binding.fGameDetailsRvScreenshots.setItemViewCacheSize(50)
-                binding.fGameDetailsRvScreenshots.itemAnimator = null
-                binding.fGameDetailsRvScreenshots.adapter = rvGameScreenshotsAdapter
-                onSuccess.invoke()
-            }
-        }
-
+    fun getGame() : GameDetails{
+        return game
     }
 
-    private fun _setSimilarGames(onSuccess: () -> Unit){
-
-        var ids : String = ""
-        game.similarGamesIds.forEach {
-            ids += it.toString() + ","
+    private fun initializeView() {
+        viewModelScope.launch(Dispatchers.Main) {
+            setScreenshotsRecyclerView()
+            setSimilarGamesRecyclerView()
+            setPlatformsText()
+            setGenresGridLayout()
+            isPageLoading.postValue(false)
         }
-        ids = ids.substring(0, ids.length-1)
+    }
 
-        var payload = "fields *; where id = ($ids);"
-
-        Log.i("PAYLOAD", payload)
-
-        // Creo il layout manager (fondamentale)
+    private fun setScreenshotsRecyclerView() {
         val manager = LinearLayoutManager(binding.root.context)
-        // Imposto l'orientamento a orizzontale
         manager.orientation = RecyclerView.HORIZONTAL
-        // Setto il layoutmanager alla RV
+        rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, game.screenshots)
+        binding.fGameDetailsRvScreenshots.layoutManager = manager
+        binding.fGameDetailsRvScreenshots.setItemViewCacheSize(50)
+        binding.fGameDetailsRvScreenshots.itemAnimator = null
+        binding.fGameDetailsRvScreenshots.adapter = rvGameScreenshotsAdapter
 
-        igdbRepository.getGamesByPayload(payload){
-            (binding.root.context as Activity).runOnUiThread {
-                rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, it, R.id.action_gameDetailsFragment2_self)
-                binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
-                binding.fGameDetailsRvSimilarGames.setItemViewCacheSize(50)
-                binding.fGameDetailsRvSimilarGames.itemAnimator = null
-                binding.fGameDetailsRvSimilarGames.adapter = rvSimilarGamesAdapter
-                onSuccess.invoke()
-            }
-        }
     }
 
-    /**
-     * Imposta le piattaforme.
-     * onSuccess è la funzione di callback che viene chiamata quando
-     * la funzione principale ha fatto la sua chiamata
-     */
+    private fun setSimilarGamesRecyclerView() {
+        val manager = LinearLayoutManager(binding.root.context)
+        manager.orientation = RecyclerView.HORIZONTAL
+        rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, game.similarGames, R.id.action_gameDetailsFragment2_self)
+        binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
+        binding.fGameDetailsRvSimilarGames.setItemViewCacheSize(50)
+        binding.fGameDetailsRvSimilarGames.itemAnimator = null
+        binding.fGameDetailsRvSimilarGames.adapter = rvSimilarGamesAdapter
+    }
 
-    private fun _setPlatforms(onSuccess: () -> Unit) {
+    private fun setPlatformsText() {
         var platformsString = ""
-        igdbRepository.getPlatforms(game.platformsId) { arr ->
-            (0 until arr.length()).forEach {
-                val _platform = arr.getJSONObject(it)
-                platformsString = _platform.getString("name") + if (platformsString != "") " / " + platformsString else ""
-            }
-            binding.fGameDetailsTvGameDetailsPlatforms.text = platformsString
-            onSuccess.invoke()
+        game.platforms.forEach {
+            val platform = it.getString("name")
+            platformsString = platform + if (platformsString != "") " / $platformsString" else ""
         }
+        binding.fGameDetailsTvGameDetailsPlatforms.text = platformsString
     }
 
-    /**
-     * Imposta i generi.
-     * onSuccess è la funzione di callback che viene chiamata quando
-     * la funzione principale ha fatto la sua chiamata
-     */
-
-    private fun _setGenres(onSuccess: ()->Unit){
-        var genreStrings :  ArrayList<String> = arrayListOf()
-        igdbRepository.getGenres(game.genreIds){ arr->
-            (0 until arr.length()).forEach {
-                val _genre = arr.getJSONObject(it)
-                genreStrings.add(_genre.getString("name"))
-                (binding.root.context as Activity).runOnUiThread {
-                    binding.fGameDetailsGlGridGenreLayout.addView(_createChip(_genre.getString("name")))
-                }
-            }
-            onSuccess.invoke()
+    private fun setGenresGridLayout() {
+        game.genres.forEach {
+            val genre = it.getString("name")
+            binding.fGameDetailsGlGridGenreLayout.addView(createChip(genre))
         }
     }
 
@@ -174,7 +120,7 @@ class GameDetailsViewModel(
      * Crea e ritorna il chip
      */
 
-    private fun _createChip(label : String) : Chip{
+    private fun createChip(label : String) : Chip{
         val chip = Chip(binding.root.context, null, R.layout.genre_chip)
         val chipDrawable = ChipDrawable.createFromAttributes(
             binding.root.context,

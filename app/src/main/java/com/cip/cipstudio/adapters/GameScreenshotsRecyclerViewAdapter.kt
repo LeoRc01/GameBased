@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.Game
 import com.squareup.picasso.Picasso
+import org.json.JSONObject
 
 class GameScreenshotsRecyclerViewAdapter
-    (val context : Context, var screenshotUrls : ArrayList<String>) :
+    (val context : Context, var screenshots : List<JSONObject>) :
     RecyclerView.Adapter<GameScreenshotsRecyclerViewAdapter.ViewHolder>()  {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,10 +30,11 @@ class GameScreenshotsRecyclerViewAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load("https:${screenshotUrls[position].replace("t_thumb", "t_original")}").into(holder.ivGameScreenshot)
+        val url = screenshots[position].getString("url").replace("t_thumb", "t_original")
+        Picasso.get().load("https:$url").into(holder.ivGameScreenshot)
     }
 
     override fun getItemCount(): Int {
-        return screenshotUrls.size
+        return screenshots.size
     }
 }

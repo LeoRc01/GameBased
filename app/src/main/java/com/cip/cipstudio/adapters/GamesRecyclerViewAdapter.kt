@@ -1,39 +1,28 @@
 package com.cip.cipstudio.adapters
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
-import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.view.MainActivity
-import com.cip.cipstudio.view.fragment.GameDetailsFragment
+import com.cip.cipstudio.model.data.GameDetails
 import com.squareup.picasso.Picasso
 
 
 class GamesRecyclerViewAdapter (val context : Context,
-                                var games : ArrayList<Game>,
+                                var games : List<GameDetails>,
                                 private val action: Int) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
 
-    fun importItems(_games : ArrayList<Game>){
-        games = _games
+    fun importItems(gamesDetailsJson : List<GameDetails>){
+        games  = gamesDetailsJson
         notifyDataSetChanged()
     }
 
@@ -73,20 +62,17 @@ class GamesRecyclerViewAdapter (val context : Context,
         // contents of the view with that element
 
         viewHolder.tvGameName.text = games[position].name
-        games[position].getCover(){
-            val uiHandler = Handler(Looper.getMainLooper())
-            uiHandler.post(Runnable {
-                if(it!="NO_COVER") {
-                    Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
-                    viewHolder.ivGameCover.setOnClickListener {
-                        val bundle = bundleOf("game" to games[position])
-                        viewHolder.itemView.findNavController().navigate(action, bundle)
-                    }
+        games[position].coverUrl.let {
+            if(!it.isEmpty() && it != "null") {
+                Picasso.get().load(it).into(viewHolder.ivGameCover)
+                viewHolder.ivGameCover.setOnClickListener {
+                    val bundle = bundleOf()
+                    bundle.putString("game_id", games[position].id)
+                    viewHolder.itemView.findNavController().navigate(action, bundle)
                 }
-                else{
-                    viewHolder.ivNoPreview.visibility = View.VISIBLE
-                }
-            })
+            } else {
+                viewHolder.ivNoPreview.visibility = View.VISIBLE
+            }
         }
     }
 
