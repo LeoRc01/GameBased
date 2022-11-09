@@ -22,5 +22,11 @@
         <action
             android:id="@+id/action_gameDetailsFragment2_self"
             app:destination="@id/gameDetailsFragment2" />
+        <action
+            app:popUpTo="@id/menu_home"
+            app:popUpToSaveState="true"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_gameDetailsFragment2_to_homeScreen"
+            app:destination="@id/homeScreen" />
     </fragment>
 </navigation>

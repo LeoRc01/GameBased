@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
@@ -39,19 +40,20 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemReselectedListener {
             when(it.itemId){
                 R.id.menu_home->{
-                    loadFragment(MainPageFragment())
+                    //loadFragment(MainPageFragment())
+                    navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
                     true
                 }
                 R.id.menu_favourite->{
-                    loadFragment(FavouriteFragment())
+                    //loadFragment(FavouriteFragment())
                     true
                 }
                 R.id.menu_search->{
-                    loadFragment(SearchFragment())
+                    //loadFragment(SearchFragment())
                     true
                 }
                 R.id.menu_profile->{
-                    loadFragment(UserFragment())
+                    //loadFragment(UserFragment())
                     true
                 }
 
@@ -66,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.a_main_cv_container, fragment, null)
-            .disallowAddToBackStack()
+            .addToBackStack(null)
             .commit();
     }
 }

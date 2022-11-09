@@ -45,11 +45,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:id="@+id/nav_graph"
 app:startDestination="@+id/menu_home">
-
     <include app:graph="@navigation/menu_home"/>
     <include app:graph="@navigation/menu_search"/>
     <include app:graph="@navigation/menu_favourite"/>
     <include app:graph="@navigation/menu_profile"/>
-
-
 </navigation>

@@ -14,6 +14,7 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
@@ -33,14 +34,16 @@ class GameDetailsFragment : Fragment() {
         gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
         gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
-        LoadingSpinner.showLoadingDialog(requireContext())
-
+        //LoadingSpinner.showLoadingDialog(requireContext())
+        gameDetailsBinding.loadingModel = Loading()
+        Log.i("FUORI", "FUORI")
         initializeFragment(){
             gameDetailsBinding.vm = gameDetailsViewModel
             initializeShowMore()
-            LoadingSpinner.dismiss()
+            //LoadingSpinner.dismiss()
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
         }
+        gameDetailsBinding.lifecycleOwner = this
         return gameDetailsBinding.root
     }
 

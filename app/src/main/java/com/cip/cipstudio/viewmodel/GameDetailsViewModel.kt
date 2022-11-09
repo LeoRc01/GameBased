@@ -75,7 +75,7 @@ class GameDetailsViewModel(
             setSimilarGamesRecyclerView()
             setPlatformsText()
             setGenresGridLayout()
-            isPageLoading.postValue(false)
+            binding.loadingModel!!.isPageLoading.postValue(false)
         }
     }
 
@@ -87,7 +87,6 @@ class GameDetailsViewModel(
         binding.fGameDetailsRvScreenshots.setItemViewCacheSize(50)
         binding.fGameDetailsRvScreenshots.itemAnimator = null
         binding.fGameDetailsRvScreenshots.adapter = rvGameScreenshotsAdapter
-
     }
 
     private fun setSimilarGamesRecyclerView() {
