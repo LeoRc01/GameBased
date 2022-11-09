@@ -38,4 +38,14 @@
     <string name="send_email">send</string>
     <string name="already_have_account">Already have an account? Login now</string>
     <string name="internal_error">internal error</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="most_rated_games">Most rated games</string>
+    <string name="most_hyped_games">Most Hyped games</string>
+    <string name="favourite">Favourite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">name</string>
+    <string name="settings">settings</string>
+    <string name="back">back</string>
 </resources>

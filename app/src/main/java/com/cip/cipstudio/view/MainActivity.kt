@@ -1,25 +1,20 @@
 package com.cip.cipstudio.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
-import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
-import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
-import com.cip.cipstudio.viewmodel.MainActivityViewModel
-import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var navController: NavController
     private lateinit var gameRepo : IGDBRepository
+    private val TAG = "MainActivity"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,40 +23,13 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
-        val base_payload : String = "fields *; where rating_count > 0 & total_rating_count > 0 & aggregated_rating_count > 0;"
 
-        val mainActivityViewModel : MainActivityViewModel =
-            MainActivityViewModel(this,
-                findViewById<RecyclerView>(R.id.rvMostRatedGames),
-                GamesRecyclerViewAdapter(this, ArrayList<Game>()),
-                findViewById<RecyclerView>(R.id.rvMostHypedGames),
-                GamesRecyclerViewAdapter(this, ArrayList<Game>()),
-                gameRepo
-            )
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.a_main_cv_container) as NavHostFragment
+        navController = navHostFragment.navController
 
-        mainActivityViewModel.initializeRecyclerView(
-            mainActivityViewModel.mostRatedGamesRecyclerView,
-            mainActivityViewModel.mostRatedGamesRecyclerViewAdapter,
-            "$base_payload sort total_rating desc;"
-        ){
-               runOnUiThread {
-                   // Stuff that updates the UI
-                   mainActivityViewModel.mostRatedGamesRecyclerViewAdapter.importItems(it)
-                   findViewById<CircularProgressIndicator>(R.id.lsMostRatedGames).visibility = View.GONE
-               }
-        }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        mainActivityViewModel.initializeRecyclerView(
-            mainActivityViewModel.mostHypedGamesRecyclerView,
-            mainActivityViewModel.mostHypedGamesRecyclerViewAdapter,
-            "$base_payload sort hypes desc;"
-        ){
-            runOnUiThread {
-                // Stuff that updates the UI
-                mainActivityViewModel.mostHypedGamesRecyclerViewAdapter.importItems(it)
-                findViewById<CircularProgressIndicator>(R.id.lsMostHypedGames).visibility = View.GONE
-            }
-        }
 
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 }

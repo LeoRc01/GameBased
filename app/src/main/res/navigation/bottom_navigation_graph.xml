@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation_graph"
+    app:startDestination="@id/menu_home">
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.cip.cipstudio.view.fragment.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" >
+        <action
+            android:id="@+id/action_menu_home_to_gameDetailsFragment2"
+            app:destination="@id/gameDetailsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/menu_profile"
+        android:name="com.cip.cipstudio.view.fragment.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/menu_favourite"
+        android:name="com.cip.cipstudio.view.fragment.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" />
+    <fragment
+        android:id="@+id/menu_search"
+        android:name="com.cip.cipstudio.view.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/gameDetailsFragment2"
+        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
+        android:label="GameDetailsFragment" >
+        <action
+            android:id="@+id/action_gameDetailsFragment2_self"
+            app:destination="@id/gameDetailsFragment2" />
+    </fragment>
+</navigation>

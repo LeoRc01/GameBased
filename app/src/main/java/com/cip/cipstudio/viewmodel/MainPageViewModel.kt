@@ -2,25 +2,19 @@ package com.cip.cipstudio.viewmodel
 
 import android.content.Context
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.IGDBRepository
-import com.google.android.material.progressindicator.CircularProgressIndicator
 
-class MainActivityViewModel(val context : Context,
-                            var mostRatedGamesRecyclerView : RecyclerView,
-                            var mostRatedGamesRecyclerViewAdapter : GamesRecyclerViewAdapter,
-                            var mostHypedGamesRecyclerView : RecyclerView,
-                            var mostHypedGamesRecyclerViewAdapter : GamesRecyclerViewAdapter,
-                            var gameRepo : IGDBRepository,
-                            ) : ViewModel() {
+class MainPageViewModel(val context: Context) : ViewModel() {
 
+    private val TAG = "MainPageViewModel"
+
+    private val gameRepository = IGDBRepository()
     /**
      * initializeRecyclerView:
      *
@@ -34,7 +28,6 @@ class MainActivityViewModel(val context : Context,
      *
      * - aggiorna la UI tramite la funzione updateUI passata come parametro
      */
-
     fun initializeRecyclerView(recyclerView : RecyclerView,
                                adapter : GamesRecyclerViewAdapter,
                                payload : String,
@@ -54,7 +47,7 @@ class MainActivityViewModel(val context : Context,
         IGDBRepository.ACCESS_TOKEN.observeForever(Observer{
             if(it!=null){
                 Log.i("TOKEN ", it)
-                gameRepo.getGamesByPayload(payload){
+                gameRepository.getGamesByPayload(payload){
                     updateUI.invoke(it)
                 }
             }

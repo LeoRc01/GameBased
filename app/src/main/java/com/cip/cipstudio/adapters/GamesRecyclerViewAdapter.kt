@@ -1,24 +1,33 @@
 package com.cip.cipstudio.adapters
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.Game
-import com.cip.cipstudio.view.GameDetailisActivity
+import com.cip.cipstudio.view.MainActivity
+import com.cip.cipstudio.view.fragment.GameDetailsFragment
 import com.squareup.picasso.Picasso
 
 
-class GamesRecyclerViewAdapter
-    (val context : Context, var games : ArrayList<Game>) :
+class GamesRecyclerViewAdapter (val context : Context,
+                                var games : ArrayList<Game>,
+                                private val action: Int) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
+
+    private val TAG = "GamesRecyclerViewAdapt"
 
     fun importItems(_games : ArrayList<Game>){
         games = _games
@@ -59,7 +68,7 @@ class GamesRecyclerViewAdapter
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        //viewHolder.textView.text = games[position].name
+
         viewHolder.tvGameName.text = games[position].name
         games[position].getCover(){
             val uiHandler = Handler(Looper.getMainLooper())
@@ -67,10 +76,11 @@ class GamesRecyclerViewAdapter
                 if(it!="NO_COVER") {
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                     viewHolder.ivGameCover.setOnClickListener {
-                        val gameDetailsIntent: Intent =
-                            Intent(context, GameDetailisActivity::class.java)
-                        gameDetailsIntent.putExtra("game", games[position])
-                        context.startActivity(gameDetailsIntent)
+
+                        val bundle = bundleOf("game" to games[position])
+
+                        viewHolder.itemView.findNavController().navigate(action, bundle)
+
                     }
                 }
                 else{
