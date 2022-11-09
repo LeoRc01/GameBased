@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.Game
@@ -31,11 +32,18 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.vm = gameDetailsViewModel
         gameDetailsBinding.game = currentGame
+        gameDetailsBinding.lifecycleOwner = this
 
         initializeShowMore()
 
         return gameDetailsBinding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        gameDetailsBinding.unbind()
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeShowMore() {

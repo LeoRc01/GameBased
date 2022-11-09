@@ -29,13 +29,13 @@ class GameDetailsViewModel(
 
     private val igdbRepository : IGDBRepository = IGDBRepository(generate = false)
     var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isGameFavourite)
+    val isPageLoading : MutableLiveData<Boolean> by lazy{
+        MutableLiveData<Boolean>(true)
+    }
     private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
     private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
     init {
-        binding.fGameDetailsClPageLayout.visibility = View.GONE
-        LoadingSpinner.showLoadingDialog(binding.root.context)
-
         MyFirebaseRepository.getInstance().isGameFavourite(game.gameId.toString()).addOnSuccessListener {
             if(it!=null){
 
@@ -45,10 +45,13 @@ class GameDetailsViewModel(
                     _setGenres{
                         _setPlatforms{
                             _setSimilarGames {
+                                isPageLoading.postValue(false)
+                                /*
                                 (binding.root.context as Activity).runOnUiThread {
-                                    LoadingSpinner.dismiss()
-                                    binding.fGameDetailsClPageLayout.visibility = View.VISIBLE
+                                    //LoadingSpinner.dismiss()
+                                    //binding.fGameDetailsClPageLayout.visibility = View.VISIBLE
                                 }
+                                 */
                             }
                         }
                     }
