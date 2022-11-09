@@ -42,7 +42,7 @@
     <string name="profile">Profile</string>
     <string name="most_rated_games">Most rated games</string>
     <string name="most_hyped_games">Most Hyped games</string>
-    <string name="favourite">Favourite</string>
+    <string name="favourite">Favourites</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

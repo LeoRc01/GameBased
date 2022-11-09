@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.fragment.FavouriteFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvFavourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/favourite" />
-</FrameLayout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.cip.cipstudio.viewmodel.FavouriteViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.fragment.FavouriteFragment">
+
+        <LinearLayout
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:id="@+id/tvFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/favourite" />
+
+            <RelativeLayout
+                android:clipChildren="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:indeterminate="true"
+                    android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <GridView
+                    android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}"
+                    android:numColumns="2"
+                    android:id="@+id/gvFavoriteGames"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+</layout>

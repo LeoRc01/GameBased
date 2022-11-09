@@ -3,6 +3,7 @@ package com.cip.cipstudio.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -76,11 +79,8 @@ class GamesRecyclerViewAdapter (val context : Context,
                 if(it!="NO_COVER") {
                     Picasso.get().load("https:${it}").into(viewHolder.ivGameCover)
                     viewHolder.ivGameCover.setOnClickListener {
-
                         val bundle = bundleOf("game" to games[position])
-
                         viewHolder.itemView.findNavController().navigate(action, bundle)
-
                     }
                 }
                 else{

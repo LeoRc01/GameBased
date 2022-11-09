@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 
 /**
  * lazy Singleton
@@ -27,6 +28,14 @@ class MyFirebaseRepository {
         }
 
 
+    }
+
+    fun getFavorites() : Task<QuerySnapshot>{
+        return db!!
+            .collection("users")
+            .document(userId)
+            .collection("favourites")
+            .get()
     }
 
     fun setGameToFavourite(gameId : String) : Task<Void>{
