@@ -12,9 +12,8 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cip.cipstudio.R
-import com.squareup.picasso.Picasso
-import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.model.data.GameDetails
+import com.squareup.picasso.Picasso
 
 class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<GameDetails>) : BaseAdapter() {
 

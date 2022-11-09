@@ -38,7 +38,6 @@ class MainPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_page, container, false)
         viewModel = MainPageViewModel(requireContext())
-        gameRepository = IGDBRepositorydwa()
         mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
         mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
         mostRatedGamesRecyclerViewAdapter =

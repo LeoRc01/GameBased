@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-object IGDBRepositoryRemote : IGDBRepository {
+class IGDBRepositoryRemote : IGDBRepository {
 
     private val TAG= "IGDBWrapper"
     private val CLIENT_ID = "fyniflwh4wnvh1ww0i139mwolan1g5"
