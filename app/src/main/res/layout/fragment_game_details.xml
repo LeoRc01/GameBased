@@ -215,7 +215,7 @@
                                     android:id="@+id/f_gameDetails_cpi_userRating"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-
+                                    android:progress='@{Integer.parseInt(vm.game.rating ?? "0")}'
                                     app:indicatorSize="75dp"
                                     app:trackColor="@color/trackColor"
                                     app:trackCornerRadius="10dp"
@@ -259,7 +259,7 @@
                                     app:trackThickness="10dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-
+                                    android:progress='@{Integer.parseInt(vm.game.totalRating ?? "0")}'
                                     app:trackColor="@color/trackColor" />
                             </RelativeLayout>
 

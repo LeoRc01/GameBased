@@ -47,11 +47,6 @@ class GameDetailsFragment : Fragment() {
         return gameDetailsBinding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        gameDetailsBinding.unbind()
-    }
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeShowMore() {
