@@ -36,6 +36,9 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     override suspend fun getGamesMostHyped(): List<GameDetails> =withContext(Dispatchers.IO) {
+        if (!initialToken) {
+            init()
+        }
 
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L))
