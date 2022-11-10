@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-class IGDBRepositoryRemote : IGDBRepository {
+object IGDBRepositoryRemote : IGDBRepository {
 
     private val TAG= "IGDBWrapper"
     private val CLIENT_ID = "fyniflwh4wnvh1ww0i139mwolan1g5"
@@ -35,7 +35,7 @@ class IGDBRepositoryRemote : IGDBRepository {
         initialToken = true
     }
 
-    override suspend fun getGamesMostHyped(): List<GameDetails> =withContext(Dispatchers.IO) {
+    override suspend fun getGamesMostHyped(): List<GameDetails> = withContext(Dispatchers.IO) {
         if (!initialToken) {
             init()
         }
@@ -71,7 +71,7 @@ class IGDBRepositoryRemote : IGDBRepository {
         )
     }
 
-    override suspend fun getGamesDetails(gameId: String): GameDetails = withContext(Dispatchers.IO) {
+    override suspend fun getGameDetails(gameId: String): GameDetails = withContext(Dispatchers.IO) {
         if (!initialToken) {
             init()
         }

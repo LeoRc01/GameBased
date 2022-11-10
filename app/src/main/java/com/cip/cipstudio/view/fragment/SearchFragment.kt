@@ -9,16 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.api.igdb.request.IGDBWrapper
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.IGDBWrappermio
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import kotlinx.coroutines.*
-import org.json.JSONArray
-import proto.Game
-import proto.Platform
 
 class SearchFragment : Fragment() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
@@ -58,7 +53,7 @@ class SearchFragment : Fragment() {
 
 
         val a = lifecycleScope.launch(Dispatchers.Main) {
-            game = IGDBRepositoryRemote.getGamesDetails("143")
+            game = IGDBRepositoryRemote.getGameDetails("143")
         }
         lifecycleScope.launch(Dispatchers.Main) {
             a.join()
@@ -68,17 +63,5 @@ class SearchFragment : Fragment() {
             onSuccess.invoke()
         }
 
-    }
-
-    private fun getPlatform(game : Game) = runBlocking {
-        if (game.platformsList.isEmpty())
-            return@runBlocking emptyList<Platform>()
-        return@runBlocking IGDBWrappermio.platformsGames(game.platformsList[0].id.toString())
-    }
-
-    // InvocationTargetException:
-    // nel mio caso c'era un log dentro a questa funzione e quello dava problemi
-    private fun getProva() = runBlocking {
-        return@runBlocking IGDBWrappermio.prova()
     }
 }

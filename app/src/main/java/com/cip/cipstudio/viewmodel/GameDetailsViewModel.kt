@@ -1,55 +1,66 @@
 package com.cip.cipstudio.viewmodel
 
-import android.app.Activity
-import android.util.Log
-import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
-import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
-import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
-
-class GameDetailsViewModel(
-    private var game: GameDetails,
-    private val binding: FragmentGameDetailsBinding,
+class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 ) : ViewModel() {
 
-    private val TAG = "GameDetailsViewModel"
-    var isGameFavourite : MutableLiveData<Boolean> = MutableLiveData<Boolean>(game.isFavourite)
-    val isPageLoading : MutableLiveData<Boolean> by lazy{
-        MutableLiveData<Boolean>(true)
-    }
-    private lateinit var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
-    private lateinit var rvGameScreenshotsAdapter : GameScreenshotsRecyclerViewAdapter
 
-    init {
+    private lateinit var game: GameDetails
+    private val TAG = "GameDetailsVM"
+    lateinit var isGameFavourite : MutableLiveData<Boolean>
 
+    private val firebaseRepository = MyFirebaseRepository.getInstance()
+    private val gameRepository = IGDBRepositoryRemote
 
-        MyFirebaseRepository.getInstance().isGameFavourite(game.id).addOnSuccessListener {
-            if(it!=null){
-                isGameFavourite.postValue(it.exists())
-                initializeView()
+    constructor(gameId : String,
+                binding: FragmentGameDetailsBinding,
+                setScreenshotUI: (List<JSONObject>) -> Unit,
+                setSimilarGamesUI: (List<GameDetails>) -> Unit,
+                setPlatformsUI: (String) -> Unit,
+                setGenresUI: (List<JSONObject>)-> Unit,
+                onSuccess: () -> Unit) : this(binding) {
+
+        viewModelScope.launch(Dispatchers.Main) {
+            // è come se aspettasse il valore di game prima di eseguire il resto
+            // TODO : capire come funziona withContext
+            // per ora ho capito che withContext serve per cambiare il contesto di esecuzione
+            // quindi se prima era in main thread ora è in IO thread
+            // in questo caso ha le stesse funzionalità di async e await
+            game = withContext(Dispatchers.IO) {
+                gameRepository.getGameDetails(gameId)
             }
+
+            // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
+            val fav = firebaseRepository.isGameFavourite(gameId).await()
+            isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
+            if (fav != null)
+                isGameFavourite.postValue(fav.exists())
+
+            // queste funzioni servono a dividere il ruolo di viewModel e view
+            setScreenshotUI.invoke(game.screenshots)
+            setSimilarGamesUI.invoke(game.similarGames)
+            setPlatformsUI.invoke(getPlatformsText())
+            setGenresUI.invoke(game.genres)
+            onSuccess.invoke()
         }
-
-
     }
 
     companion object{
@@ -67,73 +78,13 @@ class GameDetailsViewModel(
         return game
     }
 
-    private fun initializeView() {
-        viewModelScope.launch(Dispatchers.Main) {
-            setScreenshotsRecyclerView()
-            setSimilarGamesRecyclerView()
-            setPlatformsText()
-            setGenresGridLayout()
-            binding.loadingModel!!.isPageLoading.postValue(false)
-        }
-    }
-
-    private fun setScreenshotsRecyclerView() {
-        val manager = LinearLayoutManager(binding.root.context)
-        manager.orientation = RecyclerView.HORIZONTAL
-        rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(binding.root.context, game.screenshots)
-        binding.fGameDetailsRvScreenshots.layoutManager = manager
-        binding.fGameDetailsRvScreenshots.setItemViewCacheSize(50)
-        binding.fGameDetailsRvScreenshots.itemAnimator = null
-        binding.fGameDetailsRvScreenshots.adapter = rvGameScreenshotsAdapter
-    }
-
-    private fun setSimilarGamesRecyclerView() {
-        val manager = LinearLayoutManager(binding.root.context)
-        manager.orientation = RecyclerView.HORIZONTAL
-        rvSimilarGamesAdapter = GamesRecyclerViewAdapter(binding.root.context, game.similarGames, R.id.action_gameDetailsFragment2_self)
-        binding.fGameDetailsRvSimilarGames.setLayoutManager(manager)
-        binding.fGameDetailsRvSimilarGames.setItemViewCacheSize(50)
-        binding.fGameDetailsRvSimilarGames.itemAnimator = null
-        binding.fGameDetailsRvSimilarGames.adapter = rvSimilarGamesAdapter
-    }
-
-    private fun setPlatformsText() {
+    private fun getPlatformsText() : String {
         var platformsString = ""
         game.platforms.forEach {
             val platform = it.getString("name")
             platformsString = platform + if (platformsString != "") " / $platformsString" else ""
         }
-        binding.fGameDetailsTvGameDetailsPlatforms.text = platformsString
-    }
-
-    private fun setGenresGridLayout() {
-        game.genres.forEach {
-            val genre = it.getString("name")
-            binding.fGameDetailsGlGridGenreLayout.addView(createChip(genre))
-        }
-    }
-
-    /**
-     * Crea e ritorna il chip
-     */
-
-    private fun createChip(label : String) : Chip{
-        val chip = Chip(binding.root.context, null, R.layout.genre_chip)
-        val chipDrawable = ChipDrawable.createFromAttributes(
-            binding.root.context,
-            null,
-            0,
-            com.cip.cipstudio.R.style.genre_chip
-        )
-        chip.setChipDrawable(chipDrawable)
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.setMargins(15, 0, 15, 0)
-        chip.layoutParams = params
-        chip.text = label
-        return chip
+        return platformsString
     }
 
     fun setFavouriteStatus(){

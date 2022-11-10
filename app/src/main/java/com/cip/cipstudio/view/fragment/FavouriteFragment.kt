@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentFavouriteBinding
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
-import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.viewmodel.FavouriteViewModel
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel

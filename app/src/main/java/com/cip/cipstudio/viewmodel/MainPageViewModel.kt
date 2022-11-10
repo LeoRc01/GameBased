@@ -11,6 +11,7 @@ import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainPageViewModel(val context: Context) : ViewModel() {
 
@@ -47,10 +48,9 @@ class MainPageViewModel(val context: Context) : ViewModel() {
 
         var games :List<GameDetails> = listOf()
         viewModelScope.launch(Dispatchers.Main) {
-            val job = launch(Dispatchers.IO) {
-                games = getGames.invoke()
+            games = withContext(Dispatchers.IO) {
+                getGames.invoke()
             }
-            job.join()
             updateUI.invoke(games)
         }
 

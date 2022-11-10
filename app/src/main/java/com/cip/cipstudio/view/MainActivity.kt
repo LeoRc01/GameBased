@@ -9,7 +9,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
-import com.cip.cipstudio.repository.IGDBRepositorydwa
 import com.cip.cipstudio.view.fragment.FavouriteFragment
 import com.cip.cipstudio.view.fragment.MainPageFragment
 import com.cip.cipstudio.view.fragment.SearchFragment
