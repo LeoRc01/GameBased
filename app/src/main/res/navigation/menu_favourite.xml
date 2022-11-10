@@ -10,5 +10,23 @@
         android:id="@+id/favouriteScreen"
         android:name="com.cip.cipstudio.view.fragment.FavouriteFragment"
         android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_favourite">
+        <action
+            android:id="@+id/action_fav_to_gameDetailsFragment3"
+            app:destination="@id/gameDetailsFragment3" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameDetailsFragment3"
+        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
+        android:label="GameDetailsFragment" >
+        <action
+            android:id="@+id/action_gameDetailsFragment3_self"
+            app:destination="@id/gameDetailsFragment3" />
+        <action
+            app:popUpTo="@id/menu_favourite"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_gameDetailsFragment3_to_favouriteScreen"
+            app:destination="@id/favouriteScreen" />
+    </fragment>
 </navigation>

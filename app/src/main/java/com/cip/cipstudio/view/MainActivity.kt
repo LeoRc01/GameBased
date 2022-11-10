@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_favourite->{
                     //loadFragment(FavouriteFragment())
+                    navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
+                    navController.clearBackStack("")
                     true
                 }
                 R.id.menu_search->{

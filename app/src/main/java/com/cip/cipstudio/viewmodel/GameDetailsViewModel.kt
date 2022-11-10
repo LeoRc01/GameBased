@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -12,6 +13,7 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
+import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,8 +53,13 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
             val fav = firebaseRepository.isGameFavourite(gameId).await()
             isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
-            if (fav != null)
+            if (fav != null) {
                 isGameFavourite.postValue(fav.exists())
+                if(fav.exists())
+                    (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                        binding.root.context.getDrawable(R.drawable.ic_favorite)
+
+            }
 
             // queste funzioni servono a dividere il ruolo di viewModel e view
             setScreenshotUI.invoke(game.screenshots)
@@ -93,6 +100,8 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             // Aggiungere ai preferiti
             game.setGameToFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(true)
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite)
                 LoadingSpinner.dismiss()
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_add), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
@@ -105,6 +114,8 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             game.removeGameFromFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(false)
                 LoadingSpinner.dismiss()
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite_border)
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_remove), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 LoadingSpinner.dismiss()

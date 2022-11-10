@@ -100,7 +100,12 @@ class GameDetailsFragment : Fragment() {
         val similarGamesRecyclerView = gameDetailsBinding.fGameDetailsRvSimilarGames
         val manager = LinearLayoutManager(requireContext())
         manager.orientation = RecyclerView.HORIZONTAL
-        val rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
+        val isFromFavourite = arguments?.get("isFromFavouriteScreen")
+        var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
+        if(isFromFavourite != null && isFromFavourite as Boolean)
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment3_self)
+        else
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
         similarGamesRecyclerView.layoutManager = manager
         similarGamesRecyclerView.setItemViewCacheSize(50)
         similarGamesRecyclerView.itemAnimator = null
