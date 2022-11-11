@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -35,25 +36,34 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView.setOnItemReselectedListener {
+            val currentFragment = navHostFragment.childFragmentManager.fragments[0]
             when(it.itemId){
                 R.id.menu_home->{
-                    //loadFragment(MainPageFragment())
-                    navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
-                    navController.clearBackStack("")
+                    
+                    if(currentFragment.id != MainPageFragment().id){
+                        navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
+                        navController.clearBackStack("")
+                    }
+
                 }
                 R.id.menu_favourite->{
-                    //loadFragment(FavouriteFragment())
-                    navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
-                    navController.clearBackStack("")
+
+                    if(currentFragment.id != FavouriteFragment().id) {
+                        navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
+                        navController.clearBackStack("")
+                    }
                 }
                 R.id.menu_search->{
-                    //loadFragment(SearchFragment())
-                    navController.navigate(R.id.action_gameDetailsFragment4_to_searchScreen)
-                    navController.clearBackStack("")
+
+                    if(currentFragment.id != SearchFragment().id) {
+                        navController.navigate(R.id.action_gameDetailsFragment4_to_searchScreen)
+                        navController.clearBackStack("")
+                    }
                 }
                 R.id.menu_profile->{
-                    //loadFragment(UserFragment())
 
+                    if(currentFragment.id != UserFragment().id) {
+                    }
                 }
             }
         }

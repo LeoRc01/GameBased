@@ -29,6 +29,7 @@ class MainPageFragment : Fragment() {
     private lateinit var mostRatedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
     private lateinit var mostHypedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
