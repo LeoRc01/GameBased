@@ -9,6 +9,7 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +34,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
      */
     fun initializeRecyclerView(recyclerView : RecyclerView,
                                adapter : GamesRecyclerViewAdapter,
-                               getGames : suspend () -> List<GameDetails>,
+                               gameTypeEnum: GameTypeEnum,
                                updateUI : (List<GameDetails>)->Unit
     ){
         // Creo il layout manager (fondamentale)
@@ -49,7 +50,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
         var games :List<GameDetails> = listOf()
         viewModelScope.launch(Dispatchers.Main) {
             games = withContext(Dispatchers.IO) {
-                getGames.invoke()
+                gameRepository.getGamesByType(gameTypeEnum)
             }
             updateUI.invoke(games)
         }
