@@ -35,19 +35,18 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun makeRequest(request: () -> String):
+    private suspend fun makeRequest(request: () -> String, attempt : Int = 0):
             JSONArray = withContext(Dispatchers.IO) {
         init()
 
         var json : String = ""
 
-
         try {
-            Log.d(TAG, "makeRequest: Making request")
+            Log.i(TAG, "Making request, attempt: $attempt")
             json = request.invoke()
         } catch (RequestException: RequestException) {
-            if (RequestException.statusCode == 401) {
-                Log.d(TAG, "Token expired, refreshing...")
+            if (RequestException.statusCode == 401 && attempt <= 10) {
+                Log.i(TAG, "Token expired, refreshing...")
                 runBlocking {
                     isInitialized = false
                     init()
@@ -55,11 +54,14 @@ object IGDBRepositoryRemote : IGDBRepository {
                 return@withContext makeRequest(request)
             }
             else {
-                Log.e(TAG, "RequestException: ${RequestException.message}")
+                if (attempt > 10)
+                    Log.e(TAG, "makeRequest: Too many attempts, aborting")
+                Log.e(TAG, "Request failed, status code: ${RequestException.statusCode}")
+                Log.e(TAG, "Request failed, message: ${RequestException.message}")
                 throw RequestException
             }
         }
-        Log.d(TAG, "returning jsonArray")
+        Log.d(TAG, "request successful")
         return@withContext JSONArray(json)
     }
 
@@ -68,7 +70,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L))
             .sort("hypes", Sort.DESCENDING)
             .limit(10)
-        val json = makeRequest { IGDBWrapper.jsonGames(apicalypse) }
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -77,7 +79,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0")
             .sort("total_rating", Sort.DESCENDING)
             .limit(10)
-        val json = makeRequest { IGDBWrapper.jsonGames(apicalypse) }
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -87,7 +89,7 @@ object IGDBRepositoryRemote : IGDBRepository {
                 "screenshots.url, genres.name, genres.id, platforms.name, platforms.id," +
                 "similar_games.name, similar_games.id, similar_games.cover.url")
             .where("id = $gameId")
-        val json = makeRequest { IGDBWrapper.jsonGames(apicalypse) }
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext GameDetails(json.getJSONObject(0))
     }
 
@@ -95,7 +97,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
             .where("id = ${gameIds.toString().replace("[", "(").replace("]", ")")}")
-        val json = makeRequest { IGDBWrapper.jsonGames(apicalypse) }
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
 
     }

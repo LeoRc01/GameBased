@@ -79,7 +79,7 @@ class MainPageFragment : Fragment() {
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        viewModel.initializeRecyclerView(recyclerView, adapter, gameTypeEnum) {
+        viewModel.initializeRecyclerView(gameTypeEnum) {
             adapter.importItems(it)
             view.findViewById<CircularProgressIndicator>(circularProgressIndicatorId)
                 .visibility = View.GONE
