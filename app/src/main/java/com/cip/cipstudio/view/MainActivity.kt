@@ -38,27 +38,23 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.menu_home->{
                     //loadFragment(MainPageFragment())
-
                     navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
                     navController.clearBackStack("")
-                    true
                 }
                 R.id.menu_favourite->{
                     //loadFragment(FavouriteFragment())
                     navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
                     navController.clearBackStack("")
-                    true
                 }
                 R.id.menu_search->{
                     //loadFragment(SearchFragment())
-                    true
+                    navController.navigate(R.id.action_gameDetailsFragment4_to_searchScreen)
+                    navController.clearBackStack("")
                 }
                 R.id.menu_profile->{
                     //loadFragment(UserFragment())
-                    true
-                }
 
-                else -> false
+                }
             }
         }
 

@@ -101,9 +101,12 @@ class GameDetailsFragment : Fragment() {
         val manager = LinearLayoutManager(requireContext())
         manager.orientation = RecyclerView.HORIZONTAL
         val isFromFavourite = arguments?.get("isFromFavouriteScreen")
+        val isFromSearchScreen = arguments?.get("isFromSearchScreen")
         var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
         if(isFromFavourite != null && isFromFavourite as Boolean)
             rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment3_self)
+        else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment4_self)
         else
             rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
         similarGamesRecyclerView.layoutManager = manager

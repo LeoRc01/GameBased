@@ -8,29 +8,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.cip.cipstudio.R
+import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.view.widgets.LoadingSpinner
+import com.cip.cipstudio.viewmodel.FavouriteViewModel
+import com.cip.cipstudio.viewmodel.SearchViewModel
 import kotlinx.coroutines.*
 
 class SearchFragment : Fragment() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
         throwable.printStackTrace()
     }
+    private lateinit var searchBinding: FragmentSearchBinding
+    private lateinit var searchViewModel: SearchViewModel
     private val TAG = "SearchFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-        view.findViewById<Button>(R.id.f_search_button).setOnClickListener { search(view) }
+        searchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
 
+        searchViewModel = SearchViewModel(searchBinding)
+        searchBinding.vm = searchViewModel
+        searchBinding.lifecycleOwner = this
 
-        // Inflate the layout for this fragment
-        return view
+        return searchBinding.root
     }
 
     private fun search (view: View) {

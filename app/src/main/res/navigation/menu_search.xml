@@ -10,5 +10,24 @@
         android:id="@+id/searchScreen"
         android:name="com.cip.cipstudio.view.fragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action
+            app:destination="@id/gameDetailsFragment4"
+            android:id="@+id/action_search_to_gameDetailsFragment4"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameDetailsFragment4"
+        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
+        android:label="fragment_game_details"
+        tools:layout="@layout/fragment_game_details">
+        <action
+            app:destination="@id/gameDetailsFragment4"
+            android:id="@+id/action_gameDetailsFragment4_self"
+            />
+        <action
+            android:id="@+id/action_gameDetailsFragment4_to_searchScreen"
+            app:destination="@id/searchScreen" />
+    </fragment>
 </navigation>

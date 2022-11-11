@@ -48,4 +48,5 @@
     <string name="name">name</string>
     <string name="settings">settings</string>
     <string name="back">back</string>
+    <string name="recently_viewed">Recently viewed</string>
 </resources>

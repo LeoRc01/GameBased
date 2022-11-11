@@ -2,6 +2,7 @@
 <LinearLayout android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:gravity="center"
     android:layout_marginRight="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -32,6 +33,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:id="@+id/tvGameName"
         android:layout_gravity="center"
