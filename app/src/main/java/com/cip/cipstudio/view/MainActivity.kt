@@ -39,30 +39,26 @@ class MainActivity : AppCompatActivity() {
             val currentFragment = navHostFragment.childFragmentManager.fragments[0]
             when(it.itemId){
                 R.id.menu_home->{
-                    
-                    if(currentFragment.id != MainPageFragment().id){
+                    if(currentFragment !is MainPageFragment){
                         navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
                         navController.clearBackStack("")
                     }
 
                 }
                 R.id.menu_favourite->{
-
-                    if(currentFragment.id != FavouriteFragment().id) {
+                    if(currentFragment !is FavouriteFragment) {
                         navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
                         navController.clearBackStack("")
                     }
                 }
                 R.id.menu_search->{
-
-                    if(currentFragment.id != SearchFragment().id) {
+                    if(currentFragment !is SearchFragment) {
                         navController.navigate(R.id.action_gameDetailsFragment4_to_searchScreen)
                         navController.clearBackStack("")
                     }
                 }
                 R.id.menu_profile->{
-
-                    if(currentFragment.id != UserFragment().id) {
+                    if(currentFragment !is UserFragment) {
                     }
                 }
             }
