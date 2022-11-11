@@ -1,3 +1,4 @@
+
 package com.cip.cipstudio.adapters
 
 import android.content.Context
@@ -22,12 +23,12 @@ import com.cip.cipstudio.view.fragment.SearchFragment
 import com.squareup.picasso.Picasso
 
 
-class GamesRecyclerViewAdapter (val context : Context,
+class GamesBigRecyclerViewAdapter (val context : Context,
                                 var games : List<GameDetails>,
                                 private val action: Int,
                                 private val isFromSearchFragment: Boolean = false
-                                ) :
-    RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
+) :
+    RecyclerView.Adapter<GamesBigRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
 
@@ -37,50 +38,52 @@ class GamesRecyclerViewAdapter (val context : Context,
     }
 
     /**
-    * Provide a reference to the type of views that you are using
-    * (custom ViewHolder).
-    */
-    class ViewHolder(view: View, isFromSearchFragment: Boolean) : RecyclerView.ViewHolder(view) {
-
-        val tvGameName : TextView
-        val ivGameCover : ImageView
-        val ivNoPreview : ImageView
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val ivBlurBackground : ImageView
+        val ivGameCoverForeground : ImageView
+        val tvGameNameBigCover : TextView
 
         init {
-            tvGameName = view.findViewById(R.id.tvGameName)
-            ivGameCover = view.findViewById(R.id.ivGameCover)
-            ivNoPreview = view.findViewById(R.id.ivNoPreview)
+            ivBlurBackground = view.findViewById(R.id.ivBlurBackground)
+            ivGameCoverForeground = view.findViewById(R.id.ivGameCoverForeground)
+            tvGameNameBigCover = view.findViewById(R.id.tvGameNameBigCover)
         }
     }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-
-         val view = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.game_item, viewGroup, false)
-
-        return ViewHolder(view, isFromSearchFragment)
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.recently_viewed_game_item, viewGroup, false)
+        return ViewHolder(view)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tvGameName!!.text = games[position].name
+
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+
+        viewHolder.tvGameNameBigCover.text = games[position].name
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
-                Picasso.get().load(it).into(viewHolder.ivGameCover)
-                viewHolder.ivGameCover!!.setOnClickListener {
+                Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)
+                Picasso.get().load(it).into(viewHolder.ivBlurBackground)
+                viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+                viewHolder.ivGameCoverForeground.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
                     bundle.putBoolean("isFromSearchScreen", isFromSearchFragment)
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
                     viewHolder.itemView.findNavController().navigate(action, bundle)
                 }
-            } else {
-                viewHolder.ivNoPreview!!.visibility = View.VISIBLE
             }
         }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

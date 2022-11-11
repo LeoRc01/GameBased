@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
@@ -25,8 +26,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     }
 
     private lateinit var lastViewdGames : ArrayList<GameDetails>
-    private lateinit var lastViewGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
-
+    private lateinit var lastViewGamesRecyclerViewAdapter: GamesBigRecyclerViewAdapter
 
     init {
 
@@ -81,7 +81,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
     fun initializeRecyclerView(games : ArrayList<GameDetails>) {
         lastViewGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(binding.root.context,
+            GamesBigRecyclerViewAdapter(binding.root.context,
                 games,
                 R.id.action_search_to_gameDetailsFragment4, true)
         val manager = LinearLayoutManager(binding.root.context)

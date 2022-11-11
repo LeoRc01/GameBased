@@ -29,6 +29,7 @@ class FavouriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         if(myView==null){
+            Log.i("NULL", "NULL VIEW")
             favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
 
             favouriteViewModel = FavouriteViewModel(favouriteBinding)
@@ -38,7 +39,7 @@ class FavouriteFragment : Fragment() {
         }
         (myView!!.parent as ViewGroup?)?.removeView(myView)
 
-        return myView
+        return myView!!
         //return favouriteBinding.root
     }
 

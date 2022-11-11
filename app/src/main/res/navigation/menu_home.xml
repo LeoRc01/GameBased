@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_menu_home_to_gameDetailsFragment2"
             app:destination="@id/gameDetailsFragment2" />
+        <action
+            android:id="@+id/action_homeScreen_self"
+            app:destination="@id/homeScreen" />
     </fragment>
     <fragment
         android:id="@+id/gameDetailsFragment2"

@@ -1,6 +1,9 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
@@ -40,6 +44,7 @@ class FavouriteGridViewAdapter(val context : Context,
         return position.toLong()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
         // on blow line we are checking if layout inflater

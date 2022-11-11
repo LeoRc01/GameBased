@@ -40,7 +40,7 @@ class GameDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(myView == null){
+        //if(myView == null){
             gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
@@ -52,10 +52,10 @@ class GameDetailsFragment : Fragment() {
             }
             gameDetailsBinding.lifecycleOwner = this
             myView = gameDetailsBinding.root
-        }
-        (myView!!.parent as ViewGroup?)?.removeView(myView)
-        return myView!!
-        //return gameDetailsBinding.root
+        //}
+        //(myView!!.parent as ViewGroup?)?.removeView(myView)
+        //return myView!!
+        return gameDetailsBinding.root
     }
 
 

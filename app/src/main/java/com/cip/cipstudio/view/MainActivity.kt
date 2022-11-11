@@ -1,12 +1,10 @@
 package com.cip.cipstudio.view
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
@@ -41,6 +39,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_home->{
                     if(currentFragment !is MainPageFragment){
                         navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
+                        navController.clearBackStack("")
+                    }else{
+                        navController.navigate(R.id.action_homeScreen_self)
                         navController.clearBackStack("")
                     }
 
