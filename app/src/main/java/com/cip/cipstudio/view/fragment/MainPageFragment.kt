@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +15,6 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -29,24 +29,33 @@ class MainPageFragment : Fragment() {
     private lateinit var mostRatedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
     private lateinit var mostHypedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
 
+    private var myView : View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_main_page, container, false)
-        viewModel = MainPageViewModel(requireContext())
-        mostRatedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostRatedGames)
-        mostHypedGamesRecyclerView = view.findViewById(R.id.f_mainPage_rv_mostHypedGames)
-        mostRatedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
-                R.id.action_menu_home_to_gameDetailsFragment2)
-        mostHypedGamesRecyclerViewAdapter =
-            GamesRecyclerViewAdapter(requireContext(), ArrayList(),
-                R.id.action_menu_home_to_gameDetailsFragment2)
-        initializeMostHypedGamesRecyclerView()
-        initializeMostRatedGamesRecyclerView()
-        return view
+        if (myView == null) {
+            myView = inflater.inflate(R.layout.fragment_main_page, container, false)
+            viewModel = MainPageViewModel(requireContext())
+            mostRatedGamesRecyclerView = myView!!.findViewById(R.id.f_mainPage_rv_mostRatedGames)
+            mostHypedGamesRecyclerView = myView!!.findViewById(R.id.f_mainPage_rv_mostHypedGames)
+            mostRatedGamesRecyclerViewAdapter =
+                GamesRecyclerViewAdapter(
+                    requireContext(), ArrayList(),
+                    R.id.action_menu_home_to_gameDetailsFragment2
+                )
+            mostHypedGamesRecyclerViewAdapter =
+                GamesRecyclerViewAdapter(
+                    requireContext(), ArrayList(),
+                    R.id.action_menu_home_to_gameDetailsFragment2
+                )
+            initializeMostHypedGamesRecyclerView()
+            initializeMostRatedGamesRecyclerView()
+        }
+
+        (myView!!.parent as ViewGroup?)?.removeView(myView)
+        return myView
     }
 
     private fun initializeRecyclerView(
@@ -72,7 +81,7 @@ class MainPageFragment : Fragment() {
             ) {
                 lifecycleScope.launch(Dispatchers.Main)  {
                     mostRatedGamesRecyclerViewAdapter.importItems(it)
-                    view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
+                    myView?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostRatedGames)
                         ?.visibility = View.GONE
                 }
             }
@@ -86,7 +95,7 @@ class MainPageFragment : Fragment() {
         ) {
             lifecycleScope.launch(Dispatchers.Main) {
                 mostHypedGamesRecyclerViewAdapter.importItems(it)
-                view?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostHypedGames)
+                myView?.findViewById<CircularProgressIndicator>(R.id.f_mainPage_ls_mostHypedGames)
                     ?.visibility = View.GONE
             }
         }

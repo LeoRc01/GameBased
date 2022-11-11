@@ -33,22 +33,29 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
+    private var myView : View? = null
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
+        if(myView == null){
+            gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
-        gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
-        //LoadingSpinner.showLoadingDialog(requireContext())
-        gameDetailsBinding.loadingModel = Loading()
+            gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
+            //LoadingSpinner.showLoadingDialog(requireContext())
+            gameDetailsBinding.loadingModel = Loading()
 
-        initializeFragment(){
+            initializeFragment(){
 
+            }
+            gameDetailsBinding.lifecycleOwner = this
+            myView = gameDetailsBinding.root
         }
-        gameDetailsBinding.lifecycleOwner = this
-        return gameDetailsBinding.root
+        (myView!!.parent as ViewGroup?)?.removeView(myView)
+        return myView!!
+        //return gameDetailsBinding.root
     }
 
 
