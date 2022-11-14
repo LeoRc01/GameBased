@@ -49,13 +49,13 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java:3.21.7'
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-database'
-    implementation("com.google.android.material:material:1.8.0-alpha01")
+    //implementation("com.google.android.material:material:1.8.0-alpha01")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'io.github.husnjak:igdb-api-jvm:1.0.7'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
