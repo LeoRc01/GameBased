@@ -99,14 +99,25 @@
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"
                         app:strokeWidth="0dp" />
 
-                    <GridLayout
-                        android:id="@+id/f_gameDetails_gl_gridGenreLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:columnCount="3"
+                    <HorizontalScrollView
+                        android:scrollbarSize="0dp"
+                        android:id="@+id/f_gameDetails_hsv_viewGenreLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_btn_favorite" />
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_btn_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <GridLayout
+
+                            android:orientation="horizontal"
+                            android:scrollbars="horizontal"
+                            android:scrollbarSize="0dp"
+                            android:id="@+id/f_gameDetails_gl_gridGenreLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </HorizontalScrollView>
 
                     <TextView
                         android:id="@+id/f_gameDetails_tv_gameDetailsDescription"
@@ -117,7 +128,7 @@
                         android:text="@{vm.game.summary}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_gl_gridGenreLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_hsv_viewGenreLayout"
                         tools:targetApi="m" />
 
                     <TextView
@@ -210,7 +221,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
-                                    android:text="@{vm.game.rating}" />
+                                    android:text='@{vm.game.rating == "0" ? "N/A" : vm.game.rating}'/>
 
                                 <com.google.android.material.progressindicator.CircularProgressIndicator
                                     android:id="@+id/f_gameDetails_cpi_userRating"
@@ -227,7 +238,7 @@
                                 android:id="@+id/f_gameDetails_tv_userRatingCounter"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text='@{"User rating (" + vm.game.ratingCount + ")"}' />
+                                android:text='@{"User rating (" + (vm.game.ratingCount == "0" ? "N/A" : vm.game.ratingCount) + ")"}' />
 
                         </LinearLayout>
 
@@ -251,7 +262,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
-                                    android:text="@{vm.game.totalRating}" />
+                                    android:text='@{vm.game.totalRating == "0" ? "N/A" : vm.game.totalRating}' />
 
                                 <com.google.android.material.progressindicator.CircularProgressIndicator
                                     android:id="@+id/f__gameDetails_cpi_criticsRating"
@@ -268,7 +279,7 @@
                                 android:id="@+id/f_gameDetails_tv_criticsRatingCounter"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text='@{"Critics rating (" + vm.game.totalRatingCount + ")"}' />
+                                android:text='@{"Critics rating (" + (vm.game.totalRatingCount == "0" ? "N/A" : vm.game.totalRatingCount ) + ")"}' />
 
                         </LinearLayout>
 

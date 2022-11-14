@@ -26,12 +26,15 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
+    private var myView : View? = null
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
+        //if(myView == null){
+            gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
         gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
 
@@ -92,7 +95,15 @@ class GameDetailsFragment : Fragment() {
         val similarGamesRecyclerView = gameDetailsBinding.fGameDetailsRvSimilarGames
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
+        val isFromFavourite = arguments?.get("isFromFavouriteScreen")
+        val isFromSearchScreen = arguments?.get("isFromSearchScreen")
+        var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
+        if(isFromFavourite != null && isFromFavourite as Boolean)
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment3_self)
+        else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment4_self)
+        else
+            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
         similarGamesRecyclerView.layoutManager = manager
         similarGamesRecyclerView.setItemViewCacheSize(50)
         similarGamesRecyclerView.itemAnimator = null

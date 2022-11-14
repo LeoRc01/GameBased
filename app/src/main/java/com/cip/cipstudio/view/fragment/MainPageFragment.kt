@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +17,6 @@ import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -31,6 +31,8 @@ class MainPageFragment : Fragment() {
     private lateinit var mostHypedGamesRecyclerView: RecyclerView
     private lateinit var mostRatedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
     private lateinit var mostHypedGamesRecyclerViewAdapter: GamesRecyclerViewAdapter
+
+    private var myView : View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,6 +1,9 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -9,13 +12,20 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.view.MainActivity
 import com.squareup.picasso.Picasso
 
-class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<GameDetails>) : BaseAdapter() {
+class FavouriteGridViewAdapter(val context : Context,
+                               val games : ArrayList<GameDetails>,
+                               private val action: Int,
+                               private val navController: NavController) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
     private lateinit var tvGameTitle : TextView
@@ -34,6 +44,7 @@ class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game
         return position.toLong()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
         // on blow line we are checking if layout inflater
@@ -61,7 +72,8 @@ class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game
                 ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    //viewHolder.itemView.findNavController().navigate(action, bundle)
+                    bundle.putBoolean("isFromFavouriteScreen", true)
+                    navController.navigate(action, bundle)
                 }
             } else {
                 //viewHolder.ivNoPreview.visibility = View.VISIBLE
