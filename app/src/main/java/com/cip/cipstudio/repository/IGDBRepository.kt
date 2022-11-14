@@ -1,13 +1,12 @@
 package com.cip.cipstudio.repository
 
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.utils.GameTypeEnum
 
 
 interface IGDBRepository {
 
-    suspend fun getGamesMostHyped() : List<GameDetails>
-
-    suspend fun getGamesMostRated() : List<GameDetails>
+    suspend fun getGamesByType(type : GameTypeEnum): List<GameDetails>
 
     suspend fun getGameDetails(gameId : String) : GameDetails
 
