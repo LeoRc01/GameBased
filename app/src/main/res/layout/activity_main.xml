@@ -25,7 +25,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:menu="@menu/bottom_navigation_menu"
+            app:backgroundTint="?colorOnSecondary"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
