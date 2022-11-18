@@ -12,23 +12,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.view.MainActivity
-import com.cip.cipstudio.view.fragment.SearchFragment
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.squareup.picasso.Picasso
 
 
 class GamesBigRecyclerViewAdapter (val context : Context,
                                 var games : List<GameDetails>,
                                 private val action: Int,
-                                private val isFromSearchFragment: Boolean = false
-) :
-    RecyclerView.Adapter<GamesBigRecyclerViewAdapter.ViewHolder>() {
+                                private val isFromFragment: IsFromFragmentEnum
+                                ) : RecyclerView.Adapter<GamesBigRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
 
@@ -77,7 +74,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                 viewHolder.ivGameCoverForeground.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putBoolean("isFromSearchScreen", isFromSearchFragment)
+                    bundle.putString("origin_fragment", isFromFragment.name)
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
                     viewHolder.itemView.findNavController().navigate(action, bundle)
                 }

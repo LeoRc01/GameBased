@@ -1,11 +1,7 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +11,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.view.MainActivity
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.squareup.picasso.Picasso
 
+
+// TODO(generalizzare questo adapter)
 class FavouriteGridViewAdapter(val context : Context,
                                val games : ArrayList<GameDetails>,
                                private val action: Int,
@@ -72,7 +68,7 @@ class FavouriteGridViewAdapter(val context : Context,
                 ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putBoolean("isFromFavouriteScreen", true)
+                    bundle.putString("origin_fragment", IsFromFragmentEnum.FAVORITES.name)
                     navController.navigate(action, bundle)
                 }
             } else {

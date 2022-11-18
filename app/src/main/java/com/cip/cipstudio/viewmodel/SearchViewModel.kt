@@ -14,6 +14,7 @@ import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
@@ -83,7 +84,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
         lastViewGamesRecyclerViewAdapter =
             GamesBigRecyclerViewAdapter(binding.root.context,
                 games,
-                R.id.action_search_to_gameDetailsFragment4, true)
+                R.id.action_search_to_gameDetailsFragment4, IsFromFragmentEnum.SEARCH)
         val manager = LinearLayoutManager(binding.root.context)
         manager.orientation = RecyclerView.HORIZONTAL
         binding.fSearchRvLastViewedGames.layoutManager = manager
