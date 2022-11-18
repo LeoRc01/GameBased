@@ -11,7 +11,7 @@ import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
-class RegisterViewModel(val context: Context) : ViewModel() {
+class RegisterViewModel() : ViewModel() {
 
     private val TAG = "RegisterViewModel"
 
@@ -21,7 +21,8 @@ class RegisterViewModel(val context: Context) : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    fun register(onSuccess: () -> Unit,
+    fun register(context: Context,
+                onSuccess: () -> Unit,
                  onFailure: (AuthErrorEnum) -> Unit = {}) {
 
         val email = this.email.value.toString().trim()

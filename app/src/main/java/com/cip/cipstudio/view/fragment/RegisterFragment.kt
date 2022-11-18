@@ -30,7 +30,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         registerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
-        registerViewModel = RegisterViewModel(requireContext())
+        registerViewModel = RegisterViewModel()
         registerBinding.registerViewModel = registerViewModel
         registerBinding.executePendingBindings()
 
@@ -48,22 +48,23 @@ class RegisterFragment : Fragment() {
             registerBinding.fRegisterLayoutPwd.error = ""
             registerBinding.fRegisterLayoutPwdConfirm.error = ""
             registerViewModel
-                .register(onSuccess = {
+                .register(requireContext(),
+                    onSuccess = {
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 },
                     onFailure = {
                         when(it.getErrorType()){
                             AuthTypeErrorEnum.EMAIL -> {
-                                registerBinding.fRegisterLayoutEmail.error = it.getErrorMessage(this.requireContext())
+                                registerBinding.fRegisterLayoutEmail.error = it.getErrorMessage().toString()
                             }
                             AuthTypeErrorEnum.PASSWORD -> {
-                                registerBinding.fRegisterLayoutPwd.error = it.getErrorMessage(this.requireContext())
+                                registerBinding.fRegisterLayoutPwd.error = it.getErrorMessage().toString()
                             }
                             AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
-                                registerBinding.fRegisterLayoutPwdConfirm.error = it.getErrorMessage(this.requireContext())
+                                registerBinding.fRegisterLayoutPwdConfirm.error = it.getErrorMessage().toString()
                             }
                             AuthTypeErrorEnum.UNKNOWN -> {
-                                Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, it.getErrorMessage(), Toast.LENGTH_SHORT).show()
                             }
                         }
                     })
