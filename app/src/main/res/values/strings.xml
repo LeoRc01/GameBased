@@ -48,4 +48,11 @@
     <string name="name">name</string>
     <string name="settings">settings</string>
     <string name="back">back</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
+    <string name="options">Options</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="account">Account</string>
+    <string name="change_email">Change email</string>
 </resources>
