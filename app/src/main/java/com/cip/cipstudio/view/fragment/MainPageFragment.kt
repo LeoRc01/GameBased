@@ -31,7 +31,7 @@ class MainPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_page, container, false)
-        viewModel = MainPageViewModel(requireContext())
+        viewModel = MainPageViewModel()
 
         // Most rated games
         initializeRecyclerView(

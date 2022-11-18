@@ -22,7 +22,7 @@ class PasswordResetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         passwordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false)
-        passwordResetViewModel = PasswordResetViewModel(requireContext())
+        passwordResetViewModel = PasswordResetViewModel()
 
         passwordResetBinding.passwordResetViewModel = passwordResetViewModel
 
