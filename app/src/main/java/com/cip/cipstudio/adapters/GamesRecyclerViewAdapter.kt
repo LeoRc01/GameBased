@@ -47,9 +47,9 @@ class GamesRecyclerViewAdapter (val context : Context,
         val ivNoPreview : ImageView
 
         init {
-            tvGameName = view.findViewById(R.id.tvGameName)
-            ivGameCover = view.findViewById(R.id.ivGameCover)
-            ivNoPreview = view.findViewById(R.id.ivNoPreview)
+            tvGameName = view.findViewById(R.id.i_game_tv_game_name)
+            ivGameCover = view.findViewById(R.id.i_game_iv_game_cover)
+            ivNoPreview = view.findViewById(R.id.i_game_iv_no_preview)
         }
     }
 

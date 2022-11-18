@@ -44,8 +44,8 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         val tvGameNameBigCover : TextView
 
         init {
-            ivBlurBackground = view.findViewById(R.id.ivBlurBackground)
-            ivGameCoverForeground = view.findViewById(R.id.ivGameCoverForeground)
+            ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
+            ivGameCoverForeground = view.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
             tvGameNameBigCover = view.findViewById(R.id.tvGameNameBigCover)
         }
     }

@@ -15,10 +15,7 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
 
@@ -35,14 +32,13 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
 
     init {
         MyFirebaseRepository.getInstance().getFavorites().addOnSuccessListener {
-            (it.value as Map<String, Object>).forEach {
+            (it.value as Map<*, *>).forEach {
                 favouriteGamesIds.add(it.value.toString())
             }
             viewModelScope.launch(Dispatchers.Main) {
-                val job = viewModelScope.launch(Dispatchers.IO){
-                    favouriteGames = IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds) as ArrayList<GameDetails>
+                favouriteGames = withContext(Dispatchers.IO){
+                     IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds) as ArrayList<GameDetails>
                 }
-                job.join()
                 initializeRecyclerView(favouriteGames)
                 isPageLoading.postValue(false)
             }

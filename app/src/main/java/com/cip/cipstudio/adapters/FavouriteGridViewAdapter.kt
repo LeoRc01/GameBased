@@ -57,8 +57,8 @@ class FavouriteGridViewAdapter(val context : Context,
             convertView = layoutInflater!!.inflate(R.layout.game_item, null)
         }
 
-        tvGameTitle = convertView!!.findViewById(R.id.tvGameName)
-        ivGameCover = convertView!!.findViewById(R.id.ivGameCover)
+        tvGameTitle = convertView!!.findViewById(R.id.i_game_tv_game_name)
+        ivGameCover = convertView!!.findViewById(R.id.i_game_iv_game_cover)
 
         tvGameTitle.text = games[position].name
 

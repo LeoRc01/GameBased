@@ -49,4 +49,5 @@
     <string name="settings">settings</string>
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
+    <string name="genre">Genre</string>
 </resources>

@@ -9,7 +9,7 @@
     <style name="genre_chip" parent="@style/Widget.MaterialComponents.Chip.Action">
         <item name="chipStrokeWidth">1dp</item>
         <item name="fontFamily">@font/montserrat_regular</item>
-        <item name="chipBackgroundColor">@color/light_seconday_color</item>
+        <item name="chipBackgroundColor">@color/light_secondary_color</item>
         <item name="chipStrokeColor">@color/primary_color</item>
         <item name="android:clickable">false</item>
         <item name="android:layout_width">wrap_content</item>
@@ -17,7 +17,7 @@
     </style>
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/light_seconday_color</item>
+        <item name="android:color">@color/light_secondary_color</item>
     </style>
 
     <style name="TextStyle" parent="@android:style/TextAppearance">

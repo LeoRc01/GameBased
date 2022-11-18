@@ -92,7 +92,7 @@
                         android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="15sp"
-                        app:backgroundTint="@color/light_seconday_color"
+                        app:backgroundTint="@color/light_secondary_color"
                         app:icon="@drawable/ic_favorite_border"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

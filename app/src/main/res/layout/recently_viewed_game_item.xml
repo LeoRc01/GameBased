@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    android:layout_marginRight="10dp"
+    android:layout_marginEnd="10dp"
     android:layout_width="match_parent"
     android:layout_height="170dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,11 +9,10 @@
 
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="true"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:clipChildren="true">
 
         <ImageView
-            android:id="@+id/ivBlurBackground"
+            android:id="@+id/i_recently_viewed_game_iv_blur_background"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -32,7 +31,7 @@
                 android:layout_width="110dp"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/ivGameCoverForeground"
+                    android:id="@+id/i_recently_viewed_game_iv_game_cover_foreground"
                     android:layout_width="match_parent"
                     android:scaleType="centerCrop"
                     android:layout_height="match_parent"/>
@@ -43,7 +42,7 @@
             <TextView
                 android:shadowRadius="20"
                 android:gravity="center"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:textStyle="bold"
                 android:textSize="17sp"
                 android:textColor="@color/white"
