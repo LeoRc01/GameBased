@@ -57,4 +57,5 @@
     <string name="change_email">Change email</string>
     <string name="profile_picture">profile picture</string>
     <string name="new_mail">New mail</string>
+    <string name="new_username">New username</string>
 </resources>
