@@ -15,11 +15,15 @@ import com.cip.cipstudio.databinding.FragmentUserBinding
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class UserFragment : Fragment() {
+    private val TAG = "UserFragment"
+
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userBinding: FragmentUserBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,12 +33,20 @@ class UserFragment : Fragment() {
         userViewModel = UserViewModel(userBinding)
 
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        userBinding.fUserTvUsername.text = currentUser?.email
+
+
         userBinding.fUserTvLogout.setOnClickListener {
             Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
             userViewModel.logout(onSuccess = {
                 val intent = Intent(requireContext(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()})
+        }
+
+        userBinding.fUserTvChangeEmail.setOnClickListener {
+            findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
         }
 
         return userBinding.root

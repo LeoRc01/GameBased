@@ -10,5 +10,17 @@
         android:id="@+id/profileScreen"
         android:name="com.cip.cipstudio.view.fragment.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeEmailFragment"
+        android:name="com.cip.cipstudio.view.fragment.ChangeEmailFragment"
+        android:label="ChangeEmailFragment" >
+        <action
+            android:id="@+id/action_changeEmailFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
 </navigation>
