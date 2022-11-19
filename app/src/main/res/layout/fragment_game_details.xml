@@ -126,6 +126,7 @@
                         android:layout_marginTop="12dp"
                         android:foreground="@drawable/fading_gradient"
                         android:text="@{vm.game.summary}"
+                        android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_hsv_viewGenreLayout"
@@ -138,6 +139,7 @@
                         android:layout_gravity="start"
                         android:text="@string/show_more"
                         android:textColor="@color/primary_color"
+                        android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsDescription" />
 
@@ -158,6 +160,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("first_release_date")? View.VISIBLE : View.GONE}'>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -180,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility='@{vm.game.fields.contains("platforms")? View.VISIBLE : View.GONE}'>
 
 
                             <TextView
@@ -203,6 +206,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("developer")? View.VISIBLE : View.GONE}'>
 
 
                             <TextView
@@ -226,6 +230,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("publisher")? View.VISIBLE : View.GONE}'>
 
 
                             <TextView
@@ -249,6 +254,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("support")? View.VISIBLE : View.GONE}'>
 
 
                             <TextView
@@ -372,6 +378,7 @@
                         android:text="@string/screenshots"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:visibility='@{vm.game.fields.contains("screenshots")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_cl_ratingLayout" />
 
@@ -382,6 +389,7 @@
                         android:layout_marginTop="4dp"
                         android:orientation="vertical"
                         android:scrollbars="horizontal"
+                        android:visibility='@{vm.game.fields.contains("screenshots")? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_screenshots" />
@@ -395,6 +403,7 @@
                         android:text="@string/similar_games"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:visibility='@{vm.game.fields.contains("similar_games")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
 
@@ -406,6 +415,7 @@
                         android:layout_marginBottom="70dp"
                         android:divider="@null"
                         android:orientation="horizontal"
+                        android:visibility='@{vm.game.fields.contains("similar_games")? View.VISIBLE : View.GONE}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
