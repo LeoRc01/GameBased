@@ -27,4 +27,6 @@
     <string name="send_email">Inviato</string>
     <string name="already_have_account">Hai già un account? Login</string>
     <string name="internal_error">errore interno</string>
+    <string name="add_to_favourite">Aggiungi ai preferiti</string>
+    <string name="remove_favourite">Rimuovi dai preferiti</string>
 </resources>

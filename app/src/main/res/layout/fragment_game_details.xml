@@ -141,54 +141,131 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsDescription" />
 
+
                     <LinearLayout
-                        android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                        android:id="@+id/f_gameDetails_ll_gameDetails_detailsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_showMoreDescription">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/release_date"
-                            android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{vm.game.releaseDate}"
-                            android:textColor="@color/primary_color" />
-                    </LinearLayout>
+                            android:orientation="horizontal"
 
-                    <LinearLayout
-                        android:id="@+id/f_gameDetails_ll_gameDetails_platforms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/release_date"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.game.releaseDate}"
+                                android:textColor="@color/primary_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_platforms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate">
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/platforms"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_developer"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/platforms"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
 
-                        <TextView
-                            android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
-                            android:layout_width="wrap_content"
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/developer"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_developer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.developers}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_publisher"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/primary_color" />
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/publisher"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_publisher"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.publishers}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_support"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/support"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_support"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.supporters}"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,7 +276,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms">
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_detailsLayout">
 
                         <LinearLayout
                             android:id="@+id/f_gameDetails_ll_userRating"

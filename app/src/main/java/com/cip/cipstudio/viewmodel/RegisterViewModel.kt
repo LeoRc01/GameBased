@@ -5,7 +5,6 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cip.cipstudio.R
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +18,7 @@ class RegisterViewModel() : ViewModel() {
     var password: MutableLiveData<String> = MutableLiveData()
     var confirmPassword: MutableLiveData<String> = MutableLiveData()
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun register(context: Context,
                 onSuccess: () -> Unit,
@@ -52,7 +51,7 @@ class RegisterViewModel() : ViewModel() {
 
         LoadingSpinner.showLoadingDialog(context)
 
-        auth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 LoadingSpinner.dismiss()
                 onSuccess.invoke()

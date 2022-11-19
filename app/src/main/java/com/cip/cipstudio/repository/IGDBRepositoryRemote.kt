@@ -87,7 +87,9 @@ object IGDBRepositoryRemote : IGDBRepository {
         val apicalypse = APICalypse().fields("id, name, summary, first_release_date, cover.url," +
                 "rating, rating_count, total_rating, total_rating_count," +
                 "screenshots.url, genres.name, genres.id, platforms.name, platforms.id," +
-                "similar_games.name, similar_games.id, similar_games.cover.url")
+                "similar_games.name, similar_games.id, similar_games.cover.url," +
+                "involved_companies.company.name, involved_companies.developer," +
+                "involved_companies.publisher, involved_companies.supporting")
             .where("id = $gameId")
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext GameDetails(json.getJSONObject(0))
