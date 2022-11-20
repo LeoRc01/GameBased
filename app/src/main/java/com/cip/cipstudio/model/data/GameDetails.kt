@@ -24,6 +24,15 @@ class GameDetails(val id: String,
     var involvedCompaniesDevelopers: List<JSONObject> = ArrayList()
     var involvedCompaniesPublishers: List<JSONObject> = ArrayList()
     var involvedCompaniesSupporting: List<JSONObject> = ArrayList()
+    var involvedCompaniesPorting: List<JSONObject> = ArrayList()
+    var franchise: JSONObject? = null
+    var languageSupport: List<JSONObject> = ArrayList()
+    var gameModes: List<JSONObject> = ArrayList()
+    var playerPerspectives: List<JSONObject> = ArrayList()
+    var collection: JSONObject? = null
+    var parentGame: GameDetails? = null
+    var dlcs: List<GameDetails> = ArrayList()
+
 
     var fields = HashSet<String>()
 
@@ -48,11 +57,33 @@ class GameDetails(val id: String,
         platforms = jsonGame.getListOrEmpty("platforms")
         similarGames = jsonGame.getGameDetailsListOrEmpty("similar_games")
         setInvolvedCompany(jsonGame)
+        gameModes = jsonGame.getListOrEmpty("game_modes")
+        playerPerspectives = jsonGame.getListOrEmpty("player_perspectives")
+        if (jsonGame.has("language_support")) {
+            languageSupport = jsonGame
+                .getJSONObject("language_support")
+                .getListOrEmpty("language")
+        }
+        if (jsonGame.has("franchise")) {
+            franchise = jsonGame.getJSONObject("franchise")
+            fields.add("franchise")
+        }
+        if (jsonGame.has("collection")) {
+            collection = jsonGame.getJSONObject("collection")
+            fields.add("collection")
+        }
+
+        if (jsonGame.has("parent_game")) {
+            parentGame = GameDetails(jsonGame.getJSONObject("parent_game"))
+            fields.add("parent_game")
+        }
+        dlcs = jsonGame.getGameDetailsListOrEmpty("dlcs")
+
     }
 
     fun setCoverUrl(cover: JSONObject) {
         coverUrl = cover.getStringOrEmpty("url")
-        if (!coverUrl.isEmpty()) {
+        if (coverUrl.isNotEmpty()) {
             coverUrl = coverUrl.replace("t_thumb", "t_cover_big")
             coverUrl = "https:$coverUrl"
             fields.add("cover")
@@ -132,6 +163,7 @@ class GameDetails(val id: String,
             val developer = company.getBoolean("developer")
             val publisher = company.getBoolean("publisher")
             val supporting = company.getBoolean("supporting")
+            val porting = company.getBoolean("porting")
 
             if (developer) {
                 if (!fields.contains("developer")) {
@@ -151,39 +183,84 @@ class GameDetails(val id: String,
                 }
                 (involvedCompaniesSupporting as ArrayList).add(company)
             }
+            if (porting) {
+                if (!fields.contains("porting")) {
+                    fields.add("porting")
+                }
+                (involvedCompaniesPorting as ArrayList).add(company)
+            }
         }
-    }
-
-    private fun getInvolvedCompanies(involvedCompanyType: InvolvedCompanyType) : String {
-        val involvedCompanies = when (involvedCompanyType) {
-            InvolvedCompanyType.DEVELOPER -> involvedCompaniesDevelopers
-            InvolvedCompanyType.PUBLISHER -> involvedCompaniesPublishers
-            InvolvedCompanyType.SUPPORTING -> involvedCompaniesSupporting
-        }
-        val developers : ArrayList<String> = arrayListOf()
-        involvedCompanies.forEach {
-            val company = it.getJSONObject("company")
-            val name = company.getString("name")
-            developers.add(name)
-        }
-        return developers.joinToString(", ")
     }
 
     fun getDevelopers() : String {
-        return getInvolvedCompanies(InvolvedCompanyType.DEVELOPER)
+        return getStringFromListOfJSONObject(involvedCompaniesDevelopers, "company", "name")
     }
 
     fun getPublishers() : String {
-        return getInvolvedCompanies(InvolvedCompanyType.PUBLISHER)
+        return getStringFromListOfJSONObject(involvedCompaniesPublishers, "company", "name")
     }
 
     fun getSupporters() : String {
-        return getInvolvedCompanies(InvolvedCompanyType.SUPPORTING)
+        return getStringFromListOfJSONObject(involvedCompaniesSupporting, "company", "name")
     }
+
+    fun getPorters() : String {
+        return getStringFromListOfJSONObject(involvedCompaniesPorting, "company", "name")
+    }
+
+    private fun getStringFromListOfJSONObject
+                (list: List<JSONObject>,
+                 nameObject: String,
+                 nameField: String) : String {
+        val result : ArrayList<String> = arrayListOf()
+        list.forEach {
+            val platform = it.getJSONObject(nameObject)
+            val name = platform.getString(nameField)
+            result.add(name)
+        }
+        return result.joinToString(", ")
+    }
+
+    private fun getStringFromListOfJSONObject
+                (list: List<JSONObject>,
+                 nameField: String = "name") : String {
+        val result : ArrayList<String> = arrayListOf()
+        list.forEach {
+            val name = it.getString(nameField)
+            result.add(name)
+        }
+        return result.joinToString(", ")
+    }
+
+    fun getPlatformsString() : String {
+        return getStringFromListOfJSONObject(platforms)
+    }
+
+    fun getGameModesString() : String {
+        return getStringFromListOfJSONObject(gameModes)
+    }
+
+    fun getPlayerPerspectivesString() : String {
+        return getStringFromListOfJSONObject(playerPerspectives)
+    }
+
+    fun getLanguageString() : String {
+        return getStringFromListOfJSONObject(languageSupport, "language", "name")
+    }
+
+    fun getFranchiseString() : String {
+        if (franchise != null) {
+            return franchise!!.getString("name")
+        }
+        return ""
+    }
+
+    fun getCollectionString() : String {
+        if (collection != null) {
+            return collection!!.getString("name")
+        }
+        return ""
+    }
+
 }
 
-enum class InvolvedCompanyType {
-    DEVELOPER,
-    PUBLISHER,
-    SUPPORTING
-}

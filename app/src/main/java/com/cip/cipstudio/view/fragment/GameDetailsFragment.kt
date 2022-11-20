@@ -70,10 +70,10 @@ class GameDetailsFragment : Fragment() {
         gameDetailsViewModel = GameDetailsViewModel(
             gameId,
             gameDetailsBinding,
-            { setScreenshots(it)},
-            { setSimilarGames(it)},
-            { setPlatforms(it)},
-            { setGenres(it)},
+            { setScreenshots(it) },
+            { setSimilarGames(it) },
+            { setDlCs(it) },
+            { setGenres(it) },
         ) {
             // onSuccess
             gameDetailsBinding.vm = gameDetailsViewModel
@@ -97,13 +97,22 @@ class GameDetailsFragment : Fragment() {
 
     private fun setSimilarGames(similarGamesList: List<GameDetails>) {
         val similarGamesRecyclerView = gameDetailsBinding.fGameDetailsRvSimilarGames
+        initRecyclerView(similarGamesList, similarGamesRecyclerView)
+    }
+
+    private fun setDlCs(dlcsList: List<GameDetails>) {
+        val dlcsRecyclerView = gameDetailsBinding.fGameDetailsRvDlcs
+        initRecyclerView(dlcsList, dlcsRecyclerView)
+    }
+
+    private fun initRecyclerView(listGame: List<GameDetails>, recyclerView: RecyclerView) {
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, originFragment)
-        similarGamesRecyclerView.layoutManager = manager
-        similarGamesRecyclerView.setItemViewCacheSize(50)
-        similarGamesRecyclerView.itemAnimator = null
-        similarGamesRecyclerView.adapter = rvSimilarGamesAdapter
+        val rvGamesAdapter = GamesRecyclerViewAdapter(requireContext(), listGame, originFragment)
+        recyclerView.layoutManager = manager
+        recyclerView.setItemViewCacheSize(50)
+        recyclerView.itemAnimator = null
+        recyclerView.adapter = rvGamesAdapter
     }
 
     private fun createChip(label: String):Chip {
@@ -133,10 +142,6 @@ class GameDetailsFragment : Fragment() {
                 )
             )
         }
-    }
-
-    private fun setPlatforms(platforms: String) {
-        gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
     }
 
 }

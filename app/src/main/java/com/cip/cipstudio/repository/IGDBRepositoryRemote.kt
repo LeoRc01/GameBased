@@ -83,13 +83,19 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
+    // TODO: Add multiplayer_modes to the request (forse)
+    // TODO: Add dlcs to the request (forse)
     override suspend fun getGameDetails(gameId: String): GameDetails = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("id, name, summary, first_release_date, cover.url," +
                 "rating, rating_count, total_rating, total_rating_count," +
                 "screenshots.url, genres.name, genres.id, platforms.name, platforms.id," +
                 "similar_games.name, similar_games.id, similar_games.cover.url," +
                 "involved_companies.company.name, involved_companies.developer," +
-                "involved_companies.publisher, involved_companies.supporting")
+                "involved_companies.publisher, involved_companies.supporting," +
+                "involved_companies.porting, franchise.name, franchise.id," +
+                "game_modes.name, player_perspectives.name, language_supports.language.name," +
+                "collection.name, collection.id, parent_game.name, parent_game.id," +
+                "dlcs.name, dlcs.id, dlcs.cover.url")
             .where("id = $gameId")
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext GameDetails(json.getJSONObject(0))

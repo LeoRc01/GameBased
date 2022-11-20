@@ -36,7 +36,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 binding: FragmentGameDetailsBinding,
                 setScreenshotUI: (List<JSONObject>) -> Unit,
                 setSimilarGamesUI: (List<GameDetails>) -> Unit,
-                setPlatformsUI: (String) -> Unit,
+                setDLCsUI: (List<GameDetails>) -> Unit,
                 setGenresUI: (List<JSONObject>)-> Unit,
                 onSuccess: () -> Unit) : this(binding) {
 
@@ -62,7 +62,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             // queste funzioni servono a dividere il ruolo di viewModel e view
             setScreenshotUI.invoke(game.screenshots)
             setSimilarGamesUI.invoke(game.similarGames)
-            setPlatformsUI.invoke(getPlatformsText())
+            setDLCsUI.invoke(game.dlcs)
             setGenresUI.invoke(game.genres)
             onSuccess.invoke()
         }
@@ -81,15 +81,6 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
     fun getGame() : GameDetails{
         return game
-    }
-
-    private fun getPlatformsText() : String {
-        var platformsString = ""
-        game.platforms.forEach {
-            val platform = it.getString("name")
-            platformsString = platform + if (platformsString != "") " / $platformsString" else ""
-        }
-        return platformsString
     }
 
     fun setFavouriteStatus(){

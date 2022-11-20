@@ -48,7 +48,15 @@
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
     <string name="genre">Genre</string>
-    <string name="developer">Developer:</string>
-    <string name="publisher">Publisher:</string>
-    <string name="support">Supporter:</string>
+    <string name="developer">Developers:</string>
+    <string name="publisher">Publishers:</string>
+    <string name="support">Supporting developers:</string>
+    <string name="porting_developer">Porting developers:</string>
+    <string name="player_perspectives">Player perspectives:</string>
+    <string name="language">Language:</string>
+    <string name="game_modes">Game modes:</string>
+    <string name="franchise">Franchise:</string>
+    <string name="collection">Collection:</string>
+    <string name="this_game_is_dlc_for">This game is DLC for:</string>
+    <string name="dlcs">DLCs:</string>
 </resources>
