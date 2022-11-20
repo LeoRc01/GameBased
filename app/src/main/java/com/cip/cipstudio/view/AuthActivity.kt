@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.R
+import com.cip.cipstudio.model.User
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthActivity : AppCompatActivity() {
@@ -32,8 +33,7 @@ class AuthActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_auth)
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser!=null){
+        if(User.isUserLogged()){
             startMainActivity()
         }
 
