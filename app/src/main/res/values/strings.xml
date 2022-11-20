@@ -49,4 +49,14 @@
     <string name="settings">settings</string>
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
+    <string name="options">Options</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="account">Account</string>
+    <string name="change_email">Change email</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="new_mail">New mail</string>
+    <string name="new_username">New username</string>
 </resources>
