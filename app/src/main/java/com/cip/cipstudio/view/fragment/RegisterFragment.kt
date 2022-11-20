@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
                             AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
                                 registerBinding.fRegisterLayoutPwdConfirm.error = getString(it.getErrorId())
                             }
-                            AuthTypeErrorEnum.UNKNOWN -> {
+                            else -> {
                                 Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                             }
 

@@ -54,7 +54,7 @@ enum class AuthErrorEnum {
         override fun getErrorType() = AuthTypeErrorEnum.CONFIRM_PASSWORD
                     },
     RECENT_LOGIN_REQUIRED {
-        override fun getErrorMessage() = R.string.recent_login_required
+        override fun getErrorId() = R.string.recent_login_required
         override fun getErrorType() = AuthTypeErrorEnum.LOGIN
                     },
     USERNAME_NOT_VALID {
