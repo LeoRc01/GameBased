@@ -34,18 +34,19 @@ class MainPageFragment : Fragment() {
 
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
-            initializeView()
-            Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
-            }, 2000)
+            initializeFragment()
+            Handler(Looper.getMainLooper())
+                .postDelayed( {
+                    mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
+                }, 2000)
         }
 
-        initializeView()
+        initializeFragment()
 
         return mainPageBinding.root
     }
 
-    private fun initializeView() {
+    private fun initializeFragment() {
         // Most rated games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
