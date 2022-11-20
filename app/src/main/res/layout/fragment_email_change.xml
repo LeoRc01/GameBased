@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="ChangeEmailViewModel"
+            name="changeEmailViewModel"
             type="com.cip.cipstudio.viewmodel.ChangeEmailViewModel" />
     </data>
 
@@ -58,7 +58,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/f_email_change_tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text="@={ChangeEmailViewModel.email}" />
+                        android:text="@={changeEmailViewModel.email}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text="@={ChangeEmailViewModel.password}" />
+                        android:text="@={changeEmailViewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button

@@ -52,10 +52,15 @@ enum class AuthErrorEnum {
         override fun getErrorMessage() = R.string.passwords_not_match
         override fun getErrorType() = AuthTypeErrorEnum.CONFIRM_PASSWORD
                     },
+    RECENT_LOGIN_REQUIRED {
+        override fun getErrorMessage() = R.string.recent_login_required
+        override fun getErrorType() = AuthTypeErrorEnum.LOGIN
+                    },
     UNKNOWN_ERROR {
         override fun getErrorMessage() = R.string.unknown_error
         override fun getErrorType() = AuthTypeErrorEnum.UNKNOWN
-                    };
+                    },
+    ;
 
 
     abstract fun getErrorMessage() : Int

@@ -26,10 +26,18 @@ class ChangeEmailFragment : Fragment() {
     ): View? {
         changeEmailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_email_change, container, false)
         changeEmailViewModel = ChangeEmailViewModel(changeEmailBinding)
+        changeEmailBinding.changeEmailViewModel = changeEmailViewModel
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        changeEmailBinding.fEmailChangeTvUsername.text = currentUser?.email
+        changeEmailBinding.fEmailChangeTvEmail.text = currentUser?.email
 
+
+        initializeChangeEmailButton()
+
+        return changeEmailBinding.root
+    }
+
+    private fun initializeChangeEmailButton() {
         changeEmailBinding.fEmailChangeBtnChange.setOnClickListener {
             changeEmailViewModel.changeEmail(
                 onSuccess = {
@@ -41,7 +49,5 @@ class ChangeEmailFragment : Fragment() {
                 }
             )
         }
-
-        return changeEmailBinding.root
     }
 }
