@@ -184,11 +184,33 @@
                             android:text="@string/platforms"
                             android:textStyle="bold" />
 
+                        <HorizontalScrollView
+                            android:scrollbarSize="0dp"
+                            android:id="@+id/f_gameDetails_hsv_viewPlatformsLayout"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_btn_favorite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <GridLayout
+
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                android:scrollbarSize="0dp"
+                                android:id="@+id/f_gameDetails_gl_gridPlatformsLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+
+                        </HorizontalScrollView>
+
+                        <!--
                         <TextView
                             android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/primary_color" />
+                            -->
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout

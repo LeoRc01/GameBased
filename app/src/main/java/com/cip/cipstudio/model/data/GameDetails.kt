@@ -2,6 +2,7 @@ package com.cip.cipstudio.model.data
 
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.utils.Converter
+import com.cip.cipstudio.utils.*
 import com.google.android.gms.tasks.Task
 import org.json.JSONObject
 import java.sql.Date
@@ -71,37 +72,6 @@ class GameDetails(val id: String,
         }
     }
 
-    private fun JSONObject.getStringOrEmpty(field: String) : String {
-        if (this.has(field)) {
-            return this.getString(field)
-        } else {
-            return ""
-        }
-    }
-
-    private fun JSONObject.getDoubleOrEmpty(field: String) : String {
-        if (this.has(field)) {
-            return this.getDouble(field).roundToInt().toString()
-        } else {
-            return "0"
-        }
-    }
-
-    private fun JSONObject.getArrayListOrEmpty(field: String) : List<JSONObject> {
-        return Converter.fromJsonObjectToArrayList(this, field)
-    }
-
-    private fun JSONObject.getGameDetailsArrayListOrEmpty(field: String) : List<GameDetails> {
-        return Converter.fromJsonObjectToGameDetailsArrayList(this, field)
-    }
-
-    private fun JSONObject.getIntOrZero(field: String) : String {
-        if (this.has(field)) {
-            return this.getInt(field).toString()
-        } else {
-            return "0"
-        }
-    }
 
 
 

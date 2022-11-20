@@ -1,14 +1,20 @@
 package com.cip.cipstudio.view.fragment
 
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginRight
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -17,15 +23,21 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
+import com.cip.cipstudio.model.data.PlatformDetails
+import com.cip.cipstudio.repository.IGDBRepository
+import com.cip.cipstudio.view.dialog.PlatformDetailsDialog
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
-
+    private val TAG : String = "GameDetailsFragment"
     private var myView : View? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -61,6 +73,7 @@ class GameDetailsFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeFragment() {
         val gameId = arguments?.get("game_id") as String
         gameDetailsViewModel = GameDetailsViewModel(
@@ -76,7 +89,6 @@ class GameDetailsFragment : Fragment() {
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
             initializeShowMore()
-
         }
     }
 
@@ -139,8 +151,37 @@ class GameDetailsFragment : Fragment() {
         }
     }
 
-    private fun setPlatforms(platforms: String) {
-        gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setPlatforms(platforms: List<PlatformDetails>) {
+        Log.i("PLATFORMS", platforms.toString())
+        for (platform in platforms){
+            gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.addView(
+                _setPlatformText(platform)
+            )
+        }
+        //gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun _setPlatformText(platform : PlatformDetails) : TextView{
+        val text = TextView(requireContext(), null, R.layout.platform_item)
+        text.setTextColor(requireContext().getColor(R.color.primary_color))
+        text.text = platform.name
+        text.typeface= ResourcesCompat.getFont(requireContext(), R.font.montserrat_regular)
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 0, 15, 0)
+        text.layoutParams = params
+        text.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.platform_bottom_sheet, null)
+            val dialog = PlatformDetailsDialog(requireContext(), platform, view)
+
+
+            dialog.show()
+        }
+        return text
     }
 
 }

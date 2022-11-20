@@ -7,6 +7,7 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/genreChipWidget"
+        android:textColor="@color/black"
         android:fontFamily="@font/montserrat_regular"
         chipStrokeWidth="1dp"
         chipBackgroundColor="@color/light_seconday_color"

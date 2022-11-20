@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.action_homeScreen_self)
                         navController.clearBackStack("")
                     }
-
                 }
                 R.id.menu_favourite->{
                     if(currentFragment !is FavouriteFragment) {
