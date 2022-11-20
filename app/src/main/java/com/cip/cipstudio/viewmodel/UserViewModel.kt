@@ -19,12 +19,12 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     }
 
     fun setDarkMode(onSuccess: () -> Unit) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         onSuccess.invoke()
     }
 
     fun setLightMode(onSuccess: () -> Unit) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         onSuccess.invoke()
     }
 

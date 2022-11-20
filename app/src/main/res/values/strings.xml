@@ -69,4 +69,6 @@
     <string name="profile_picture">profile picture</string>
     <string name="new_mail">New mail</string>
     <string name="new_username">New username</string>
+    <string name="setting_preferences">com.cip.cipstudio.setting</string>
+    <string name="dark_mode_settings">darkMode</string>
 </resources>
