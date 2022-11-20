@@ -8,14 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.cip.cipstudio.viewmodel.FavouriteViewModel
 import com.cip.cipstudio.viewmodel.SearchViewModel
@@ -39,13 +45,17 @@ class SearchFragment : Fragment() {
         searchBinding.vm = searchViewModel
         searchBinding.lifecycleOwner = this
 
+        searchBinding.fSearchButton.setOnClickListener {
+            search()
+        }
+
         return searchBinding.root
     }
 
-    private fun search (view: View) {
+    private fun search () {
         LoadingSpinner.showLoadingDialog(requireContext())
 
-        getGames(view){
+        getGames {
             LoadingSpinner.dismiss()
         }
     }
@@ -57,20 +67,14 @@ class SearchFragment : Fragment() {
 
     // InvocationTargetException:
     // nel mio caso c'era la chiamata IGDWrappermio.getPlatform qua dentro
-    private fun getGames(view : View, onSuccess: () -> Unit) {
-        var game : GameDetails ?= null
+    private fun getGames(onSuccess: () -> Unit) {
 
+        val bundle = bundleOf()
+        bundle.putString("game_id", "2058")
+        bundle.putString("origin_fragment", IsFromFragmentEnum.SEARCH.name)
 
-        val a = lifecycleScope.launch(Dispatchers.Main) {
-            game = IGDBRepositoryRemote.getGameDetails("143")
-        }
-        lifecycleScope.launch(Dispatchers.Main) {
-            a.join()
-            Log.i(TAG, "getGames: ${game?.id}")
-            view.findViewById<TextView>(R.id.f_search_tv).text =
-                "${game?.name}, ${game?.id}, ${game?.summary}, ${game?.coverUrl}"
-            onSuccess.invoke()
-        }
+        findNavController().navigate(R.id.action_search_to_gameDetailsFragment4, bundle)
 
+        onSuccess.invoke()
     }
 }
