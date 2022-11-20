@@ -19,11 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rotation="0"
+            app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+            app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:menu="@menu/bottom_navigation_menu"
+            app:backgroundTint="?colorOnPrimary"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

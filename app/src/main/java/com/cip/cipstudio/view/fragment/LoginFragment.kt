@@ -13,6 +13,7 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.MainActivity
+import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.cip.cipstudio.viewmodel.LoginViewModel
 
 
@@ -27,7 +28,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         loginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        loginViewModel = LoginViewModel(requireContext())
+        loginViewModel = LoginViewModel()
         loginBinding.loginViewModel = loginViewModel
         loginBinding.executePendingBindings()
 
@@ -45,24 +46,27 @@ class LoginFragment : Fragment() {
 
     private fun initializeLoginButton(){
         loginBinding.fLoginBtnLogin.setOnClickListener {
+            LoadingSpinner.showLoadingDialog(requireContext())
             loginBinding.fLoginLayoutEmail.error = ""
             loginBinding.fLoginLayoutPwd.error = ""
             loginViewModel
                 .login(onSuccess = {
+                        LoadingSpinner.dismiss()
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     },
                     onFailure = {
+                        LoadingSpinner.dismiss()
                         when(it.getErrorType()){
                             AuthTypeErrorEnum.EMAIL -> {
-                                loginBinding.fLoginLayoutEmail.error = it.getErrorMessage(this.requireContext())
+                                loginBinding.fLoginLayoutEmail.error = it.getErrorMessage().toString()
                             }
                             AuthTypeErrorEnum.PASSWORD -> {
-                                loginBinding.fLoginLayoutPwd.error = it.getErrorMessage(this.requireContext())
+                                loginBinding.fLoginLayoutPwd.error = it.getErrorMessage().toString()
                             }
                             AuthTypeErrorEnum.UNKNOWN -> {
-                                Toast.makeText(context, it.getErrorMessage(this.requireContext()), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, it.getErrorMessage(), Toast.LENGTH_SHORT).show()
                             }
                             else -> {
                                 Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show()

@@ -1,21 +1,27 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
 import com.cip.cipstudio.R
+import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.squareup.picasso.Picasso
-import com.cip.cipstudio.model.data.Game
 
-class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game>) : BaseAdapter() {
+
+// TODO(generalizzare questo adapter)
+class FavouriteGridViewAdapter(val context : Context,
+                               val games : ArrayList<GameDetails>,
+                               private val action: Int,
+                               private val navController: NavController) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
     private lateinit var tvGameTitle : TextView
@@ -34,6 +40,7 @@ class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game
         return position.toLong()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
         // on blow line we are checking if layout inflater
@@ -50,28 +57,23 @@ class FavouriteGridViewAdapter(val context : Context, val games : ArrayList<Game
             convertView = layoutInflater!!.inflate(R.layout.game_item, null)
         }
 
-        tvGameTitle = convertView!!.findViewById(R.id.tvGameName)
-        ivGameCover = convertView!!.findViewById(R.id.ivGameCover)
+        tvGameTitle = convertView!!.findViewById(R.id.i_game_tv_game_name)
+        ivGameCover = convertView!!.findViewById(R.id.i_game_iv_game_cover)
 
         tvGameTitle.text = games[position].name
 
-        games[position].getCover{
-            val uiHandler = Handler(Looper.getMainLooper())
-            uiHandler.post(Runnable {
-                if(it!="NO_COVER") {
-                    Picasso.get().load("https:${it}").into(ivGameCover)
-                    ivGameCover.setOnClickListener {
-
-                        //val bundle = bundleOf("game" to games[position])
-
-                        //convertView!!.findNavController().navigate(action, bundle)
-
-                    }
+        games[position].coverUrl.let {
+            if(!it.isEmpty() && it != "null") {
+                Picasso.get().load(it).into(ivGameCover)
+                ivGameCover.setOnClickListener {
+                    val bundle = bundleOf()
+                    bundle.putString("game_id", games[position].id)
+                    bundle.putString("origin_fragment", IsFromFragmentEnum.FAVORITES.name)
+                    navController.navigate(action, bundle)
                 }
-                else{
-                    convertView!!.findViewById<ImageView>(R.id.ivNoPreview).visibility = View.VISIBLE
-                }
-            })
+            } else {
+                //viewHolder.ivNoPreview.visibility = View.VISIBLE
+            }
         }
 
         return convertView

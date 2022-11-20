@@ -9,10 +9,12 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainPageViewModel(val context: Context) : ViewModel() {
+class MainPageViewModel() : ViewModel() {
 
     private val TAG = "MainPageViewModel"
 
@@ -30,27 +32,15 @@ class MainPageViewModel(val context: Context) : ViewModel() {
      *
      * - aggiorna la UI tramite la funzione updateUI passata come parametro
      */
-    fun initializeRecyclerView(recyclerView : RecyclerView,
-                               adapter : GamesRecyclerViewAdapter,
-                               getGames : suspend () -> List<GameDetails>,
+    fun initializeRecyclerView(gameTypeEnum: GameTypeEnum,
                                updateUI : (List<GameDetails>)->Unit
     ){
-        // Creo il layout manager (fondamentale)
-        val manager = LinearLayoutManager(context)
-        // Imposto l'orientamento a orizzontale
-        manager.orientation = RecyclerView.HORIZONTAL
-        // Setto il layoutmanager alla RV
-        recyclerView.setLayoutManager(manager)
-        recyclerView.setItemViewCacheSize(50)
-        recyclerView.itemAnimator = null
-        recyclerView.adapter = adapter
 
-        var games :List<GameDetails> = listOf()
+        var games :List<GameDetails>
         viewModelScope.launch(Dispatchers.Main) {
-            val job = launch(Dispatchers.IO) {
-                games = getGames.invoke()
+            games = withContext(Dispatchers.IO) {
+                gameRepository.getGamesByType(gameTypeEnum)
             }
-            job.join()
             updateUI.invoke(games)
         }
 

@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentFavouriteBinding
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
-import com.cip.cipstudio.model.data.Game
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.viewmodel.FavouriteViewModel
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
@@ -23,17 +22,25 @@ class FavouriteFragment : Fragment() {
     private lateinit var favouriteBinding: FragmentFavouriteBinding
     private lateinit var favouriteViewModel: FavouriteViewModel
 
+    private var myView : View? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
+        if(myView==null){
+            Log.i("NULL", "NULL VIEW")
+            favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
 
-        favouriteViewModel = FavouriteViewModel(favouriteBinding)
-        favouriteBinding.vm = favouriteViewModel
-        favouriteBinding.lifecycleOwner = this
+            favouriteViewModel = FavouriteViewModel(favouriteBinding)
+            favouriteBinding.vm = favouriteViewModel
+            favouriteBinding.lifecycleOwner = this
+            myView = favouriteBinding.root
+        }
+        (myView!!.parent as ViewGroup?)?.removeView(myView)
 
-        return favouriteBinding.root
+        return myView!!
+        //return favouriteBinding.root
     }
 
     override fun onDestroy() {

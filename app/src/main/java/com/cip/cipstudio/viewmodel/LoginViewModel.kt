@@ -1,20 +1,16 @@
 package com.cip.cipstudio.viewmodel
 
-import android.content.Context
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cip.cipstudio.R
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
-class LoginViewModel(val context : Context) : ViewModel(){
+class LoginViewModel() : ViewModel(){
 
     private val TAG = "LoginViewModel"
 
@@ -43,11 +39,8 @@ class LoginViewModel(val context : Context) : ViewModel(){
             return
         }
 
-        LoadingSpinner.showLoadingDialog(context)
-
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                LoadingSpinner.dismiss()
                 onSuccess.invoke()
             }
             .addOnFailureListener {

@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
-import com.cip.cipstudio.model.data.Game
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="seconday_color">#EF233C</color>
-    <color name="light_seconday_color">#4AFF2C46</color>
+    <color name="secondary_color">#EF233C</color>
+    <!-- <color name="light_seconday_color">#4AFF2C46</color> -->
+    <color name="light_secondary_color">#FFA7B0</color>
     <color name="primary_color">#D90429</color>
     <color name="primary_color_dark">#9A001B</color>
     <color name="teal_200">#FF03DAC5</color>

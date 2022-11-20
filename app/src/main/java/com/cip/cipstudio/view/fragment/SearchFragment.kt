@@ -8,40 +8,54 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import com.api.igdb.request.IGDBWrapper
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
+import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.IGDBWrappermio
+import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
+import com.cip.cipstudio.viewmodel.FavouriteViewModel
+import com.cip.cipstudio.viewmodel.SearchViewModel
 import kotlinx.coroutines.*
-import org.json.JSONArray
-import proto.Game
-import proto.Platform
 
 class SearchFragment : Fragment() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
         throwable.printStackTrace()
     }
+    private lateinit var searchBinding: FragmentSearchBinding
+    private lateinit var searchViewModel: SearchViewModel
     private val TAG = "SearchFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-        view.findViewById<Button>(R.id.f_search_button).setOnClickListener { search(view) }
+        searchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
 
+        searchViewModel = SearchViewModel(searchBinding)
+        searchBinding.vm = searchViewModel
+        searchBinding.lifecycleOwner = this
 
-        // Inflate the layout for this fragment
-        return view
+        searchBinding.fSearchButton.setOnClickListener {
+            search()
+        }
+
+        return searchBinding.root
     }
 
-    private fun search (view: View) {
+    private fun search () {
         LoadingSpinner.showLoadingDialog(requireContext())
 
-        getGames(view){
+        getGames {
             LoadingSpinner.dismiss()
         }
     }
@@ -53,32 +67,14 @@ class SearchFragment : Fragment() {
 
     // InvocationTargetException:
     // nel mio caso c'era la chiamata IGDWrappermio.getPlatform qua dentro
-    private fun getGames(view : View, onSuccess: () -> Unit) {
-        var game : GameDetails ?= null
+    private fun getGames(onSuccess: () -> Unit) {
 
+        val bundle = bundleOf()
+        bundle.putString("game_id", "2058")
+        bundle.putString("origin_fragment", IsFromFragmentEnum.SEARCH.name)
 
-        val a = lifecycleScope.launch(Dispatchers.Main) {
-            game = IGDBRepositoryRemote.getGamesDetails("143")
-        }
-        lifecycleScope.launch(Dispatchers.Main) {
-            a.join()
-            Log.i(TAG, "getGames: ${game?.id}")
-            view.findViewById<TextView>(R.id.f_search_tv).text =
-                "${game?.name}, ${game?.id}, ${game?.summary}, ${game?.coverUrl}"
-            onSuccess.invoke()
-        }
+        findNavController().navigate(R.id.action_search_to_gameDetailsFragment4, bundle)
 
-    }
-
-    private fun getPlatform(game : Game) = runBlocking {
-        if (game.platformsList.isEmpty())
-            return@runBlocking emptyList<Platform>()
-        return@runBlocking IGDBWrappermio.platformsGames(game.platformsList[0].id.toString())
-    }
-
-    // InvocationTargetException:
-    // nel mio caso c'era un log dentro a questa funzione e quello dava problemi
-    private fun getProva() = runBlocking {
-        return@runBlocking IGDBWrappermio.prova()
+        onSuccess.invoke()
     }
 }
