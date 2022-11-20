@@ -60,16 +60,16 @@ class LoginFragment : Fragment() {
                         LoadingSpinner.dismiss()
                         when(it.getErrorType()){
                             AuthTypeErrorEnum.EMAIL -> {
-                                loginBinding.fLoginLayoutEmail.error = it.getErrorMessage().toString()
+                                loginBinding.fLoginLayoutEmail.error = getString(it.getErrorId())
                             }
                             AuthTypeErrorEnum.PASSWORD -> {
-                                loginBinding.fLoginLayoutPwd.error = it.getErrorMessage().toString()
+                                loginBinding.fLoginLayoutPwd.error = getString(it.getErrorId())
                             }
                             AuthTypeErrorEnum.UNKNOWN -> {
-                                Toast.makeText(context, it.getErrorMessage(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                             }
                             else -> {
-                                Toast.makeText(context, R.string.internal_error, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, getString(R.string.internal_error), Toast.LENGTH_SHORT).show()
                             }
                         }
                     })

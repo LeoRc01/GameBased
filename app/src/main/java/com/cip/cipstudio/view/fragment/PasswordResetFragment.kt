@@ -36,7 +36,7 @@ class PasswordResetFragment : Fragment() {
                     Toast.makeText(requireContext(), "Da implementare", Toast.LENGTH_SHORT).show()
                 },
                 onFailure = {
-                    passwordResetBinding.fPasswordResetLayoutEmail.error = it.getErrorMessage().toString()
+                    passwordResetBinding.fPasswordResetLayoutEmail.error = getString(it.getErrorId())
                 }
             )
         }
