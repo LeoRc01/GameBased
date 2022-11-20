@@ -1,63 +1,72 @@
 package com.cip.cipstudio.view.fragment
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
-import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment() {
+    private val TAG = "MainPageFragment"
 
-    private lateinit var viewModel: MainPageViewModel
-
+    private lateinit var mainPageViewModel: MainPageViewModel
+    private lateinit var mainPageBinding: FragmentMainPageBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_main_page, container, false)
-        viewModel = MainPageViewModel()
+        mainPageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
+        mainPageViewModel = MainPageViewModel()
 
+        mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
+            Log.i(TAG, "Refreshing")
+            initializeView()
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
+            }, 2000)
+        }
+
+        initializeView()
+
+        return mainPageBinding.root
+    }
+
+    private fun initializeView() {
         // Most rated games
         initializeRecyclerView(
-            R.id.f_mainPage_rv_mostRatedGames,
+            mainPageBinding.fMainPageRvMostRatedGames,
             GameTypeEnum.MOST_RATED,
-            R.id.f_mainPage_ls_mostRatedGames,
-            view
+            mainPageBinding.fMainPageLsMostRatedGames
         )
 
         // Most hyped games
         initializeRecyclerView(
-            R.id.f_mainPage_rv_mostHypedGames,
+            mainPageBinding.fMainPageRvMostHypedGames,
             GameTypeEnum.MOST_HYPED,
-            R.id.f_mainPage_ls_mostHypedGames,
-            view
+            mainPageBinding.fMainPageLsMostHypedGames
         )
-
-        return view
     }
 
     private fun initializeRecyclerView(
-        recyclerViewId: Int,
+        recyclerView: RecyclerView,
         gameTypeEnum: GameTypeEnum,
-        circularProgressIndicatorId: Int,
-        view : View
+        circularProgressIndicator: CircularProgressIndicator
     ) {
+        circularProgressIndicator.visibility = View.VISIBLE
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 
@@ -67,16 +76,14 @@ class MainPageFragment : Fragment() {
             IsFromFragmentEnum.MAIN_PAGE
         )
 
-        val recyclerView = view.findViewById<RecyclerView>(recyclerViewId)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        viewModel.initializeRecyclerView(gameTypeEnum) {
+        mainPageViewModel.initializeRecyclerView(gameTypeEnum) {
             adapter.importItems(it)
-            view.findViewById<CircularProgressIndicator>(circularProgressIndicatorId)
-                .visibility = View.GONE
+            circularProgressIndicator.visibility = View.GONE
         }
     }
 }

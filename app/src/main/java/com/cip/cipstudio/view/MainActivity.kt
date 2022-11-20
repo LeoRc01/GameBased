@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.a_main_cv_container) as NavHostFragment
         navController = navHostFragment.navController
 
-        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById<BottomNavigationView>(R.id.a_main_bnv_bottom_navigation)
 
         bottomNavigationView.setOnItemReselectedListener {
             val currentFragment = navHostFragment.childFragmentManager.fragments[0]
