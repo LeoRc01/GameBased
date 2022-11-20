@@ -9,10 +9,10 @@
         android:id="@+id/genreChipWidget"
         android:fontFamily="@font/montserrat_regular"
         chipStrokeWidth="1dp"
-        chipBackgroundColor="@color/light_seconday_color"
+        chipBackgroundColor="@color/light_secondary_color"
         chipStrokeColor="@color/primary_color"
         android:clickable="false"
-        android:text="Genre"
+        android:text="@string/genre"
         style="@style/Widget.MaterialComponents.Chip.Action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

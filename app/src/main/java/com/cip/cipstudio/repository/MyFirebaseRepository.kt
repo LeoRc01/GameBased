@@ -54,21 +54,21 @@ class MyFirebaseRepository {
             .setValue(data).addOnSuccessListener {
                 getRecentlyViewedGames().addOnSuccessListener {
                     if(it.value!=null){
-                        val counter : Int = (it.value as Map<String, Any>).size
+                        val counter : Int = (it.value as Map<*, *>).size
                         if(counter > 10){
                             var lastElementId : String = ""
                             var lastElementTimeStamp = 0L
-                            (it.value as Map<String, Any>).forEach { el ->
-                                lastElementId = (el.value as Map<String, Any>).get("gameId").toString()
-                                lastElementTimeStamp = (el.value as Map<String, Any>).get("dateTime") as Long
+                            (it.value as Map<*, *>).forEach { el ->
+                                lastElementId = (el.value as Map<*, *>).get("gameId").toString()
+                                lastElementTimeStamp = (el.value as Map<*, *>).get("dateTime") as Long
                                 return@forEach
                             }
 
-                            (it.value as Map<String, Any>).forEach {el ->
-                                val data = el.value as Map<String, Any>
-                                if(lastElementTimeStamp > data.get("dateTime") as Long){
-                                    lastElementTimeStamp = data.get("dateTime") as Long
-                                    lastElementId = data.get("gameId").toString()
+                            (it.value as Map<*, *>).forEach { el ->
+                                val data = el.value as Map<*, *>
+                                if(lastElementTimeStamp > data["dateTime"] as Long){
+                                    lastElementTimeStamp = data["dateTime"] as Long
+                                    lastElementId = data["gameId"].toString()
                                 }
                             }
                             if(gameId!=lastElementId){

@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainPageViewModel(val context: Context) : ViewModel() {
+class MainPageViewModel() : ViewModel() {
 
     private val TAG = "MainPageViewModel"
 
@@ -36,7 +36,7 @@ class MainPageViewModel(val context: Context) : ViewModel() {
                                updateUI : (List<GameDetails>)->Unit
     ){
 
-        var games :List<GameDetails> = listOf()
+        var games :List<GameDetails>
         viewModelScope.launch(Dispatchers.Main) {
             games = withContext(Dispatchers.IO) {
                 gameRepository.getGamesByType(gameTypeEnum)

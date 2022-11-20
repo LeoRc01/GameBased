@@ -92,7 +92,7 @@
                         android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="15sp"
-                        app:backgroundTint="@color/light_seconday_color"
+                        app:backgroundTint="@color/light_secondary_color"
                         app:icon="@drawable/ic_favorite_border"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +126,7 @@
                         android:layout_marginTop="12dp"
                         android:foreground="@drawable/fading_gradient"
                         android:text="@{vm.game.summary}"
+                        android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_hsv_viewGenreLayout"
@@ -138,57 +139,305 @@
                         android:layout_gravity="start"
                         android:text="@string/show_more"
                         android:textColor="@color/primary_color"
+                        android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsDescription" />
 
+
                     <LinearLayout
-                        android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                        android:id="@+id/f_gameDetails_ll_gameDetails_detailsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_showMoreDescription">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_parentGame"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/release_date"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("parent_game")? View.VISIBLE : View.GONE}'>
 
-                        <TextView
-                            android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/this_game_is_dlc_for"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_parent_game"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.game.parentGame.name}"
+                                android:textColor="@color/primary_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{vm.game.releaseDate}"
-                            android:textColor="@color/primary_color" />
-                    </LinearLayout>
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("first_release_date")? View.VISIBLE : View.GONE}'>
 
-                    <LinearLayout
-                        android:id="@+id/f_gameDetails_ll_gameDetails_platforms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/release_date"
+                                android:textStyle="bold" />
 
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.game.releaseDate}"
+                                android:textColor="@color/primary_color" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_platforms"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:text="@string/platforms"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("platforms")? View.VISIBLE : View.GONE}'>
 
-                        <TextView
-                            android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
-                            android:layout_width="wrap_content"
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/platforms"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.platformsString}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_developer"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/primary_color" />
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("developer")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/developer"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_developer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.developers}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_publisher"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("publisher")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/publisher"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_publisher"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.publishers}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_support"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("support")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/support"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_support"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.supporters}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_porting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("porting")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/porting_developer"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_porting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.porters}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_language"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("language")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/language"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_language"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.languageString}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_playerPerspectives"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("player_perspectives")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/player_perspectives"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_playerPerspectives"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.playerPerspectivesString}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_gameModes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("game_modes")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/game_modes"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_gameModes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.gameModesString}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_franchise"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("franchise")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/franchise"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_franchise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.franchiseString}"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/f_gameDetails_ll_gameDetails_collection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:visibility='@{vm.game.fields.contains("collection")? View.VISIBLE : View.GONE}'>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@string/collection"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/f_gameDetails_tv_GameDetails_collection"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_color"
+                                android:text="@{vm.game.collectionString}"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,7 +448,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_platforms">
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_detailsLayout">
 
                         <LinearLayout
                             android:id="@+id/f_gameDetails_ll_userRating"
@@ -295,6 +544,7 @@
                         android:text="@string/screenshots"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:visibility='@{vm.game.fields.contains("screenshots")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_cl_ratingLayout" />
 
@@ -305,9 +555,36 @@
                         android:layout_marginTop="4dp"
                         android:orientation="vertical"
                         android:scrollbars="horizontal"
+                        android:visibility='@{vm.game.fields.contains("screenshots")? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_screenshots" />
+
+                    <TextView
+                        android:id="@+id/f_gameDetails_tv_dlcs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/dlcs"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:visibility='@{vm.game.fields.contains("dlcs")? View.VISIBLE : View.GONE}'
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/f_gameDetails_rv_dlcs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:divider="@null"
+                        android:orientation="horizontal"
+                        android:visibility='@{vm.game.fields.contains("dlcs")? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_dlcs"
+                        app:reverseLayout="true" />
 
                     <TextView
                         android:id="@+id/f_gameDetails_tv_similarGames"
@@ -318,8 +595,9 @@
                         android:text="@string/similar_games"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:visibility='@{vm.game.fields.contains("similar_games")? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
+                        app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_dlcs" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/f_gameDetails_rv_similarGames"
@@ -329,6 +607,7 @@
                         android:layout_marginBottom="70dp"
                         android:divider="@null"
                         android:orientation="horizontal"
+                        android:visibility='@{vm.game.fields.contains("similar_games")? View.VISIBLE : View.GONE}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

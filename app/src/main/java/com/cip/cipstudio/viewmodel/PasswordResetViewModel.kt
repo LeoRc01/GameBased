@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.utils.AuthErrorEnum
 
-class PasswordResetViewModel(context: Context) : ViewModel() {
+class PasswordResetViewModel() : ViewModel() {
 
     var email: MutableLiveData<String> = MutableLiveData()
 

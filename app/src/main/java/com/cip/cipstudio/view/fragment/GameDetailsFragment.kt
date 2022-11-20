@@ -17,6 +17,7 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
@@ -26,15 +27,14 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
-    private var myView : View? = null
+    private lateinit var originFragment : IsFromFragmentEnum
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //if(myView == null){
-            gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
+        gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
 
         gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
 
@@ -63,13 +63,17 @@ class GameDetailsFragment : Fragment() {
 
     private fun initializeFragment() {
         val gameId = arguments?.get("game_id") as String
+        originFragment = IsFromFragmentEnum.valueOf(arguments?.get("origin_fragment") as String)
+        if (originFragment == IsFromFragmentEnum.MAIN_PAGE)
+            originFragment = IsFromFragmentEnum.HOME
+
         gameDetailsViewModel = GameDetailsViewModel(
             gameId,
             gameDetailsBinding,
-            { setScreenshots(it)},
-            { setSimilarGames(it)},
-            { setPlatforms(it)},
-            { setGenres(it)},
+            { setScreenshots(it) },
+            { setSimilarGames(it) },
+            { setDlCs(it) },
+            { setGenres(it) },
         ) {
             // onSuccess
             gameDetailsBinding.vm = gameDetailsViewModel
@@ -93,21 +97,22 @@ class GameDetailsFragment : Fragment() {
 
     private fun setSimilarGames(similarGamesList: List<GameDetails>) {
         val similarGamesRecyclerView = gameDetailsBinding.fGameDetailsRvSimilarGames
+        initRecyclerView(similarGamesList, similarGamesRecyclerView)
+    }
+
+    private fun setDlCs(dlcsList: List<GameDetails>) {
+        val dlcsRecyclerView = gameDetailsBinding.fGameDetailsRvDlcs
+        initRecyclerView(dlcsList, dlcsRecyclerView)
+    }
+
+    private fun initRecyclerView(listGame: List<GameDetails>, recyclerView: RecyclerView) {
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val isFromFavourite = arguments?.get("isFromFavouriteScreen")
-        val isFromSearchScreen = arguments?.get("isFromSearchScreen")
-        var rvSimilarGamesAdapter : GamesRecyclerViewAdapter
-        if(isFromFavourite != null && isFromFavourite as Boolean)
-            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment3_self)
-        else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
-            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment4_self)
-        else
-            rvSimilarGamesAdapter = GamesRecyclerViewAdapter(requireContext(), similarGamesList, R.id.action_gameDetailsFragment2_self)
-        similarGamesRecyclerView.layoutManager = manager
-        similarGamesRecyclerView.setItemViewCacheSize(50)
-        similarGamesRecyclerView.itemAnimator = null
-        similarGamesRecyclerView.adapter = rvSimilarGamesAdapter
+        val rvGamesAdapter = GamesRecyclerViewAdapter(requireContext(), listGame, originFragment)
+        recyclerView.layoutManager = manager
+        recyclerView.setItemViewCacheSize(50)
+        recyclerView.itemAnimator = null
+        recyclerView.adapter = rvGamesAdapter
     }
 
     private fun createChip(label: String):Chip {
@@ -137,10 +142,6 @@ class GameDetailsFragment : Fragment() {
                 )
             )
         }
-    }
-
-    private fun setPlatforms(platforms: String) {
-        gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
     }
 
 }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.view.fragment.SearchFragment
 import com.squareup.picasso.Picasso
@@ -24,8 +25,7 @@ import com.squareup.picasso.Picasso
 
 class GamesRecyclerViewAdapter (val context : Context,
                                 var games : List<GameDetails>,
-                                private val action: Int,
-                                private val isFromSearchFragment: Boolean = false
+                                private val isFromFragment: IsFromFragmentEnum = IsFromFragmentEnum.MAIN_PAGE
                                 ) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
@@ -40,16 +40,16 @@ class GamesRecyclerViewAdapter (val context : Context,
     * Provide a reference to the type of views that you are using
     * (custom ViewHolder).
     */
-    class ViewHolder(view: View, isFromSearchFragment: Boolean) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val tvGameName : TextView
         val ivGameCover : ImageView
         val ivNoPreview : ImageView
 
         init {
-            tvGameName = view.findViewById(R.id.tvGameName)
-            ivGameCover = view.findViewById(R.id.ivGameCover)
-            ivNoPreview = view.findViewById(R.id.ivNoPreview)
+            tvGameName = view.findViewById(R.id.i_game_tv_game_name)
+            ivGameCover = view.findViewById(R.id.i_game_iv_game_cover)
+            ivNoPreview = view.findViewById(R.id.i_game_iv_no_preview)
         }
     }
 
@@ -60,25 +60,26 @@ class GamesRecyclerViewAdapter (val context : Context,
          val view = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.game_item, viewGroup, false)
 
-        return ViewHolder(view, isFromSearchFragment)
+        return ViewHolder(view)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tvGameName!!.text = games[position].name
+        viewHolder.tvGameName.text = games[position].name
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCover)
-                viewHolder.ivGameCover!!.setOnClickListener {
+                viewHolder.ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putBoolean("isFromSearchScreen", isFromSearchFragment)
+                    bundle.putString("origin_fragment", isFromFragment.name)
+
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
-                    viewHolder.itemView.findNavController().navigate(action, bundle)
+                    viewHolder.itemView.findNavController().navigate(isFromFragment.getFragmentAction(), bundle)
                 }
             } else {
-                viewHolder.ivNoPreview!!.visibility = View.VISIBLE
+                viewHolder.ivNoPreview.visibility = View.VISIBLE
             }
         }
     }

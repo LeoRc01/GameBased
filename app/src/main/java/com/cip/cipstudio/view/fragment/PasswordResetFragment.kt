@@ -22,7 +22,7 @@ class PasswordResetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         passwordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false)
-        passwordResetViewModel = PasswordResetViewModel(requireContext())
+        passwordResetViewModel = PasswordResetViewModel()
 
         passwordResetBinding.passwordResetViewModel = passwordResetViewModel
 
@@ -36,7 +36,7 @@ class PasswordResetFragment : Fragment() {
                     Toast.makeText(requireContext(), "Da implementare", Toast.LENGTH_SHORT).show()
                 },
                 onFailure = {
-                    passwordResetBinding.fPasswordResetLayoutEmail.error = it.getErrorMessage(requireContext())
+                    passwordResetBinding.fPasswordResetLayoutEmail.error = it.getErrorMessage().toString()
                 }
             )
         }
