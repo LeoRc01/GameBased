@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.protobuf:protobuf-java:3.21.7'
+
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-database'
     //implementation("com.google.android.material:material:1.8.0-alpha01")

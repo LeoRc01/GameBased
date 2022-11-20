@@ -59,4 +59,14 @@
     <string name="collection">Collection:</string>
     <string name="this_game_is_dlc_for">This game is DLC for:</string>
     <string name="dlcs">DLCs:</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
+    <string name="options">Options</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="account">Account</string>
+    <string name="change_email">Change email</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="new_mail">New mail</string>
+    <string name="new_username">New username</string>
 </resources>
