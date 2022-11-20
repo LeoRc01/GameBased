@@ -49,6 +49,22 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
         }
 
+
+
+        userBinding.fUserScDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) {
+                userViewModel.setDarkMode(onSuccess = {
+                    Toast.makeText(requireContext(), "Dark mode", Toast.LENGTH_SHORT).show()
+                })
+            } else {
+                userViewModel.setLightMode(onSuccess = {
+                    Toast.makeText(requireContext(), "Light mode", Toast.LENGTH_SHORT).show()
+                })
+            }
+        }
+
+
+
         return userBinding.root
     }
 }
