@@ -7,6 +7,7 @@ import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.TwitchAuthenticator
 import com.api.igdb.request.jsonGames
+import com.api.igdb.request.jsonPlatforms
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Converter
@@ -85,17 +86,22 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     override suspend fun getPlatformsInfo(platformIds : List<String>) : List<PlatformDetails> = withContext(Dispatchers.IO){
-        val apicalypse = APICalypse().fields("platforms.abbreviation, " +
-                "platforms.alternative_name, " +
-                "platforms.category, " +
-                "platforms.name, " +
-                "platforms.platform_logo.url, " +
-                "platforms.summary, " +
-                "platforms.url, " +
-                "platforms.id, " +
-                "platforms.versions")
+        val apicalypse = APICalypse().fields("abbreviation, " +
+                "alternative_name, " +
+                "category, " +
+                "name, " +
+                "platform_logo.url, " +
+                "summary, " +
+                "url, " +
+                "id, " +
+                "versions.cpu, " +
+                "versions.graphics," +
+                "versions.memory, " +
+                "versions.output," +
+                "versions.storage," +
+                "versions.resolutions ")
             .where("id = ${_buildIdsForRequest(platformIds)}")
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+        val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) })
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
@@ -110,11 +116,14 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     override suspend fun getGamesByPlatform(platformId : String) : List<GameDetails> = withContext(Dispatchers.IO) {
-        Log.i("ID", platformId)
+
         val apicalypse = APICalypse().fields("name, id, cover.url")
-            .where("platforms.id = $platformId")
-            .where("cover != n")
+            .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0 & platforms = [$platformId]")
+            .sort("rating", Sort.DESCENDING)
             .limit(10)
+
+
+
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }

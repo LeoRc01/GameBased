@@ -49,6 +49,12 @@
     <string name="settings">settings</string>
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
-
+    <string name="not_defined">Not defined.</string>
     <string name="no_summary_provided">No summary provided.</string>
+    <string name="cpu">CPU: </string>
+    <string name="graphics">Graphics: </string>
+    <string name="memory">Memory: </string>
+    <string name="output">Output: </string>
+    <string name="storage">Storage: </string>
+    <string name="resolutions">Resolutions: </string>
 </resources>

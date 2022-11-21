@@ -1,5 +1,7 @@
 package com.cip.cipstudio.utils
 
+import android.content.res.Resources
+import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import org.json.JSONObject
 import kotlin.math.roundToInt
@@ -34,4 +36,11 @@ fun JSONObject.getStringOrEmpty(field: String) : String {
     } else {
         return "0"
     }
+}
+
+fun JSONObject.getStringOrNotDefined(field : String) : String {
+    if (this.has(field)) {
+        return this.getString(field)
+    }
+    return "N/D"
 }

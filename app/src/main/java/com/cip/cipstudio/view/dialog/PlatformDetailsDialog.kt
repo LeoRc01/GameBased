@@ -1,41 +1,44 @@
 package com.cip.cipstudio.view.dialog
 
 
-import android.content.Context
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.PlatformBottomSheetBinding
 import com.cip.cipstudio.model.data.PlatformDetails
-import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.viewmodel.PlatformDetailsDialogViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class PlatformDetailsDialog(val context: Context,
-                            val platformDetails: PlatformDetails,
-                            val view : View) {
-    private val dialog : BottomSheetDialog by lazy {
-        BottomSheetDialog(context)
-    }
 
-    private var binding: PlatformBottomSheetBinding = PlatformBottomSheetBinding.bind(view)
-    private var viewModel : PlatformDetailsDialogViewModel
+class PlatformDetailsDialog() : BottomSheetDialogFragment() {
 
-    init {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val platformDetails = arguments?.get("platform") as PlatformDetails
+        val view = layoutInflater.inflate(R.layout.platform_bottom_sheet, null)
+        binding = DataBindingUtil.inflate(inflater, R.layout.platform_bottom_sheet, container, false)
+        //binding = DataBindingUtil.inflate(inflater, , container, false)
         binding.platDetails = platformDetails
-        Log.i("URL", platformDetails.platformLogo)
-        Picasso.get().load(platformDetails.platformLogo).into(binding.platformBottomSheetPlatformLogo)
+        if(platformDetails.platformLogo != "")
+            Picasso.get().load(platformDetails.platformLogo).into(binding.platformBottomSheetPlatformLogo)
         viewModel = PlatformDetailsDialogViewModel(binding)
-        dialog.setCancelable(true)
-        dialog.setContentView(view)
-
-
+        isCancelable = true
+        showsDialog = false
+        dialog!!.setContentView(binding.root.rootView)
+        binding.lifecycleOwner=this
+        return binding.root
     }
 
-    fun show(){
-        dialog.show()
-    }
+    private lateinit var binding: PlatformBottomSheetBinding
+    private lateinit var viewModel : PlatformDetailsDialogViewModel
 
 }

@@ -1,8 +1,10 @@
 package com.cip.cipstudio.viewmodel
 
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -20,19 +22,18 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding) : 
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            Log.i("ID", binding.platDetails!!.id)
             val job = viewModelScope.launch(Dispatchers.IO) {
                 gamesWithPlatform = gameRepository.getGamesByPlatform(binding.platDetails!!.id)
             }
             job.join()
-            initializeRecyclerView(gamesWithPlatform)
+            //initializeRecyclerView(gamesWithPlatform)
         }
     }
 
     private fun initializeRecyclerView(gamesWithPlatform : List<GameDetails>){
         val adapter = GamesRecyclerViewAdapter(binding.root.context,
             gamesWithPlatform,
-            R.id.action_gameDetailsFragment2_self)
+            R.id.action_platformDetailsDialog_to_gameDetailsFragment2)
         val recyclerView = binding.platformBottomSheetGamesWithThisPlatform
         val manager = LinearLayoutManager(binding.root.context)
         manager.orientation = RecyclerView.HORIZONTAL
@@ -41,5 +42,6 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding) : 
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
     }
+
 
 }

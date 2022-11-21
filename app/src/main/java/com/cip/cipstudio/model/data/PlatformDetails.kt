@@ -13,22 +13,25 @@ data class PlatformDetails(
     var platformLogo : String,
     var summary : String,
     var url : String,
-) {
+    val hardwareDetails: PlatformHardwareDetails
+) : java.io.Serializable {
     constructor(jsonGame: JSONObject) : this(
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("id"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("abbreviation"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("alternative_name"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getString("category"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("name"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getJSONObject("platform_logo").getStringOrEmpty("url").getCorrectPlatformLogo(),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("summary"),
-        jsonGame.getJSONArray("platforms").getJSONObject(0).getStringOrEmpty("url"),
+        jsonGame.getStringOrEmpty("id"),
+        jsonGame.getStringOrEmpty("abbreviation"),
+        jsonGame.getStringOrEmpty("alternative_name"),
+        jsonGame.getString("category"),
+        jsonGame.getStringOrEmpty("name"),
+        if (jsonGame.has("platform_logo")) jsonGame.getJSONObject("platform_logo").getStringOrEmpty("url").getCorrectPlatformLogo() else "",
+        jsonGame.getStringOrEmpty("summary"),
+        jsonGame.getStringOrEmpty("url"),
+        PlatformHardwareDetails(jsonGame.getJSONArray("versions").getJSONObject(0))
     ){
-        //Log.i("DATA", jsonGame.toString())
         category = getCategoryString(category.toInt())
         if(summary.isEmpty()) summary = "No summary provided."
     }
 }
+
+
 
 fun getCategoryString(enumValue : Int) : String{
     return when (enumValue) {
@@ -44,12 +47,13 @@ fun getCategoryString(enumValue : Int) : String{
 
 fun String.getCorrectPlatformLogo() : String{
     var result = this
-    if (!result.isEmpty()) {
-        /*
+    if (result.isNotEmpty()) {
+
         if(result.contains("t_thumb")){
-            result = this.replace("t_thumb", "t_logo_med")
+            result = result.replace("t_thumb", "t_logo_med")
+            result = result.replace(".jpg", ".png")
         }
-         */
+
         result = "https:$result"
     }
     return result
