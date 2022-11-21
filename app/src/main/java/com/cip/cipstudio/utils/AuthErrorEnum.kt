@@ -17,6 +17,10 @@ enum class AuthErrorEnum {
         override fun getErrorId() = R.string.email_not_registered
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
                     },
+    NOT_YOUR_EMAIL {
+        override fun getErrorId() = R.string.not_your_email
+        override fun getErrorType() = AuthTypeErrorEnum.EMAIL
+    },
     PASSWORD_NOT_CORRECT {
         override fun getErrorId() = R.string.password_not_correct
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
@@ -76,7 +80,7 @@ enum class AuthErrorEnum {
     UNKNOWN_ERROR {
         override fun getErrorId() = R.string.unknown_error
         override fun getErrorType() = AuthTypeErrorEnum.UNKNOWN
-                    },
+    },
     ;
 
 

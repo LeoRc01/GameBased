@@ -53,6 +53,10 @@ class UserFragment : Fragment() {
             findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
         }
 
+        userBinding.fUserTvChangePassword.setOnClickListener {
+            findNavController().navigate(R.id.action_userFragment_to_changePasswordFragment)
+        }
+
 
         userBinding.fUserScDarkMode.isChecked = preferences.getBoolean(getString(R.string.dark_mode_settings), false)
         userBinding.fUserScDarkMode.setOnCheckedChangeListener { _, isChecked ->

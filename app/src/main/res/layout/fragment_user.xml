@@ -168,7 +168,7 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/f_user_sc_darkMode"
-                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:theme="@style/ThemeOverlay.MySwitchCompat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -179,7 +179,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerOptions"
-                    app:drawableLeftCompat="@drawable/ic_dark_mode"/>
+                    app:drawableLeftCompat="@drawable/ic_dark_mode" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

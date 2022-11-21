@@ -78,4 +78,8 @@
     <string name="username_too_short">Username too short</string>
     <string name="username_too_long">Username too long</string>
     <string name="email">Email</string>
+    <string name="old_password">old password</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="not_your_email">not this account email</string>
 </resources>

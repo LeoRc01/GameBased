@@ -94,7 +94,7 @@ class RegisterViewModel() : ViewModel() {
         return when {
             username.length < 3 -> AuthErrorEnum.USERNAME_TOO_SHORT
             username.length > 20 -> AuthErrorEnum.USERNAME_TOO_LONG
-            !username.matches(Regex("^([_]*[a-zA-Z0-9][a-zA-Z0-9_]*)\$")) -> AuthErrorEnum.USERNAME_NOT_VALID
+            !username.matches(Regex("^([_.]*[a-zA-Z0-9][a-zA-Z0-9_.]*)\$")) -> AuthErrorEnum.USERNAME_NOT_VALID
             else -> null
         }
     }
