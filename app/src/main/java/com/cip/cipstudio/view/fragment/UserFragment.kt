@@ -37,7 +37,8 @@ class UserFragment : Fragment() {
 
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        userBinding.fUserTvUsername.text = currentUser?.email
+        userBinding.fUserTvUsername.text = currentUser?.displayName
+        userBinding.fUserTvEmail.text = currentUser?.email
 
 
         userBinding.fUserTvLogout.setOnClickListener {
