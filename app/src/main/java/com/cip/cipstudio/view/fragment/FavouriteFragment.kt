@@ -55,9 +55,6 @@ class FavouriteFragment : Fragment() {
         return favouriteBinding.root
     }
 
-        return favouriteBinding.root
-    }
-
     private fun initializeFavourites(){
         favouriteViewModel.initialize {
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),

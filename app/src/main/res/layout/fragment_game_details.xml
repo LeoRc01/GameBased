@@ -154,33 +154,45 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginTop="5dp"
-                            android:orientation="vertical"
-                            android:visibility='@{vm.game.fields.contains("platforms")? View.VISIBLE : View.GONE}'>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_showMoreDescription">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/f_gameDetails_ll_gameDetails_parentGame"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:textStyle="bold" />
-                                android:text="@string/platforms"
-                            <GridLayout
-                                android:layout_marginTop="5dp"
-                                android:columnCount="2"
                                 android:orientation="horizontal"
-                                android:scrollbars="horizontal"
-                                android:scrollbarSize="0dp"
-                                android:id="@+id/f_gameDetails_gl_gridPlatformsLayout"
-                                android:layout_width="wrap_content"
+                                android:visibility='@{vm.game.fields.contains("parent_game")? View.VISIBLE : View.GONE}'>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="5dp"
+                                    android:text="@string/this_game_is_dlc_for"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/f_gameDetails_tv_GameDetails_parent_game"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.game.parentGame.name}"
+                                    android:textColor="@color/primary_color" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/f_gameDetails_ll_gameDetails_developer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal"
-                            android:visibility='@{vm.game.fields.contains("developer")? View.VISIBLE : View.GONE}'>
+                                android:orientation="horizontal"
+                                android:visibility='@{vm.game.fields.contains("first_release_date")? View.VISIBLE : View.GONE}'>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="5dp"
+                                    android:text="@string/release_date"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
@@ -195,8 +207,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:orientation="horizontal"
-                                android:visibility='@{vm.game.fields.contains("platforms")? View.VISIBLE : View.GONE}'>
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate">
 
 
                                 <TextView
@@ -206,12 +220,17 @@
                                     android:text="@string/platforms"
                                     android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/f_gameDetails_tv_GameDetails_Platforms"
+
+                                <GridLayout
+                                    android:layout_marginTop="5dp"
+                                    android:columnCount="2"
+                                    android:orientation="horizontal"
+                                    android:scrollbars="horizontal"
+                                    android:scrollbarSize="0dp"
+                                    android:id="@+id/f_gameDetails_gl_gridPlatformsLayout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
-                                    android:text="@{vm.game.platformsString}"/>
+                                    />
                             </LinearLayout>
 
                             <LinearLayout

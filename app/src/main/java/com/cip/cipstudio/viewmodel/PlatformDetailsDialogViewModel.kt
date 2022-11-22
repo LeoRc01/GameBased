@@ -12,6 +12,7 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.PlatformBottomSheetBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.utils.IsFromFragmentEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,7 +34,7 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding) : 
     private fun initializeRecyclerView(gamesWithPlatform : List<GameDetails>){
         val adapter = GamesRecyclerViewAdapter(binding.root.context,
             gamesWithPlatform,
-            R.id.action_platformDetailsDialog_to_gameDetailsFragment2)
+            IsFromFragmentEnum.DIALOG)
         val recyclerView = binding.platformBottomSheetGamesWithThisPlatform
         val manager = LinearLayoutManager(binding.root.context)
         manager.orientation = RecyclerView.HORIZONTAL

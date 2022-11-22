@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,7 +42,7 @@ class GameDetailsFragment : Fragment() {
 
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
-    private val TAG : String = "GameDetailsFragment"
+
     private lateinit var originFragment : IsFromFragmentEnum
 
     private var showMore = true
@@ -101,6 +99,7 @@ class GameDetailsFragment : Fragment() {
             { setScreenshots(it) },
             { setSimilarGames(it) },
             { setDlCs(it) },
+            { setPlatforms(it) },
             { setGenres(it) },
         ) {
             // onSuccess

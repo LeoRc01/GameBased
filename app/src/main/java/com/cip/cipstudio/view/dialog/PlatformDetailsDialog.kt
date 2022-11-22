@@ -24,9 +24,8 @@ class PlatformDetailsDialog() : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val platformDetails = arguments?.get("platform") as PlatformDetails
-        val view = layoutInflater.inflate(R.layout.platform_bottom_sheet, null)
         binding = DataBindingUtil.inflate(inflater, R.layout.platform_bottom_sheet, container, false)
-        //binding = DataBindingUtil.inflate(inflater, , container, false)
+
         binding.platDetails = platformDetails
         if(platformDetails.platformLogo != "")
             Picasso.get().load(platformDetails.platformLogo).into(binding.platformBottomSheetPlatformLogo)

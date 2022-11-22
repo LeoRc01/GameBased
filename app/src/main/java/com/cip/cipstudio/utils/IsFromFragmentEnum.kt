@@ -14,7 +14,11 @@ enum class IsFromFragmentEnum {
     },
     MAIN_PAGE {
         override fun getFragmentAction() = R.id.action_menu_home_to_gameDetailsFragment2
+    },
+    DIALOG {
+        override fun getFragmentAction() = R.id.action_platformDetailsDialog_to_gameDetailsFragment2
     };
+
 
     abstract fun getFragmentAction() : Int
 }
