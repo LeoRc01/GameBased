@@ -1,29 +1,17 @@
 package com.cip.cipstudio.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentSearchBinding
-import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.model.data.Loading
-import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
-import com.cip.cipstudio.viewmodel.FavouriteViewModel
 import com.cip.cipstudio.viewmodel.SearchViewModel
 import kotlinx.coroutines.*
 
@@ -71,9 +59,8 @@ class SearchFragment : Fragment() {
 
         val bundle = bundleOf()
         bundle.putString("game_id", "2058")
-        bundle.putString("origin_fragment", IsFromFragmentEnum.SEARCH.name)
 
-        findNavController().navigate(R.id.action_search_to_gameDetailsFragment4, bundle)
+        findNavController().navigate(R.id.action_searchScreen_to_game_details_search, bundle)
 
         onSuccess.invoke()
     }

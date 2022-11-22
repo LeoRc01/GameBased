@@ -12,35 +12,15 @@
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite">
         <action
-            android:id="@+id/action_fav_to_gameDetailsFragment3"
-            app:destination="@id/gameDetailsFragment3" />
+            android:id="@+id/action_favouriteScreen_to_game_details_favourite"
+            app:destination="@id/game_details_favourite" />
     </fragment>
-
-    <fragment
-        android:id="@+id/gameDetailsFragment3"
-        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
-        android:label="GameDetailsFragment" >
+    <navigation android:id="@+id/game_details_favourite"
+        app:startDestination="@id/game_details">
+        <include app:graph="@navigation/game_details" />
         <action
-            android:id="@+id/action_gameDetailsFragment3_self"
-            app:destination="@id/gameDetailsFragment3" />
-        <action
-            app:popUpTo="@id/menu_favourite"
-            app:popUpToInclusive="true"
-            android:id="@+id/action_gameDetailsFragment3_to_favouriteScreen"
+            android:id="@+id/action_global_favouriteScreen"
             app:destination="@id/favouriteScreen" />
-        <action
-            android:id="@+id/action_gameDetailsFragment3_to_platformDetailsDialog2"
-            app:destination="@id/platformDetailsDialog2" />
-        <action
-            android:id="@+id/action_gameDetailsFragment3_to_gameScreenshotDialog2"
-            app:destination="@id/gameScreenshotDialog2" />
-    </fragment>
-    <dialog
-        android:id="@+id/platformDetailsDialog2"
-        android:name="com.cip.cipstudio.view.dialog.PlatformDetailsDialog"
-        android:label="PlatformDetailsDialog" />
-    <dialog
-        android:id="@+id/gameScreenshotDialog2"
-        android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
-        android:label="GameScreenshotDialog" />
+    </navigation>
+
 </navigation>

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.menu_home->{
                     if(currentFragment !is MainPageFragment){
-                        navController.navigate(R.id.action_gameDetailsFragment2_to_homeScreen)
+                        navController.navigate(R.id.action_global_homeScreen)
                         navController.clearBackStack("")
                     }else{
                         navController.navigate(R.id.action_homeScreen_self)
@@ -47,13 +47,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_favourite->{
                     if(currentFragment !is FavouriteFragment) {
-                        navController.navigate(R.id.action_gameDetailsFragment3_to_favouriteScreen)
+                        navController.navigate(R.id.action_global_favouriteScreen)
                         navController.clearBackStack("")
                     }
                 }
                 R.id.menu_search->{
                     if(currentFragment !is SearchFragment) {
-                        navController.navigate(R.id.action_gameDetailsFragment4_to_searchScreen)
+                        navController.navigate(R.id.action_global_searchScreen)
                         navController.clearBackStack("")
                     }
                 }

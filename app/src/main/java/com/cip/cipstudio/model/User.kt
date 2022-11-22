@@ -13,6 +13,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 object User {
     private val TAG = User::class.java.simpleName
 
+    var logged = false
     var uid: String? = null
     var email: String? = null
     var username: String? = null
@@ -29,8 +30,8 @@ object User {
             email = auth.currentUser!!.email
             username = auth.currentUser!!.displayName
             photoUrl = auth.currentUser!!.photoUrl.toString()
+            logged = true
         }
-        Log.i(TAG, "initUser: $username")
     }
 
     fun login(email: String,

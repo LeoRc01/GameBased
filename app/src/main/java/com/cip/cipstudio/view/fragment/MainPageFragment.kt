@@ -15,7 +15,7 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.utils.GameTypeEnum
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
 
@@ -77,7 +77,7 @@ class MainPageFragment : Fragment() {
         val adapter = GamesRecyclerViewAdapter(
             requireContext(),
             ArrayList(),
-            IsFromFragmentEnum.MAIN_PAGE
+            ActionGameDetailsEnum.MAIN_PAGE
         )
 
         recyclerView.layoutManager = linearLayoutManager

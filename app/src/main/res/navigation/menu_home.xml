@@ -12,41 +12,17 @@
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" >
         <action
-            android:id="@+id/action_menu_home_to_gameDetailsFragment2"
-            app:destination="@id/gameDetailsFragment2" />
-        <action
             android:id="@+id/action_homeScreen_self"
             app:destination="@id/homeScreen" />
+        <action
+            android:id="@+id/action_homeScreen_to_game_details_home"
+            app:destination="@id/game_details_home" />
     </fragment>
-    <fragment
-        android:id="@+id/gameDetailsFragment2"
-        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
-        android:label="GameDetailsFragment" >
+    <navigation android:id="@+id/game_details_home"
+        app:startDestination="@id/game_details">
         <action
-            android:id="@+id/action_gameDetailsFragment2_self"
-            app:destination="@id/gameDetailsFragment2" />
-        <action
-            app:popUpTo="@id/menu_home"
-            app:popUpToInclusive="true"
-            android:id="@+id/action_gameDetailsFragment2_to_homeScreen"
+            android:id="@+id/action_global_homeScreen"
             app:destination="@id/homeScreen" />
-        <action
-            android:id="@+id/action_gameDetailsFragment2_to_platformDetailsDialog"
-            app:destination="@id/platformDetailsDialog" />
-        <action
-            android:id="@+id/action_gameDetailsFragment2_to_gameScreenshotDialog"
-            app:destination="@id/gameScreenshotDialog" />
-    </fragment>
-    <dialog
-        android:id="@+id/platformDetailsDialog"
-        android:name="com.cip.cipstudio.view.dialog.PlatformDetailsDialog"
-        android:label="PlatformDetailsDialog" >
-        <action
-            android:id="@+id/action_platformDetailsDialog_to_gameDetailsFragment2"
-            app:destination="@id/gameDetailsFragment2" />
-    </dialog>
-    <dialog
-        android:id="@+id/gameScreenshotDialog"
-        android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
-        android:label="GameScreenshotDialog" />
+        <include app:graph="@navigation/game_details" />
+    </navigation>
 </navigation>

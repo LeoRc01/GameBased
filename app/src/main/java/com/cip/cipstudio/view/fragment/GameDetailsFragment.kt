@@ -27,14 +27,12 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.model.data.PlatformDetails
-import com.cip.cipstudio.view.dialog.PlatformDetailsDialog
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import org.json.JSONObject
-import kotlin.properties.Delegates
 
 
 class GameDetailsFragment : Fragment() {
@@ -43,7 +41,7 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
-    private lateinit var originFragment : IsFromFragmentEnum
+    private lateinit var originFragment : ActionGameDetailsEnum
 
     private var showMore = true
 
@@ -89,9 +87,6 @@ class GameDetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeFragment(refresh : Boolean = false) {
         val gameId = arguments?.get("game_id") as String
-        originFragment = IsFromFragmentEnum.valueOf(arguments?.get("origin_fragment") as String)
-        if (originFragment == IsFromFragmentEnum.MAIN_PAGE)
-            originFragment = IsFromFragmentEnum.HOME
 
         gameDetailsViewModel = GameDetailsViewModel(
             gameId,
@@ -117,18 +112,9 @@ class GameDetailsFragment : Fragment() {
         val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val isFromFavourite = arguments?.get("isFromFavouriteScreen")
-        val isFromSearchScreen = arguments?.get("isFromSearchScreen")
-        var action = 0
-        if(isFromFavourite != null && isFromFavourite as Boolean)
-            action = R.id.action_gameDetailsFragment3_to_gameScreenshotDialog2
-        else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
-            action = R.id.action_gameDetailsFragment4_to_gameScreenshotDialog3
-        else
-            action = R.id.action_gameDetailsFragment2_to_gameScreenshotDialog
         val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(requireContext(),
             screenshotList,
-            action)
+            R.id.action_gameDetailsFragment_to_gameScreenshotDialog)
         screenshotsRecyclerView.layoutManager = manager
         screenshotsRecyclerView.setItemViewCacheSize(50)
         screenshotsRecyclerView.itemAnimator = null
@@ -148,7 +134,7 @@ class GameDetailsFragment : Fragment() {
     private fun initRecyclerView(listGame: List<GameDetails>, recyclerView: RecyclerView) {
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val rvGamesAdapter = GamesRecyclerViewAdapter(requireContext(), listGame, originFragment)
+        val rvGamesAdapter = GamesRecyclerViewAdapter(requireContext(), listGame)
         recyclerView.layoutManager = manager
         recyclerView.setItemViewCacheSize(50)
         recyclerView.itemAnimator = null
@@ -161,7 +147,7 @@ class GameDetailsFragment : Fragment() {
             requireContext(),
             null,
             0,
-            com.cip.cipstudio.R.style.genre_chip
+            R.style.genre_chip
         )
         chip.setChipDrawable(chipDrawable)
         val params = LinearLayout.LayoutParams(
@@ -190,14 +176,35 @@ class GameDetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setPlatforms(platforms: List<PlatformDetails>) {
         gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.removeAllViews()
-        for (platform in platforms){
+        for (platform in platforms) {
+
+            val text = TextView(requireContext(), null, R.layout.platform_item)
+            text.setTextColor(requireContext().getColor(R.color.primary_color))
+
+            val content = SpannableString(platform.name)
+            content.setSpan(UnderlineSpan(), 0, platform.name.length, 0)
+            text.text = content
+            text.typeface= ResourcesCompat.getFont(requireContext(), R.font.montserrat_regular)
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(0, 0, 15, 0)
+            text.layoutParams = params
+            text.setOnClickListener {
+                val view = layoutInflater.inflate(R.layout.platform_bottom_sheet, null)
+                val bundle = bundleOf()
+                bundle.putSerializable("platform", platform)
+                findNavController().navigate(R.id.action_gameDetailsFragment_to_platformDetailsDialog, bundle)
+            }
+
             gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.addView(
-                _setPlatformsView(platform)
+                text
             )
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    /*@RequiresApi(Build.VERSION_CODES.M)
     private fun _setPlatformsView(platform : PlatformDetails) : TextView{
         val text = TextView(requireContext(), null, R.layout.platform_item)
         text.setTextColor(requireContext().getColor(R.color.primary_color))
@@ -228,5 +235,5 @@ class GameDetailsFragment : Fragment() {
                 findNavController().navigate(R.id.action_gameDetailsFragment2_to_platformDetailsDialog, bundle)
         }
         return text
-    }
+    }*/
 }

@@ -58,7 +58,6 @@ class FavouriteFragment : Fragment() {
         favouriteViewModel.initialize (refresh) {
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
-                R.id.action_fav_to_gameDetailsFragment3,
                 favouriteBinding.root.findNavController())
             favouriteBinding.gvFavoriteGames.adapter = gvAdapter
         }
