@@ -9,55 +9,62 @@
             type="com.cip.cipstudio.viewmodel.FavouriteViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/f_favourite_srl_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragment.FavouriteFragment">
-
-        <LinearLayout
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
+        android:layout_height="match_parent">
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:context=".view.fragment.FavouriteFragment">
 
-
-            <TextView
-                android:layout_marginTop="20dp"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:id="@+id/tvFavourite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/favourite" />
-
-            <RelativeLayout
-                android:clipChildren="true"
+            <LinearLayout
+                android:layout_marginHorizontal="20dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:indeterminate="true"
-                    android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
+
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:id="@+id/tvFavourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favourite" />
+
+                <RelativeLayout
+                    android:clipChildren="true"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
 
-                <GridView
-                    android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}"
-                    android:numColumns="2"
-                    android:id="@+id/gvFavoriteGames"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="55dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:indeterminate="true"
+                        android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                    <GridView
+                        android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}"
+                        android:numColumns="2"
+                        android:id="@+id/gvFavoriteGames"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="55dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
 
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-        </LinearLayout>
+            </LinearLayout>
 
 
-    </FrameLayout>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 </layout>

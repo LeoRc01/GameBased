@@ -23,34 +23,26 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
         MutableLiveData<Boolean>(true)
     }
 
-    val favouriteGamesIds : ArrayList<String> by lazy {
+    private val favouriteGamesIds : ArrayList<String> by lazy {
         arrayListOf()
     }
 
     lateinit var favouriteGames : ArrayList<GameDetails>
-    private lateinit var gvAdapter: BaseAdapter
 
-    init {
+    fun initialize(updateUI: (ArrayList<GameDetails>) -> Unit) {
+        isPageLoading.postValue(true)
         MyFirebaseRepository.getInstance().getFavorites().addOnSuccessListener {
             (it.value as Map<*, *>).forEach {
                 favouriteGamesIds.add(it.value.toString())
             }
             viewModelScope.launch(Dispatchers.Main) {
                 favouriteGames = withContext(Dispatchers.IO){
-                     IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds) as ArrayList<GameDetails>
+                    IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds) as ArrayList<GameDetails>
                 }
-                initializeRecyclerView(favouriteGames)
+                updateUI.invoke(favouriteGames)
                 isPageLoading.postValue(false)
             }
         }
-    }
-
-    fun initializeRecyclerView(games : ArrayList<GameDetails>){
-        gvAdapter = FavouriteGridViewAdapter(binding.root.context,
-            games,
-            R.id.action_fav_to_gameDetailsFragment3,
-            binding.root.findNavController())
-        binding.gvFavoriteGames.adapter = gvAdapter
     }
 
 }

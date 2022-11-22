@@ -2,6 +2,10 @@ package com.cip.cipstudio.view.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -36,10 +40,14 @@ import kotlin.properties.Delegates
 
 
 class GameDetailsFragment : Fragment() {
+    private val TAG = "GameDetailsFragment"
+
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
     private val TAG : String = "GameDetailsFragment"
     private lateinit var originFragment : IsFromFragmentEnum
+
+    private var showMore = true
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -52,6 +60,15 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.loadingModel = Loading()
 
+        gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
+            Log.i(TAG, "Refreshing game details page")
+            initializeFragment()
+            Handler(Looper.getMainLooper())
+                .postDelayed( {
+                    gameDetailsBinding.fGameDetailsSrlSwipeRefresh.isRefreshing = false
+                }, 2000)
+        }
+
         initializeFragment()
 
         gameDetailsBinding.lifecycleOwner = this
@@ -60,16 +77,14 @@ class GameDetailsFragment : Fragment() {
 
 
 
-    private fun initializeShowMore() {
-        gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
-            val params = gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams = params
-            gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.GONE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = null
-            }
-        }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun hideShowMore() {
+        val params = gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams = params
+        gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.GONE
+        gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = null
+        showMore = false
     }
 
 
@@ -92,7 +107,9 @@ class GameDetailsFragment : Fragment() {
             gameDetailsBinding.vm = gameDetailsViewModel
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
-            initializeShowMore()
+            gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
+                hideShowMore()
+            }
         }
     }
 
@@ -160,6 +177,7 @@ class GameDetailsFragment : Fragment() {
     }
 
     private fun setGenres(genres: List<JSONObject>) {
+        gameDetailsBinding.fGameDetailsGlGridGenreLayout.removeAllViews()
         for (genre in genres) {
             gameDetailsBinding.fGameDetailsGlGridGenreLayout.addView(
                 createChip(

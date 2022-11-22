@@ -1,111 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.MainPageFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/f_mainPage_cl_constraintLayout"
+    <data/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/f_mainPage_srl_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <!-- Most rated games -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/f_mainPage_tv_mostRatedGames"
-            style="@style/TextAppearance.Material3.HeadlineMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/most_rated_games"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/f_mainPage_cl_constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <!-- Most rated games -->
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/f_mainPage_ls_mostRatedGames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toTopOf="@+id/f_mainPage_tw_mostHypedGames"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/f_mainPage_rv_mostRatedGames"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:divider="@null"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames"
-            app:reverseLayout="true" />
+                <TextView
+                    android:id="@+id/f_mainPage_tv_mostRatedGames"
+                    style="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/most_rated_games"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-        <!-- Most rated games -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/f_mainPage_ls_mostRatedGames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:indeterminate="true"
+                    app:layout_constraintBottom_toTopOf="@+id/f_mainPage_tw_mostHypedGames"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames" />
 
-        <TextView
-            android:id="@+id/f_mainPage_tw_mostHypedGames"
-            style="@style/TextAppearance.Material3.HeadlineMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="12dp"
-            android:text="@string/most_hyped_games"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_mainPage_rv_mostRatedGames" />
-
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/f_mainPage_ls_mostHypedGames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="@+id/f_mainPage_rv_mostHypedGames"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/f_mainPage_rv_mostHypedGames"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="16dp"
-            android:divider="@null"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames"
-            app:layout_constraintVertical_bias="1.0"
-            app:reverseLayout="true">
-
-        </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_mainPage_rv_mostRatedGames"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:divider="@null"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames"
+                    app:reverseLayout="true" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- Most rated games -->
+
+                <TextView
+                    android:id="@+id/f_mainPage_tw_mostHypedGames"
+                    style="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/most_hyped_games"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_rv_mostRatedGames" />
 
 
-</ScrollView>
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/f_mainPage_ls_mostHypedGames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:indeterminate="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/f_mainPage_rv_mostHypedGames"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_mainPage_rv_mostHypedGames"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:divider="@null"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:reverseLayout="true">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>
