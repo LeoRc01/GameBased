@@ -1,12 +1,11 @@
 package com.cip.cipstudio.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
-import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
-import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.google.firebase.auth.FirebaseAuth
+
 
 class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     private val TAG = "UserViewModel"
@@ -18,5 +17,16 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
         firebase.signOut()
         onSuccess.invoke()
     }
+
+    fun setDarkMode(onSuccess: () -> Unit) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        onSuccess.invoke()
+    }
+
+    fun setLightMode(onSuccess: () -> Unit) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        onSuccess.invoke()
+    }
+
 
 }

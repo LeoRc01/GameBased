@@ -4,6 +4,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,6 @@ class LoginViewModel() : ViewModel(){
     var email : MutableLiveData<String> = MutableLiveData()
     var password : MutableLiveData<String> = MutableLiveData()
 
-    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
 
 
     fun login(onSuccess: () -> Unit,
@@ -39,7 +39,7 @@ class LoginViewModel() : ViewModel(){
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
+        User.login(email, password)
             .addOnSuccessListener {
                 onSuccess.invoke()
             }

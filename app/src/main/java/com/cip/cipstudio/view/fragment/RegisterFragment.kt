@@ -47,6 +47,7 @@ class RegisterFragment : Fragment() {
             registerBinding.fRegisterLayoutEmail.error = ""
             registerBinding.fRegisterLayoutPwd.error = ""
             registerBinding.fRegisterLayoutPwdConfirm.error = ""
+            registerBinding.fRegisterLayoutUsername.error = ""
             registerViewModel
                 .register(requireContext(),
                     onSuccess = {
@@ -54,18 +55,22 @@ class RegisterFragment : Fragment() {
                 },
                     onFailure = {
                         when(it.getErrorType()){
+                            AuthTypeErrorEnum.USERNAME -> {
+                                registerBinding.fRegisterLayoutUsername.error = getString(it.getErrorId())
+                            }
                             AuthTypeErrorEnum.EMAIL -> {
-                                registerBinding.fRegisterLayoutEmail.error = it.getErrorMessage().toString()
+                                registerBinding.fRegisterLayoutEmail.error = getString(it.getErrorId())
                             }
                             AuthTypeErrorEnum.PASSWORD -> {
-                                registerBinding.fRegisterLayoutPwd.error = it.getErrorMessage().toString()
+                                registerBinding.fRegisterLayoutPwd.error = getString(it.getErrorId())
                             }
                             AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
-                                registerBinding.fRegisterLayoutPwdConfirm.error = it.getErrorMessage().toString()
+                                registerBinding.fRegisterLayoutPwdConfirm.error = getString(it.getErrorId())
                             }
-                            AuthTypeErrorEnum.UNKNOWN -> {
-                                Toast.makeText(context, it.getErrorMessage(), Toast.LENGTH_SHORT).show()
+                            else -> {
+                                Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                             }
+
                         }
                     })
         }

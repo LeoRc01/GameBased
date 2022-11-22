@@ -1,63 +1,89 @@
 package com.cip.cipstudio.utils
 
 import android.content.Context
+import android.content.res.Resources
 import com.cip.cipstudio.R
 
 enum class AuthErrorEnum {
     EMAIL_NOT_VALID {
-        override fun getErrorMessage() = R.string.email_not_valid
+        override fun getErrorId() = R.string.email_not_valid
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
                     },
     EMAIL_ALREADY_IN_USE {
-        override fun getErrorMessage() = R.string.email_already_in_use
+        override fun getErrorId() = R.string.email_already_in_use
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
                     },
     EMAIL_NOT_REGISTERED {
-        override fun getErrorMessage() = R.string.email_not_registered
+        override fun getErrorId() = R.string.email_not_registered
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
                     },
+    NOT_YOUR_EMAIL {
+        override fun getErrorId() = R.string.not_your_email
+        override fun getErrorType() = AuthTypeErrorEnum.EMAIL
+    },
     PASSWORD_NOT_CORRECT {
-        override fun getErrorMessage() = R.string.password_not_correct
+        override fun getErrorId() = R.string.password_not_correct
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_TOO_SHORT {
-        override fun getErrorMessage() = R.string.password_too_short
+        override fun getErrorId() = R.string.password_too_short
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_TOO_LONG {
-        override fun getErrorMessage() = R.string.password_too_long
+        override fun getErrorId() = R.string.password_too_long
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_NOT_VALID {
-        override fun getErrorMessage() = R.string.password_not_valid
+        override fun getErrorId() = R.string.password_not_valid
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_NO_DIGIT {
-        override fun getErrorMessage() = R.string.password_no_digit
+        override fun getErrorId() = R.string.password_no_digit
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_NO_UPPERCASE {
-        override fun getErrorMessage() = R.string.password_no_uppercase
+        override fun getErrorId() = R.string.password_no_uppercase
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_NO_LOWERCASE {
-        override fun getErrorMessage() = R.string.password_no_lowercase
+        override fun getErrorId() = R.string.password_no_lowercase
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORD_NO_SPECIAL_CHARACTER {
-        override fun getErrorMessage() = R.string.password_no_special_character
+        override fun getErrorId() = R.string.password_no_special_character
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     PASSWORDS_NOT_MATCH {
-        override fun getErrorMessage() = R.string.passwords_not_match
+        override fun getErrorId() = R.string.passwords_not_match
         override fun getErrorType() = AuthTypeErrorEnum.CONFIRM_PASSWORD
                     },
+    RECENT_LOGIN_REQUIRED {
+        override fun getErrorId() = R.string.recent_login_required
+        override fun getErrorType() = AuthTypeErrorEnum.LOGIN
+                    },
+    USERNAME_NOT_VALID {
+        override fun getErrorId() = R.string.username_not_valid
+        override fun getErrorType() = AuthTypeErrorEnum.USERNAME
+                    },
+    USERNAME_ALREADY_IN_USE {
+        override fun getErrorId() = R.string.username_already_in_use
+        override fun getErrorType() = AuthTypeErrorEnum.USERNAME
+                    },
+    USERNAME_TOO_SHORT {
+        override fun getErrorId() = R.string.username_too_short
+        override fun getErrorType() = AuthTypeErrorEnum.USERNAME
+                    },
+    USERNAME_TOO_LONG {
+        override fun getErrorId() = R.string.username_too_long
+        override fun getErrorType() = AuthTypeErrorEnum.USERNAME
+                    },
     UNKNOWN_ERROR {
-        override fun getErrorMessage() = R.string.unknown_error
+        override fun getErrorId() = R.string.unknown_error
         override fun getErrorType() = AuthTypeErrorEnum.UNKNOWN
-                    };
+    },
+    ;
 
 
-    abstract fun getErrorMessage() : Int
+    abstract fun getErrorId() : Int
     abstract fun getErrorType() : AuthTypeErrorEnum
 }

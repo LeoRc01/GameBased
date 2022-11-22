@@ -77,4 +77,17 @@
     <string name="output">Output: </string>
     <string name="storage">Storage: </string>
     <string name="resolutions">Resolutions: </string>
+    <string name="setting_preferences">com.cip.cipstudio.setting</string>
+    <string name="dark_mode_settings">darkMode</string>
+    <string name="recent_login_required">Recent login required</string>
+    <string name="username">Username</string>
+    <string name="username_not_valid">Username invalid</string>
+    <string name="username_already_in_use">Username already in use</string>
+    <string name="username_too_short">Username too short</string>
+    <string name="username_too_long">Username too long</string>
+    <string name="email">Email</string>
+    <string name="old_password">old password</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="not_your_email">not this account email</string>
 </resources>

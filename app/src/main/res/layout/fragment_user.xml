@@ -38,6 +38,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/f_user_cw_profilePicture" />
 
                 <TextView
+                    android:id="@+id/f_user_tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/email"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_username" />
+
+                <TextView
                     android:id="@+id/f_user_tv_headerSettings"
                     style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="wrap_content"
@@ -49,7 +60,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_username" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_email" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/f_user_cw_profilePicture"
@@ -85,9 +96,12 @@
                     android:layout_marginEnd="25dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_email"
+                    android:drawablePadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerSettings" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerSettings"
+                    app:drawableLeftCompat="@drawable/ic_email"
+                    app:drawableRightCompat="@drawable/ic_arrow_right" />
 
 
                 <TextView
@@ -99,9 +113,12 @@
                     android:layout_marginEnd="25dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_username"
+                    android:drawablePadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeEmail" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeEmail"
+                    app:drawableLeftCompat="@drawable/ic_user"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"/>
 
                 <TextView
                     android:id="@+id/f_user_tv_changePassword"
@@ -112,9 +129,12 @@
                     android:layout_marginEnd="25dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_password"
+                    android:drawablePadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername"
+                    app:drawableLeftCompat="@drawable/ic_password"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"/>
 
                 <TextView
                     android:id="@+id/f_user_tv_logout"
@@ -123,11 +143,14 @@
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
+                    android:layout_marginTop="30dp"
                     android:gravity="center_vertical"
+                    android:drawablePadding="10dp"
                     android:text="@string/logout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode"
+                    app:drawableLeftCompat="@drawable/ic_logout"/>
 
                 <TextView
                     android:id="@+id/f_user_tv_headerOptions"
@@ -145,16 +168,18 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/f_user_sc_darkMode"
-                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:theme="@style/ThemeOverlay.MySwitchCompat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="25dp"
                     android:text="@string/dark_mode"
+                    android:drawablePadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerOptions" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerOptions"
+                    app:drawableLeftCompat="@drawable/ic_dark_mode" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
