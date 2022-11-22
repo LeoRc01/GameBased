@@ -2,13 +2,21 @@ package com.cip.cipstudio.view.fragment
 
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -18,15 +26,19 @@ import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.model.data.PlatformDetails
+import com.cip.cipstudio.view.dialog.PlatformDetailsDialog
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import org.json.JSONObject
+import kotlin.properties.Delegates
+
 
 class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
-
+    private val TAG : String = "GameDetailsFragment"
     private lateinit var originFragment : IsFromFragmentEnum
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -61,6 +73,7 @@ class GameDetailsFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeFragment() {
         val gameId = arguments?.get("game_id") as String
         originFragment = IsFromFragmentEnum.valueOf(arguments?.get("origin_fragment") as String)
@@ -80,7 +93,6 @@ class GameDetailsFragment : Fragment() {
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
             initializeShowMore()
-
         }
     }
 
@@ -88,7 +100,18 @@ class GameDetailsFragment : Fragment() {
         val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
-        val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(requireContext(), screenshotList )
+        val isFromFavourite = arguments?.get("isFromFavouriteScreen")
+        val isFromSearchScreen = arguments?.get("isFromSearchScreen")
+        var action = 0
+        if(isFromFavourite != null && isFromFavourite as Boolean)
+            action = R.id.action_gameDetailsFragment3_to_gameScreenshotDialog2
+        else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
+            action = R.id.action_gameDetailsFragment4_to_gameScreenshotDialog3
+        else
+            action = R.id.action_gameDetailsFragment2_to_gameScreenshotDialog
+        val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(requireContext(),
+            screenshotList,
+            action)
         screenshotsRecyclerView.layoutManager = manager
         screenshotsRecyclerView.setItemViewCacheSize(50)
         screenshotsRecyclerView.itemAnimator = null
@@ -131,6 +154,8 @@ class GameDetailsFragment : Fragment() {
         params.setMargins(15, 0, 15, 0)
         chip.layoutParams = params
         chip.text = label
+        chip.typeface= ResourcesCompat.getFont(requireContext(), R.font.montserrat_regular)
+        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         return chip
     }
 
@@ -144,4 +169,46 @@ class GameDetailsFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setPlatforms(platforms: List<PlatformDetails>) {
+        for (platform in platforms){
+            gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.addView(
+                _setPlatformsView(platform)
+            )
+        }
+        //gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun _setPlatformsView(platform : PlatformDetails) : TextView{
+        val text = TextView(requireContext(), null, R.layout.platform_item)
+        text.setTextColor(requireContext().getColor(R.color.primary_color))
+
+        val content = SpannableString(platform.name)
+        content.setSpan(UnderlineSpan(), 0, platform.name.length, 0)
+        text.text = content
+        text.typeface= ResourcesCompat.getFont(requireContext(), R.font.montserrat_regular)
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 0, 15, 0)
+        text.layoutParams = params
+        text.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.platform_bottom_sheet, null)
+            //val dialog = PlatformDetailsDialog(platform)
+            //dialog.show(parentFragmentManager, "PLATFORM")
+            val bundle = bundleOf()
+            bundle.putSerializable("platform", platform)
+            val isFromFavourite = arguments?.get("isFromFavouriteScreen")
+            val isFromSearchScreen = arguments?.get("isFromSearchScreen")
+            if(isFromFavourite != null && isFromFavourite as Boolean)
+                findNavController().navigate(R.id.action_gameDetailsFragment3_to_platformDetailsDialog2, bundle)
+            else if(isFromSearchScreen != null && isFromSearchScreen as Boolean)
+                findNavController().navigate(R.id.action_gameDetailsFragment4_to_platformDetailsDialog3, bundle)
+            else
+                findNavController().navigate(R.id.action_gameDetailsFragment2_to_platformDetailsDialog, bundle)
+        }
+        return text
+    }
 }

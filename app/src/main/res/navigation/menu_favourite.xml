@@ -28,5 +28,19 @@
             app:popUpToInclusive="true"
             android:id="@+id/action_gameDetailsFragment3_to_favouriteScreen"
             app:destination="@id/favouriteScreen" />
+        <action
+            android:id="@+id/action_gameDetailsFragment3_to_platformDetailsDialog2"
+            app:destination="@id/platformDetailsDialog2" />
+        <action
+            android:id="@+id/action_gameDetailsFragment3_to_gameScreenshotDialog2"
+            app:destination="@id/gameScreenshotDialog2" />
     </fragment>
+    <dialog
+        android:id="@+id/platformDetailsDialog2"
+        android:name="com.cip.cipstudio.view.dialog.PlatformDetailsDialog"
+        android:label="PlatformDetailsDialog" />
+    <dialog
+        android:id="@+id/gameScreenshotDialog2"
+        android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
+        android:label="GameScreenshotDialog" />
 </navigation>

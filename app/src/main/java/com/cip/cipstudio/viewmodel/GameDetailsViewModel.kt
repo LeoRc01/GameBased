@@ -1,6 +1,7 @@
 package com.cip.cipstudio.viewmodel
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -10,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.model.data.PlatformDetails
+import com.cip.cipstudio.repository.IGDBRepository
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.view.widgets.LoadingSpinner
@@ -26,6 +29,8 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
 
     private lateinit var game: GameDetails
+    private lateinit var platformDetails: List<PlatformDetails>
+
     private val TAG = "GameDetailsVM"
     lateinit var isGameFavourite : MutableLiveData<Boolean>
 
@@ -37,6 +42,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 setScreenshotUI: (List<JSONObject>) -> Unit,
                 setSimilarGamesUI: (List<GameDetails>) -> Unit,
                 setDLCsUI: (List<GameDetails>) -> Unit,
+                setPlatformsUI: (List<PlatformDetails>) -> Unit,
                 setGenresUI: (List<JSONObject>)-> Unit,
                 onSuccess: () -> Unit) : this(binding) {
 
@@ -46,6 +52,12 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             // ha le stesse funzionalità di async e await
             game = withContext(Dispatchers.IO) {
                 gameRepository.getGameDetails(gameId)
+            }
+
+
+
+            platformDetails = withContext(Dispatchers.IO) {
+                 gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms))
             }
 
             // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
@@ -63,13 +75,21 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             setScreenshotUI.invoke(game.screenshots)
             setSimilarGamesUI.invoke(game.similarGames)
             setDLCsUI.invoke(game.dlcs)
+            setPlatformsUI.invoke(platformDetails)
             setGenresUI.invoke(game.genres)
             onSuccess.invoke()
         }
     }
 
-    companion object{
+    private fun getIdsFromListJSONObject(items : List<JSONObject>) : List<String> {
+        var result = arrayListOf<String>()
+        for (item in items){
+            result.add(item.getString("id"))
+        }
+        return result
+    }
 
+    companion object{
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
         fun loadImage(view: ImageView, imageUrl: String?) {
@@ -81,6 +101,15 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
     fun getGame() : GameDetails{
         return game
+    }
+
+    private fun getPlatforms() : List<String> {
+        var platformsStrings = arrayListOf<String>()
+        game.platforms.forEach {
+            val platform = it.getString("name")
+            platformsStrings.add(platform)
+        }
+        return platformsStrings
     }
 
     fun setFavouriteStatus(){

@@ -1,0 +1,27 @@
+package com.cip.cipstudio.view.dialog
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.DialogFragment
+import com.cip.cipstudio.R
+import com.squareup.picasso.Picasso
+
+class GameScreenshotDialog() : DialogFragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view : View = inflater.inflate(R.layout.screenshot_full_screen, null)
+        val imageUrl : String = arguments?.getString("imageUrl") as String
+        Picasso.get().load(imageUrl).into(view.findViewById<ImageView>(R.id.dialog_gameScreenshotDetailsImageView))
+        dialog!!.setContentView(view)
+
+        dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+}

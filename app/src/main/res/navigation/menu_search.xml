@@ -29,5 +29,23 @@
         <action
             android:id="@+id/action_gameDetailsFragment4_to_searchScreen"
             app:destination="@id/searchScreen" />
+        <action
+            android:id="@+id/action_gameDetailsFragment4_to_platformDetailsDialog3"
+            app:destination="@id/platformDetailsDialog3" />
+        <action
+            android:id="@+id/action_gameDetailsFragment4_to_gameScreenshotDialog3"
+            app:destination="@id/gameScreenshotDialog3" />
     </fragment>
+    <dialog
+        android:id="@+id/platformDetailsDialog3"
+        android:name="com.cip.cipstudio.view.dialog.PlatformDetailsDialog"
+        android:label="PlatformDetailsDialog" >
+        <action
+            android:id="@+id/action_platformDetailsDialog3_self"
+            app:destination="@id/platformDetailsDialog3" />
+    </dialog>
+    <dialog
+        android:id="@+id/gameScreenshotDialog3"
+        android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
+        android:label="GameScreenshotDialog" />
 </navigation>

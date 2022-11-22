@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class GameScreenshotsRecyclerViewAdapter
-    (val context : Context, var screenshots : List<JSONObject>) :
+    (val context : Context, var screenshots : List<JSONObject>, val action : Int) :
     RecyclerView.Adapter<GameScreenshotsRecyclerViewAdapter.ViewHolder>()  {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,6 +33,11 @@ class GameScreenshotsRecyclerViewAdapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val url = screenshots[position].getString("url").replace("t_thumb", "t_original")
         Picasso.get().load("https:$url").into(holder.ivGameScreenshot)
+        holder.ivGameScreenshot.setOnClickListener {
+            val bundle = bundleOf()
+            bundle.putString("imageUrl", "https:$url")
+            holder.itemView.findNavController().navigate(action, bundle)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -69,4 +69,12 @@
     <string name="profile_picture">profile picture</string>
     <string name="new_mail">New mail</string>
     <string name="new_username">New username</string>
+    <string name="not_defined">Not defined.</string>
+    <string name="no_summary_provided">No summary provided.</string>
+    <string name="cpu">CPU: </string>
+    <string name="graphics">Graphics: </string>
+    <string name="memory">Memory: </string>
+    <string name="output">Output: </string>
+    <string name="storage">Storage: </string>
+    <string name="resolutions">Resolutions: </string>
 </resources>

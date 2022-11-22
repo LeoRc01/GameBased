@@ -28,23 +28,19 @@ class FavouriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if(myView==null){
-            Log.i("NULL", "NULL VIEW")
-            favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
 
-            favouriteViewModel = FavouriteViewModel(favouriteBinding)
-            favouriteBinding.vm = favouriteViewModel
-            favouriteBinding.lifecycleOwner = this
-            myView = favouriteBinding.root
-        }
+        Log.i("NULL", "NULL VIEW")
+        favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
+
+        favouriteViewModel = FavouriteViewModel(favouriteBinding)
+        favouriteBinding.vm = favouriteViewModel
+        favouriteBinding.lifecycleOwner = this
+        myView = favouriteBinding.root
+
         (myView!!.parent as ViewGroup?)?.removeView(myView)
 
-        return myView!!
-        //return favouriteBinding.root
+
+        return favouriteBinding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        favouriteBinding.unbind()
-    }
 }

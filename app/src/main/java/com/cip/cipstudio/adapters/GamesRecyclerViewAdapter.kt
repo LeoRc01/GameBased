@@ -19,6 +19,7 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.view.MainActivity
+import com.cip.cipstudio.view.dialog.PlatformDetailsDialog
 import com.cip.cipstudio.view.fragment.SearchFragment
 import com.squareup.picasso.Picasso
 
@@ -68,7 +69,7 @@ class GamesRecyclerViewAdapter (val context : Context,
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.tvGameName.text = games[position].name
         games[position].coverUrl.let {
-            if(!it.isEmpty() && it != "null") {
+            if(it.isNotEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCover)
                 viewHolder.ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
