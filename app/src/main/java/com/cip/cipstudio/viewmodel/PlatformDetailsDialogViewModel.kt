@@ -26,7 +26,7 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding) : 
                 gamesWithPlatform = gameRepository.getGamesByPlatform(binding.platDetails!!.id)
             }
             job.join()
-            //initializeRecyclerView(gamesWithPlatform)
+            initializeRecyclerView(gamesWithPlatform)
         }
     }
 
