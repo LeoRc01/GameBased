@@ -12,6 +12,7 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Converter
 import com.cip.cipstudio.utils.GameTypeEnum
+import com.mayakapps.lrucache.LruCache
 import kotlinx.coroutines.*
 import org.json.JSONArray
 
@@ -21,6 +22,8 @@ object IGDBRepositoryRemote : IGDBRepository {
     private val CLIENT_ID = "fyniflwh4wnvh1ww0i139mwolan1g5"
     private val CLIENT_SECRET = "4ot4bg1eqxvb2syuko6cewv5ccsn6s"
     private var isInitialized = false
+
+    private val cache = LruCache<String, JSONArray>(100)
 
     private val secondsInAWeek = 604800L
     private val secondsInADay = 86400L
@@ -37,13 +40,44 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun makeRequest(request: () -> String, attempt : Int = 0):
+    private suspend fun makeRequest(request: () -> String, key: String):
             JSONArray = withContext(Dispatchers.IO) {
         init()
 
-        var json : String = ""
+        Log.i(TAG, "Try to retrieve data from cache")
+        var json = retrieveDataFromCache(key)
 
+        if (json == null){
+            Log.i(TAG, "Data not found in cache")
+            Log.i(TAG, "Try to retrieve data from IGDB")
+            json = retrieveDataFromRemote( request )
+            Log.i(TAG, "Data retrieved from IGDB")
+            Log.i(TAG, "Try to save data in cache")
+            saveDataInCache(key, json)
+            Log.i(TAG, "Data saved in cache")
+        } else {
+            Log.i(TAG, "Data retrieved from cache")
+        }
+
+        return@withContext json
+
+    }
+
+    private suspend fun retrieveDataFromCache(key: String) : JSONArray? {
+        Log.i(TAG, "Retrieving data from cache")
+        return cache.get(key)
+    }
+
+    private suspend fun saveDataInCache(key: String, json: JSONArray) {
+        Log.i(TAG, "Saving data in cache")
+        cache.put(key, json)
+    }
+
+    private suspend fun retrieveDataFromRemote(request: () -> String, attempt : Int = 0):
+            JSONArray = withContext(Dispatchers.IO) {
+        var json = ""
         try {
+            Log.i(TAG, "Retrieving data from remote")
             Log.i(TAG, "Making request, attempt: $attempt")
             json = request.invoke()
         } catch (RequestException: RequestException) {
@@ -53,11 +87,11 @@ object IGDBRepositoryRemote : IGDBRepository {
                     isInitialized = false
                     init()
                 }
-                return@withContext makeRequest(request)
+                return@withContext retrieveDataFromRemote(request, attempt + 1)
             }
             else {
                 if (attempt > 10)
-                    Log.e(TAG, "makeRequest: Too many attempts, aborting")
+                    Log.e(TAG, "retrieveDataFromRemote: Too many attempts, aborting")
                 Log.e(TAG, "Request failed, status code: ${RequestException.statusCode}")
                 Log.e(TAG, "Request failed, message: ${RequestException.message}")
                 throw RequestException
@@ -72,7 +106,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L))
             .sort("hypes", Sort.DESCENDING)
             .limit(10)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostHyped")
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -81,11 +115,12 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0")
             .sort("total_rating", Sort.DESCENDING)
             .limit(10)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated")
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
     override suspend fun getPlatformsInfo(platformIds : List<String>) : List<PlatformDetails> = withContext(Dispatchers.IO){
+        val platformIdsString = buildIdsForRequest(platformIds)
         val apicalypse = APICalypse().fields("abbreviation, " +
                 "alternative_name, " +
                 "category, " +
@@ -100,8 +135,8 @@ object IGDBRepositoryRemote : IGDBRepository {
                 "versions.output," +
                 "versions.storage," +
                 "versions.resolutions ")
-            .where("id = ${_buildIdsForRequest(platformIds)}")
-        val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) })
+            .where("id = $platformIdsString")
+        val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) }, "getPlatformsInfo$platformIdsString")
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
@@ -117,7 +152,7 @@ object IGDBRepositoryRemote : IGDBRepository {
                 "collection.name, collection.id, parent_game.name, parent_game.id," +
                 "dlcs.name, dlcs.id, dlcs.cover.url")
             .where("id = $gameId")
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGameDetails$gameId")
         return@withContext GameDetails(json.getJSONObject(0))
     }
 
@@ -127,21 +162,18 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0 & platforms = [$platformId]")
             .sort("rating", Sort.DESCENDING)
             .limit(10)
-
-
-
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByPlatform$platformId")
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
     override suspend fun getGamesByIds(gameIds: ArrayList<String>): List<GameDetails> = withContext(Dispatchers.IO) {
+        val idListString = buildIdsForRequest(gameIds)
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
-            .where("id = ${gameIds.toString().replace("[", "(").replace("]", ")")}")
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) })
+            .where("id = ${idListString}")
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByIds${idListString}")
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
-
 
     override suspend fun getGamesByType(type: GameTypeEnum): List<GameDetails> = withContext(Dispatchers.IO) {
         return@withContext when (type) {
@@ -150,7 +182,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private fun _buildIdsForRequest(ids : List<Any>) : String {
+    private fun buildIdsForRequest(ids : List<Any>) : String {
         return ids.toString().replace("[", "(").replace("]", ")");
     }
 
