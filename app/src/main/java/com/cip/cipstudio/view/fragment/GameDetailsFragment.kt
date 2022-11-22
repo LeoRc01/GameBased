@@ -60,7 +60,7 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing game details page")
-            initializeFragment()
+            initializeFragment(true)
             Handler(Looper.getMainLooper())
                 .postDelayed( {
                     gameDetailsBinding.fGameDetailsSrlSwipeRefresh.isRefreshing = false
@@ -87,7 +87,7 @@ class GameDetailsFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun initializeFragment() {
+    private fun initializeFragment(refresh : Boolean = false) {
         val gameId = arguments?.get("game_id") as String
         originFragment = IsFromFragmentEnum.valueOf(arguments?.get("origin_fragment") as String)
         if (originFragment == IsFromFragmentEnum.MAIN_PAGE)
@@ -96,6 +96,7 @@ class GameDetailsFragment : Fragment() {
         gameDetailsViewModel = GameDetailsViewModel(
             gameId,
             gameDetailsBinding,
+            refresh,
             { setScreenshots(it) },
             { setSimilarGames(it) },
             { setDlCs(it) },
@@ -188,12 +189,12 @@ class GameDetailsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setPlatforms(platforms: List<PlatformDetails>) {
+        gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.removeAllViews()
         for (platform in platforms){
             gameDetailsBinding.fGameDetailsGlGridPlatformsLayout.addView(
                 _setPlatformsView(platform)
             )
         }
-        //gameDetailsBinding.fGameDetailsTvGameDetailsPlatforms.text = platforms
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

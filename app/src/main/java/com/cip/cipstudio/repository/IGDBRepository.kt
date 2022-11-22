@@ -7,14 +7,14 @@ import com.cip.cipstudio.utils.GameTypeEnum
 
 interface IGDBRepository {
 
-    suspend fun getGamesByType(type : GameTypeEnum): List<GameDetails>
+    suspend fun getGamesByType(type : GameTypeEnum, refresh: Boolean = false): List<GameDetails>
 
-    suspend fun getGameDetails(gameId : String) : GameDetails
+    suspend fun getGameDetails(gameId : String, refresh: Boolean = false) : GameDetails
 
-    suspend fun getGamesByIds(gameIds : ArrayList<String>) : List<GameDetails>
+    suspend fun getGamesByIds(gameIds : ArrayList<String>, refresh: Boolean = false) : List<GameDetails>
 
-    suspend fun getPlatformsInfo(platformIds : List<String>) : List<PlatformDetails>
+    suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean = false) : List<PlatformDetails>
 
-    suspend fun getGamesByPlatform(platformId : String) : List<GameDetails>
+    suspend fun getGamesByPlatform(platformId : String, refresh: Boolean = false) : List<GameDetails>
     
 }

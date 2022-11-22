@@ -34,7 +34,7 @@ class MainPageFragment : Fragment() {
 
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
-            initializeFragment()
+            initializeFragment(true)
             Handler(Looper.getMainLooper())
                 .postDelayed( {
                     mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
@@ -46,26 +46,29 @@ class MainPageFragment : Fragment() {
         return mainPageBinding.root
     }
 
-    private fun initializeFragment() {
+    private fun initializeFragment(refresh: Boolean = false) {
         // Most rated games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
             GameTypeEnum.MOST_RATED,
-            mainPageBinding.fMainPageLsMostRatedGames
+            mainPageBinding.fMainPageLsMostRatedGames,
+            refresh
         )
 
         // Most hyped games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostHypedGames,
             GameTypeEnum.MOST_HYPED,
-            mainPageBinding.fMainPageLsMostHypedGames
+            mainPageBinding.fMainPageLsMostHypedGames,
+            refresh
         )
     }
 
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         gameTypeEnum: GameTypeEnum,
-        circularProgressIndicator: CircularProgressIndicator
+        circularProgressIndicator: CircularProgressIndicator,
+        refresh: Boolean
     ) {
         circularProgressIndicator.visibility = View.VISIBLE
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -82,7 +85,7 @@ class MainPageFragment : Fragment() {
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        mainPageViewModel.initializeRecyclerView(gameTypeEnum) {
+        mainPageViewModel.initializeRecyclerView(gameTypeEnum, refresh) {
             adapter.importItems(it)
             circularProgressIndicator.visibility = View.GONE
         }

@@ -32,8 +32,7 @@ class FavouriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        Log.i("NULL", "NULL VIEW")
+    ): View {
         favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
 
         favouriteViewModel = FavouriteViewModel(favouriteBinding)
@@ -45,7 +44,7 @@ class FavouriteFragment : Fragment() {
 
         favouriteBinding.fFavouriteSrlRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
-            initializeFavourites()
+            initializeFavourites(true)
             Handler(Looper.getMainLooper())
                 .postDelayed( {
                     favouriteBinding.fFavouriteSrlRefresh.isRefreshing = false
@@ -55,8 +54,8 @@ class FavouriteFragment : Fragment() {
         return favouriteBinding.root
     }
 
-    private fun initializeFavourites(){
-        favouriteViewModel.initialize {
+    private fun initializeFavourites(refresh: Boolean = false) {
+        favouriteViewModel.initialize (refresh) {
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
                 R.id.action_fav_to_gameDetailsFragment3,
