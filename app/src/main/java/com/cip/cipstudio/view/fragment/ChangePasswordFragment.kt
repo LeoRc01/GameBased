@@ -29,6 +29,7 @@ class ChangePasswordFragment : Fragment() {
         changePasswordBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_password_change, container, false)
         changePasswordViewModel = ChangePasswordViewModel()
         changePasswordBinding.changePasswordViewModel = changePasswordViewModel
+        changePasswordBinding.executePendingBindings()
 
 
         val currentUser = FirebaseAuth.getInstance().currentUser

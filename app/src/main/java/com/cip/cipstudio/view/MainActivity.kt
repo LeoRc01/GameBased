@@ -8,10 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
-import com.cip.cipstudio.view.fragment.FavouriteFragment
-import com.cip.cipstudio.view.fragment.MainPageFragment
-import com.cip.cipstudio.view.fragment.SearchFragment
-import com.cip.cipstudio.view.fragment.UserFragment
+import com.cip.cipstudio.view.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -58,7 +55,23 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.menu_profile->{
-                    if(currentFragment !is UserFragment) {
+                    when(currentFragment){
+                        is UserFragment -> {
+                            navController.navigate(R.id.action_profileScreen_self)
+                            navController.clearBackStack("")
+                        }
+                        is ChangeUsernameFragment -> {
+                            navController.navigate(R.id.action_changeUsernameFragment_to_userFragment)
+                            navController.clearBackStack("")
+                        }
+                        is ChangePasswordFragment -> {
+                            navController.navigate(R.id.action_changePasswordFragment_to_userFragment)
+                            navController.clearBackStack("")
+                        }
+                        is ChangeEmailFragment -> {
+                            navController.navigate(R.id.action_changeEmailFragment_to_userFragment)
+                            navController.clearBackStack("")
+                        }
                     }
                 }
             }

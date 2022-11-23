@@ -34,6 +34,7 @@ class ChangeUsernameFragment : Fragment() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         changeUsernameBinding.fUsernameChangeTvUsername.text = currentUser?.displayName
         changeUsernameBinding.fUsernameChangeTvEmail.text = currentUser?.email
+        changeUsernameBinding.executePendingBindings()
 
         initializeChangeUsernameButton()
 

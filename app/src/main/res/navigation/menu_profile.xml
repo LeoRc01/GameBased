@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_userFragment_to_changeUsernameFragment"
             app:destination="@id/changeUsernameFragment" />
+        <action
+            android:id="@+id/action_profileScreen_self"
+            app:destination="@id/profileScreen" />
     </fragment>
     <fragment
         android:id="@+id/changeEmailFragment"
@@ -32,7 +35,11 @@
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.cip.cipstudio.view.fragment.ChangePasswordFragment"
-        android:label="ChangePasswordFragment" />
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
     <fragment
         android:id="@+id/changeUsernameFragment"
         android:name="com.cip.cipstudio.view.fragment.ChangeUsernameFragment"
