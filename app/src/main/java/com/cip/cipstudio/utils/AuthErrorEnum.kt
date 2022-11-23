@@ -80,7 +80,19 @@ enum class AuthErrorEnum {
     UNKNOWN_ERROR {
         override fun getErrorId() = R.string.unknown_error
         override fun getErrorType() = AuthTypeErrorEnum.UNKNOWN
-    },
+                  },
+    WRONG_PASSWORD{
+        override fun getErrorId() = R.string.wrong_password
+        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
+                  },
+    ALREADY_YOUR_EMAIL{
+        override fun getErrorId() = R.string.already_your_email
+        override fun getErrorType() = AuthTypeErrorEnum.EMAIL
+                      },
+    SAME_PASSWORD{
+        override fun getErrorId() = R.string.same_password
+        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
+                      },
     ;
 
 

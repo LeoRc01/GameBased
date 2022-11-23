@@ -42,6 +42,10 @@ class ChangePasswordFragment : Fragment() {
 
     private fun initializeChangePasswordButton() {
         changePasswordBinding.fPasswordChangeBtnChange.setOnClickListener {
+            changePasswordBinding.fPasswordChangeLayoutOldpwd.error = ""
+            changePasswordBinding.fPasswordChangeLayoutNewpwd.error = ""
+            changePasswordBinding.fPasswordChangeLayoutConfirmpwd.error = ""
+
             changePasswordViewModel.changePassword(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Password changed, please login", Toast.LENGTH_SHORT).show()
@@ -63,9 +67,7 @@ class ChangePasswordFragment : Fragment() {
                         AuthTypeErrorEnum.UNKNOWN -> {
                             Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                         }
-                        else -> {
-                            Toast.makeText(context, getString(R.string.internal_error), Toast.LENGTH_SHORT).show()
-                        }
+                        else -> {}
                     }
                 }
             )

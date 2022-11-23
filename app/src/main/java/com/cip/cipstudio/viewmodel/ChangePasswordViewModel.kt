@@ -34,10 +34,12 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
             return
         }
 
+
         if(newPassword != newPasswordConfirm) {
             onFailure(AuthErrorEnum.PASSWORDS_NOT_MATCH)
             return
         }
+
 
         val credential = EmailAuthProvider.getCredential(user?.email.toString(), oldPassword)
 
@@ -46,12 +48,16 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
             return
         }
 
-        user?.reauthenticate(credential)?.addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
+        if (oldPassword == newPassword) {
+            onFailure(AuthErrorEnum.SAME_PASSWORD)
+            return
+        }
 
-        user?.updatePassword(newPassword)?.addOnSuccessListener {
+        user.reauthenticate(credential).addOnSuccessListener {
+            user.updatePassword(newPassword).addOnSuccessListener {
                 Log.d(TAG, "User password updated.")
                 onSuccess.invoke()
-        }?.addOnFailureListener {
+            }.addOnFailureListener {
                 when(it){
                     is FirebaseAuthRecentLoginRequiredException -> {
                         onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
@@ -60,7 +66,11 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
                 }
+            }
+        }.addOnFailureListener {
+            onFailure(AuthErrorEnum.WRONG_PASSWORD)
         }
+
 
     }
 

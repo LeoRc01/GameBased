@@ -90,4 +90,7 @@
     <string name="new_password">new password</string>
     <string name="confirm_password">confirm password</string>
     <string name="not_your_email">not this account email</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="already_your_email">already your account\'s email</string>
+    <string name="same_password">old password and new password cannot be the same</string>
 </resources>
