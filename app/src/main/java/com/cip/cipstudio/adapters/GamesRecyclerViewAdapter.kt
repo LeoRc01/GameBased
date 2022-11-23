@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -20,8 +21,8 @@ import com.squareup.picasso.Picasso
 
 class GamesRecyclerViewAdapter (val context : Context,
                                 var games : List<GameDetails>,
-                                private val isFromFragment: ActionGameDetailsEnum = ActionGameDetailsEnum.SELF
-                                ) :
+                                private val actionToFragment: ActionGameDetailsEnum = ActionGameDetailsEnum.SELF,
+                                private val navController: NavController? = null) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
@@ -70,7 +71,14 @@ class GamesRecyclerViewAdapter (val context : Context,
                     bundle.putString("game_id", games[position].id)
 
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
-                    viewHolder.itemView.findNavController().navigate(isFromFragment.getAction(), bundle)
+                    if (navController != null) {
+                        navController.navigate(actionToFragment.getAction(), bundle)
+                    }
+                    else {
+                        viewHolder.itemView.findNavController()
+                            .navigate(actionToFragment.getAction(), bundle)
+                    }
+
                 }
             } else {
                 viewHolder.ivNoPreview.visibility = View.VISIBLE

@@ -8,7 +8,7 @@ import org.json.JSONObject
 import java.sql.Date
 import kotlin.math.roundToInt
 
-class GameDetails(val id: String,
+data class GameDetails(val id: String,
                   val name: String) {
     var coverUrl: String = ""
     var summary: String = ""
