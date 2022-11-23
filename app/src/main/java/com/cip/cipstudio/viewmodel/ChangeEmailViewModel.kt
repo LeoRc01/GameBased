@@ -35,7 +35,7 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
         val credential = EmailAuthProvider.getCredential(user?.email.toString(), password)
 
         if(newEmail == user?.email) {
-            onFailure(AuthErrorEnum.ALREADY_YOUR_EMAIL)
+            onFailure(AuthErrorEnum.EMAIL_ALREADY_YOURS)
             return
         }
 

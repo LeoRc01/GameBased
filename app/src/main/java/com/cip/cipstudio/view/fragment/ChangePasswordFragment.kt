@@ -55,9 +55,6 @@ class ChangePasswordFragment : Fragment() {
                 },
                 onFailure = {
                     when(it.getErrorType()){
-                        AuthTypeErrorEnum.EMAIL -> {
-                            changePasswordBinding.fPasswordChangeLayoutEmail.error = getString(it.getErrorId())
-                        }
                         AuthTypeErrorEnum.PASSWORD -> {
                             changePasswordBinding.fPasswordChangeLayoutNewpwd.error = getString(it.getErrorId())
                         }

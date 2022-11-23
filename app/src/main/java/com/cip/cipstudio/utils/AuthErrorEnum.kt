@@ -1,7 +1,5 @@
 package com.cip.cipstudio.utils
 
-import android.content.Context
-import android.content.res.Resources
 import com.cip.cipstudio.R
 
 enum class AuthErrorEnum {
@@ -17,10 +15,10 @@ enum class AuthErrorEnum {
         override fun getErrorId() = R.string.email_not_registered
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
                     },
-    NOT_YOUR_EMAIL {
-        override fun getErrorId() = R.string.not_your_email
+    EMAIL_ALREADY_YOURS{
+        override fun getErrorId() = R.string.already_your_email
         override fun getErrorType() = AuthTypeErrorEnum.EMAIL
-    },
+                    },
     PASSWORD_NOT_CORRECT {
         override fun getErrorId() = R.string.password_not_correct
         override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
@@ -57,9 +55,13 @@ enum class AuthErrorEnum {
         override fun getErrorId() = R.string.passwords_not_match
         override fun getErrorType() = AuthTypeErrorEnum.CONFIRM_PASSWORD
                     },
-    RECENT_LOGIN_REQUIRED {
-        override fun getErrorId() = R.string.recent_login_required
-        override fun getErrorType() = AuthTypeErrorEnum.LOGIN
+    SAME_PASSWORD{
+        override fun getErrorId() = R.string.same_password
+        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
+                    },
+    WRONG_PASSWORD{
+        override fun getErrorId() = R.string.wrong_password
+        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
                     },
     USERNAME_NOT_VALID {
         override fun getErrorId() = R.string.username_not_valid
@@ -80,19 +82,11 @@ enum class AuthErrorEnum {
     UNKNOWN_ERROR {
         override fun getErrorId() = R.string.unknown_error
         override fun getErrorType() = AuthTypeErrorEnum.UNKNOWN
-                  },
-    WRONG_PASSWORD{
-        override fun getErrorId() = R.string.wrong_password
-        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
-                  },
-    ALREADY_YOUR_EMAIL{
-        override fun getErrorId() = R.string.already_your_email
-        override fun getErrorType() = AuthTypeErrorEnum.EMAIL
-                      },
-    SAME_PASSWORD{
-        override fun getErrorId() = R.string.same_password
-        override fun getErrorType() = AuthTypeErrorEnum.PASSWORD
-                      },
+                    },
+    RECENT_LOGIN_REQUIRED {
+        override fun getErrorId() = R.string.recent_login_required
+        override fun getErrorType() = AuthTypeErrorEnum.LOGIN
+                    },
     ;
 
 

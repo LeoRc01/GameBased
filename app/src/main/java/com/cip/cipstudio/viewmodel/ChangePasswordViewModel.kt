@@ -3,6 +3,7 @@ package com.cip.cipstudio.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
+import com.cip.cipstudio.model.User.email
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -11,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBinding) {
     private val TAG = "ChangePasswordViewModel"
 
-    var email : MutableLiveData<String> = MutableLiveData()
     var oldPassword : MutableLiveData<String> = MutableLiveData()
     var newPassword : MutableLiveData<String> = MutableLiveData()
     var newPasswordConfirm : MutableLiveData<String> = MutableLiveData()
@@ -20,7 +20,6 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
     fun changePassword(onSuccess: () -> Unit,
                        onFailure: (AuthErrorEnum) -> Unit = {}) {
 
-        val email = this.email.value.toString().trim()
         val oldPassword = this.oldPassword.value.toString()
         val newPassword = this.newPassword.value.toString()
         val newPasswordConfirm = this.newPasswordConfirm.value.toString()
@@ -43,17 +42,13 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
 
         val credential = EmailAuthProvider.getCredential(user?.email.toString(), oldPassword)
 
-        if (email != user?.email) {
-            onFailure(AuthErrorEnum.NOT_YOUR_EMAIL)
-            return
-        }
 
         if (oldPassword == newPassword) {
             onFailure(AuthErrorEnum.SAME_PASSWORD)
             return
         }
 
-        user.reauthenticate(credential).addOnSuccessListener {
+        user?.reauthenticate(credential)?.addOnSuccessListener {
             user.updatePassword(newPassword).addOnSuccessListener {
                 Log.d(TAG, "User password updated.")
                 onSuccess.invoke()
@@ -67,7 +62,7 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
                     }
                 }
             }
-        }.addOnFailureListener {
+        }?.addOnFailureListener {
             onFailure(AuthErrorEnum.WRONG_PASSWORD)
         }
 
