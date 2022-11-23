@@ -19,8 +19,7 @@ import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
 
 
-class GamesRecyclerViewAdapter (val context : Context,
-                                var games : List<GameDetails>,
+class GamesRecyclerViewAdapter (var games : List<GameDetails>,
                                 private val actionToFragment: ActionGameDetailsEnum = ActionGameDetailsEnum.SELF,
                                 private val navController: NavController? = null) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {

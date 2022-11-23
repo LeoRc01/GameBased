@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class GameScreenshotsRecyclerViewAdapter
-    (val context : Context, var screenshots : List<JSONObject>, val action : Int) :
+    (var screenshots : List<JSONObject>, val action : Int) :
     RecyclerView.Adapter<GameScreenshotsRecyclerViewAdapter.ViewHolder>()  {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

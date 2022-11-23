@@ -29,8 +29,7 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding, pr
     }
 
     private fun initializeRecyclerView(gamesWithPlatform : List<GameDetails>){
-        val adapter = GamesRecyclerViewAdapter(binding.root.context,
-            gamesWithPlatform,
+        val adapter = GamesRecyclerViewAdapter(gamesWithPlatform,
             ActionGameDetailsEnum.DIALOG,
             nav)
         val recyclerView = binding.platformBottomSheetGamesWithThisPlatform

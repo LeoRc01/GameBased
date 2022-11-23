@@ -75,7 +75,6 @@ class MainPageFragment : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 
         val adapter = GamesRecyclerViewAdapter(
-            requireContext(),
             ArrayList(),
             ActionGameDetailsEnum.MAIN_PAGE
         )
