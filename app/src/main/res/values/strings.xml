@@ -93,4 +93,5 @@
     <string name="wrong_password">Wrong password</string>
     <string name="already_your_email">already your account\'s email</string>
     <string name="same_password">old password and new password cannot be the same</string>
+    <string name="email_not_found">Email not found</string>
 </resources>

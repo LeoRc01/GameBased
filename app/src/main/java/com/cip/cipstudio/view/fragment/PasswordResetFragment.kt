@@ -31,9 +31,11 @@ class PasswordResetFragment : Fragment() {
         }
 
         passwordResetBinding.fPasswordResetBtnSendEmail.setOnClickListener {
+            passwordResetBinding.fPasswordResetLayoutEmail.error = ""
             passwordResetViewModel.resetPassword(
                 onSuccess = {
-                    Toast.makeText(requireContext(), "Da implementare", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Email sent", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_passwordResetFragment_to_loginFragment)
                 },
                 onFailure = {
                     passwordResetBinding.fPasswordResetLayoutEmail.error = getString(it.getErrorId())

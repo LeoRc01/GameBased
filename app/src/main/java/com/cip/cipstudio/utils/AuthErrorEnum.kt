@@ -87,6 +87,10 @@ enum class AuthErrorEnum {
         override fun getErrorId() = R.string.recent_login_required
         override fun getErrorType() = AuthTypeErrorEnum.LOGIN
                     },
+    EMAIL_NOT_FOUND{
+        override fun getErrorId() = R.string.email_not_found
+        override fun getErrorType() = AuthTypeErrorEnum.EMAIL
+                   },
     ;
 
 

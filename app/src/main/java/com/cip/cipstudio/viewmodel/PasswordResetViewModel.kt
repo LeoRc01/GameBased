@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.model.User.email
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.google.firebase.auth.FirebaseAuth
 
 class PasswordResetViewModel() : ViewModel() {
 
@@ -20,8 +22,12 @@ class PasswordResetViewModel() : ViewModel() {
             return
         }
 
-        //TODO: reset password
-        onSuccess.invoke()
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener {
+            onSuccess.invoke()
+        }.addOnFailureListener {
+            onFailure(AuthErrorEnum.EMAIL_NOT_FOUND)
+        }
+
     }
 
     private fun isValidEmail(email: String): Boolean {
