@@ -2,14 +2,13 @@ package com.cip.cipstudio.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
-import com.cip.cipstudio.model.User.email
+import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 
-class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBinding) {
+class ChangePasswordViewModel() : ViewModel(){
     private val TAG = "ChangePasswordViewModel"
 
     var oldPassword : MutableLiveData<String> = MutableLiveData()

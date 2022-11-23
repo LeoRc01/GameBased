@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="ChangeEmailViewModel"
-            type="com.cip.cipstudio.viewmodel.ChangeEmailViewModel" />
+            name="changeUsernameViewModel"
+            type="com.cip.cipstudio.viewmodel.ChangeUsernameViewModel" />
     </data>
 
     <FrameLayout
@@ -58,7 +58,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/f_username_change_tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
@@ -70,7 +70,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/f_username_change_tv_username" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/f_username_change_layout_email"
+                    android:id="@+id/f_username_change_layout_newUsername"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text="@={ChangeEmailViewModel.email}" />
+                        android:text="@={changeUsernameViewModel.newUsername}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +105,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_username_change_layout_email" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_username_change_layout_newUsername" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

@@ -27,7 +27,7 @@ class ChangePasswordFragment : Fragment() {
     ): View? {
 
         changePasswordBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_password_change, container, false)
-        changePasswordViewModel = ChangePasswordViewModel(changePasswordBinding)
+        changePasswordViewModel = ChangePasswordViewModel()
         changePasswordBinding.changePasswordViewModel = changePasswordViewModel
 
 
