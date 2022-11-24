@@ -17,14 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
 
 
 class GamesBigRecyclerViewAdapter (val context : Context,
                                 var games : List<GameDetails>,
-                                private val action: Int,
-                                private val isFromFragment: IsFromFragmentEnum
+                                private val actionGameDetails: ActionGameDetailsEnum = ActionGameDetailsEnum.SEARCH_PAGE
                                 ) : RecyclerView.Adapter<GamesBigRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
@@ -74,9 +73,8 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                 viewHolder.ivGameCoverForeground.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putString("origin_fragment", isFromFragment.name)
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
-                    viewHolder.itemView.findNavController().navigate(action, bundle)
+                    viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
                 }
             }
         }

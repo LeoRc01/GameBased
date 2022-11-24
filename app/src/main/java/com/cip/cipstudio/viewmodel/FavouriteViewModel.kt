@@ -29,7 +29,7 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
 
     lateinit var favouriteGames : ArrayList<GameDetails>
 
-    fun initialize(updateUI: (ArrayList<GameDetails>) -> Unit) {
+    fun initialize(refresh : Boolean, updateUI: (ArrayList<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)
         MyFirebaseRepository.getInstance().getFavorites().addOnSuccessListener {
             (it.value as Map<*, *>).forEach {
@@ -37,7 +37,7 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
             }
             viewModelScope.launch(Dispatchers.Main) {
                 favouriteGames = withContext(Dispatchers.IO){
-                    IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds) as ArrayList<GameDetails>
+                    IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh) as ArrayList<GameDetails>
                 }
                 updateUI.invoke(favouriteGames)
                 isPageLoading.postValue(false)

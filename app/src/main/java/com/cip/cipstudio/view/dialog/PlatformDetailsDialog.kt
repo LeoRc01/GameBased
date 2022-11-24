@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.PlatformBottomSheetBinding
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -31,10 +32,12 @@ class PlatformDetailsDialog() : BottomSheetDialogFragment() {
         val platformDetails = arguments?.get("platform") as PlatformDetails
         binding = DataBindingUtil.inflate(inflater, R.layout.platform_bottom_sheet, container, false)
 
+        val navigator = Navigation.findNavController(requireActivity(), R.id.f_gameDetails)
+
         binding.platDetails = platformDetails
         if(platformDetails.platformLogo != "")
             Picasso.get().load(platformDetails.platformLogo).into(binding.platformBottomSheetPlatformLogo)
-        viewModel = PlatformDetailsDialogViewModel(binding)
+        viewModel = PlatformDetailsDialogViewModel(binding, navigator)
         isCancelable = true
         showsDialog = false
 

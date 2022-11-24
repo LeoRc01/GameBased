@@ -15,7 +15,7 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.utils.GameTypeEnum
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -37,7 +37,7 @@ class MainPageFragment : Fragment() {
 
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
-            initializeFragment()
+            initializeFragment(true)
             Handler(Looper.getMainLooper())
                 .postDelayed( {
                     mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
@@ -49,12 +49,13 @@ class MainPageFragment : Fragment() {
         return mainPageBinding.root
     }
 
-    private fun initializeFragment() {
+    private fun initializeFragment(refresh: Boolean = false) {
         // Most rated games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
             GameTypeEnum.MOST_RATED,
             mainPageBinding.fMainPageShimmerLayoutMostRatedGames
+            refresh
         )
 
         // Most hyped games
@@ -62,6 +63,7 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageRvMostHypedGames,
             GameTypeEnum.MOST_HYPED,
             mainPageBinding.fMainPageShimmerLayoutMostHypedGames
+            refresh
         )
     }
 
@@ -69,15 +71,15 @@ class MainPageFragment : Fragment() {
         recyclerView: RecyclerView,
         gameTypeEnum: GameTypeEnum,
         shimmerLayout: ShimmerFrameLayout
+        refresh: Boolean
     ) {
         shimmerLayout.startShimmer()
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 
         val adapter = GamesRecyclerViewAdapter(
-            requireContext(),
             ArrayList(),
-            IsFromFragmentEnum.MAIN_PAGE
+            ActionGameDetailsEnum.MAIN_PAGE
         )
 
         recyclerView.layoutManager = linearLayoutManager
@@ -85,7 +87,7 @@ class MainPageFragment : Fragment() {
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        mainPageViewModel.initializeRecyclerView(gameTypeEnum) {
+        mainPageViewModel.initializeRecyclerView(gameTypeEnum, refresh) {
             adapter.importItems(it)
             shimmerLayout.stopShimmer()
             shimmerLayout.visibility = View.GONE

@@ -33,13 +33,13 @@ class MainPageViewModel() : ViewModel() {
      * - aggiorna la UI tramite la funzione updateUI passata come parametro
      */
     fun initializeRecyclerView(gameTypeEnum: GameTypeEnum,
-                               updateUI : (List<GameDetails>)->Unit
-    ){
+                               refresh : Boolean,
+                               updateUI : (List<GameDetails>)->Unit) {
 
         var games :List<GameDetails>
         viewModelScope.launch(Dispatchers.Main) {
             games = withContext(Dispatchers.IO) {
-                gameRepository.getGamesByType(gameTypeEnum)
+                gameRepository.getGamesByType(gameTypeEnum, refresh)
             }
             updateUI.invoke(games)
         }

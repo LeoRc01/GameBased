@@ -1,7 +1,5 @@
 package com.cip.cipstudio.viewmodel
 
-import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,15 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
-import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.IGDBRepositoryRemote
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 
 class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
@@ -83,8 +79,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     fun initializeRecyclerView(games : ArrayList<GameDetails>) {
         lastViewGamesRecyclerViewAdapter =
             GamesBigRecyclerViewAdapter(binding.root.context,
-                games,
-                R.id.action_search_to_gameDetailsFragment4, IsFromFragmentEnum.SEARCH)
+                games)
         val manager = LinearLayoutManager(binding.root.context)
         manager.orientation = RecyclerView.HORIZONTAL
         binding.fSearchRvLastViewedGames.layoutManager = manager

@@ -39,6 +39,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
     constructor(gameId : String,
                 binding: FragmentGameDetailsBinding,
+                refresh : Boolean,
                 setScreenshotUI: (List<JSONObject>) -> Unit,
                 setSimilarGamesUI: (List<GameDetails>) -> Unit,
                 setDLCsUI: (List<GameDetails>) -> Unit,
@@ -51,13 +52,13 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             // quindi se prima era in main thread ora è in IO thread
             // ha le stesse funzionalità di async e await
             game = withContext(Dispatchers.IO) {
-                gameRepository.getGameDetails(gameId)
+                gameRepository.getGameDetails(gameId, refresh)
             }
 
 
 
             platformDetails = withContext(Dispatchers.IO) {
-                 gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms))
+                 gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)
             }
 
             // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
@@ -82,7 +83,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
     }
 
     private fun getIdsFromListJSONObject(items : List<JSONObject>) : List<String> {
-        var result = arrayListOf<String>()
+        val result = arrayListOf<String>()
         for (item in items){
             result.add(item.getString("id"))
         }
@@ -104,7 +105,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
     }
 
     private fun getPlatforms() : List<String> {
-        var platformsStrings = arrayListOf<String>()
+        val platformsStrings = arrayListOf<String>()
         game.platforms.forEach {
             val platform = it.getString("name")
             platformsStrings.add(platform)

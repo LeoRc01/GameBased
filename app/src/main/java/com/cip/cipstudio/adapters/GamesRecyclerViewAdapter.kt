@@ -1,8 +1,6 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -11,23 +9,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.repository.MyFirebaseRepository
-import com.cip.cipstudio.utils.IsFromFragmentEnum
-import com.cip.cipstudio.view.MainActivity
-import com.cip.cipstudio.view.dialog.PlatformDetailsDialog
-import com.cip.cipstudio.view.fragment.SearchFragment
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
 
 
-class GamesRecyclerViewAdapter (val context : Context,
-                                var games : List<GameDetails>,
-                                private val isFromFragment: IsFromFragmentEnum = IsFromFragmentEnum.MAIN_PAGE
-                                ) :
+class GamesRecyclerViewAdapter (var games : List<GameDetails>,
+                                private val actionToFragment: ActionGameDetailsEnum = ActionGameDetailsEnum.SELF,
+                                private val navController: NavController? = null) :
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
@@ -74,10 +68,16 @@ class GamesRecyclerViewAdapter (val context : Context,
                 viewHolder.ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putString("origin_fragment", isFromFragment.name)
 
                     MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
-                    viewHolder.itemView.findNavController().navigate(isFromFragment.getFragmentAction(), bundle)
+                    if (navController != null) {
+                        navController.navigate(actionToFragment.getAction(), bundle)
+                    }
+                    else {
+                        viewHolder.itemView.findNavController()
+                            .navigate(actionToFragment.getAction(), bundle)
+                    }
+
                 }
             } else {
                 viewHolder.ivNoPreview.visibility = View.VISIBLE

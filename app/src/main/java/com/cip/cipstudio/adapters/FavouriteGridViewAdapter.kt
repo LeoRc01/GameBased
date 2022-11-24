@@ -13,15 +13,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.utils.IsFromFragmentEnum
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
 
 
-// TODO(generalizzare questo adapter)
 class FavouriteGridViewAdapter(val context : Context,
                                val games : ArrayList<GameDetails>,
-                               private val action: Int,
-                               private val navController: NavController) : BaseAdapter() {
+                               private val navController: NavController,
+                               private val actionAdapter: ActionGameDetailsEnum = ActionGameDetailsEnum.FAVOURITE_PAGE) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
     private lateinit var tvGameTitle : TextView
@@ -41,19 +40,15 @@ class FavouriteGridViewAdapter(val context : Context,
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        // on blow line we are checking if layout inflater
-        // is null, if it is null we are initializing it.
+    override fun getView(position: Int, convertViewParam: View?, parent: ViewGroup?): View {
+        var convertView = convertViewParam
+
         if (layoutInflater == null) {
             layoutInflater =
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         }
-        // on the below line we are checking if convert view is null.
-        // If it is null we are initializing it.
+
         if (convertView == null) {
-            // on below line we are passing the layout file
-            // which we have to inflate for each item of grid view.
             convertView = layoutInflater!!.inflate(R.layout.game_item, null)
         }
 
@@ -68,11 +63,8 @@ class FavouriteGridViewAdapter(val context : Context,
                 ivGameCover.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    bundle.putString("origin_fragment", IsFromFragmentEnum.FAVORITES.name)
-                    navController.navigate(action, bundle)
+                    navController.navigate(actionAdapter.getAction(), bundle)
                 }
-            } else {
-                //viewHolder.ivNoPreview.visibility = View.VISIBLE
             }
         }
 

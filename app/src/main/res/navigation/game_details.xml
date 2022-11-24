@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/game_details"
+    app:startDestination="@id/gameDetailsFragment">
+
+    <fragment
+        android:id="@+id/gameDetailsFragment"
+        android:name="com.cip.cipstudio.view.fragment.GameDetailsFragment"
+        android:label="GameDetailsFragment" >
+        <action
+            android:id="@+id/action_gameDetailsFragment_self"
+            app:destination="@id/gameDetailsFragment" />
+        <action
+            android:id="@+id/action_gameDetailsFragment_to_platformDetailsDialog"
+            app:destination="@id/platformDetailsDialog" />
+        <action
+            android:id="@+id/action_gameDetailsFragment_to_gameScreenshotDialog"
+            app:destination="@id/gameScreenshotDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/platformDetailsDialog"
+        android:name="com.cip.cipstudio.view.dialog.PlatformDetailsDialog"
+        android:label="PlatformDetailsDialog" >
+        <action
+            android:id="@+id/action_platformDetailsDialog_to_gameDetailsFragment"
+            app:destination="@id/gameDetailsFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/gameScreenshotDialog"
+        android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
+        android:label="GameScreenshotDialog" />
+</navigation>
