@@ -1,9 +1,13 @@
 package com.cip.cipstudio.view.fragment
 
+import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +17,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
+import com.cip.cipstudio.model.User.photoUrl
+import com.cip.cipstudio.model.User.username
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
+import io.grpc.Context.Storage
+import java.util.*
 
 class UserFragment : Fragment() {
     private val TAG = "UserFragment"
@@ -25,6 +38,10 @@ class UserFragment : Fragment() {
     private lateinit var userBinding: FragmentUserBinding
 
     private lateinit var preferences : SharedPreferences
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private var selectedPhotoUri : Uri? = null
+    private val filename = currentUser?.uid
+    private val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +53,13 @@ class UserFragment : Fragment() {
         userViewModel = UserViewModel(userBinding)
 
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
+
         userBinding.fUserTvUsername.text = currentUser?.displayName
         userBinding.fUserTvEmail.text = currentUser?.email
+        ref.downloadUrl.addOnSuccessListener {
+            Picasso.get().load(it).into(userBinding.fUserIwProfilePicture)
+        }
+
 
 
         userBinding.fUserTvLogout.setOnClickListener {
@@ -75,8 +96,33 @@ class UserFragment : Fragment() {
             }
         }
 
+        userBinding.fUserIwProfilePicture.setOnClickListener{
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+        }
 
 
         return userBinding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+            Log.d(TAG, "Photo was selected")
+
+            selectedPhotoUri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedPhotoUri)
+            userBinding.fUserIwProfilePicture.setImageBitmap(bitmap)
+
+            ref.putFile(selectedPhotoUri!!).addOnSuccessListener {
+                    Log.d(TAG, "Success upload: ${it.metadata?.path}")
+            }.addOnFailureListener{
+                Log.d(TAG, "Failed upload: ${it.message}")
+            }
+
+
+        }
     }
 }
