@@ -34,12 +34,16 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
 
         val credential = EmailAuthProvider.getCredential(user?.email.toString(), password)
 
-        user?.reauthenticate(credential)?.addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
+        if(newEmail == user?.email) {
+            onFailure(AuthErrorEnum.EMAIL_ALREADY_YOURS)
+            return
+        }
 
-        user?.updateEmail(newEmail)?.addOnSuccessListener {
+        user?.reauthenticate(credential)?.addOnSuccessListener {
+            user.updateEmail(newEmail).addOnSuccessListener {
                 Log.d(TAG, "User email address updated.")
                 onSuccess.invoke()
-        }?.addOnFailureListener {
+            }.addOnFailureListener {
                 when(it){
                     is FirebaseAuthUserCollisionException -> {
                         onFailure(AuthErrorEnum.EMAIL_ALREADY_IN_USE)
@@ -54,7 +58,19 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
                 }
+            }
+        }?.addOnFailureListener{
+            when(it){
+                is FirebaseAuthRecentLoginRequiredException -> {
+                    onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
+                }
+                else -> {
+                    onFailure(AuthErrorEnum.WRONG_PASSWORD)
+                }
+            }
         }
+
+
 
     }
 

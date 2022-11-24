@@ -27,7 +27,7 @@ class ChangePasswordFragment : Fragment() {
     ): View? {
 
         changePasswordBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_password_change, container, false)
-        changePasswordViewModel = ChangePasswordViewModel(changePasswordBinding)
+        changePasswordViewModel = ChangePasswordViewModel()
         changePasswordBinding.changePasswordViewModel = changePasswordViewModel
 
 
@@ -42,6 +42,10 @@ class ChangePasswordFragment : Fragment() {
 
     private fun initializeChangePasswordButton() {
         changePasswordBinding.fPasswordChangeBtnChange.setOnClickListener {
+            changePasswordBinding.fPasswordChangeLayoutOldpwd.error = ""
+            changePasswordBinding.fPasswordChangeLayoutNewpwd.error = ""
+            changePasswordBinding.fPasswordChangeLayoutConfirmpwd.error = ""
+
             changePasswordViewModel.changePassword(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Password changed, please login", Toast.LENGTH_SHORT).show()
@@ -51,9 +55,6 @@ class ChangePasswordFragment : Fragment() {
                 },
                 onFailure = {
                     when(it.getErrorType()){
-                        AuthTypeErrorEnum.EMAIL -> {
-                            changePasswordBinding.fPasswordChangeLayoutEmail.error = getString(it.getErrorId())
-                        }
                         AuthTypeErrorEnum.PASSWORD -> {
                             changePasswordBinding.fPasswordChangeLayoutNewpwd.error = getString(it.getErrorId())
                         }
@@ -63,9 +64,7 @@ class ChangePasswordFragment : Fragment() {
                         AuthTypeErrorEnum.UNKNOWN -> {
                             Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                         }
-                        else -> {
-                            Toast.makeText(context, getString(R.string.internal_error), Toast.LENGTH_SHORT).show()
-                        }
+                        else -> {}
                     }
                 }
             )

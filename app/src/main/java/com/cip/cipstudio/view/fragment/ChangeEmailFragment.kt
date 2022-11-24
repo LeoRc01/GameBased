@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
+import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.viewmodel.ChangeEmailViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -39,13 +40,23 @@ class ChangeEmailFragment : Fragment() {
 
     private fun initializeChangeEmailButton() {
         changeEmailBinding.fEmailChangeBtnChange.setOnClickListener {
+            changeEmailBinding.fEmailChangeLayoutPwd.error = ""
+            changeEmailBinding.fEmailChangeLayoutEmail.error = ""
             changeEmailViewModel.changeEmail(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Email changed", Toast.LENGTH_SHORT).show()
                     findNavController(requireView()).navigate(R.id.action_changeEmailFragment_to_userFragment)
                 },
                 onFailure = {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    when(it.getErrorType()){
+                        AuthTypeErrorEnum.EMAIL -> {
+                            changeEmailBinding.fEmailChangeLayoutEmail.error = getString(it.getErrorId())
+                        }
+                        AuthTypeErrorEnum.PASSWORD -> {
+                            changeEmailBinding.fEmailChangeLayoutPwd.error = getString(it.getErrorId())
+                        }
+                        else -> {}
+                    }
                 }
             )
         }

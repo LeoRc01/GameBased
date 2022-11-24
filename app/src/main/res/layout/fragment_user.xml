@@ -86,23 +86,24 @@
 
                 </androidx.cardview.widget.CardView>
 
+
                 <TextView
                     android:id="@+id/f_user_tv_changeEmail"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_email"
-                    android:drawablePadding="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerSettings"
                     app:drawableLeftCompat="@drawable/ic_email"
-                    app:drawableRightCompat="@drawable/ic_arrow_right" />
-
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerSettings" />
 
                 <TextView
                     android:id="@+id/f_user_tv_changeUsername"
@@ -110,15 +111,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_username"
-                    android:drawablePadding="10dp"
+                    app:drawableLeftCompat="@drawable/ic_user"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeEmail"
-                    app:drawableLeftCompat="@drawable/ic_user"
-                    app:drawableRightCompat="@drawable/ic_arrow_right"/>
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeEmail" />
 
                 <TextView
                     android:id="@+id/f_user_tv_changePassword"
@@ -126,15 +128,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/change_password"
-                    android:drawablePadding="10dp"
+                    app:drawableLeftCompat="@drawable/ic_password"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername"
-                    app:drawableLeftCompat="@drawable/ic_password"
-                    app:drawableRightCompat="@drawable/ic_arrow_right"/>
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername" />
 
                 <TextView
                     android:id="@+id/f_user_tv_logout"
@@ -168,18 +171,44 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/f_user_sc_darkMode"
-                    android:theme="@style/ThemeOverlay.MySwitchCompat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
-                    android:text="@string/dark_mode"
                     android:drawablePadding="10dp"
+                    android:text="@string/dark_mode"
+                    android:theme="@style/ThemeOverlay.MySwitchCompat"
+                    app:drawableLeftCompat="@drawable/ic_dark_mode"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerOptions"
-                    app:drawableLeftCompat="@drawable/ic_dark_mode" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_headerOptions" />
+
+                <View
+                    android:id="@+id/f_user_divider_changeEmail_changeUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeEmail" />
+
+                <View
+                    android:id="@+id/f_user_divider_changeUsername_changePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

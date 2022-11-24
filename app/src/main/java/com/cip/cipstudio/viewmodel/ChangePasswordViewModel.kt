@@ -2,16 +2,15 @@ package com.cip.cipstudio.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
+import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 
-class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBinding) {
+class ChangePasswordViewModel() : ViewModel(){
     private val TAG = "ChangePasswordViewModel"
 
-    var email : MutableLiveData<String> = MutableLiveData()
     var oldPassword : MutableLiveData<String> = MutableLiveData()
     var newPassword : MutableLiveData<String> = MutableLiveData()
     var newPasswordConfirm : MutableLiveData<String> = MutableLiveData()
@@ -20,7 +19,6 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
     fun changePassword(onSuccess: () -> Unit,
                        onFailure: (AuthErrorEnum) -> Unit = {}) {
 
-        val email = this.email.value.toString().trim()
         val oldPassword = this.oldPassword.value.toString()
         val newPassword = this.newPassword.value.toString()
         val newPasswordConfirm = this.newPasswordConfirm.value.toString()
@@ -34,24 +32,26 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
             return
         }
 
+
         if(newPassword != newPasswordConfirm) {
             onFailure(AuthErrorEnum.PASSWORDS_NOT_MATCH)
             return
         }
 
+
         val credential = EmailAuthProvider.getCredential(user?.email.toString(), oldPassword)
 
-        if (email != user?.email) {
-            onFailure(AuthErrorEnum.NOT_YOUR_EMAIL)
+
+        if (oldPassword == newPassword) {
+            onFailure(AuthErrorEnum.SAME_PASSWORD)
             return
         }
 
-        user?.reauthenticate(credential)?.addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
-
-        user?.updatePassword(newPassword)?.addOnSuccessListener {
+        user?.reauthenticate(credential)?.addOnSuccessListener {
+            user.updatePassword(newPassword).addOnSuccessListener {
                 Log.d(TAG, "User password updated.")
                 onSuccess.invoke()
-        }?.addOnFailureListener {
+            }.addOnFailureListener {
                 when(it){
                     is FirebaseAuthRecentLoginRequiredException -> {
                         onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
@@ -60,7 +60,11 @@ class ChangePasswordViewModel(changePasswordBinding: FragmentPasswordChangeBindi
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
                 }
+            }
+        }?.addOnFailureListener {
+            onFailure(AuthErrorEnum.WRONG_PASSWORD)
         }
+
 
     }
 
