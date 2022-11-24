@@ -30,11 +30,27 @@
         <item name="android:textColor">#aacbb4</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight"/>
-
     <style name="ThemeOverlay.MySwitchCompat" parent="">
         <item name="colorControlActivated">@color/primary_color</item>
         <item name="colorSwitchThumbNormal">#f1f1f1</item>
         <item name="android:colorForeground">#42221f1f</item>
     </style>
+
+
+
+
+
+
+    <style name="BottomSheetDialogLight" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+    <style name="BottomSheetDialogDark" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/dark_color</item>
+    </style>
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
 </resources>
