@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/f_mainPage_cl_constraintLayout"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <!-- Most rated games -->
 
@@ -31,37 +31,49 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="40dp"
                     android:text="@string/most_rated_games"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    />
+
+                <RelativeLayout
+                    android:clipChildren="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:clipChildren="false"
+                        android:id="@+id/f_mainPage_shimmerLayout_mostRatedGames"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                        </LinearLayout>
 
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/f_mainPage_ls_mostRatedGames"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:indeterminate="true"
-                    app:layout_constraintBottom_toTopOf="@+id/f_mainPage_tw_mostHypedGames"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/f_mainPage_rv_mostRatedGames"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:divider="@null"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tv_mostRatedGames"
-                    app:reverseLayout="true" />
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/f_mainPage_rv_mostRatedGames"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:divider="@null"
+                        android:orientation="horizontal"
+                        />
+
+                </RelativeLayout>
 
 
                 <!-- Most rated games -->
@@ -80,42 +92,49 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_mainPage_rv_mostRatedGames" />
 
+                <RelativeLayout
+                    android:clipChildren="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/f_mainPage_ls_mostHypedGames"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:indeterminate="true"
-                    app:layout_constraintBottom_toBottomOf="@+id/f_mainPage_rv_mostHypedGames"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames" />
+                    <com.facebook.shimmer.ShimmerFrameLayout
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/f_mainPage_rv_mostHypedGames"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="16dp"
-                    android:divider="@null"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_mainPage_tw_mostHypedGames"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:reverseLayout="true">
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:clipChildren="false"
+                        android:id="@+id/f_mainPage_shimmerLayout_mostHypedGames"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                        </LinearLayout>
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/f_mainPage_rv_mostHypedGames"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:divider="@null"
+                        android:orientation="horizontal"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
