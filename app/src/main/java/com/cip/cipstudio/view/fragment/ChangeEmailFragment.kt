@@ -28,6 +28,7 @@ class ChangeEmailFragment : Fragment() {
         changeEmailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_email_change, container, false)
         changeEmailViewModel = ChangeEmailViewModel(changeEmailBinding)
         changeEmailBinding.changeEmailViewModel = changeEmailViewModel
+        changeEmailBinding.executePendingBindings()
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         changeEmailBinding.fEmailChangeTvEmail.text = currentUser?.email
