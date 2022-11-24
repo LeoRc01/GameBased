@@ -17,6 +17,7 @@ import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.utils.IsFromFragmentEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
 
 class MainPageFragment : Fragment() {
@@ -31,6 +32,8 @@ class MainPageFragment : Fragment() {
     ): View? {
         mainPageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
         mainPageViewModel = MainPageViewModel()
+
+
 
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
@@ -51,23 +54,23 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
             GameTypeEnum.MOST_RATED,
-            mainPageBinding.fMainPageLsMostRatedGames
+            mainPageBinding.fMainPageShimmerLayoutMostRatedGames
         )
 
         // Most hyped games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostHypedGames,
             GameTypeEnum.MOST_HYPED,
-            mainPageBinding.fMainPageLsMostHypedGames
+            mainPageBinding.fMainPageShimmerLayoutMostHypedGames
         )
     }
 
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         gameTypeEnum: GameTypeEnum,
-        circularProgressIndicator: CircularProgressIndicator
+        shimmerLayout: ShimmerFrameLayout
     ) {
-        circularProgressIndicator.visibility = View.VISIBLE
+        shimmerLayout.startShimmer()
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 
@@ -84,7 +87,8 @@ class MainPageFragment : Fragment() {
 
         mainPageViewModel.initializeRecyclerView(gameTypeEnum) {
             adapter.importItems(it)
-            circularProgressIndicator.visibility = View.GONE
+            shimmerLayout.stopShimmer()
+            shimmerLayout.visibility = View.GONE
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.cip.cipstudio.view.dialog
 
 
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +18,11 @@ import com.squareup.picasso.Picasso
 
 class PlatformDetailsDialog() : BottomSheetDialogFragment() {
 
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,12 +37,12 @@ class PlatformDetailsDialog() : BottomSheetDialogFragment() {
         viewModel = PlatformDetailsDialogViewModel(binding)
         isCancelable = true
         showsDialog = false
+
         dialog!!.setContentView(binding.root.rootView)
         binding.lifecycleOwner=this
+
         return binding.root
     }
-
     private lateinit var binding: PlatformBottomSheetBinding
     private lateinit var viewModel : PlatformDetailsDialogViewModel
-
 }
