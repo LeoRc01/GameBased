@@ -29,7 +29,7 @@ object IGDBRepositoryRemote : IGDBRepository {
     private val secondsInADay = 86400L
 
     private fun init() {
-        runBlocking {
+        synchronized(this) {
             if(!isInitialized) {
                 Log.i(TAG, "init: Initializing IGDBWrapper")
                 val token = TwitchAuthenticator.requestTwitchToken(CLIENT_ID, CLIENT_SECRET)
@@ -37,6 +37,7 @@ object IGDBRepositoryRemote : IGDBRepository {
                 IGDBWrapper.setCredentials(CLIENT_ID, token?.access_token.toString())
                 isInitialized = true
             }
+
         }
     }
 
