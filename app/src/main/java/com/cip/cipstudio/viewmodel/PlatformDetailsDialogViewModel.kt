@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -39,6 +40,8 @@ class PlatformDetailsDialogViewModel(val binding: PlatformBottomSheetBinding, pr
         recyclerView.setItemViewCacheSize(50)
         recyclerView.itemAnimator = null
         recyclerView.adapter = adapter
+        binding.dialogPlatformDetailsShimmerLayoutGamesWithPlatform.stopShimmer()
+        binding.dialogPlatformDetailsShimmerLayoutGamesWithPlatform.visibility = View.GONE
     }
 
 

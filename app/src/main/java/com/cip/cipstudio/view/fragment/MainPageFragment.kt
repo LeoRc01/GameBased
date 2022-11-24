@@ -54,7 +54,7 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
             GameTypeEnum.MOST_RATED,
-            mainPageBinding.fMainPageShimmerLayoutMostRatedGames
+            mainPageBinding.fMainPageShimmerLayoutMostRatedGames,
             refresh
         )
 
@@ -62,7 +62,7 @@ class MainPageFragment : Fragment() {
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostHypedGames,
             GameTypeEnum.MOST_HYPED,
-            mainPageBinding.fMainPageShimmerLayoutMostHypedGames
+            mainPageBinding.fMainPageShimmerLayoutMostHypedGames,
             refresh
         )
     }
@@ -70,7 +70,7 @@ class MainPageFragment : Fragment() {
     private fun initializeRecyclerView(
         recyclerView: RecyclerView,
         gameTypeEnum: GameTypeEnum,
-        shimmerLayout: ShimmerFrameLayout
+        shimmerLayout: ShimmerFrameLayout,
         refresh: Boolean
     ) {
         shimmerLayout.startShimmer()

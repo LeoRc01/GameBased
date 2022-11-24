@@ -225,11 +225,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:orientation="horizontal"
-                android:id="@+id/platformBottomSheet_gamesWithThisPlatform"
+            <RelativeLayout
+                android:clipChildren="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:clipChildren="false"
+                    android:id="@+id/dialog_platformDetails_shimmerLayout_gamesWithPlatform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <include layout="@layout/shimmer_small_placeholder"/>
+                        <include layout="@layout/shimmer_small_placeholder"/>
+                        <include layout="@layout/shimmer_small_placeholder"/>
+                        <include layout="@layout/shimmer_small_placeholder"/>
+                    </LinearLayout>
+
+
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:orientation="horizontal"
+                    android:id="@+id/platformBottomSheet_gamesWithThisPlatform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

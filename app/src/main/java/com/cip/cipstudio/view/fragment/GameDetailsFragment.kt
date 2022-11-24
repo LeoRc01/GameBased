@@ -1,14 +1,14 @@
 package com.cip.cipstudio.view.fragment
 
+
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,8 +29,8 @@ import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
-import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.model.data.PlatformDetails
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
@@ -175,7 +176,8 @@ class GameDetailsFragment : Fragment() {
             checkIfFragmentAttached {
                 val text = TextView(requireContext(), null, R.layout.platform_item)
                 text.setTextColor(requireContext().getColor(R.color.primary_color))
-
+                val typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat_regular)
+                text.setTypeface(typeface)
                 val content = SpannableString(platform.name)
                 content.setSpan(UnderlineSpan(), 0, platform.name.length, 0)
                 text.text = content
