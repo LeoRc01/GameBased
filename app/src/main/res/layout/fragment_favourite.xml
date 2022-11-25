@@ -39,13 +39,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:indeterminate="true"
+                    <com.facebook.shimmer.ShimmerFrameLayout
                         android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <LinearLayout
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
+
+                            <LinearLayout
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                            </LinearLayout>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
+
+                            <LinearLayout
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
+
+                            <LinearLayout
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                                <include layout="@layout/shimmer_small_placeholder"></include>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
 
                     <GridView
                         android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}"
