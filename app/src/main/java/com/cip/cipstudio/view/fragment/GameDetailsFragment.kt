@@ -2,6 +2,7 @@ package com.cip.cipstudio.view.fragment
 
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -67,6 +68,7 @@ class GameDetailsFragment : Fragment() {
                 }, 2000)
         }
 
+
         initializeFragment()
 
         gameDetailsBinding.lifecycleOwner = this
@@ -115,7 +117,7 @@ class GameDetailsFragment : Fragment() {
         val manager = LinearLayoutManager(context)
         manager.orientation = RecyclerView.HORIZONTAL
         val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(screenshotList,
-            R.id.action_gameDetailsFragment_to_gameScreenshotDialog)
+            R.id.action_gameDetailsFragment_to_gameScreenshotDialog, resources.configuration.orientation)
         screenshotsRecyclerView.layoutManager = manager
         screenshotsRecyclerView.setItemViewCacheSize(50)
         screenshotsRecyclerView.itemAnimator = null
