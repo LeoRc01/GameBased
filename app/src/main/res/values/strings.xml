@@ -77,8 +77,8 @@
     <string name="output">Output: </string>
     <string name="storage">Storage: </string>
     <string name="resolutions">Resolutions: </string>
-    <string name="setting_preferences">com.cip.cipstudio.setting</string>
-    <string name="dark_mode_settings">darkMode</string>
+    <string name="setting_preferences" translatable="false">com.cip.cipstudio.setting</string>
+    <string name="dark_mode_settings" translatable="false">darkMode</string>
     <string name="recent_login_required">Recent login required</string>
     <string name="username">Username</string>
     <string name="username_not_valid">Username invalid</string>
@@ -94,4 +94,5 @@
     <string name="already_your_email">already your account\'s email</string>
     <string name="same_password">old password and new password cannot be the same</string>
     <string name="email_not_found">Email not found</string>
+    <string name="guest_settings" translatable="false">guest</string>
 </resources>

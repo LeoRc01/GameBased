@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 object User {
     private val TAG = User::class.java.simpleName
 
-    var isUserLogged = false
     var uid: String? = null
     var email: String? = null
     var username: String? = null
@@ -27,22 +26,23 @@ object User {
     private val firebaseRepository = FirebaseRepository
 
     init {
-        loginUser()
+        retrieveDataFromCurrentUser()
     }
 
-    fun loginUser() {
-        uid = auth.currentUser!!.uid
-        email = auth.currentUser!!.email
-        username = auth.currentUser!!.displayName
-        photoUrl = auth.currentUser!!.photoUrl.toString()
-        isUserLogged = true
+    private fun retrieveDataFromCurrentUser() {
+        if (isLogged()) {
+            uid = auth.currentUser!!.uid
+            email = auth.currentUser!!.email
+            username = auth.currentUser!!.displayName
+            photoUrl = auth.currentUser!!.photoUrl.toString()
+        }
     }
 
     fun login(email: String,
               password: String) : Task<AuthResult> {
         val task = auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                loginUser()
+                retrieveDataFromCurrentUser()
             }
         return task
     }
@@ -57,7 +57,7 @@ object User {
                     .addOnSuccessListener {
                         Log.i(TAG, "Username registered successfully")
                     }
-                loginUser()
+                retrieveDataFromCurrentUser()
             }
         return task
     }
@@ -68,7 +68,7 @@ object User {
             gameViewedRecently = db.getFirstTenHistory()
             db.insert(gameIdAdd)
 
-            if (isUserLogged) {
+            if (isLogged()) {
                 if (gameViewedRecently.size == 10) {
 
                 }
@@ -83,7 +83,7 @@ object User {
     }
 
     fun syncRecentlyViewedGames(db: HistoryRepository) {
-        if (!isUserLogged) {
+        if (!isLogged()) {
             throw NotLoggedException()
         }
         firebaseRepository.getRecentlyViewedGames().addOnSuccessListener {
@@ -102,31 +102,36 @@ object User {
     }
 
     fun setGameToFavourite(gameId: String) : Task<Void> {
-        if (!isUserLogged) {
+        if (!isLogged()) {
             throw NotLoggedException()
         }
         return firebaseRepository.setGameToFavourite(gameId)
     }
 
     fun removeGameFromFavourite(gameId: String) : Task<Void> {
-        if (!isUserLogged) {
+        if (!isLogged()) {
             throw NotLoggedException()
         }
         return firebaseRepository.removeGameFromFavourite(gameId)
     }
 
     fun getFavouriteGames() : Task<DataSnapshot> {
-        if (!isUserLogged) {
+        if (!isLogged()) {
             throw NotLoggedException()
         }
         return firebaseRepository.getFavourites()
     }
 
     fun isGameFavourite(gameId: String) : Task<DataSnapshot?> {
-        if (!isUserLogged) {
+        if (!isLogged()) {
             throw NotLoggedException()
         }
+
         return firebaseRepository.isGameFavourite(gameId)
+    }
+
+    fun isLogged() : Boolean {
+        return auth.currentUser != null
     }
 
 }
