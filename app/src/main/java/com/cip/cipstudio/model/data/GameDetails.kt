@@ -98,13 +98,13 @@ data class GameDetails(val id: String,
         fields.add("first_release_date")
     }
 
-    fun setGameToFavourite() : Task<Void> {
+    fun setGameToFavourite() : Task<*> {
         return User.setGameToFavourite(id).addOnSuccessListener {
             isFavourite = true
         }
     }
 
-    fun removeGameFromFavourite() : Task<Void> {
+    fun removeGameFromFavourite() : Task<*> {
         return User.removeGameFromFavourite(id).addOnSuccessListener {
             isFavourite = false
         }

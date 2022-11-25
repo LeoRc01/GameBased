@@ -6,6 +6,7 @@ import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.dataSource.repository.FirebaseRepository
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks.forException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -14,11 +15,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 object User {
     private val TAG = User::class.java.simpleName
 
-    var uid: String? = null
+    lateinit var uid: String
     var email: String? = null
     var username: String? = null
     var photoUrl: String? = null
@@ -35,6 +37,9 @@ object User {
             email = auth.currentUser!!.email
             username = auth.currentUser!!.displayName
             photoUrl = auth.currentUser!!.photoUrl.toString()
+        }
+        else {
+            uid = UUID.randomUUID().toString()
         }
     }
 
@@ -69,9 +74,6 @@ object User {
             db.insert(gameIdAdd)
 
             if (isLogged()) {
-                if (gameViewedRecently.size == 10) {
-
-                }
                 val gameIdDelete =
                     if (gameViewedRecently.size == 10 && gameViewedRecently.last() != gameIdAdd)
                         gameViewedRecently.last()
@@ -101,30 +103,30 @@ object User {
         }
     }
 
-    fun setGameToFavourite(gameId: String) : Task<Void> {
+    fun setGameToFavourite(gameId: String) : Task<*> {
         if (!isLogged()) {
-            throw NotLoggedException()
+            return forException<DataSnapshot>(NotLoggedException())
         }
         return firebaseRepository.setGameToFavourite(gameId)
     }
 
-    fun removeGameFromFavourite(gameId: String) : Task<Void> {
+    fun removeGameFromFavourite(gameId: String) : Task<*> {
         if (!isLogged()) {
-            throw NotLoggedException()
+            return forException<DataSnapshot>(NotLoggedException())
         }
         return firebaseRepository.removeGameFromFavourite(gameId)
     }
 
-    fun getFavouriteGames() : Task<DataSnapshot> {
+    fun getFavouriteGames() : Task<DataSnapshot>{
         if (!isLogged()) {
-            throw NotLoggedException()
+            return forException<DataSnapshot>(NotLoggedException())
         }
         return firebaseRepository.getFavourites()
     }
 
     fun isGameFavourite(gameId: String) : Task<DataSnapshot?> {
         if (!isLogged()) {
-            throw NotLoggedException()
+            return forException<DataSnapshot>(NotLoggedException())
         }
 
         return firebaseRepository.isGameFavourite(gameId)

@@ -6,6 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cip.cipstudio.NotLoggedException
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
@@ -14,6 +15,7 @@ import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepository
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.database.DataSnapshot
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,16 +59,23 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             platformDetails = withContext(Dispatchers.IO) {
                  gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)
             }
-
+            val fav : DataSnapshot
             // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
-            val fav = user.isGameFavourite(gameId).await()
-            isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
-            if (fav != null) {
-                isGameFavourite.postValue(fav.exists())
-                if(fav.exists())
-                    (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
-                        binding.root.context.getDrawable(R.drawable.ic_favorite)
 
+            isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
+            user.isGameFavourite(gameId).addOnSuccessListener {
+                if (it != null) {
+                    isGameFavourite.postValue(it.exists())
+                    if(it.exists())
+                        (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                            binding.root.context.getDrawable(R.drawable.ic_favorite)
+                }
+            }.addOnFailureListener {
+                Toast.makeText(
+                    binding.root.context,
+                    binding.root.context.getString(R.string.invalid_operation_must_logged),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             // queste funzioni servono a dividere il ruolo di viewModel e view
@@ -122,7 +131,11 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_add), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 LoadingSpinner.dismiss()
-                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+                if (it is NotLoggedException){
+                    Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+                }
             }
         }else{
             // rimuovere dai preferiti
@@ -135,7 +148,11 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_remove), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 LoadingSpinner.dismiss()
-                Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+                if (it is NotLoggedException){
+                    Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_error), Toast.LENGTH_SHORT).show()
+                }
             }
 
 

@@ -28,7 +28,7 @@
     <string name="passwords_not_match">Passwords do not match</string>
     <string name="registered">Registered</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="new_user">New user? Register now</string>
+    <string name="register_now">Register now</string>
     <string name="email_already_in_use">Email already in use</string>
     <string name="email_not_registered">Email not registered</string>
     <string name="password_not_correct">Password not correct</string>
@@ -36,7 +36,7 @@
     <string name="reset_password_title">Forgot your password?</string>
     <string name="reset_password_body">To reset your password, enter the email address that you used to set up your account. We\'ll send you a link to help you get back into your account.</string>
     <string name="send_email">send</string>
-    <string name="already_have_account">Already have an account? Login now</string>
+    <string name="already_have_account">Login now</string>
     <string name="internal_error">internal error</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
@@ -95,4 +95,10 @@
     <string name="same_password">old password and new password cannot be the same</string>
     <string name="email_not_found">Email not found</string>
     <string name="guest_settings" translatable="false">guest</string>
+    <string name="guest_login">Continue as guest</string>
+    <string name="new_user_login">New user?</string>
+    <string name="welcome_login">Welcome</string>
+    <string name="back_login">Back</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.cip.cipstudio.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentFavouriteBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
@@ -37,6 +39,13 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
                 isPageLoading.postValue(false)
             }
         }
+            .addOnFailureListener {
+                Toast.makeText(
+                        binding.root.context,
+                        binding.root.context.getString(R.string.invalid_operation_must_logged),
+                        Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
 }

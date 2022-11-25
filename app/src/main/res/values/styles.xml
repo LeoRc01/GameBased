@@ -36,9 +36,9 @@
         <item name="android:colorForeground">#42221f1f</item>
     </style>
 
-
-
-
+    <style name="titleCicciottello" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="fontFamily">@font/poppins_extrabold</item>
+    </style>
 
 
     <style name="BottomSheetDialogLight" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">

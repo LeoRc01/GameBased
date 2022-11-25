@@ -13,6 +13,9 @@
         <variable
             name="loadingModel"
             type="com.cip.cipstudio.model.data.Loading" />
+        <variable
+            name="user"
+            type="com.cip.cipstudio.model.User" />
 
     </data>
 
@@ -93,6 +96,7 @@
                             android:layout_marginTop="8dp"
                             android:onClick="@{() -> vm.setFavouriteStatus()}"
                             android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
+                            android:visibility="@{user.logged ? View.VISIBLE : View.GONE}"
                             android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
                             android:textColor="?attr/colorOnSecondary"
                             android:textSize="15sp"

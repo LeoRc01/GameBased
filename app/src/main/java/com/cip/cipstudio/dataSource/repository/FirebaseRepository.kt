@@ -7,10 +7,17 @@ import com.google.firebase.database.FirebaseDatabase
 
 object FirebaseRepository {
     private var db : FirebaseDatabase? = null
-    private val userId : String = FirebaseAuth.getInstance().currentUser!!.uid
+    private lateinit var userId : String
 
     init{
         db = FirebaseDatabase.getInstance("https://cip-studio-default-rtdb.europe-west1.firebasedatabase.app")
+        login()
+    }
+
+    fun login() {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            userId = FirebaseAuth.getInstance().currentUser!!.uid
+        }
     }
 
     fun addGamesToRecentlyViewed(gameIdToAdd : String, gameIdToDelete : String? = null) : Task<Void> {
