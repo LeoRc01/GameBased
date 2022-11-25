@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:gravity="center"
+    android:orientation="vertical"
     android:layout_marginEnd="15dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,4 +13,14 @@
         android:layout_height="200dp"
         app:cardCornerRadius="10dp"
         android:backgroundTint="@color/grey"/>
-</RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        app:cardCornerRadius="10dp"
+        android:backgroundTint="@color/grey"/>
+</LinearLayout>
