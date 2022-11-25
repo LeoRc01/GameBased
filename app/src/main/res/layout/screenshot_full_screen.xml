@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.ortiz.touchview.TouchImageView
-        android:id="@+id/dialog_gameScreenshotDetailsImageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        />
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-</LinearLayout>
+        <com.ortiz.touchview.TouchImageView
+            android:id="@+id/dialog_gameScreenshotDetailsImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+

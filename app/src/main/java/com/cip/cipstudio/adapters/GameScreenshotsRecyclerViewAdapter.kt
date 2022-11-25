@@ -1,10 +1,13 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -14,7 +17,7 @@ import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class GameScreenshotsRecyclerViewAdapter
-    (var screenshots : List<JSONObject>, val action : Int) :
+    (var screenshots : List<JSONObject>, val action : Int, val orientation : Int) :
     RecyclerView.Adapter<GameScreenshotsRecyclerViewAdapter.ViewHolder>()  {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,6 +30,13 @@ class GameScreenshotsRecyclerViewAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.game_screenshot_item, parent, false)
+
+        view.findViewById<ImageView>(R.id.ivGameScreenshot).layoutParams =
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                if(orientation == Configuration.ORIENTATION_LANDSCAPE) 1200 else 600,
+            )
+
         return ViewHolder(view)
     }
 
