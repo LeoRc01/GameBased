@@ -16,7 +16,6 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:background="@drawable/rounded_dialog"
-
             android:padding="20dp"
             android:gravity="center"
             android:orientation="vertical"

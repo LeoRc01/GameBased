@@ -21,13 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="@{loadingModel.isPageLoading ? View.VISIBLE : View.GONE}"
-            android:indeterminate="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/f_gameDetails_srl_swipe_refresh"
@@ -629,6 +623,14 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            app:shimmer_auto_start="true"
+            android:visibility="@{loadingModel.isPageLoading ? View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/shimmer_game_details"></include>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </RelativeLayout>
 
