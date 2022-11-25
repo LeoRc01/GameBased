@@ -1,4 +1,4 @@
-package com.cip.cipstudio.repository
+package com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl
 
 import android.util.Log
 import com.api.igdb.apicalypse.APICalypse
@@ -8,6 +8,7 @@ import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.TwitchAuthenticator
 import com.api.igdb.request.jsonGames
 import com.api.igdb.request.jsonPlatforms
+import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Converter
@@ -169,7 +170,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun getGamesByIds(gameIds: ArrayList<String>, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getGamesByIds(gameIds: List<String>, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
         val idListString = buildIdsForRequest(gameIds)
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")

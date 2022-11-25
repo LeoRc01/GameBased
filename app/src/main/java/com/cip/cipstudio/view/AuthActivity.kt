@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.google.firebase.auth.FirebaseAuth
 
@@ -33,7 +34,8 @@ class AuthActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_auth)
 
-        if(User.isUserLogged()){
+        if(User.isUserLogged){
+            User.syncRecentlyViewedGames(HistoryRepositoryLocal(this))
             startMainActivity()
         }
 

@@ -1,8 +1,7 @@
 package com.cip.cipstudio.model.data
 
-import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.Converter
-import com.cip.cipstudio.utils.*
 import com.google.android.gms.tasks.Task
 import org.json.JSONObject
 import java.sql.Date
@@ -100,13 +99,13 @@ data class GameDetails(val id: String,
     }
 
     fun setGameToFavourite() : Task<Void> {
-        return MyFirebaseRepository.getInstance().setGameToFavourite(id).addOnSuccessListener {
+        return User.setGameToFavourite(id).addOnSuccessListener {
             isFavourite = true
         }
     }
 
     fun removeGameFromFavourite() : Task<Void> {
-        return MyFirebaseRepository.getInstance().removeGameFromFavourite(id).addOnSuccessListener {
+        return User.removeGameFromFavourite(id).addOnSuccessListener {
             isFavourite = false
         }
     }

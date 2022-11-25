@@ -1,6 +1,5 @@
 package com.cip.cipstudio.adapters
 
-import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class GamesRecyclerViewAdapter (var games : List<GameDetails>,
@@ -25,6 +28,7 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
     RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
+    private lateinit var historyDB: HistoryRepository
 
     fun importItems(gamesDetailsJson : List<GameDetails>){
         games  = gamesDetailsJson
@@ -61,6 +65,8 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
     // Replace the contents of a view (invoked by the layout manager)
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        historyDB = HistoryRepositoryLocal(viewHolder.itemView.context)
+
         viewHolder.tvGameName.text = games[position].name
         games[position].coverUrl.let {
             if(it.isNotEmpty() && it != "null") {
@@ -69,7 +75,10 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
 
-                    MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
+                    GlobalScope.launch {
+                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
+                    }
+
                     if (navController != null) {
                         navController.navigate(actionToFragment.getAction(), bundle)
                     }

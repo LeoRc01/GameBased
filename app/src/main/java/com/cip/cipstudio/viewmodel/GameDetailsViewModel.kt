@@ -1,7 +1,5 @@
 package com.cip.cipstudio.viewmodel
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -12,9 +10,8 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
-import com.cip.cipstudio.repository.IGDBRepository
-import com.cip.cipstudio.repository.IGDBRepositoryRemote
-import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
@@ -34,7 +31,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
     private val TAG = "GameDetailsVM"
     lateinit var isGameFavourite : MutableLiveData<Boolean>
 
-    private val firebaseRepository = MyFirebaseRepository.getInstance()
+    private val user = User
     private val gameRepository = IGDBRepositoryRemote
 
     constructor(gameId : String,
@@ -62,7 +59,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             }
 
             // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
-            val fav = firebaseRepository.isGameFavourite(gameId).await()
+            val fav = user.isGameFavourite(gameId).await()
             isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
             if (fav != null) {
                 isGameFavourite.postValue(fav.exists())

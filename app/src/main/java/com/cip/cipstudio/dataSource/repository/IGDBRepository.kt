@@ -1,4 +1,4 @@
-package com.cip.cipstudio.repository
+package com.cip.cipstudio.dataSource.repository
 
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -11,7 +11,7 @@ interface IGDBRepository {
 
     suspend fun getGameDetails(gameId : String, refresh: Boolean = false) : GameDetails
 
-    suspend fun getGamesByIds(gameIds : ArrayList<String>, refresh: Boolean = false) : List<GameDetails>
+    suspend fun getGamesByIds(gameIds : List<String>, refresh: Boolean = false) : List<GameDetails>
 
     suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean = false) : List<PlatformDetails>
 
