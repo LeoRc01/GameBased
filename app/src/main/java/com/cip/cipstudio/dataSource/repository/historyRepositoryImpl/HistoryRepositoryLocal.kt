@@ -9,21 +9,21 @@ class HistoryRepositoryLocal(context: Context) : HistoryRepository {
 
     private val localDB = GameViewedHistoryRoomDatabase.getDatabase(context).gameViewedHistoryDao()
 
-    override suspend fun insert(id: String) {
-        val gameViewedHistoryEntry = GameViewedHistoryEntry(id)
+    override suspend fun insert(id: String, userId: String) {
+        val gameViewedHistoryEntry = GameViewedHistoryEntry(id, userId)
         localDB.insert(gameViewedHistoryEntry)
     }
 
-    override suspend fun deleteAll() {
-        localDB.deleteAll()
+    override suspend fun deleteAll(userId: String) {
+        localDB.deleteAll(userId)
     }
 
-    override suspend fun getHistory(): List<String> {
-        return localDB.getAllOrderedByTime().map { it.id }
+    override suspend fun getHistory(userId: String): List<String> {
+        return localDB.getAllOrderedByTime(userId).map { it.id }
     }
 
-    override suspend fun getFirstTenHistory(): List<String> {
-        return localDB.getFirstTenOrderedByTime().map { it.id }
+    override suspend fun getFirstTenHistory(userId: String): List<String> {
+        return localDB.getFirstTenOrderedByTime(userId).map { it.id }
     }
 
     override suspend fun syncHistory(list: List<GameViewedHistoryEntry>) {

@@ -1,7 +1,7 @@
 package com.cip.cipstudio.model
 
 import android.util.Log
-import com.cip.cipstudio.NotLoggedException
+import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.dataSource.repository.FirebaseRepository
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
@@ -39,7 +39,7 @@ object User {
             photoUrl = auth.currentUser!!.photoUrl.toString()
         }
         else {
-            uid = UUID.randomUUID().toString()
+            uid = "guest"
         }
     }
 
@@ -67,11 +67,15 @@ object User {
         return task
     }
 
+    suspend fun getRecentlyViewed(db: HistoryRepository) : List<String> {
+        return db.getFirstTenHistory(uid)
+    }
+
     suspend fun addGamesToRecentlyViewed(gameIdAdd: String, db: HistoryRepository) {
         lateinit var gameViewedRecently: List<String>
         withContext(Dispatchers.Main) {
-            gameViewedRecently = db.getFirstTenHistory()
-            db.insert(gameIdAdd)
+            gameViewedRecently = db.getFirstTenHistory(uid)
+            db.insert(gameIdAdd, uid)
 
             if (isLogged()) {
                 val gameIdDelete =
@@ -93,7 +97,7 @@ object User {
                 val games = (it.value as Map<*, *>).map { el ->
                     val a = el.value as Map<*,*>
                     val id = el.key as String
-                    GameViewedHistoryEntry(id, a["dateTime"] as Long)
+                    GameViewedHistoryEntry(id, uid as String, a["dateTime"] as Long)
                 }
 
                 GlobalScope.launch(Dispatchers.IO) {

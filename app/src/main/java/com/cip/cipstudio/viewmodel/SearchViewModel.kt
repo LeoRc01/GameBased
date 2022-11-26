@@ -11,6 +11,7 @@ import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +31,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     init {
 
         viewModelScope.launch(Dispatchers.Main){
-            val list = historyRepository.getFirstTenHistory()
+            val list = User.getRecentlyViewed(historyRepository)
 
             lastViewdGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>

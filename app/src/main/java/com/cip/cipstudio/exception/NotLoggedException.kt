@@ -1,4 +1,4 @@
-package com.cip.cipstudio
+package com.cip.cipstudio.exception
 
 class NotLoggedException : Exception() {
     override val message: String?

@@ -171,6 +171,8 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     override suspend fun getGamesByIds(gameIds: List<String>, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        if (gameIds.isEmpty())
+            return@withContext arrayListOf()
         val idListString = buildIdsForRequest(gameIds)
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
