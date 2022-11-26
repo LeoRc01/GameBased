@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">CIP Studio</string>
+    <string name="app_name" translatable="false">GameBased</string>
     <string name="login" translatable="false">Login</string>
     <string name="register">Register</string>
     <string name="email_placeholder" translatable="false">Email</string>
@@ -97,8 +97,7 @@
     <string name="guest_settings" translatable="false">guest</string>
     <string name="guest_login">Continue as guest</string>
     <string name="new_user_login">New user?</string>
-    <string name="welcome_login">Welcome</string>
-    <string name="back_login">Back</string>
+    <string name="welcome">Welcome to</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
 </resources>

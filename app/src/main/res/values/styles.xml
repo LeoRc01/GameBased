@@ -37,7 +37,7 @@
     </style>
 
     <style name="titleCicciottello" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="fontFamily">@font/poppins_extrabold</item>
+        <item name="fontFamily">@font/wendy_one</item>
     </style>
 
 
