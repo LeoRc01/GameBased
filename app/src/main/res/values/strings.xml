@@ -51,54 +51,54 @@
     <string name="developer">Developers:</string>
     <string name="publisher">Publishers:</string>
     <string name="support">Supporting developers:</string>
-    <string name="porting_developer">Porting developers:</string>
+    <string name="porting_developer" translatable="false">Porting developers:</string>
     <string name="player_perspectives">Player perspectives:</string>
     <string name="language">Language:</string>
     <string name="game_modes">Game modes:</string>
-    <string name="franchise">Franchise:</string>
-    <string name="collection">Collection:</string>
+    <string name="franchise" translatable="false">Franchise:</string>
+    <string name="collection" translatable="false">Collection:</string>
     <string name="this_game_is_dlc_for">This game is DLC for:</string>
-    <string name="dlcs">DLCs:</string>
+    <string name="dlcs" translatable="false">DLCs:</string>
     <string name="change_username">Change Username</string>
     <string name="change_password">Change Password</string>
-    <string name="logout">Logout</string>
+    <string name="logout" translatable="false">Logout</string>
     <string name="options">Options</string>
     <string name="dark_mode">Dark mode</string>
-    <string name="account">Account</string>
+    <string name="account" translatable="false">Account</string>
     <string name="change_email">Change Email</string>
     <string name="profile_picture">profile picture</string>
     <string name="new_mail">New mail</string>
     <string name="new_username">New username</string>
     <string name="not_defined">Not defined.</string>
     <string name="no_summary_provided">No summary provided.</string>
-    <string name="cpu">CPU: </string>
+    <string name="cpu" translatable="false">CPU: </string>
     <string name="graphics">Graphics: </string>
     <string name="memory">Memory: </string>
-    <string name="output">Output: </string>
-    <string name="storage">Storage: </string>
+    <string name="output" translatable="false">Output: </string>
+    <string name="storage" translatable="false">Storage: </string>
     <string name="resolutions">Resolutions: </string>
     <string name="setting_preferences" translatable="false">com.cip.cipstudio.setting</string>
     <string name="dark_mode_settings" translatable="false">darkMode</string>
     <string name="recent_login_required">Recent login required</string>
-    <string name="username">Username</string>
+    <string name="username" translatable="false">Username</string>
     <string name="username_not_valid">Username invalid</string>
     <string name="username_already_in_use">Username already in use</string>
     <string name="username_too_short">Username too short</string>
     <string name="username_too_long">Username too long</string>
-    <string name="email">Email</string>
-    <string name="old_password">old password</string>
-    <string name="new_password">new password</string>
-    <string name="confirm_password">confirm password</string>
-    <string name="not_your_email">not this account email</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="not_your_email">Not this account email</string>
     <string name="wrong_password">Wrong password</string>
     <string name="already_your_email">already your account\'s email</string>
-    <string name="same_password">old password and new password cannot be the same</string>
+    <string name="same_password">Old password and new password cannot be the same</string>
     <string name="email_not_found">Email not found</string>
     <string name="guest_settings" translatable="false">guest</string>
     <string name="guest_login">Continue as guest</string>
     <string name="new_user_login">New user?</string>
-    <string name="welcome_login">Welcome</string>
-    <string name="back_login">Back</string>
+    <string name="welcome_login" translatable="false">Welcome</string>
+    <string name="back_login" translatable="false">Back</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
 </resources>
