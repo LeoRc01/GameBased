@@ -101,4 +101,5 @@
     <string name="back_login">Back</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
+    <string name="you_don_t_have_any_favourites_yet">You don\'t have any favourites yet</string>
 </resources>

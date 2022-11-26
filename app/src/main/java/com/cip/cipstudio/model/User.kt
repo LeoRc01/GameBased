@@ -37,6 +37,7 @@ object User {
             email = auth.currentUser!!.email
             username = auth.currentUser!!.displayName
             photoUrl = auth.currentUser!!.photoUrl.toString()
+            firebaseRepository.login()
         }
         else {
             uid = "guest"
@@ -73,6 +74,7 @@ object User {
 
     suspend fun addGamesToRecentlyViewed(gameIdAdd: String, db: HistoryRepository) {
         lateinit var gameViewedRecently: List<String>
+        retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
             gameViewedRecently = db.getFirstTenHistory(uid)
             db.insert(gameIdAdd, uid)
@@ -97,7 +99,7 @@ object User {
                 val games = (it.value as Map<*, *>).map { el ->
                     val a = el.value as Map<*,*>
                     val id = el.key as String
-                    GameViewedHistoryEntry(id, uid as String, a["dateTime"] as Long)
+                    GameViewedHistoryEntry(id, uid, a["dateTime"] as Long)
                 }
 
                 GlobalScope.launch(Dispatchers.IO) {

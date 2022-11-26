@@ -19,13 +19,14 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <!-- Most rated games -->
 
                 <TextView
                     android:id="@+id/f_mainPage_tv_mostRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -83,12 +84,12 @@
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/most_hyped_games"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_mainPage_rv_mostRatedGames" />
 

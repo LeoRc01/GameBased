@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,11 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.databinding.FragmentFavouriteBinding
+import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.FavouriteViewModel
 
 class FavouriteFragment : Fragment() {
@@ -20,6 +24,8 @@ class FavouriteFragment : Fragment() {
 
     private lateinit var favouriteBinding: FragmentFavouriteBinding
     private lateinit var favouriteViewModel: FavouriteViewModel
+
+    private lateinit var preferences : android.content.SharedPreferences
 
 
     override fun onCreateView(
@@ -29,6 +35,8 @@ class FavouriteFragment : Fragment() {
         favouriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
 
         favouriteViewModel = FavouriteViewModel(favouriteBinding)
+        preferences = favouriteBinding.root.context.getSharedPreferences(getString(R.string.setting_preferences),
+            AppCompatActivity.MODE_PRIVATE)
 
         initializeFavourites()
 
@@ -48,12 +56,26 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun initializeFavourites(refresh: Boolean = false) {
-        favouriteViewModel.initialize (refresh) {
+        favouriteViewModel.initialize (refresh,
+            updateUI = {
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
                 favouriteBinding.root.findNavController())
-            favouriteBinding.gvFavoriteGames.adapter = gvAdapter
-        }
+                favouriteBinding.gvFavoriteGames.adapter = gvAdapter
+            },
+            noFavouriteUI = {
+                favouriteBinding.fFragmentTvNoFavourite.visibility = View.VISIBLE
+            },
+            notLoggedInUI = {
+                favouriteBinding.fFavouriteRlFavourites.visibility = View.GONE
+                favouriteBinding.fFavouriteLlGuest.visibility = View.VISIBLE
+                favouriteBinding.fFavouriteBtnLogin.setOnClickListener {
+                    preferences.edit().remove(getString(R.string.guest_settings)).apply()
+                    val intent = Intent(activity, AuthActivity::class.java)
+                    startActivity(intent)
+                }
+            })
+
 
     }
 }
