@@ -145,15 +145,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
+                    android:layout_marginTop="50dp"
                     android:layout_marginEnd="25dp"
-                    android:layout_marginTop="30dp"
-                    android:gravity="center_vertical"
                     android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
                     android:text="@string/logout"
+                    app:drawableLeftCompat="@drawable/ic_logout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode"
-                    app:drawableLeftCompat="@drawable/ic_logout"/>
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <TextView
                     android:id="@+id/f_user_tv_headerOptions"
@@ -209,6 +209,48 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_user_tv_changeUsername" />
+
+                <View
+                    android:id="@+id/f_user_divider_darkMode_changeLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/change_language"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/f_user_divider_darkMode_changeLanguage">
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        android:inputType="none"
+                        app:simpleItems="@array/languages" />
+                    />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

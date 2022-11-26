@@ -101,4 +101,5 @@
     <string name="back_login" translatable="false">Back</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
+    <string name="change_language">Change Language</string>
 </resources>
