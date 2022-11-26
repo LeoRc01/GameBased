@@ -132,7 +132,7 @@ object IGDBRepositoryRemote : IGDBRepository {
 
     override suspend fun getGameDetails(gameId: String, refresh: Boolean): GameDetails = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name, summary, first_release_date, cover.url," +
-                "rating, rating_count, total_rating, total_rating_count," +
+                "aggregated_rating, aggregated_rating_count, total_rating, total_rating_count," +
                 "screenshots.url, genres.name, genres.id, platforms.name, platforms.id," +
                 "similar_games.name, similar_games.id, similar_games.cover.url," +
                 "involved_companies.company.name, involved_companies.developer," +
