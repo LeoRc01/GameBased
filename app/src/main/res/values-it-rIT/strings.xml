@@ -17,7 +17,7 @@
     <string name="passwords_not_match">Le password non coincidono</string>
     <string name="registered">Registrato</string>
     <string name="forgot_password">Password dimenticata?</string>
-    <string name="new_user">Nuovo utente? Registrati</string>
+    <string name="register_now">Nuovo utente? Registrati</string>
     <string name="email_already_in_use">Email già in uso</string>
     <string name="email_not_registered">Nessun account per questa email</string>
     <string name="password_not_correct">Password non corretta</string>

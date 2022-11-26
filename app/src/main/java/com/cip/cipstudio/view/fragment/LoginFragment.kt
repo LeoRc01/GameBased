@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
@@ -21,7 +22,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var loginBinding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
-
+    private lateinit var preferences : android.content.SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +33,21 @@ class LoginFragment : Fragment() {
         loginBinding.loginViewModel = loginViewModel
         loginBinding.executePendingBindings()
 
+        preferences = loginBinding.root.context.getSharedPreferences(getString(R.string.setting_preferences),
+            AppCompatActivity.MODE_PRIVATE)
 
         loginBinding.fLoginTvSwitchMode.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         loginBinding.fLoginTvForgotPwd.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_passwordResetFragment)
+        }
+
+        loginBinding.fLoginTvGuest.setOnClickListener {
+            preferences.edit().putBoolean(getString(R.string.guest_settings), true).apply()
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            this.activity?.finish()
         }
 
         initializeLoginButton()

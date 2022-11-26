@@ -28,6 +28,7 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GameScreenshotsRecyclerViewAdapter
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -58,6 +59,7 @@ class GameDetailsFragment : Fragment() {
         gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
 
         gameDetailsBinding.loadingModel = Loading()
+        gameDetailsBinding.user = User
 
         gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing game details page")

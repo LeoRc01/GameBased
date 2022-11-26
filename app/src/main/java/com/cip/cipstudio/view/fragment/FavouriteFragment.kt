@@ -1,26 +1,19 @@
 package com.cip.cipstudio.view.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.databinding.FragmentFavouriteBinding
-import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
-import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.repository.MyFirebaseRepository
 import com.cip.cipstudio.viewmodel.FavouriteViewModel
-import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 
 class FavouriteFragment : Fragment() {
     private val TAG = "FavouriteFragment"

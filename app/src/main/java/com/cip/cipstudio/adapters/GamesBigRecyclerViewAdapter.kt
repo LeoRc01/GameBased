@@ -15,10 +15,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.repository.MyFirebaseRepository
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class GamesBigRecyclerViewAdapter (val context : Context,
@@ -27,6 +31,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                                 ) : RecyclerView.Adapter<GamesBigRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "GamesRecyclerViewAdapt"
+    private lateinit var historyDB: HistoryRepository
 
     fun importItems(gamesDetailsJson : List<GameDetails>){
         games  = gamesDetailsJson
@@ -61,8 +66,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
+        historyDB = HistoryRepositoryLocal(viewHolder.itemView.context)
 
         viewHolder.tvGameNameBigCover.text = games[position].name
         games[position].coverUrl.let {
@@ -73,7 +77,9 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                 viewHolder.ivGameCoverForeground.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
-                    MyFirebaseRepository.getInstance().addGamesToRecentlyViewed(games[position].id)
+                    GlobalScope.launch {
+                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
+                    }
                     viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
                 }
             }

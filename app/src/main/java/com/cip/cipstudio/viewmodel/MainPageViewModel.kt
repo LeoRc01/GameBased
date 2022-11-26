@@ -1,14 +1,10 @@
 package com.cip.cipstudio.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.repository.IGDBRepository
-import com.cip.cipstudio.repository.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
 import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
