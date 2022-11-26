@@ -65,6 +65,54 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutMostHypedGames,
             refresh
         )
+
+        // Most popular games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvMostPopularGames,
+            GameTypeEnum.MOST_POPULAR,
+            mainPageBinding.fMainPageShimmerLayoutMostPopularGames,
+            refresh
+        )
+
+        // Recently released games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvRecentlyReleasedGames,
+            GameTypeEnum.RECENTLY_RELEASED,
+            mainPageBinding.fMainPageShimmerLayoutRecentlyReleasedGames,
+            refresh
+        )
+
+        // Upcoming games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvUpcomingGames,
+            GameTypeEnum.UPCOMING,
+            mainPageBinding.fMainPageShimmerLayoutUpcomingGames,
+            refresh
+        )
+
+        // Worst rated games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvWorstRatedGames,
+            GameTypeEnum.WORST_RATED,
+            mainPageBinding.fMainPageShimmerLayoutWorstRatedGames,
+            refresh
+        )
+
+        // Loved by critics games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvLovedByCriticsGames,
+            GameTypeEnum.LOVED_BY_CRITICS,
+            mainPageBinding.fMainPageShimmerLayoutLovedByCriticsGames,
+            refresh
+        )
+
+        // Best rated games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvBestRatedGames,
+            GameTypeEnum.BEST_RATED,
+            mainPageBinding.fMainPageShimmerLayoutBestRatedGames,
+            refresh
+        )
     }
 
     private fun initializeRecyclerView(

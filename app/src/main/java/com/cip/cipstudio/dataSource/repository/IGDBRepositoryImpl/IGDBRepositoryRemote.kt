@@ -17,6 +17,7 @@ import com.mayakapps.lrucache.LruCache
 import kotlinx.coroutines.*
 import org.json.JSONArray
 
+
 object IGDBRepositoryRemote : IGDBRepository {
 
     private val TAG= "IGDBWrapper"
@@ -26,8 +27,11 @@ object IGDBRepositoryRemote : IGDBRepository {
 
     private val cache = LruCache<String, JSONArray>(100)
 
+    private val limit = 10
+
     private val secondsInAWeek = 604800L
     private val secondsInADay = 86400L
+    private val secondsInAMonth = 2592000L
 
     private fun init() {
         synchronized(this) {
@@ -105,24 +109,6 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext JSONArray(json)
     }
 
-    private suspend fun getGamesMostHyped(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
-        val apicalypse = APICalypse().fields("name, id, cover.url")
-            .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L))
-            .sort("hypes", Sort.DESCENDING)
-            .limit(10)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostHyped", refresh)
-        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
-    }
-
-    private suspend fun getGamesMostRated(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
-        val apicalypse = APICalypse().fields("name, id, cover.url")
-            .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0")
-            .sort("total_rating", Sort.DESCENDING)
-            .limit(10)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh)
-        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
-    }
-
     override suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean) : List<PlatformDetails> = withContext(Dispatchers.IO){
         val platformIdsString = buildIdsForRequest(platformIds)
         val apicalypse = APICalypse().fields("abbreviation, " +
@@ -165,7 +151,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0 & platforms = [$platformId]")
             .sort("rating", Sort.DESCENDING)
-            .limit(10)
+            .limit(limit)
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByPlatform$platformId", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
@@ -185,7 +171,90 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext when (type) {
             GameTypeEnum.MOST_HYPED -> getGamesMostHyped(refresh)
             GameTypeEnum.MOST_RATED -> getGamesMostRated(refresh)
+            GameTypeEnum.UPCOMING -> getUpcomingGames(refresh)
+            GameTypeEnum.RECENTLY_RELEASED -> getRecentlyReleasedGames(refresh)
+            GameTypeEnum.MOST_POPULAR -> getMostPopularGames(refresh)
+            GameTypeEnum.WORST_RATED -> getWorstRatedGames(refresh)
+            GameTypeEnum.LOVED_BY_CRITICS -> getLovedByCriticsGames(refresh)
+            GameTypeEnum.BEST_RATED -> getBestRatedGames(refresh)
         }
+    }
+
+    private fun getGamesMostRated(refresh: Boolean): List<GameDetails> {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10")
+            .sort("total_rating_count", Sort.DESCENDING)
+            .limit(limit)
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh) }
+        return Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private fun getLovedByCriticsGames(refresh: Boolean): List<GameDetails> {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("total_rating_count >= 10 & total_rating != 0 & aggregated_rating_count >=10")
+            .sort("aggregated_rating", Sort.DESCENDING)
+            .limit(limit)
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh) }
+        return Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getGamesMostHyped(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L))
+            .sort("hypes", Sort.DESCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostHyped", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getBestRatedGames(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("cover != n & total_rating_count >= 10 &  aggregated_rating_count >= 10")
+            .sort("total_rating", Sort.DESCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getWorstRatedGames(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("cover != n & total_rating_count >= 10")
+            .sort("total_rating", Sort.ASCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getWorstRatedGames", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getMostPopularGames(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse()
+            .fields("name, id, cover.url")
+            .where("first_release_date > " + ((System.currentTimeMillis() / 1000) - 6 * secondsInAWeek)
+                        + " & hypes != 0 & follows != 0 & total_rating_count != 0"
+            )
+            .sort("total_rating", Sort.DESCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getMostPopularGames", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getRecentlyReleasedGames(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse()
+            .fields("name, id, cover.url")
+            .where("first_release_date != n")
+            .sort("first_release_date", Sort.DESCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getRecentlyReleasedGames", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
+    private suspend fun getUpcomingGames(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse()
+            .fields("name, id, cover.url")
+            .where("first_release_date > " + (System.currentTimeMillis() / 1000))
+            .sort("total_rating_count", Sort.ASCENDING)
+            .limit(limit)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getUpcomingGames", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
     private fun buildIdsForRequest(ids : List<Any>) : String {
