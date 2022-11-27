@@ -119,6 +119,7 @@ class UserFragment : Fragment() {
             userViewModel.setLanguage(lan) {
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             }
         }
 
