@@ -180,7 +180,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private fun getGamesMostRated(refresh: Boolean): List<GameDetails> {
+    private suspend fun getGamesMostRated(refresh: Boolean): List<GameDetails> {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10")
             .sort("total_rating_count", Sort.DESCENDING)
@@ -189,12 +189,12 @@ object IGDBRepositoryRemote : IGDBRepository {
         return Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private fun getLovedByCriticsGames(refresh: Boolean): List<GameDetails> {
+    private suspend fun getLovedByCriticsGames(refresh: Boolean): List<GameDetails> {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating_count >= 10 & total_rating != 0 & aggregated_rating_count >=10")
             .sort("aggregated_rating", Sort.DESCENDING)
             .limit(limit)
-        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh) }
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getLovedByCriticsGames", refresh) }
         return Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -212,7 +212,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("cover != n & total_rating_count >= 10 &  aggregated_rating_count >= 10")
             .sort("total_rating", Sort.DESCENDING)
             .limit(limit)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getBestRatedGames", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 

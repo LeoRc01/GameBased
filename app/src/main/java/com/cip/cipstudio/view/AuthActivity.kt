@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
+import com.cip.cipstudio.utils.ContextWrapper
 
 class AuthActivity : AppCompatActivity() {
     private val TAG = "AuthActivity"
@@ -20,9 +22,9 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        preferences = getSharedPreferences(getString(R.string.setting_preferences), MODE_PRIVATE)
 
-        if (preferences.contains(getString(R.string.dark_mode_settings))) {
+
+        if (!preferences.contains(getString(R.string.dark_mode_settings))) {
             preferences.edit().putBoolean(getString(R.string.dark_mode_settings), true).apply()
         }
 
@@ -58,5 +60,12 @@ class AuthActivity : AppCompatActivity() {
         val mainActivity = Intent(this, MainActivity::class.java)
         startActivity(mainActivity)
         finish()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        preferences = newBase.getSharedPreferences(newBase.getString(R.string.setting_preferences), MODE_PRIVATE)
+        val language = preferences.getString(newBase.getString(R.string.language_settings), "en")
+        val context = ContextWrapper.wrap(newBase, language!!)
+        super.attachBaseContext(context)
     }
 }

@@ -36,9 +36,13 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
         onSuccess.invoke()
     }
 
-    fun setItalianLanguage(onSuccess: () -> Unit) {
-        setLocale("it")
+    fun setLanguage(lan: String, onSuccess: () -> Unit) {
+        Log.i(TAG, "setLanguage: $lan")
+        if (lan == Locale.getDefault().language)
+            return
+        preferences.edit().putString(binding.root.context.getString(R.string.language_settings), lan).apply()
         onSuccess.invoke()
+
     }
 
     private fun setLocale(s: String) {
@@ -60,8 +64,9 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     }
 
     fun setEnglishLanguage(onSuccess: () -> Unit) {
-        setLocale("en")
-        onSuccess.invoke()
+        preferences.edit().putString("language", "en").commit().let {
+            onSuccess.invoke()
+        }
     }
 
 

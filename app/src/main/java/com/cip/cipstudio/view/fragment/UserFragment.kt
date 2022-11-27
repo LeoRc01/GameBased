@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
 import com.cip.cipstudio.view.AuthActivity
+import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -110,14 +111,15 @@ class UserFragment : Fragment() {
 
         userBinding.fUserActvChangeLanguage.setOnItemClickListener { adapterView, view, i, l ->
             val language = adapterView.getItemAtPosition(i).toString()
-            if (language == getString(R.string.Italian)) {
-                userViewModel.setItalianLanguage(onSuccess = {
-                    preferences.edit().putString(getString(com.cip.cipstudio.R.string.language_settings), "it").apply()
-                })
+            val lan = if (language == getString(R.string.Italian)) {
+                "it"
             } else {
-                userViewModel.setEnglishLanguage(onSuccess = {
-                    preferences.edit().putString(getString(com.cip.cipstudio.R.string.language_settings), "en").apply()
-                })
+                "en"
+            }
+            userViewModel.setLanguage(lan) {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
 
