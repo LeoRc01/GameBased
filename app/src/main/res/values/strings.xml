@@ -102,4 +102,8 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
     <string name="change_language">Change Language</string>
+    <string name="Language">Language</string>
+    <string name="Italian">Italian</string>
+    <string name="English">English</string>
+    <string name="language_settings">language settings</string>
 </resources>
