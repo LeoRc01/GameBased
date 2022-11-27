@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
+import com.cip.cipstudio.model.User
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
@@ -12,10 +13,9 @@ import java.util.*
 class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     private val TAG = "UserViewModel"
     private val preferences = binding.root.context.getSharedPreferences(binding.root.context.getString(R.string.setting_preferences), 0)
-    private val firebase: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun logout(onSuccess: () -> Unit) {
-        firebase.signOut()
+        User.auth.signOut()
         onSuccess.invoke()
     }
 

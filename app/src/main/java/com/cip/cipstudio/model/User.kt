@@ -24,7 +24,7 @@ object User {
     var email: String? = null
     var username: String? = null
     var photoUrl: String? = null
-    private val auth = FirebaseAuth.getInstance()
+    val auth = FirebaseAuth.getInstance()
     private val firebaseRepository = FirebaseRepository
 
     init {

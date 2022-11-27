@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
@@ -37,10 +38,8 @@ class UserFragment : Fragment() {
     private lateinit var userBinding: FragmentUserBinding
 
     private lateinit var preferences : SharedPreferences
-    private val currentUser = FirebaseAuth.getInstance().currentUser
     private var selectedPhotoUri : Uri? = null
-    private val filename = currentUser?.uid
-    private val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+    private val ref = FirebaseStorage.getInstance().getReference("/images/$User.uid")
     private val systemLanguage: String = Locale.getDefault().language
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -55,8 +54,8 @@ class UserFragment : Fragment() {
 
 
 
-        userBinding.fUserTvUsername.text = currentUser?.displayName
-        userBinding.fUserTvEmail.text = currentUser?.email
+        userBinding.fUserTvUsername.text = User.username
+        userBinding.fUserTvEmail.text = User.email
         ref.downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).into(userBinding.fUserIwProfilePicture)
         }
