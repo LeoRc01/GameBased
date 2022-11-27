@@ -45,9 +45,9 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        preferences = requireContext().getSharedPreferences(getString(com.cip.cipstudio.R.string.setting_preferences), MODE_PRIVATE)
+        preferences = requireContext().getSharedPreferences(getString(R.string.setting_preferences), MODE_PRIVATE)
 
-        userBinding = DataBindingUtil.inflate(inflater, com.cip.cipstudio.R.layout.fragment_user, container, false)
+        userBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false)
         userViewModel = UserViewModel(userBinding)
 
 
@@ -68,24 +68,42 @@ class UserFragment : Fragment() {
 
 
         userBinding.fUserTvLogout.setOnClickListener {
-            Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
-            userViewModel.logout {
+            userViewModel.logout ( onSuccess = {
+                Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
-            }
+            },
+            onFailure = {
+                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+            })
         }
 
         userBinding.fUserTvChangeEmail.setOnClickListener {
-            findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
+            if (user.isLogged()) {
+                findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
+            }
+            else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+            }
         }
 
         userBinding.fUserTvChangePassword.setOnClickListener {
-            findNavController().navigate(R.id.action_userFragment_to_changePasswordFragment)
+            if (user.isLogged()) {
+                findNavController().navigate(R.id.action_userFragment_to_changePasswordFragment)
+            }
+            else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+            }
         }
         
         userBinding.fUserTvChangeUsername.setOnClickListener {
-            findNavController().navigate(R.id.action_userFragment_to_changeUsernameFragment)
+            if (user.isLogged()) {
+                findNavController().navigate(R.id.action_userFragment_to_changeUsernameFragment)
+            }
+            else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -103,9 +121,15 @@ class UserFragment : Fragment() {
         }
 
         userBinding.fUserIwProfilePicture.setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 0)
+            if (user.isLogged()) {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                startActivityForResult(intent, 0)
+            }
+            else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         if (preferences.getString(getString(R.string.language_settings), systemLanguage) == "it") {

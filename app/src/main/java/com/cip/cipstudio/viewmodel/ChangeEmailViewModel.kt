@@ -4,6 +4,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
+import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
@@ -56,6 +57,9 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
                     is FirebaseAuthRecentLoginRequiredException -> {
                         onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
                     }
+                    is NotLoggedException -> {
+                        onFailure(AuthErrorEnum.NOT_LOGGED)
+                    }
                     else -> {
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
@@ -65,6 +69,9 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
             when(it){
                 is FirebaseAuthRecentLoginRequiredException -> {
                     onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
+                }
+                is NotLoggedException -> {
+                    onFailure(AuthErrorEnum.NOT_LOGGED)
                 }
                 else -> {
                     onFailure(AuthErrorEnum.WRONG_PASSWORD)

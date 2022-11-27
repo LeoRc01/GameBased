@@ -113,4 +113,5 @@
     <string name="worst_rated">Worst rated</string>
     <string name="best_rated">Best rated</string>
     <string name="loved_by_critics">Loved by critics</string>
+    <string name="not_logged_in">Not logged in</string>
 </resources>

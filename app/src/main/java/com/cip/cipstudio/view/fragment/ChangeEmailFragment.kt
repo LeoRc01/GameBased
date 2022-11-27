@@ -70,6 +70,9 @@ class ChangeEmailFragment : Fragment() {
                         AuthTypeErrorEnum.PASSWORD -> {
                             changeEmailBinding.fEmailChangeLayoutPwd.error = getString(it.getErrorId())
                         }
+                        AuthTypeErrorEnum.LOGIN -> {
+                            Toast.makeText(requireContext(), getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
+                        }
                         else -> {
                             Toast.makeText(requireContext(), it.getErrorId(), Toast.LENGTH_SHORT).show()
                         }

@@ -70,7 +70,7 @@ class ChangeUsernameFragment : Fragment() {
                             changeUsernameBinding.fUsernameChangeLayoutNewUsername.error =
                                 getString(it.getErrorId())
                         }
-                        AuthTypeErrorEnum.UNKNOWN -> {
+                        AuthTypeErrorEnum.UNKNOWN, AuthTypeErrorEnum.LOGIN -> {
                             Toast.makeText(requireContext(), it.getErrorId(), Toast.LENGTH_SHORT).show()
                         }
                         else -> {}

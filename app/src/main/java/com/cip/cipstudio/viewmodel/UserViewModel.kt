@@ -14,9 +14,16 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     private val TAG = "UserViewModel"
     private val preferences = binding.root.context.getSharedPreferences(binding.root.context.getString(R.string.setting_preferences), 0)
 
-    fun logout(onSuccess: () -> Unit) {
-        User.logout()
-        onSuccess.invoke()
+    fun logout(onSuccess: () -> Unit, onFailure: () -> Unit = {}) {
+        try {
+            User.logout()
+            onSuccess.invoke()
+        }
+        catch (e: Exception) {
+            Log.e(TAG, "logout: ${e.message}")
+            onFailure.invoke()
+        }
+
     }
 
     fun setDarkMode(onSuccess: () -> Unit) {

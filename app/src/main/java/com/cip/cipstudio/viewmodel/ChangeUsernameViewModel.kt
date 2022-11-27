@@ -3,6 +3,7 @@ package com.cip.cipstudio.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.Validator.Companion.isValidUsername
@@ -38,6 +39,9 @@ class ChangeUsernameViewModel : ViewModel() {
                 when (it) {
                     is FirebaseAuthRecentLoginRequiredException -> {
                         onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
+                    }
+                    is NotLoggedException -> {
+                        onFailure(AuthErrorEnum.NOT_LOGGED)
                     }
                     else -> {
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)

@@ -74,7 +74,7 @@ class ChangePasswordFragment : Fragment() {
                         AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
                             changePasswordBinding.fPasswordChangeLayoutConfirmpwd.error = getString(it.getErrorId())
                         }
-                        AuthTypeErrorEnum.UNKNOWN -> {
+                        AuthTypeErrorEnum.UNKNOWN, AuthTypeErrorEnum.LOGIN  -> {
                             Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                         }
                         else -> {}

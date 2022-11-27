@@ -3,11 +3,10 @@ package com.cip.cipstudio.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.Validator.Companion.isValidPassword
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 
 class ChangePasswordViewModel() : ViewModel(){
@@ -56,13 +55,21 @@ class ChangePasswordViewModel() : ViewModel(){
                     is FirebaseAuthRecentLoginRequiredException -> {
                         onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)
                     }
+                    is NotLoggedException -> {
+                        onFailure(AuthErrorEnum.NOT_LOGGED)
+                    }
                     else -> {
                         onFailure(AuthErrorEnum.UNKNOWN_ERROR)
                     }
                 }
             }
         }.addOnFailureListener {
-            onFailure(AuthErrorEnum.WRONG_PASSWORD)
+            val exception = if (it is NotLoggedException) {
+                AuthErrorEnum.NOT_LOGGED
+            } else {
+                AuthErrorEnum.WRONG_PASSWORD
+            }
+            onFailure(exception)
         }
 
 
