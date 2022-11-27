@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.action_global_homeScreen)
                         navController.clearBackStack("")
                     }else{
-                        navController.navigate(R.id.action_homeScreen_self)
                         navController.clearBackStack("")
                     }
                 }
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_profile->{
                     when(currentFragment){
                         is UserFragment -> {
-                            navController.navigate(R.id.action_profileScreen_self)
                             navController.clearBackStack("")
                         }
                         is ChangeUsernameFragment -> {
