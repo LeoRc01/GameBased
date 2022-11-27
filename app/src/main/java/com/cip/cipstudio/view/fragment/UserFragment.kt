@@ -47,7 +47,7 @@ class UserFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         preferences = requireContext().getSharedPreferences(getString(com.cip.cipstudio.R.string.setting_preferences), MODE_PRIVATE)
 
         userBinding = DataBindingUtil.inflate(inflater, com.cip.cipstudio.R.layout.fragment_user, container, false)
@@ -65,10 +65,11 @@ class UserFragment : Fragment() {
 
         userBinding.fUserTvLogout.setOnClickListener {
             Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
-            userViewModel.logout(onSuccess = {
+            userViewModel.logout {
                 val intent = Intent(requireContext(), AuthActivity::class.java)
                 startActivity(intent)
-                requireActivity().finish()})
+                requireActivity().finish()
+            }
         }
 
         userBinding.fUserTvChangeEmail.setOnClickListener {
