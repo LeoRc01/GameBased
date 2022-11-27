@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.viewmodel.ChangeEmailViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +21,7 @@ class ChangeEmailFragment : Fragment() {
 
     private lateinit var changeEmailViewModel: ChangeEmailViewModel
     private lateinit var changeEmailBinding: FragmentEmailChangeBinding
+    private val user = User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +32,9 @@ class ChangeEmailFragment : Fragment() {
         changeEmailBinding.changeEmailViewModel = changeEmailViewModel
         changeEmailBinding.executePendingBindings()
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        changeEmailBinding.fEmailChangeTvEmail.text = currentUser?.email
+
+        changeEmailBinding.fEmailChangeTvEmail.text = user.email
+        changeEmailBinding.fEmailChangeTvUsername.text = user.username
 
 
         initializeChangeEmailButton()
@@ -56,7 +59,9 @@ class ChangeEmailFragment : Fragment() {
                         AuthTypeErrorEnum.PASSWORD -> {
                             changeEmailBinding.fEmailChangeLayoutPwd.error = getString(it.getErrorId())
                         }
-                        else -> {}
+                        else -> {
+                            Toast.makeText(requireContext(), it.getErrorId(), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             )

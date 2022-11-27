@@ -4,6 +4,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +17,7 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
 
     var email : MutableLiveData<String> = MutableLiveData()
     var password : MutableLiveData<String> = MutableLiveData()
-    private val user = FirebaseAuth.getInstance().currentUser
+    private val user = User
 
     fun changeEmail(onSuccess: () -> Unit,
                     onFailure: (AuthErrorEnum) -> Unit = {}) {
@@ -32,14 +33,14 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
             return
         }
 
-        val credential = EmailAuthProvider.getCredential(user?.email.toString(), password)
 
-        if(newEmail == user?.email) {
+        if(newEmail == user.email) {
             onFailure(AuthErrorEnum.EMAIL_ALREADY_YOURS)
             return
         }
 
-        user?.reauthenticate(credential)?.addOnSuccessListener {
+
+        user.reauthenticate(user.email!!,password).addOnSuccessListener {
             user.updateEmail(newEmail).addOnSuccessListener {
                 Log.d(TAG, "User email address updated.")
                 onSuccess.invoke()
@@ -59,7 +60,7 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
                     }
                 }
             }
-        }?.addOnFailureListener{
+        }.addOnFailureListener{
             when(it){
                 is FirebaseAuthRecentLoginRequiredException -> {
                     onFailure(AuthErrorEnum.RECENT_LOGIN_REQUIRED)

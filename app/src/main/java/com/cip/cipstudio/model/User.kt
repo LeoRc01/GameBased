@@ -1,5 +1,8 @@
 package com.cip.cipstudio.model
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.dataSource.repository.HistoryRepository
@@ -8,12 +11,17 @@ import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks.forException
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -23,9 +31,9 @@ object User {
     lateinit var uid: String
     var email: String? = null
     var username: String? = null
-    var photoUrl: String? = null
     val auth = FirebaseAuth.getInstance()
     private val firebaseRepository = FirebaseRepository
+    private var storageReference : StorageReference? = null
 
     init {
         retrieveDataFromCurrentUser()
@@ -36,11 +44,15 @@ object User {
             uid = auth.currentUser!!.uid
             email = auth.currentUser!!.email
             username = auth.currentUser!!.displayName
-            photoUrl = auth.currentUser!!.photoUrl.toString()
             firebaseRepository.login()
+            storageReference = FirebaseStorage.getInstance().getReference("/images/${uid}")
         }
         else {
             uid = "guest"
+            email = null
+            username = null
+            storageReference = null
+
         }
     }
 
@@ -140,6 +152,65 @@ object User {
 
     fun isLogged() : Boolean {
         return auth.currentUser != null
+    }
+
+    fun logout() {
+        auth.signOut()
+        retrieveDataFromCurrentUser()
+    }
+
+    fun uploadImage(selectedPhotoUri: Uri?) : Task<*> {
+        if (!isLogged()) {
+            return forException<DataSnapshot>(NotLoggedException())
+        }
+
+        return storageReference!!.putFile(selectedPhotoUri!!)
+    }
+
+    fun getImage() : Task<Uri> {
+        if (!isLogged()) {
+            return forException<Uri>(NotLoggedException())
+        }
+
+        return storageReference!!.downloadUrl
+    }
+
+    fun reauthenticate(email: String, password: String) : Task<*> {
+        if (!isLogged()) {
+            return forException<Uri>(NotLoggedException())
+        }
+
+        val credential = EmailAuthProvider.getCredential(email, password)
+        return auth.currentUser!!.reauthenticate(credential)
+    }
+
+    fun updateEmail(email: String): Task<*> {
+        if (!isLogged()) {
+            return forException<Uri>(NotLoggedException())
+        }
+
+        return auth.currentUser?.updateEmail(email)!!.addOnSuccessListener {
+            retrieveDataFromCurrentUser()
+        }
+    }
+
+    fun updatePassword(newPassword: String): Task<*> {
+        if (!isLogged()) {
+            return forException<Uri>(NotLoggedException())
+        }
+
+        return auth.currentUser?.updatePassword(newPassword)!!.addOnSuccessListener {
+            logout() }
+    }
+
+    fun updateUsername(changeRequest: UserProfileChangeRequest) : Task<*>? {
+        if (!isLogged()) {
+            return forException<Uri>(NotLoggedException())
+        }
+
+        return auth.currentUser?.updateProfile(changeRequest)?.addOnSuccessListener {
+            retrieveDataFromCurrentUser()
+        }
     }
 
 }

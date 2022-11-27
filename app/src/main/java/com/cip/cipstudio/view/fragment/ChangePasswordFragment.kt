@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangePasswordViewModel
@@ -20,6 +21,7 @@ class ChangePasswordFragment : Fragment() {
 
     private lateinit var changePasswordViewModel: ChangePasswordViewModel
     private lateinit var changePasswordBinding: FragmentPasswordChangeBinding
+    private val user = User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +35,8 @@ class ChangePasswordFragment : Fragment() {
 
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        changePasswordBinding.fPasswordChangeTvUsername.text = currentUser?.displayName
-        changePasswordBinding.fPasswordChangeTvEmail.text = currentUser?.email
+        changePasswordBinding.fPasswordChangeTvUsername.text = User.username
+        changePasswordBinding.fPasswordChangeTvEmail.text = User.email
 
         initializeChangePasswordButton()
 
@@ -50,7 +52,6 @@ class ChangePasswordFragment : Fragment() {
             changePasswordViewModel.changePassword(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Password changed, please login", Toast.LENGTH_SHORT).show()
-                    FirebaseAuth.getInstance().signOut()
                     startActivity(Intent(requireContext(), AuthActivity::class.java))
                     requireActivity().finish()
                 },

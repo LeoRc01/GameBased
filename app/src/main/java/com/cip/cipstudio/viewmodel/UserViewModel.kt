@@ -15,7 +15,7 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     private val preferences = binding.root.context.getSharedPreferences(binding.root.context.getString(R.string.setting_preferences), 0)
 
     fun logout(onSuccess: () -> Unit) {
-        User.auth.signOut()
+        User.logout()
         onSuccess.invoke()
     }
 

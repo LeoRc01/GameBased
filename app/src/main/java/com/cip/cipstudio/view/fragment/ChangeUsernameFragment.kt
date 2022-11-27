@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUsernameChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangeUsernameViewModel
@@ -22,6 +23,7 @@ class ChangeUsernameFragment : Fragment() {
 
     private lateinit var changeUsernameViewModel: ChangeUsernameViewModel
     private lateinit var changeUsernameBinding: FragmentUsernameChangeBinding
+    private val user = User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +34,8 @@ class ChangeUsernameFragment : Fragment() {
         changeUsernameBinding.changeUsernameViewModel = changeUsernameViewModel
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        changeUsernameBinding.fUsernameChangeTvUsername.text = currentUser?.displayName
-        changeUsernameBinding.fUsernameChangeTvEmail.text = currentUser?.email
+        changeUsernameBinding.fUsernameChangeTvUsername.text = user.username
+        changeUsernameBinding.fUsernameChangeTvEmail.text = user.email
         changeUsernameBinding.executePendingBindings()
 
         initializeChangeUsernameButton()

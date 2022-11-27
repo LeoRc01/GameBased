@@ -36,11 +36,9 @@ class UserFragment : Fragment() {
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userBinding: FragmentUserBinding
-
     private lateinit var preferences : SharedPreferences
-    private var selectedPhotoUri : Uri? = null
-    private val ref = FirebaseStorage.getInstance().getReference("/images/$User.uid")
     private val systemLanguage: String = Locale.getDefault().language
+    private val user = User
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreateView(
@@ -54,9 +52,11 @@ class UserFragment : Fragment() {
 
 
 
-        userBinding.fUserTvUsername.text = User.username
-        userBinding.fUserTvEmail.text = User.email
-        ref.downloadUrl.addOnSuccessListener {
+        userBinding.fUserTvUsername.text = user.username
+        userBinding.fUserTvEmail.text = user.email
+
+        user.getImage().addOnSuccessListener {
+            Log.d(TAG, "Photo download url: $it")
             Picasso.get().load(it).into(userBinding.fUserIwProfilePicture)
         }
 
@@ -72,27 +72,27 @@ class UserFragment : Fragment() {
         }
 
         userBinding.fUserTvChangeEmail.setOnClickListener {
-            findNavController().navigate(com.cip.cipstudio.R.id.action_userFragment_to_changeEmailFragment)
+            findNavController().navigate(R.id.action_userFragment_to_changeEmailFragment)
         }
 
         userBinding.fUserTvChangePassword.setOnClickListener {
-            findNavController().navigate(com.cip.cipstudio.R.id.action_userFragment_to_changePasswordFragment)
+            findNavController().navigate(R.id.action_userFragment_to_changePasswordFragment)
         }
         
         userBinding.fUserTvChangeUsername.setOnClickListener {
-            findNavController().navigate(com.cip.cipstudio.R.id.action_userFragment_to_changeUsernameFragment)
+            findNavController().navigate(R.id.action_userFragment_to_changeUsernameFragment)
         }
 
 
-        userBinding.fUserScDarkMode.isChecked = preferences.getBoolean(getString(com.cip.cipstudio.R.string.dark_mode_settings), false)
+        userBinding.fUserScDarkMode.isChecked = preferences.getBoolean(getString(R.string.dark_mode_settings), false)
         userBinding.fUserScDarkMode.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 userViewModel.setDarkMode(onSuccess = {
-                    preferences.edit().putBoolean(getString(com.cip.cipstudio.R.string.dark_mode_settings), true).apply()
+                    preferences.edit().putBoolean(getString(R.string.dark_mode_settings), true).apply()
                 })
             } else {
                 userViewModel.setLightMode(onSuccess = {
-                    preferences.edit().putBoolean(getString(com.cip.cipstudio.R.string.dark_mode_settings), false).apply()
+                    preferences.edit().putBoolean(getString(R.string.dark_mode_settings), false).apply()
                 })
             }
         }
@@ -132,16 +132,11 @@ class UserFragment : Fragment() {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             Log.d(TAG, "Photo was selected")
 
-            selectedPhotoUri = data.data
+
+            val selectedPhotoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedPhotoUri)
             userBinding.fUserIwProfilePicture.setImageBitmap(bitmap)
-
-            ref.putFile(selectedPhotoUri!!).addOnSuccessListener {
-                    Log.d(TAG, "Success upload: ${it.metadata?.path}")
-            }.addOnFailureListener{
-                Log.d(TAG, "Failed upload: ${it.message}")
-            }
-
+            user.uploadImage(selectedPhotoUri)
 
         }
     }

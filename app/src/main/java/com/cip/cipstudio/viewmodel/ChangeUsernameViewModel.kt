@@ -11,7 +11,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 
 class ChangeUsernameViewModel : ViewModel() {
     private val TAG = "ChangeUsernameViewModel"
-    private val user = FirebaseAuth.getInstance().currentUser
+    private val user = User
     var newUsername: MutableLiveData<String> = MutableLiveData()
 
     fun changeUsername( onSuccess: () -> Unit,
@@ -28,7 +28,7 @@ class ChangeUsernameViewModel : ViewModel() {
        UserProfileChangeRequest.Builder()
             .setDisplayName(newUsername)
             .build()
-            .let { user?.updateProfile(it) }
+            .let { user.updateUsername(it) }
             ?.addOnSuccessListener {
                 Log.d(TAG, "User profile updated.")
                 onSuccess.invoke()
