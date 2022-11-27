@@ -22,7 +22,7 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         preferences = getSharedPreferences(getString(R.string.setting_preferences), MODE_PRIVATE)
 
-        if (preferences.contains(getString(R.string.dark_mode_settings))) {
+        if (!preferences.contains(getString(R.string.dark_mode_settings))) {
             preferences.edit().putBoolean(getString(R.string.dark_mode_settings), true).apply()
         }
 
