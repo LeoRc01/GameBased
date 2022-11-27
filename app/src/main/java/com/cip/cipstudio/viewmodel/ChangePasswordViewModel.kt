@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.Validator.Companion.isValidPassword
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
@@ -67,15 +68,4 @@ class ChangePasswordViewModel() : ViewModel(){
 
     }
 
-    private fun isValidPassword(password: String): AuthErrorEnum? {
-        return when {
-            password.length < 8 -> AuthErrorEnum.PASSWORD_TOO_SHORT
-            password.length > 20 -> AuthErrorEnum.PASSWORD_TOO_LONG
-            !password.matches(Regex(".*\\d.*")) -> AuthErrorEnum.PASSWORD_NO_DIGIT
-            !password.matches(Regex(".*[a-z].*")) -> AuthErrorEnum.PASSWORD_NO_LOWERCASE
-            !password.matches(Regex(".*[A-Z].*")) -> AuthErrorEnum.PASSWORD_NO_UPPERCASE
-            !password.matches(Regex(".*[!@#\$%^&*()_+].*")) -> AuthErrorEnum.PASSWORD_NO_SPECIAL_CHARACTER
-            else -> null
-        }
-    }
 }

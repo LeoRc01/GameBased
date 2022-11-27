@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthEmailException
@@ -73,10 +74,6 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
 
 
 
-    }
-
-    private fun isValidEmail(email: String) : Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 }

@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
+import com.cip.cipstudio.utils.Validator.Companion.isValidLoginPassword
+import com.cip.cipstudio.utils.Validator.Companion.isValidPassword
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -34,7 +37,7 @@ class LoginViewModel() : ViewModel(){
             return
         }
 
-        if(!isValidPassword(password)){
+        if(!isValidLoginPassword(password)){
             onFailure(AuthErrorEnum.PASSWORD_NOT_CORRECT)
             return
         }
@@ -58,14 +61,4 @@ class LoginViewModel() : ViewModel(){
                 }
             }
     }
-
-    private fun isValidEmail(email: String) : Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun isValidPassword(password: String) : Boolean {
-        val PASSWORD_REGEX = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#${'$'}%!\-_?&])(?=\S+${'$'}).{8,20}${'$'}""".toRegex()
-        return PASSWORD_REGEX.matches(password)
-    }
-
 }

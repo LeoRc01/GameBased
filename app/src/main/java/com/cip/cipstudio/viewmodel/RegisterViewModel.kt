@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
+import com.cip.cipstudio.utils.Validator.Companion.isValidPassword
+import com.cip.cipstudio.utils.Validator.Companion.isValidUsername
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -72,30 +75,5 @@ class RegisterViewModel() : ViewModel() {
                     }
                 }
             }
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun isValidPassword(password: String): AuthErrorEnum? {
-        return when {
-            password.length < 8 -> AuthErrorEnum.PASSWORD_TOO_SHORT
-            password.length > 20 -> AuthErrorEnum.PASSWORD_TOO_LONG
-            !password.matches(Regex(".*\\d.*")) -> AuthErrorEnum.PASSWORD_NO_DIGIT
-            !password.matches(Regex(".*[a-z].*")) -> AuthErrorEnum.PASSWORD_NO_LOWERCASE
-            !password.matches(Regex(".*[A-Z].*")) -> AuthErrorEnum.PASSWORD_NO_UPPERCASE
-            !password.matches(Regex(".*[!@#\$%^&*()_+].*")) -> AuthErrorEnum.PASSWORD_NO_SPECIAL_CHARACTER
-            else -> null
-        }
-    }
-
-    private fun isValidUsername(username: String): AuthErrorEnum? {
-        return when {
-            username.length < 3 -> AuthErrorEnum.USERNAME_TOO_SHORT
-            username.length > 20 -> AuthErrorEnum.USERNAME_TOO_LONG
-            !username.matches(Regex("^([_.]*[a-zA-Z0-9][a-zA-Z0-9_.]*)\$")) -> AuthErrorEnum.USERNAME_NOT_VALID
-            else -> null
-        }
     }
 }

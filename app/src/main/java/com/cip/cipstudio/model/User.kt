@@ -31,7 +31,7 @@ object User {
     lateinit var uid: String
     var email: String? = null
     var username: String? = null
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private val firebaseRepository = FirebaseRepository
     private var storageReference : StorageReference? = null
 
@@ -155,6 +155,10 @@ object User {
     }
 
     fun logout() {
+        if (!isLogged()) {
+            throw NotLoggedException()
+        }
+
         auth.signOut()
         retrieveDataFromCurrentUser()
     }
