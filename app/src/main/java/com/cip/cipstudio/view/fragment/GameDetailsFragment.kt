@@ -115,15 +115,18 @@ class GameDetailsFragment : Fragment() {
     }
 
     private fun setScreenshots(screenshotList: List<JSONObject>) {
-        val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
-        val manager = LinearLayoutManager(context)
-        manager.orientation = RecyclerView.HORIZONTAL
-        val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(screenshotList,
-            R.id.action_gameDetailsFragment_to_gameScreenshotDialog, resources.configuration.orientation)
-        screenshotsRecyclerView.layoutManager = manager
-        screenshotsRecyclerView.setItemViewCacheSize(50)
-        screenshotsRecyclerView.itemAnimator = null
-        screenshotsRecyclerView.adapter = rvGameScreenshotsAdapter
+        checkIfFragmentAttached() {
+            val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
+            val manager = LinearLayoutManager(context)
+            manager.orientation = RecyclerView.HORIZONTAL
+            val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(screenshotList,
+                R.id.action_gameDetailsFragment_to_gameScreenshotDialog, resources.configuration.orientation)
+            screenshotsRecyclerView.layoutManager = manager
+            screenshotsRecyclerView.setItemViewCacheSize(50)
+            screenshotsRecyclerView.itemAnimator = null
+            screenshotsRecyclerView.adapter = rvGameScreenshotsAdapter
+        }
+
     }
 
     private fun setSimilarGames(similarGamesList: List<GameDetails>) {
@@ -204,7 +207,7 @@ class GameDetailsFragment : Fragment() {
         }
     }
 
-    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+    private fun checkIfFragmentAttached(operation: Context.() -> Unit) {
         if (isAdded && context != null) {
             operation(requireContext())
         }
