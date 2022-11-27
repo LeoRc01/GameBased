@@ -17,6 +17,7 @@ import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangeUsernameViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class ChangeUsernameFragment : Fragment() {
     private val TAG = "ChangeUsernameFragment"
@@ -32,11 +33,22 @@ class ChangeUsernameFragment : Fragment() {
         changeUsernameBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_username_change, container, false)
         changeUsernameViewModel = ChangeUsernameViewModel()
         changeUsernameBinding.changeUsernameViewModel = changeUsernameViewModel
+        changeUsernameBinding.executePendingBindings()
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
+
         changeUsernameBinding.fUsernameChangeTvUsername.text = user.username
         changeUsernameBinding.fUsernameChangeTvEmail.text = user.email
-        changeUsernameBinding.executePendingBindings()
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(changeUsernameBinding.fUsernameChangeIvProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
+        }
+
+
 
         initializeChangeUsernameButton()
 

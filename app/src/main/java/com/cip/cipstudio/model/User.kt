@@ -18,6 +18,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ object User {
     lateinit var uid: String
     var email: String? = null
     var username: String? = null
+    var downloadUrl : Uri? = null
     private val auth = FirebaseAuth.getInstance()
     private val firebaseRepository = FirebaseRepository
     private var storageReference : StorageReference? = null
@@ -46,6 +48,7 @@ object User {
             username = auth.currentUser!!.displayName
             firebaseRepository.login()
             storageReference = FirebaseStorage.getInstance().getReference("/images/${uid}")
+            retrieveUrlDownload()
         }
         else {
             uid = "guest"
@@ -163,20 +166,21 @@ object User {
         retrieveDataFromCurrentUser()
     }
 
+    private fun retrieveUrlDownload() {
+        storageReference!!.downloadUrl.addOnSuccessListener {
+            downloadUrl = it
+            Picasso.get().load(downloadUrl)
+        }
+    }
+
     fun uploadImage(selectedPhotoUri: Uri?) : Task<*> {
         if (!isLogged()) {
             return forException<DataSnapshot>(NotLoggedException())
         }
 
-        return storageReference!!.putFile(selectedPhotoUri!!)
-    }
-
-    fun getImage() : Task<Uri> {
-        if (!isLogged()) {
-            return forException<Uri>(NotLoggedException())
+        return storageReference!!.putFile(selectedPhotoUri!!).addOnSuccessListener {
+            retrieveUrlDownload()
         }
-
-        return storageReference!!.downloadUrl
     }
 
     fun reauthenticate(email: String, password: String) : Task<*> {

@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.viewmodel.ChangeEmailViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class ChangeEmailFragment : Fragment() {
     private val TAG = "ChangeEmailFragment"
@@ -35,6 +37,15 @@ class ChangeEmailFragment : Fragment() {
 
         changeEmailBinding.fEmailChangeTvEmail.text = user.email
         changeEmailBinding.fEmailChangeTvUsername.text = user.username
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(changeEmailBinding.fEmailChangeIvProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
+        }
 
 
         initializeChangeEmailButton()

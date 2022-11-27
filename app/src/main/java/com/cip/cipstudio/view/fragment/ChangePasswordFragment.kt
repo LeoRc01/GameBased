@@ -2,6 +2,7 @@ package com.cip.cipstudio.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangePasswordViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class ChangePasswordFragment : Fragment() {
     private val TAG = "ChangePasswordFragment"
@@ -26,7 +28,7 @@ class ChangePasswordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         changePasswordBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_password_change, container, false)
         changePasswordViewModel = ChangePasswordViewModel()
@@ -34,9 +36,18 @@ class ChangePasswordFragment : Fragment() {
         changePasswordBinding.executePendingBindings()
 
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        changePasswordBinding.fPasswordChangeTvUsername.text = User.username
-        changePasswordBinding.fPasswordChangeTvEmail.text = User.email
+        changePasswordBinding.fPasswordChangeTvUsername.text = user.username
+        changePasswordBinding.fPasswordChangeTvEmail.text = user.email
+
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(changePasswordBinding.fPasswordChangeIvProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
+        }
 
         initializeChangePasswordButton()
 

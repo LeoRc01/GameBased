@@ -55,9 +55,14 @@ class UserFragment : Fragment() {
         userBinding.fUserTvUsername.text = user.username
         userBinding.fUserTvEmail.text = user.email
 
-        user.getImage().addOnSuccessListener {
-            Log.d(TAG, "Photo download url: $it")
-            Picasso.get().load(it).into(userBinding.fUserIwProfilePicture)
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(userBinding.fUserIwProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
         }
 
 
