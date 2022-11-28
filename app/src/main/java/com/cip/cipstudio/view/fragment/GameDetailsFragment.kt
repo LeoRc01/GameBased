@@ -64,6 +64,7 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing game details page")
+            gameDetailsBinding.loadingModel!!.isPageLoading.postValue(true)
             initializeFragment(true)
             Handler(Looper.getMainLooper())
                 .postDelayed( {
@@ -137,7 +138,6 @@ class GameDetailsFragment : Fragment() {
             screenshotsRecyclerView.itemAnimator = null
             screenshotsRecyclerView.adapter = rvGameScreenshotsAdapter
         }
-
     }
 
     private fun setSimilarGames(similarGamesList: List<GameDetails>) {
