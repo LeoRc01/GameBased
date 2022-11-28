@@ -32,8 +32,8 @@
 
     <style name="ThemeOverlay.MySwitchCompat" parent="">
         <item name="colorControlActivated">@color/primary_color</item>
-        <item name="colorSwitchThumbNormal">#f1f1f1</item>
-        <item name="android:colorForeground">#42221f1f</item>
+        <item name="colorSwitchThumbNormal">@color/primary_color</item>
+        <item name="android:colorForeground">#B037373A</item>
     </style>
 
     <style name="titleCicciottello" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -51,6 +51,10 @@
     </style>
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
+        <item name="colorPrimary">@color/primary_color</item>
     </style>
 
 </resources>

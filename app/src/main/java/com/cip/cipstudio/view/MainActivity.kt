@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view
 
-import android.os.Build
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,11 +9,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.cip.cipstudio.R
+import com.cip.cipstudio.utils.ContextWrapper
 import com.cip.cipstudio.view.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var preferences: SharedPreferences
     private lateinit var navController: NavController
     lateinit var bottomNavigationView : BottomNavigationView
     private val TAG = "MainActivity"
@@ -38,7 +41,6 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.action_global_homeScreen)
                         navController.clearBackStack("")
                     }else{
-                        navController.navigate(R.id.action_homeScreen_self)
                         navController.clearBackStack("")
                     }
                 }
@@ -57,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_profile->{
                     when(currentFragment){
                         is UserFragment -> {
-                            navController.navigate(R.id.action_profileScreen_self)
                             navController.clearBackStack("")
                         }
                         is ChangeUsernameFragment -> {
@@ -86,5 +87,12 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.a_main_cv_container, fragment, "")
             .addToBackStack(null)
             .commit();
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        preferences = newBase.getSharedPreferences(newBase.getString(R.string.setting_preferences), MODE_PRIVATE)
+        val language = preferences.getString(newBase.getString(R.string.language_settings), "en")
+        val context = ContextWrapper.wrap(newBase, language!!)
+        super.attachBaseContext(context)
     }
 }

@@ -8,6 +8,7 @@ import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 class HistoryRepositoryLocal(context: Context) : HistoryRepository {
 
     private val localDB = GameViewedHistoryRoomDatabase.getDatabase(context).gameViewedHistoryDao()
+    private val TAG = "HistoryRepositoryLocal"
 
     override suspend fun insert(id: String, userId: String) {
         val gameViewedHistoryEntry = GameViewedHistoryEntry(id, userId)
@@ -18,12 +19,12 @@ class HistoryRepositoryLocal(context: Context) : HistoryRepository {
         localDB.deleteAll(userId)
     }
 
-    override suspend fun getHistory(userId: String): List<String> {
+    override suspend fun getAllHistory(userId: String): List<String> {
         return localDB.getAllOrderedByTime(userId).map { it.id }
     }
 
-    override suspend fun getFirstTenHistory(userId: String): List<String> {
-        return localDB.getFirstTenOrderedByTime(userId).map { it.id }
+    override suspend fun getHistory(userId: String, pageSize: Int, pageIndex: Int): List<String> {
+        return localDB.getOrderedByTime(userId, pageSize, pageIndex).map { it.id }
     }
 
     override suspend fun syncHistory(list: List<GameViewedHistoryEntry>) {

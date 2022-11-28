@@ -1,21 +1,29 @@
 package com.cip.cipstudio.viewmodel
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUserBinding
-import com.cip.cipstudio.utils.AuthErrorEnum
+import com.cip.cipstudio.model.User
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 
 class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
     private val TAG = "UserViewModel"
+    private val preferences = binding.root.context.getSharedPreferences(binding.root.context.getString(R.string.setting_preferences), 0)
 
-    private val firebase: FirebaseAuth = FirebaseAuth.getInstance()
+    fun logout(onSuccess: () -> Unit, onFailure: () -> Unit = {}) {
+        try {
+            User.logout()
+            onSuccess.invoke()
+        }
+        catch (e: Exception) {
+            Log.e(TAG, "logout: ${e.message}")
+            onFailure.invoke()
+        }
 
-    fun logout(onSuccess: () -> Unit,
-               onFailure: (AuthErrorEnum) -> Unit = {}) {
-        firebase.signOut()
-        onSuccess.invoke()
     }
 
     fun setDarkMode(onSuccess: () -> Unit) {
@@ -25,6 +33,14 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
 
     fun setLightMode(onSuccess: () -> Unit) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        onSuccess.invoke()
+    }
+
+    fun setLanguage(lan: String, onSuccess: () -> Unit) {
+        Log.i(TAG, "setLanguage: $lan")
+        if (lan == Locale.getDefault().language)
+            return
+        preferences.edit().putString(binding.root.context.getString(R.string.language_settings), lan).apply()
         onSuccess.invoke()
     }
 
