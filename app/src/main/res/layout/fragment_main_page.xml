@@ -26,13 +26,17 @@
                 <TextView
                     android:id="@+id/f_mainPage_tv_mostRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_marginTop="40dp"
                     android:text="@string/most_rated_games"
                     android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right" />
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -85,14 +89,17 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_bestRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="15dp"
                     android:text="@string/best_rated"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -140,14 +147,17 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_mostHypedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="15dp"
                     android:text="@string/most_hyped_games"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -194,14 +204,16 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_lovedByCriticsGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/loved_by_critics"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -248,14 +260,16 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_mostPopularGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/most_popular_games"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -302,14 +316,16 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_recentlyReleasedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/recently_released"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -356,14 +372,16 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_upcomingGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/coming_soon"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
@@ -410,14 +428,16 @@
                 <TextView
                     android:id="@+id/f_mainPage_tw_worstRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/worst_rated"
                     android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"/>
 
                 <RelativeLayout
                     android:clipChildren="true"
