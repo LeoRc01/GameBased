@@ -73,6 +73,10 @@ class MainActivity : AppCompatActivity() {
                             navController.navigate(R.id.action_changeEmailFragment_to_userFragment)
                             navController.clearBackStack("")
                         }
+                        is HistoryFragment -> {
+                            navController.navigate(R.id.action_historyFragment_to_userFragment)
+                            navController.clearBackStack("")
+                        }
                     }
                 }
             }
