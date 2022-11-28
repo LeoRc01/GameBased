@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_gameDetailsFragment_to_gameScreenshotDialog"
             app:destination="@id/gameScreenshotDialog" />
+        <action
+            android:id="@+id/action_gameDetailsFragment_to_collectionDialogFragment"
+            app:destination="@id/collectionDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/platformDetailsDialog"
@@ -30,4 +33,12 @@
         android:id="@+id/gameScreenshotDialog"
         android:name="com.cip.cipstudio.view.dialog.GameScreenshotDialog"
         android:label="GameScreenshotDialog" />
+    <dialog
+        android:id="@+id/collectionDialogFragment"
+        android:name="com.cip.cipstudio.view.dialog.CollectionDialogFragment"
+        android:label="CollectionDialogFragment" >
+        <action
+            android:id="@+id/action_collectionDialogFragment_to_gameDetailsFragment"
+            app:destination="@id/gameDetailsFragment" />
+    </dialog>
 </navigation>

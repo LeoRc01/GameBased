@@ -52,9 +52,6 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             game = withContext(Dispatchers.IO) {
                 gameRepository.getGameDetails(gameId, refresh)
             }
-
-
-
             platformDetails = withContext(Dispatchers.IO) {
                  gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)
             }
