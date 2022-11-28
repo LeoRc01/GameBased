@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_homeScreen_to_game_details_home"
             app:destination="@id/game_details_home" />
+        <action
+            android:id="@+id/action_homeScreen_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
     </fragment>
     <navigation android:id="@+id/game_details_home"
         app:startDestination="@id/game_details">
@@ -25,4 +28,15 @@
             app:destination="@id/homeScreen" />
         <include app:graph="@navigation/game_details" />
     </navigation>
+    <fragment
+        android:id="@+id/gameListFragment"
+        android:name="com.cip.cipstudio.view.fragment.GameListFragment"
+        android:label="GameListFragment" >
+        <action
+            android:id="@+id/action_gameListFragment_to_game_details_home"
+            app:destination="@id/game_details_home" />
+        <action
+            android:id="@+id/action_gameListFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
+    </fragment>
 </navigation>

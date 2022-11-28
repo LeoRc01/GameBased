@@ -109,10 +109,12 @@
     <string name="recently_released">Recently released</string>
     <string name="coming_soon">Coming soon</string>
     <string name="worst_rated">Worst rated</string>
-    <string name="best_rated">Best rated</string>
+    <string name="best_rated">Top rated</string>
     <string name="loved_by_critics">Loved by critics</string>
     <string name="not_logged_in">Not logged in</string>
     <string name="history">History</string>
     <string name="not_logged_in_user">You are not logged in</string>
     <string name="login_from_guest">Login to see your profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

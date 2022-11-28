@@ -89,7 +89,7 @@
                 <!-- Most rated games -->
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_bestRatedGames"
+                    android:id="@+id/f_mainPage_tv_bestRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
 
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_mostHypedGames"
+                    android:id="@+id/f_mainPage_tv_mostHypedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_lovedByCriticsGames"
+                    android:id="@+id/f_mainPage_tv_lovedByCriticsGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
                 </RelativeLayout>
                 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_mostPopularGames"
+                    android:id="@+id/f_mainPage_tv_mostPopularGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -316,7 +316,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_recentlyReleasedGames"
+                    android:id="@+id/f_mainPage_tv_recentlyReleasedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -372,7 +372,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_upcomingGames"
+                    android:id="@+id/f_mainPage_tv_upcomingGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -428,7 +428,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/f_mainPage_tw_worstRatedGames"
+                    android:id="@+id/f_mainPage_tv_worstRatedGames"
                     style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

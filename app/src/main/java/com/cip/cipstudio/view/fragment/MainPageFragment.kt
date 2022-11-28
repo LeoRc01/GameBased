@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -60,6 +62,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutMostRatedGames,
             refresh
         )
+        mainPageBinding.fMainPageTvMostRatedGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.MOST_RATED.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Most hyped games
         initializeRecyclerView(
@@ -68,6 +74,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutMostHypedGames,
             refresh
         )
+        mainPageBinding.fMainPageTvMostHypedGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.MOST_HYPED.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Most popular games
         initializeRecyclerView(
@@ -76,6 +86,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutMostPopularGames,
             refresh
         )
+        mainPageBinding.fMainPageTvMostPopularGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.MOST_POPULAR.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Recently released games
         initializeRecyclerView(
@@ -84,6 +98,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutRecentlyReleasedGames,
             refresh
         )
+        mainPageBinding.fMainPageTvRecentlyReleasedGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.RECENTLY_RELEASED.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Upcoming games
         initializeRecyclerView(
@@ -92,6 +110,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutUpcomingGames,
             refresh
         )
+        mainPageBinding.fMainPageTvUpcomingGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.UPCOMING.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Worst rated games
         initializeRecyclerView(
@@ -100,6 +122,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutWorstRatedGames,
             refresh
         )
+        mainPageBinding.fMainPageTvWorstRatedGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.WORST_RATED.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Loved by critics games
         initializeRecyclerView(
@@ -108,6 +134,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutLovedByCriticsGames,
             refresh
         )
+        mainPageBinding.fMainPageTvLovedByCriticsGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.LOVED_BY_CRITICS.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
 
         // Best rated games
         initializeRecyclerView(
@@ -116,6 +146,10 @@ class MainPageFragment : Fragment() {
             mainPageBinding.fMainPageShimmerLayoutBestRatedGames,
             refresh
         )
+        mainPageBinding.fMainPageTvBestRatedGames.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.BEST_RATED.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
     }
 
     private fun initializeRecyclerView(
