@@ -114,6 +114,15 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
+    suspend fun getGamesByCollectionName(collectionName : String,refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("collection.name = \"$collectionName\"")
+            .limit(10)
+        Log.i("QUERY", apicalypse.buildQuery())
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByCollectionName${collectionName}", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
     private suspend fun getGamesMostRated(refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 & total_rating != 0 & aggregated_rating != 0")

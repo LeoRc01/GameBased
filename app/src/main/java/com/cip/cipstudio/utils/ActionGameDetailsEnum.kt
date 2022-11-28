@@ -15,6 +15,9 @@ enum class ActionGameDetailsEnum {
     DIALOG {
         override fun getAction() = R.id.action_platformDetailsDialog_to_gameDetailsFragment
     },
+    COLLECTION {
+        override fun getAction() = R.id.action_collectionDialogFragment_to_gameDetailsFragment
+    },
     SELF {
         override fun getAction() = R.id.action_gameDetailsFragment_self
     };
