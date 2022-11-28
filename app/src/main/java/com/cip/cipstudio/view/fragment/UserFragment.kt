@@ -139,7 +139,7 @@ class UserFragment : Fragment() {
             userBinding.fUserActvChangeLanguage.setText(getString(R.string.English), false)
         }
 
-        userBinding.fUserActvChangeLanguage.setOnItemClickListener { adapterView, view, i, l ->
+        userBinding.fUserActvChangeLanguage.setOnItemClickListener { adapterView, _, i, _ ->
             val language = adapterView.getItemAtPosition(i).toString()
             val lan = if (language == getString(R.string.Italian)) {
                 "it"
@@ -158,6 +158,9 @@ class UserFragment : Fragment() {
             val intent = Intent(activity, AuthActivity::class.java)
             startActivity(intent)
         }
+
+        userBinding.fUserTvHistory.setOnClickListener {
+             findNavController().navigate(R.id.action_userFragment_to_historyFragment) }
 
 
         return userBinding.root

@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_profileScreen_self"
             app:destination="@id/profileScreen" />
+        <action
+            android:id="@+id/action_userFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeEmailFragment"
@@ -46,6 +49,15 @@
         android:label="ChangeUsernameFragment" >
         <action
             android:id="@+id/action_changeUsernameFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.cip.cipstudio.view.fragment.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_userFragment"
             app:destination="@id/profileScreen" />
     </fragment>
 </navigation>
