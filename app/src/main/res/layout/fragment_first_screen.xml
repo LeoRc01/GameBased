@@ -51,33 +51,17 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/f_firstScreen_tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/welcome"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_firstScreen_cv_logo_ex" />
-
-        <TextView
             android:id="@+id/f_firstScreen_tv_titleApp"
             style="@style/titleCicciottello"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:shadowColor="#D70429"
-            android:shadowDx="7"
-            android:shadowDy="7"
-            android:shadowRadius="5"
+            android:layout_marginTop="15dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="60sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_firstScreen_tv_welcome" />
+            app:layout_constraintTop_toBottomOf="@+id/f_firstScreen_cv_logo_ex" />
 
         <LinearLayout
             android:layout_width="match_parent"
