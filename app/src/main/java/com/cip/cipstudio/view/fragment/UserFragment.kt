@@ -50,6 +50,7 @@ class UserFragment : Fragment() {
         userBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false)
         userViewModel = UserViewModel(userBinding)
 
+        userBinding.userLoggedIn = user.isLogged()
 
 
         userBinding.fUserTvUsername.text = user.username
@@ -151,6 +152,13 @@ class UserFragment : Fragment() {
                 requireActivity().finish()
             }
         }
+
+        userBinding.fUserBtnLogin.setOnClickListener {
+            preferences.edit().remove(getString(R.string.guest_settings)).apply()
+            val intent = Intent(activity, AuthActivity::class.java)
+            startActivity(intent)
+        }
+
 
         return userBinding.root
     }

@@ -114,4 +114,7 @@
     <string name="best_rated">Best rated</string>
     <string name="loved_by_critics">Loved by critics</string>
     <string name="not_logged_in">Not logged in</string>
+    <string name="history">History</string>
+    <string name="not_logged_in_user">You are not logged in</string>
+    <string name="login_from_guest">Login to see your profile</string>
 </resources>
