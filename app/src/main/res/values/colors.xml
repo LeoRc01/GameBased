@@ -5,6 +5,7 @@
     <color name="light_secondary_color">#FFA7B0</color>
     <color name="primary_color">#D90429</color>
     <color name="primary_color_dark">#9A001B</color>
+    <color name="primary_color_dark_darker">#5E0011</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>

@@ -8,6 +8,7 @@
     <data/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:background="@drawable/fading_red"
         android:id="@+id/f_mainPage_srl_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,6 +18,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
