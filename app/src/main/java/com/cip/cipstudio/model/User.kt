@@ -1,8 +1,6 @@
 package com.cip.cipstudio.model
 
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.dataSource.repository.HistoryRepository
@@ -22,9 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
 
 object User {
     private val TAG = User::class.java.simpleName
@@ -84,14 +80,14 @@ object User {
     }
 
     suspend fun getRecentlyViewed(db: HistoryRepository) : List<String> {
-        return db.getFirstTenHistory(uid)
+        return db.getHistory(uid)
     }
 
     suspend fun addGamesToRecentlyViewed(gameIdAdd: String, db: HistoryRepository) {
         lateinit var gameViewedRecently: List<String>
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-            gameViewedRecently = db.getFirstTenHistory(uid)
+            gameViewedRecently = db.getHistory(uid)
             db.insert(gameIdAdd, uid)
 
             if (isLogged()) {
