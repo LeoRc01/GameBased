@@ -95,6 +95,7 @@
                     android:layout_marginTop="55dp">
 
                     <com.facebook.shimmer.ShimmerFrameLayout
+                        android:layout_marginTop="10dp"
                         android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">

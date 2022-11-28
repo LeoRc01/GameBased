@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
+import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
@@ -35,9 +36,11 @@ class MainPageFragment : Fragment() {
 
 
 
+
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
             Log.i(TAG, "Refreshing")
             initializeFragment(true)
+
             Handler(Looper.getMainLooper())
                 .postDelayed( {
                     mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
@@ -122,6 +125,7 @@ class MainPageFragment : Fragment() {
         refresh: Boolean
     ) {
         shimmerLayout.startShimmer()
+        shimmerLayout.visibility = View.VISIBLE
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 

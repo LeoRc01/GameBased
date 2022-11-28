@@ -39,8 +39,6 @@ class MainPageViewModel() : ViewModel() {
             }
             updateUI.invoke(games)
         }
-
-
     }
 
 }
