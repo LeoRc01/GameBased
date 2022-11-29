@@ -49,6 +49,7 @@ class GameListFragment : Fragment() {
                 gameListBinding.root.findNavController(),
                 ActionGameDetailsEnum.GAME_LIST)
             gameListBinding.fGameListGvGames.adapter = gvAdapter
+
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScroll(
                     view: AbsListView?,
