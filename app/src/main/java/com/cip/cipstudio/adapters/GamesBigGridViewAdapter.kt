@@ -67,20 +67,27 @@ class GamesBigGridViewAdapter(val context : Context,
         historyDB = HistoryRepositoryLocal(context)
 
         games[position].coverUrl.let {
-            if(!it.isEmpty() && it != "null") {
+            if(it.isNotEmpty() && it != "null") {
                 Picasso.get().load(it).into(ivGameCoverForeground)
                 Picasso.get().load(it).into(ivBlurBackground)
-                ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
-                ivGameCoverForeground.setOnClickListener {
-                    val bundle = bundleOf()
-                    bundle.putString("game_id", games[position].id)
-                    GlobalScope.launch {
-                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
-                    }
-                    navController.navigate(actionAdapter.getAction(), bundle)
+            }
+            else {
+                ivGameCoverForeground.setImageDrawable(context.getDrawable(R.drawable.ic_image_not_supported))
+                ivGameCoverForeground.setBackgroundColor(context.getColor(R.color.primary_color))
+                ivBlurBackground.setImageDrawable(context.getDrawable(R.drawable.ic_launcher_foreground))
+                ivBlurBackground.setBackgroundColor(context.getColor(R.color.primary_color))
+            }
+            ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+            ivGameCoverForeground.setOnClickListener {
+                val bundle = bundleOf()
+                bundle.putString("game_id", games[position].id)
+                GlobalScope.launch {
+                    User.addGamesToRecentlyViewed(games[position].id, historyDB)
                 }
+                navController.navigate(actionAdapter.getAction(), bundle)
             }
         }
+
 
         return convertView
     }

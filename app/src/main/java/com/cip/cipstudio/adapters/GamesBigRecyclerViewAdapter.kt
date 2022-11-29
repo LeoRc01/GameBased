@@ -34,11 +34,6 @@ class GamesBigRecyclerViewAdapter (val context : Context,
     private val TAG = "GamesRecyclerViewAdapt"
     private lateinit var historyDB: HistoryRepository
 
-    fun importItems(gamesDetailsJson : List<GameDetails>){
-        games  = gamesDetailsJson
-        notifyDataSetChanged()
-    }
-
     fun addItems(gamesDetailsJson : List<GameDetails>){
         games += gamesDetailsJson
         notifyDataSetChanged()
@@ -81,15 +76,22 @@ class GamesBigRecyclerViewAdapter (val context : Context,
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)
                 Picasso.get().load(it).into(viewHolder.ivBlurBackground)
-                viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
-                viewHolder.card.setOnClickListener {
-                    val bundle = bundleOf()
-                    bundle.putString("game_id", games[position].id)
-                    GlobalScope.launch {
-                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
-                    }
-                    viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
+            }
+            else {
+                viewHolder.ivGameCoverForeground.setImageDrawable(context.getDrawable(R.drawable.ic_image_not_supported))
+                viewHolder.ivGameCoverForeground.setBackgroundColor(context.getColor(R.color.primary_color))
+                viewHolder.ivGameCoverForeground.scaleType = ImageView.ScaleType.CENTER
+                viewHolder.ivBlurBackground.setImageDrawable(context.getDrawable(R.drawable.fading_red))
+                viewHolder.ivBlurBackground.setBackgroundColor(context.getColor(R.color.primary_color))
+            }
+            viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+            viewHolder.card.setOnClickListener {
+                val bundle = bundleOf()
+                bundle.putString("game_id", games[position].id)
+                GlobalScope.launch {
+                    User.addGamesToRecentlyViewed(games[position].id, historyDB)
                 }
+                viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
             }
         }
 

@@ -70,27 +70,29 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
 
         viewHolder.tvGameName.text = games[position].name
         games[position].coverUrl.let {
+            val clickItem : ImageView
             if(it.isNotEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCover)
-                viewHolder.ivGameCover.setOnClickListener {
-                    val bundle = bundleOf()
-                    bundle.putString("game_id", games[position].id)
-
-                    GlobalScope.launch {
-                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
-                    }
-
-                    if (navController != null) {
-                        navController.navigate(actionToFragment.getAction(), bundle)
-                    }
-                    else {
-                        viewHolder.itemView.findNavController()
-                            .navigate(actionToFragment.getAction(), bundle)
-                    }
-
-                }
+                clickItem = viewHolder.ivGameCover
             } else {
                 viewHolder.ivNoPreview.visibility = View.VISIBLE
+                clickItem = viewHolder.ivNoPreview
+            }
+            clickItem.setOnClickListener {
+                val bundle = bundleOf()
+                bundle.putString("game_id", games[position].id)
+
+                GlobalScope.launch {
+                    User.addGamesToRecentlyViewed(games[position].id, historyDB)
+                }
+
+                if (navController != null) {
+                    navController.navigate(actionToFragment.getAction(), bundle)
+                }
+                else {
+                    viewHolder.itemView.findNavController()
+                        .navigate(actionToFragment.getAction(), bundle)
+                }
             }
         }
     }
