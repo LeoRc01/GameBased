@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +20,15 @@ import kotlinx.coroutines.launch
 
 class HistoryFragment : Fragment() {
 
+    private val TAG = "HistoryFragment"
     private lateinit var historyBinding: FragmentHistoryBinding
     private lateinit var historyViewModel: HistoryViewModel
+    private var offset : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         historyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
         historyViewModel = HistoryViewModel(historyBinding)
 
@@ -44,16 +47,30 @@ class HistoryFragment : Fragment() {
         return historyBinding.root
     }
 
-    private fun initializeHistory() {
-        historyViewModel.initialize {
+    private fun initializeFavourites() {
+        historyViewModel.addMoreGame { it ->
             val adapter = GamesBigRecyclerViewAdapter(requireContext(), it, ActionGameDetailsEnum.HISTORY)
 
             val manager = LinearLayoutManager(requireContext())
             manager.orientation = RecyclerView.VERTICAL
-            historyBinding.fHistoryRvGames.layoutManager = manager
-            historyBinding.fHistoryRvGames.setItemViewCacheSize(50)
-            historyBinding.fHistoryRvGames.itemAnimator = null
-            historyBinding.fHistoryRvGames.adapter = adapter
+            historyBinding.fGameListRvGames.layoutManager = manager
+            historyBinding.fGameListRvGames.setItemViewCacheSize(50)
+            historyBinding.fGameListRvGames.itemAnimator = null
+            historyBinding.fGameListRvGames.adapter = adapter
+            historyBinding.fGameListRvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView.canScrollVertically(1) && historyViewModel.isPageLoading.value == false) {
+                        offset++
+                        historyViewModel.addMoreGame(offset) { games ->
+                            (historyBinding.fGameListRvGames.adapter as GamesBigRecyclerViewAdapter).addItems(games)
+                            Log.i(TAG, games.toString())
+                        }
+                        Log.i(TAG, "onScrollStateChanged")
+
+                    }
+                }
+            })
         }
     }
 

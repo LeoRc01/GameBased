@@ -39,6 +39,11 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         notifyDataSetChanged()
     }
 
+    fun addItems(gamesDetailsJson : List<GameDetails>){
+        games += gamesDetailsJson
+        notifyDataSetChanged()
+    }
+
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).

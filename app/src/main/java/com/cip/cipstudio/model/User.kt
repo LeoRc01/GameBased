@@ -80,8 +80,8 @@ object User {
         return task
     }
 
-    suspend fun getRecentlyViewed(db: HistoryRepository) : List<String> {
-        return db.getHistory(uid)
+    suspend fun getRecentlyViewed(db: HistoryRepository, offset: Int) : List<String> {
+        return db.getHistory(uid, pageIndex= offset)
     }
 
     suspend fun addGamesToRecentlyViewed(gameIdAdd: String, db: HistoryRepository) {

@@ -30,7 +30,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     init {
 
         viewModelScope.launch(Dispatchers.Main){
-            val list = User.getRecentlyViewed(historyRepository)
+            val list = User.getRecentlyViewed(historyRepository, 0)
 
             lastViewdGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
