@@ -84,20 +84,16 @@ class MainActivity : AppCompatActivity() {
                             navController.navigate(R.id.action_historyFragment_to_userFragment)
                             navController.clearBackStack("")
                         }
+                        is GameDetailsFragment -> {
+                            navController.navigate(R.id.action_global_userFragment)
+                            navController.clearBackStack("")
+                        }
                     }
                 }
             }
         }
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
-    }
-
-    fun loadFragment(fragment: Fragment){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.a_main_cv_container, fragment, "")
-            .addToBackStack(null)
-            .commit();
     }
 
     override fun attachBaseContext(newBase: Context) {

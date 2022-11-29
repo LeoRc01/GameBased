@@ -67,7 +67,7 @@
         app:startDestination="@id/game_details">
         <include app:graph="@navigation/game_details" />
         <action
-            android:id="@+id/action_global_profileScreen"
+            android:id="@+id/action_global_userFragment"
             app:destination="@id/profileScreen" />
     </navigation>
 </navigation>
