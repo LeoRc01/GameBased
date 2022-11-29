@@ -36,4 +36,8 @@ class HistoryViewModel(val binding : FragmentHistoryBinding) : ViewModel() {
         }
     }
 
+    suspend fun deleteHistory() {
+        User.deleteHistory(historyRepository)
+    }
+
 }
