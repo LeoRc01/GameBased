@@ -21,18 +21,18 @@ class HistoryViewModel(val binding : FragmentHistoryBinding) : ViewModel() {
     private lateinit var lastViewedGames : ArrayList<GameDetails>
     private val historyRepository: HistoryRepository = HistoryRepositoryLocal(binding.root.context)
 
-    fun initialize(onSuccess: (List<GameDetails>) -> Unit) {
+    fun addMoreGame(offset: Int = 0,onSuccess: (List<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
-            val list = User.getRecentlyViewed(historyRepository)
+            val list = User.getRecentlyViewed(historyRepository, offset)
 
             lastViewedGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
             }
-
+            isPageLoading.postValue(false)
             onSuccess.invoke(lastViewedGames.sortedBy { list.indexOf(it.id) })
 
-            isPageLoading.postValue(false)
+
         }
     }
 
