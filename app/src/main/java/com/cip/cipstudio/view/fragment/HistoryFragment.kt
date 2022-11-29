@@ -47,23 +47,23 @@ class HistoryFragment : Fragment() {
         return historyBinding.root
     }
 
-    private fun initializeFavourites() {
+    private fun initializeHistory() {
         historyViewModel.addMoreGame { it ->
             val adapter = GamesBigRecyclerViewAdapter(requireContext(), it, ActionGameDetailsEnum.HISTORY)
 
             val manager = LinearLayoutManager(requireContext())
             manager.orientation = RecyclerView.VERTICAL
-            historyBinding.fGameListRvGames.layoutManager = manager
-            historyBinding.fGameListRvGames.setItemViewCacheSize(50)
-            historyBinding.fGameListRvGames.itemAnimator = null
-            historyBinding.fGameListRvGames.adapter = adapter
-            historyBinding.fGameListRvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            historyBinding.fHistoryRvGames.layoutManager = manager
+            historyBinding.fHistoryRvGames.setItemViewCacheSize(50)
+            historyBinding.fHistoryRvGames.itemAnimator = null
+            historyBinding.fHistoryRvGames.adapter = adapter
+            historyBinding.fHistoryRvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView.canScrollVertically(1) && historyViewModel.isPageLoading.value == false) {
                         offset++
                         historyViewModel.addMoreGame(offset) { games ->
-                            (historyBinding.fGameListRvGames.adapter as GamesBigRecyclerViewAdapter).addItems(games)
+                            (historyBinding.fHistoryRvGames.adapter as GamesBigRecyclerViewAdapter).addItems(games)
                             Log.i(TAG, games.toString())
                         }
                         Log.i(TAG, "onScrollStateChanged")
