@@ -80,15 +80,6 @@ class GameDetailsFragment : Fragment() {
         return gameDetailsBinding.root
     }
 
-    private fun setCollectionStringClickable(){
-        val tv = gameDetailsBinding.fGameDetailsTvGameDetailsCollection
-        tv.paintFlags = (tv.paintFlags or Paint.UNDERLINE_TEXT_FLAG)
-        tv.setOnClickListener {
-            val bundle = bundleOf()
-            bundle.putString("collectionName", gameDetailsViewModel.getGame().getCollectionString())
-            findNavController().navigate(R.id.action_gameDetailsFragment_to_collectionDialogFragment, bundle)
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun hideShowMore() {
@@ -214,6 +205,16 @@ class GameDetailsFragment : Fragment() {
                     text
                 )
             }
+        }
+    }
+
+    private fun setCollectionStringClickable(){
+        val tv = gameDetailsBinding.fGameDetailsTvGameDetailsCollection
+        tv.paintFlags = (tv.paintFlags or Paint.UNDERLINE_TEXT_FLAG)
+        tv.setOnClickListener {
+            val bundle = bundleOf()
+            bundle.putString("collectionName", gameDetailsViewModel.getGame().getCollectionString())
+            findNavController().navigate(R.id.action_gameDetailsFragment_to_collectionDialogFragment, bundle)
         }
     }
 

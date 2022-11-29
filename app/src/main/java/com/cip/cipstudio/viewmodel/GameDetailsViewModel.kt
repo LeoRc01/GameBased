@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.annotation.SuppressLint
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
@@ -101,20 +102,46 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
         @BindingAdapter("bind:blurredImageUrl")
         @JvmStatic
         fun loadBlurredImage(view: ImageView, imageUrl: String?) {
-            Picasso.get()
-                .load(imageUrl)
-                .into(view)
+            if (imageUrl != null && imageUrl.isNotEmpty()) {
+                view.setImageDrawable(null)
+                view.scaleType = ImageView.ScaleType.CENTER_CROP
+                Picasso.get()
+                    .load(imageUrl)
+                    .into(view)
+                view.setRenderEffect(
+                    RenderEffect.createBlurEffect(
+                        10f,
+                        10f,
+                        Shader.TileMode.CLAMP
+                    )
+                )
 
-            view.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+            }
+            else {
+                view.setImageDrawable(view.context.getDrawable(R.drawable.fading_red))
+                view.scaleType = ImageView.ScaleType.CENTER
+            }
+
+
         }
 
-
+        @RequiresApi(Build.VERSION_CODES.M)
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
         fun loadImage(view: ImageView, imageUrl: String?) {
-            Picasso.get()
-                .load(imageUrl)
-                .into(view)
+            if (imageUrl != null  && imageUrl.isNotEmpty()) {
+                view.setImageDrawable(null)
+                view.setBackgroundColor(view.context.getColor(android.R.color.transparent))
+                Picasso.get()
+                    .load(imageUrl)
+                    .into(view)
+                view.scaleType = ImageView.ScaleType.FIT_XY
+
+            }else{
+                view.scaleType = ImageView.ScaleType.CENTER
+                view.setImageDrawable(view.context.getDrawable(R.drawable.ic_image_not_supported))
+                view.setBackgroundColor(view.context.getColor(R.color.primary_color))
+            }
         }
     }
 
@@ -122,14 +149,6 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
         return game
     }
 
-    private fun getPlatforms() : List<String> {
-        val platformsStrings = arrayListOf<String>()
-        game.platforms.forEach {
-            val platform = it.getString("name")
-            platformsStrings.add(platform)
-        }
-        return platformsStrings
-    }
 
     fun setFavouriteStatus(){
         LoadingSpinner.showLoadingDialog(binding.root.context)

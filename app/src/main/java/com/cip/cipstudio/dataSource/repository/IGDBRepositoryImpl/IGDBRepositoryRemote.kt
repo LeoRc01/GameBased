@@ -252,7 +252,7 @@ object IGDBRepositoryRemote : IGDBRepository {
     private suspend fun getRecentlyReleasedGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
-            .where("first_release_date != n")
+            .where("first_release_date < " + (System.currentTimeMillis() / 1000L))
             .sort("first_release_date", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
