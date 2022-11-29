@@ -28,4 +28,5 @@ class GameListViewModel : ViewModel() {
             isPageLoading.postValue(false)
         }
     }
+
 }

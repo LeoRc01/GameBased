@@ -27,6 +27,11 @@ class FavouriteGridViewAdapter(val context : Context,
     private lateinit var ivGameCover : ImageView
 
 
+    fun addMoreGames(items : List<GameDetails>){
+        games.addAll(items)
+        notifyDataSetChanged()
+    }
+
     override fun getCount(): Int {
         return games.size
     }
