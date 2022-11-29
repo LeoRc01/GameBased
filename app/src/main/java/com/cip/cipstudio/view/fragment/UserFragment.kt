@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -155,6 +156,7 @@ class UserFragment : Fragment() {
 
         userBinding.fUserBtnLogin.setOnClickListener {
             preferences.edit().remove(getString(R.string.guest_settings)).apply()
+            preferences.edit().putBoolean(getString(R.string.to_login), true).apply()
             val intent = Intent(activity, AuthActivity::class.java)
             startActivity(intent)
         }
