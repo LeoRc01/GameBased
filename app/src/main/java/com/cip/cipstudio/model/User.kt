@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -217,4 +218,14 @@ object User {
         }
     }
 
+    suspend fun deleteHistory(db: HistoryRepository) {
+        retrieveDataFromCurrentUser()
+        withContext(Dispatchers.Main) {
+           db.deleteAll(uid)
+
+            if (isLogged()) {
+                firebaseRepository.deleteGamesFromRecentlyViewed()
+            }
+        }
+    }
 }

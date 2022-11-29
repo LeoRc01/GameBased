@@ -20,16 +20,33 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:text="@string/recently_viewed"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/recently_viewed"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_weight="1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_vertical_line" />
+
+                <ImageView
+                    android:id="@+id/f_history_iv_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/f_gameList_rv_games"
+                android:id="@+id/f_history_rv_games"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"

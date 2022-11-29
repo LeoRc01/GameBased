@@ -1,5 +1,6 @@
 package com.cip.cipstudio.dataSource.repository
 
+import com.cip.cipstudio.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +29,10 @@ object FirebaseRepository {
             ref.child(gameIdToDelete).removeValue()
         }
         return task
+    }
+
+    fun deleteGamesFromRecentlyViewed() : Task<Void> {
+        return db!!.getReference("users/${User.uid}/recentlyViewed").removeValue()
     }
 
     fun getRecentlyViewedGames() : Task<DataSnapshot>{
