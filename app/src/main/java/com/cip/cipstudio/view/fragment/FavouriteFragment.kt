@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -58,10 +59,13 @@ class FavouriteFragment : Fragment() {
     private fun initializeFavourites(refresh: Boolean = false) {
         favouriteViewModel.initialize (refresh,
             updateUI = {
-            val gvAdapter = FavouriteGridViewAdapter(requireContext(),
-                it,
-                favouriteBinding.root.findNavController())
-                favouriteBinding.gvFavoriteGames.adapter = gvAdapter
+                checkIfFragmentAttached() {
+                    val gvAdapter = FavouriteGridViewAdapter(requireContext(),
+                        it,
+                        favouriteBinding.root.findNavController())
+                    favouriteBinding.gvFavoriteGames.adapter = gvAdapter
+                }
+
             },
             noFavouriteUI = {
                 favouriteBinding.fFragmentTvNoFavourite.visibility = View.VISIBLE
@@ -77,5 +81,11 @@ class FavouriteFragment : Fragment() {
             })
 
 
+    }
+
+    private fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
     }
 }

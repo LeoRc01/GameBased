@@ -193,7 +193,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated", refresh) }
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}", refresh) }
         return Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -203,7 +203,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("aggregated_rating", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getLovedByCriticsGames", refresh) }
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getLovedByCriticsGames${pageIndex}", refresh) }
         return Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -213,7 +213,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("hypes", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostHyped", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostHyped${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -223,7 +223,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getBestRatedGames", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getBestRatedGames${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -233,7 +233,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating", Sort.ASCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getWorstRatedGames", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getWorstRatedGames${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -245,7 +245,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getMostPopularGames", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getMostPopularGames${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -256,7 +256,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("first_release_date", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getRecentlyReleasedGames", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getRecentlyReleasedGames${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -267,7 +267,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating_count", Sort.ASCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getUpcomingGames", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getUpcomingGames${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 

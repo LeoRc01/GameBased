@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.GridView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -38,18 +36,19 @@ class GameListFragment : Fragment() {
         gameListBinding.vm = gameListViewModel
         gameListBinding.title = getString(gameType.getName())
         initializeGames()
+
+
         return gameListBinding.root
     }
 
     private fun initializeGames() {
-        gameListViewModel.initialize(
+        gameListViewModel.getGames(
             gameType){
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
                 gameListBinding.root.findNavController(),
                 ActionGameDetailsEnum.GAME_LIST)
             gameListBinding.fGameListGvGames.adapter = gvAdapter
-
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScroll(
                     view: AbsListView?,
@@ -57,12 +56,10 @@ class GameListFragment : Fragment() {
                     visibleItemCount: Int,
                     totalItemCount: Int
                 ) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount) {
-                        // incremento offset
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && gameListViewModel.isPageLoading.value == false) {
                         offset++
-                        // faccio chiamata
-                        gameListViewModel.initialize(){ games ->
-                            // aggiorno i dati
+                        gameListViewModel.getGames(gameType, offset){ games ->
+
                             (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
                                 .addMoreGames(games)
                         }
@@ -73,7 +70,6 @@ class GameListFragment : Fragment() {
 
                 override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
             })
-
 
         }
     }

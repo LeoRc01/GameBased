@@ -16,13 +16,14 @@ class GameListViewModel : ViewModel() {
     }
     private val gameRepository = IGDBRepositoryRemote
 
-    fun initialize(gameTypeEnum: GameTypeEnum,
-                   updateUI : (ArrayList<GameDetails>)->Unit) {
+    fun getGames(gameTypeEnum: GameTypeEnum,
+                 offset: Int = 0,
+                 updateUI : (ArrayList<GameDetails>)->Unit) {
         isPageLoading.postValue(true)
         var games :List<GameDetails>
         viewModelScope.launch(Dispatchers.Main) {
             games = withContext(Dispatchers.IO) {
-                gameRepository.getGamesByType(gameTypeEnum, false)
+                gameRepository.getGamesByType(gameTypeEnum, false, pageIndex= offset)
             }
             updateUI.invoke(games as ArrayList<GameDetails>)
             isPageLoading.postValue(false)
