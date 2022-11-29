@@ -28,8 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <GridView
-                android:id="@+id/f_gameList_gv_games"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/f_gameList_rv_games"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"

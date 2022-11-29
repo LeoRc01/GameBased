@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -46,11 +47,13 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         val ivBlurBackground : ImageView
         val ivGameCoverForeground : ImageView
         val tvGameNameBigCover : TextView
+        val card : CardView
 
         init {
             ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
             ivGameCoverForeground = view.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
             tvGameNameBigCover = view.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
+            card = view.findViewById(R.id.i_recently_viewed_game_cover)
         }
     }
 
@@ -74,7 +77,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                 Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)
                 Picasso.get().load(it).into(viewHolder.ivBlurBackground)
                 viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
-                viewHolder.ivGameCoverForeground.setOnClickListener {
+                viewHolder.card.setOnClickListener {
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
                     GlobalScope.launch {

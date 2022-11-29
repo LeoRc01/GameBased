@@ -49,32 +49,6 @@ class GameListFragment : Fragment() {
                 gameListBinding.root.findNavController(),
                 ActionGameDetailsEnum.GAME_LIST)
             gameListBinding.fGameListGvGames.adapter = gvAdapter
-
-            gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
-                override fun onScroll(
-                    view: AbsListView?,
-                    firstVisibleItem: Int,
-                    visibleItemCount: Int,
-                    totalItemCount: Int
-                ) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount) {
-                        // incremento offset
-                        offset++
-                        // faccio chiamata
-                        gameListViewModel.initialize(){ games ->
-                            // aggiorno i dati
-                            (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
-                                .addMoreGames(games)
-                        }
-
-
-                    }
-                }
-
-                override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
-            })
-
-
         }
     }
 
