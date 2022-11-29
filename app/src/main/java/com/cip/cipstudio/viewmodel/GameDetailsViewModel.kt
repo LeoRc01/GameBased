@@ -1,7 +1,11 @@
 package com.cip.cipstudio.viewmodel
 
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -93,6 +97,18 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
     }
 
     companion object{
+        @RequiresApi(Build.VERSION_CODES.S)
+        @BindingAdapter("bind:blurredImageUrl")
+        @JvmStatic
+        fun loadBlurredImage(view: ImageView, imageUrl: String?) {
+            Picasso.get()
+                .load(imageUrl)
+                .into(view)
+
+            view.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+        }
+
+
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
         fun loadImage(view: ImageView, imageUrl: String?) {
