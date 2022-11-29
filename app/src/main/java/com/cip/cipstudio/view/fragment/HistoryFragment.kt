@@ -42,10 +42,10 @@ class HistoryFragment : Fragment() {
 
             val manager = LinearLayoutManager(requireContext())
             manager.orientation = RecyclerView.VERTICAL
-            historyBinding.fGameListRvGames.layoutManager = manager
-            historyBinding.fGameListRvGames.setItemViewCacheSize(50)
-            historyBinding.fGameListRvGames.itemAnimator = null
-            historyBinding.fGameListRvGames.adapter = adapter
+            historyBinding.fHistoryRvGames.layoutManager = manager
+            historyBinding.fHistoryRvGames.setItemViewCacheSize(50)
+            historyBinding.fHistoryRvGames.itemAnimator = null
+            historyBinding.fHistoryRvGames.adapter = adapter
         }
     }
 
