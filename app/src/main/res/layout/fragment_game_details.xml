@@ -24,8 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/f_gameDetails_srl_swipe_refresh"
             android:layout_width="match_parent"
@@ -43,19 +41,49 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/f_gameDetails_iv_gameDetailsCover"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:adjustViewBounds="true"
-                        android:fadingEdge="vertical"
-                        android:fadingEdgeLength="20dp"
-                        android:foreground="@drawable/fading_gradient"
-                        android:scaleType="centerCrop"
-                        app:imageUrl="@{vm.game.coverUrl}"
+                    <RelativeLayout
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/f_gameDetails_logo_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/f_gameDetails_cardView_smallGameLogo"
+                            app:cardCornerRadius="20dp"
+                            android:layout_marginTop="30dp"
+
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="200dp"
+                                android:layout_height="270dp"
+                                android:adjustViewBounds="true"
+                                android:fadingEdge="vertical"
+                                android:fadingEdgeLength="20dp"
+                                android:scaleType="centerCrop"
+                                app:imageUrl="@{vm.game.coverUrl}"
+                                />
+                        </androidx.cardview.widget.CardView>
+
+
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp"
+                            android:adjustViewBounds="true"
+                            android:fadingEdge="vertical"
+                            android:fadingEdgeLength="20dp"
+                            android:foreground="@drawable/fading_gradient"
+                            android:scaleType="centerCrop"
+                            app:blurredImageUrl="@{vm.game.coverUrl}"
+                             />
+
+                    </RelativeLayout>
+
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
