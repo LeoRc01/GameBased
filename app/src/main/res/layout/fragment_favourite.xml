@@ -9,12 +9,7 @@
             name="vm"
             type="com.cip.cipstudio.viewmodel.FavouriteViewModel" />
     </data>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/f_favourite_srl_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <FrameLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.fragment.FavouriteFragment">
@@ -164,19 +159,13 @@
                         android:numColumns="2"
                         android:id="@+id/gvFavoriteGames"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="55dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         />
-
-
                 </RelativeLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 </layout>
