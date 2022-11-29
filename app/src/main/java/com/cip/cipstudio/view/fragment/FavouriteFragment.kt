@@ -75,7 +75,5 @@ class FavouriteFragment : Fragment() {
                     startActivity(intent)
                 }
             })
-
-
     }
 }

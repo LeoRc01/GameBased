@@ -37,11 +37,18 @@ class MainActivity : AppCompatActivity() {
             val currentFragment = navHostFragment.childFragmentManager.fragments[0]
             when(it.itemId){
                 R.id.menu_home->{
-                    if(currentFragment !is MainPageFragment){
-                        navController.navigate(R.id.action_global_homeScreen)
-                        navController.clearBackStack("")
-                    }else{
-                        navController.clearBackStack("")
+                    when(currentFragment){
+                        is GameListFragment -> {
+                            navController.navigate(R.id.action_gameListFragment_to_homeScreen)
+                            navController.clearBackStack("")
+                        }
+                        !is MainPageFragment -> {
+                            navController.navigate(R.id.action_global_homeScreen)
+                            navController.clearBackStack("")
+                        }
+                        else -> {
+                            navController.clearBackStack("")
+                        }
                     }
                 }
                 R.id.menu_favourite->{

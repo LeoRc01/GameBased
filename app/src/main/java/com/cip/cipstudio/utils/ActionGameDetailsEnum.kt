@@ -20,7 +20,13 @@ enum class ActionGameDetailsEnum {
     },
     SELF {
         override fun getAction() = R.id.action_gameDetailsFragment_self
-    };
+    },
+    GAME_LIST {
+        override fun getAction() = R.id.action_gameListFragment_to_game_details_home
+    },
+    HISTORY {
+        override fun getAction() = R.id.action_historyFragment_to_game_details_profile
+    },;
 
 
     abstract fun getAction() : Int

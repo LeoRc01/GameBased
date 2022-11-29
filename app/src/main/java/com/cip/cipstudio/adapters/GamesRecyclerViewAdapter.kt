@@ -30,6 +30,7 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
     private val TAG = "GamesRecyclerViewAdapt"
     private lateinit var historyDB: HistoryRepository
 
+
     fun importItems(gamesDetailsJson : List<GameDetails>){
         games  = gamesDetailsJson
         notifyDataSetChanged()

@@ -46,7 +46,6 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
-    private lateinit var originFragment : ActionGameDetailsEnum
 
     private var showMore = true
 

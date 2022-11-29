@@ -11,10 +11,6 @@ import com.cip.cipstudio.R
 
 class FirstScreenFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = FirstScreenFragment()
-    }
-
     private lateinit var viewModel: FirstScreenViewModel
 
     override fun onCreateView(
