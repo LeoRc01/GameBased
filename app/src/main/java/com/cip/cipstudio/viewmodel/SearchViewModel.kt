@@ -24,7 +24,6 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     }
 
     private lateinit var lastViewdGames : ArrayList<GameDetails>
-    private lateinit var lastViewGamesRecyclerViewAdapter: GamesBigRecyclerViewAdapter
 
     private val historyRepository: HistoryRepository = HistoryRepositoryLocal(binding.root.context)
 
@@ -47,7 +46,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     }
 
     private fun initializeRecyclerView(games : List<GameDetails>) {
-        lastViewGamesRecyclerViewAdapter =
+        val lastViewGamesRecyclerViewAdapter =
             GamesBigRecyclerViewAdapter(binding.root.context,
                 games)
         val manager = LinearLayoutManager(binding.root.context)

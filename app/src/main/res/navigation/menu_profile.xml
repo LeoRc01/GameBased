@@ -59,5 +59,15 @@
         <action
             android:id="@+id/action_historyFragment_to_userFragment"
             app:destination="@id/profileScreen" />
+        <action
+            android:id="@+id/action_historyFragment_to_game_details_profile"
+            app:destination="@id/game_details_profile" />
     </fragment>
+    <navigation android:id="@+id/game_details_profile"
+        app:startDestination="@id/game_details">
+        <include app:graph="@navigation/game_details" />
+        <action
+            android:id="@+id/action_global_profileScreen"
+            app:destination="@id/profileScreen" />
+    </navigation>
 </navigation>

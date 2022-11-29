@@ -50,7 +50,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         init {
             ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
             ivGameCoverForeground = view.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
-            tvGameNameBigCover = view.findViewById(R.id.tvGameNameBigCover)
+            tvGameNameBigCover = view.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
         }
     }
 

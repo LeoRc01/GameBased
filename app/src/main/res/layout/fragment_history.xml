@@ -11,146 +11,33 @@
     </data>
 
     <FrameLayout
+        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.fragment.HistoryFragment">
 
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/f_history_srl_refresh"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
+            <TextView
+                android:text="@string/recently_viewed"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <GridView
+                android:id="@+id/f_gameList_gv_games"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".view.fragment.FavouriteFragment">
+                android:layout_marginTop="10dp"
+                android:verticalSpacing="10dp"
+                android:numColumns="1"
+                android:visibility="visible" />
+        </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:id="@+id/f_history_tv_title"
-                        style="@style/TextAppearance.Material3.HeadlineMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="24dp"
-                        android:text="@string/history"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/f_history_tv_no_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/you_don_t_have_any_favourites_yet"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_history_tv_title" />
-
-                    <RelativeLayout
-                        android:id="@+id/f_history_rl_history"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="55dp"
-                        android:clipChildren="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/f_history_tv_title">
-
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-                                </LinearLayout>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-                                </LinearLayout>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-                                </LinearLayout>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-
-                                    <include layout="@layout/shimmer_small_placeholder" />
-                                </LinearLayout>
-
-                            </LinearLayout>
-                        </com.facebook.shimmer.ShimmerFrameLayout>
-
-                        <GridView
-                            android:id="@+id/gvFavoriteGames"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="55dp"
-                            android:numColumns="2"
-                            android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}" />
-
-
-                    </RelativeLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </FrameLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 </layout>

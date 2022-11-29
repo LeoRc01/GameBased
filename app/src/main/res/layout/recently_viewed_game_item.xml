@@ -46,7 +46,7 @@
                 android:textStyle="bold"
                 android:textSize="17sp"
                 android:textColor="@color/white"
-                android:id="@+id/tvGameNameBigCover"
+                android:id="@+id/i_recently_viewed_game_tv_GameNameBigCover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
