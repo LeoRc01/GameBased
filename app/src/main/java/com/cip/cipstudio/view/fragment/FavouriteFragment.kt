@@ -44,15 +44,6 @@ class FavouriteFragment : Fragment() {
         favouriteBinding.vm = favouriteViewModel
         favouriteBinding.lifecycleOwner = this
 
-        favouriteBinding.fFavouriteSrlRefresh.setOnRefreshListener {
-            Log.i(TAG, "Refreshing")
-            initializeFavourites(true)
-            Handler(Looper.getMainLooper())
-                .postDelayed( {
-                    favouriteBinding.fFavouriteSrlRefresh.isRefreshing = false
-                }, 2000)
-        }
-
         return favouriteBinding.root
     }
 
