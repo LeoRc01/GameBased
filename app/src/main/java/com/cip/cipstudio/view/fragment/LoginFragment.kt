@@ -36,18 +36,15 @@ class LoginFragment : Fragment() {
         preferences = loginBinding.root.context.getSharedPreferences(getString(R.string.setting_preferences),
             AppCompatActivity.MODE_PRIVATE)
 
+        if (preferences.contains(getString(R.string.to_login))) {
+            preferences.edit().remove(getString(R.string.to_login)).apply()
+        }
+
         loginBinding.fLoginTvSwitchMode.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         loginBinding.fLoginTvForgotPwd.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_passwordResetFragment)
-        }
-
-        loginBinding.fLoginTvGuest.setOnClickListener {
-            preferences.edit().putBoolean(getString(R.string.guest_settings), true).apply()
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-            this.activity?.finish()
         }
 
         initializeLoginButton()

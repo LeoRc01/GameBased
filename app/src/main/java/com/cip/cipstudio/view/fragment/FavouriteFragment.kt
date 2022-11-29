@@ -75,6 +75,7 @@ class FavouriteFragment : Fragment() {
                 favouriteBinding.fFavouriteLlGuest.visibility = View.VISIBLE
                 favouriteBinding.fFavouriteBtnLogin.setOnClickListener {
                     preferences.edit().remove(getString(R.string.guest_settings)).apply()
+                    preferences.edit().putBoolean(getString(R.string.to_login), true).apply()
                     val intent = Intent(activity, AuthActivity::class.java)
                     startActivity(intent)
                 }

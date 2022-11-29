@@ -114,7 +114,7 @@
     <string name="not_logged_in">Not logged in</string>
     <string name="history">History</string>
     <string name="not_logged_in_user">You are not logged in</string>
-    <string name="login_from_guest">Login to see your profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_from_guest_user">Login to see your profile</string>
+    <string name="login_from_guest_favourite">Login to see your favourites</string>
+    <string name="to_login">toLogin</string>
 </resources>
