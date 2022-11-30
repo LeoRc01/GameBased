@@ -5,6 +5,7 @@
     <string name="email_placeholder" translatable="false">Email</string>
     <string name="password_placeholder" translatable="false">Password</string>
     <string name="repeat_password_placeholder">Confirm password</string>
+    <string name="search_placeholder">Search</string>
     <string name="rating" translatable="false">Rating:</string>
     <string name="platforms">Platforms:</string>
     <string name="release_date">Release Date:</string>
@@ -47,6 +48,7 @@
     <string name="settings">settings</string>
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
+    <string name="recently_searched">Recently searched</string>
     <string name="genre">Genre</string>
     <string name="developer">Developers:</string>
     <string name="publisher">Publishers:</string>

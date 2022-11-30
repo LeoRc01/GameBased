@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:contentPadding="0dp"
+    android:layout_marginBottom="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:padding="20dp"
+        android:background="@color/light_secondary_color"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            app:cardCornerRadius="10dp"
+            android:backgroundTint="@color/primary_color"
+            >
+
+            <ImageView
+                android:id="@+id/i_result_no_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"
+                android:padding="30dp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/i_result_game_cover"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:id="@+id/i_search_game_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Bro"/>
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:id="@+id/i_result_release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ieri, 2005"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/i_result_genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.20"
+            android:layout_height="match_parent"
+            android:gravity="end|bottom">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/i_search_fav_button"
+                app:icon="@drawable/ic_favorite_border"
+                app:iconGravity="start"
+                android:paddingStart="11dp"
+                android:paddingEnd="11dp"
+                style="@style/Widget.Material3.Button"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
