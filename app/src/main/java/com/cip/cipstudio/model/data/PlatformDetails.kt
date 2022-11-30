@@ -19,14 +19,14 @@ data class PlatformDetails(
         jsonGame.getStringOrEmpty("id"),
         jsonGame.getStringOrEmpty("abbreviation"),
         jsonGame.getStringOrEmpty("alternative_name"),
-        jsonGame.getString("category"),
+        jsonGame.getStringOrEmpty("category"),
         jsonGame.getStringOrEmpty("name"),
         if (jsonGame.has("platform_logo")) jsonGame.getJSONObject("platform_logo").getStringOrEmpty("url").getCorrectPlatformLogo() else "",
         jsonGame.getStringOrEmpty("summary"),
         jsonGame.getStringOrEmpty("url"),
         PlatformHardwareDetails(jsonGame.getJSONArray("versions").getJSONObject(0))
     ){
-        category = getCategoryString(category.toInt())
+        category = getCategoryString(if(category.isEmpty()) -1 else category.toInt())
         if(summary.isEmpty()) summary = "No summary provided."
     }
 }

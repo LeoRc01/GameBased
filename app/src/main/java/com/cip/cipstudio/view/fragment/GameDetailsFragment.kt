@@ -1,8 +1,9 @@
 package com.cip.cipstudio.view.fragment
 
 
+
 import android.content.Context
-import android.content.res.Configuration
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -45,7 +46,6 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
-    private lateinit var originFragment : ActionGameDetailsEnum
 
     private var showMore = true
 
@@ -60,23 +60,14 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.loadingModel = Loading()
         gameDetailsBinding.user = User
-
-        gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
-            Log.i(TAG, "Refreshing game details page")
-            initializeFragment(true)
-            Handler(Looper.getMainLooper())
-                .postDelayed( {
-                    gameDetailsBinding.fGameDetailsSrlSwipeRefresh.isRefreshing = false
-                }, 2000)
-        }
-
-
+        
         initializeFragment()
+
+        setCollectionStringClickable()
 
         gameDetailsBinding.lifecycleOwner = this
         return gameDetailsBinding.root
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -115,15 +106,17 @@ class GameDetailsFragment : Fragment() {
     }
 
     private fun setScreenshots(screenshotList: List<JSONObject>) {
-        val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
-        val manager = LinearLayoutManager(context)
-        manager.orientation = RecyclerView.HORIZONTAL
-        val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(screenshotList,
-            R.id.action_gameDetailsFragment_to_gameScreenshotDialog, resources.configuration.orientation)
-        screenshotsRecyclerView.layoutManager = manager
-        screenshotsRecyclerView.setItemViewCacheSize(50)
-        screenshotsRecyclerView.itemAnimator = null
-        screenshotsRecyclerView.adapter = rvGameScreenshotsAdapter
+        checkIfFragmentAttached() {
+            val screenshotsRecyclerView = gameDetailsBinding.fGameDetailsRvScreenshots
+            val manager = LinearLayoutManager(context)
+            manager.orientation = RecyclerView.HORIZONTAL
+            val rvGameScreenshotsAdapter = GameScreenshotsRecyclerViewAdapter(screenshotList,
+                R.id.action_gameDetailsFragment_to_gameScreenshotDialog, resources.configuration.orientation)
+            screenshotsRecyclerView.layoutManager = manager
+            screenshotsRecyclerView.setItemViewCacheSize(50)
+            screenshotsRecyclerView.itemAnimator = null
+            screenshotsRecyclerView.adapter = rvGameScreenshotsAdapter
+        }
     }
 
     private fun setSimilarGames(similarGamesList: List<GameDetails>) {
@@ -204,7 +197,17 @@ class GameDetailsFragment : Fragment() {
         }
     }
 
-    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+    private fun setCollectionStringClickable(){
+        val tv = gameDetailsBinding.fGameDetailsTvGameDetailsCollection
+        tv.paintFlags = (tv.paintFlags or Paint.UNDERLINE_TEXT_FLAG)
+        tv.setOnClickListener {
+            val bundle = bundleOf()
+            bundle.putString("collectionName", gameDetailsViewModel.getGame().getCollectionString())
+            findNavController().navigate(R.id.action_gameDetailsFragment_to_collectionDialogFragment, bundle)
+        }
+    }
+
+    private fun checkIfFragmentAttached(operation: Context.() -> Unit) {
         if (isAdded && context != null) {
             operation(requireContext())
         }

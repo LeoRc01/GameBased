@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -8,38 +9,89 @@
             name="vm"
             type="com.cip.cipstudio.viewmodel.FavouriteViewModel" />
     </data>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/f_favourite_srl_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <FrameLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.fragment.FavouriteFragment">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_marginHorizontal="20dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <LinearLayout
+                    android:id="@+id/f_favourite_ll_guest"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/invalid_operation_must_logged"
+                        android:textAlignment="center" />
+
+                    <Button
+                        android:id="@+id/f_favourite_btn_login"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/login"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_marginTop="20dp"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:id="@+id/tvFavourite"
+                    android:id="@+id/f_favourite_tv_title"
+                    style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/favourite" />
+                    android:text="@string/favourite"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:drawableStartCompat="@drawable/ic_vertical_line"/>
+
+                <TextView
+                    android:id="@+id/f_fragment_tv_no_favourite"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/you_don_t_have_any_favourites_yet"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_favourite_tv_title"
+                    android:visibility="gone"/>
 
                 <RelativeLayout
+                    android:id="@+id/f_favourite_rl_favourites"
                     android:clipChildren="true"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_favourite_tv_title"
+                    android:layout_marginTop="55dp">
 
                     <com.facebook.shimmer.ShimmerFrameLayout
+                        android:layout_marginTop="10dp"
                         android:visibility="@{vm.isPageLoading ? View.VISIBLE : View.GONE}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -48,12 +100,15 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
+
                             <LinearLayout
-                                android:gravity="center"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <include layout="@layout/shimmer_small_placeholder"></include>
-                                <include layout="@layout/shimmer_small_placeholder"></include>
+                                android:layout_height="wrap_content"
+                                android:gravity="center">
+
+                                <include layout="@layout/shimmer_small_placeholder" />
+
+                                <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
 
                             <View
@@ -64,8 +119,10 @@
                                 android:gravity="center"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
-                                <include layout="@layout/shimmer_small_placeholder"></include>
-                                <include layout="@layout/shimmer_small_placeholder"></include>
+
+                                <include layout="@layout/shimmer_small_placeholder" />
+
+                                <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
                             <View
                                 android:layout_width="match_parent"
@@ -75,8 +132,10 @@
                                 android:gravity="center"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
-                                <include layout="@layout/shimmer_small_placeholder"></include>
-                                <include layout="@layout/shimmer_small_placeholder"></include>
+
+                                <include layout="@layout/shimmer_small_placeholder" />
+
+                                <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
 
                             <View
@@ -87,8 +146,10 @@
                                 android:gravity="center"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
-                                <include layout="@layout/shimmer_small_placeholder"></include>
-                                <include layout="@layout/shimmer_small_placeholder"></include>
+
+                                <include layout="@layout/shimmer_small_placeholder" />
+
+                                <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -99,19 +160,13 @@
                         android:numColumns="2"
                         android:id="@+id/gvFavoriteGames"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="55dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         />
-
-
                 </RelativeLayout>
-
-            </LinearLayout>
-
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 </layout>

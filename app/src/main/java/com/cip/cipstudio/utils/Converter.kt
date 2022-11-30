@@ -1,5 +1,6 @@
 package com.cip.cipstudio.utils
 
+import android.util.Log
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import org.json.JSONArray
@@ -34,6 +35,7 @@ class Converter{
             for (i in 0 until jsonArray.length()) {
                 result.add(GameDetails(jsonArray.getJSONObject(i)))
             }
+
             return result
         }
 

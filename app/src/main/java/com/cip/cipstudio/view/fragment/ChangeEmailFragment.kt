@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.viewmodel.ChangeEmailViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class ChangeEmailFragment : Fragment() {
     private val TAG = "ChangeEmailFragment"
 
     private lateinit var changeEmailViewModel: ChangeEmailViewModel
     private lateinit var changeEmailBinding: FragmentEmailChangeBinding
+    private val user = User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +34,18 @@ class ChangeEmailFragment : Fragment() {
         changeEmailBinding.changeEmailViewModel = changeEmailViewModel
         changeEmailBinding.executePendingBindings()
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        changeEmailBinding.fEmailChangeTvEmail.text = currentUser?.email
+
+        changeEmailBinding.fEmailChangeTvEmail.text = user.email
+        changeEmailBinding.fEmailChangeTvUsername.text = user.username
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(changeEmailBinding.fEmailChangeIvProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
+        }
 
 
         initializeChangeEmailButton()
@@ -56,7 +70,12 @@ class ChangeEmailFragment : Fragment() {
                         AuthTypeErrorEnum.PASSWORD -> {
                             changeEmailBinding.fEmailChangeLayoutPwd.error = getString(it.getErrorId())
                         }
-                        else -> {}
+                        AuthTypeErrorEnum.LOGIN -> {
+                            Toast.makeText(requireContext(), getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            Toast.makeText(requireContext(), it.getErrorId(), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             )

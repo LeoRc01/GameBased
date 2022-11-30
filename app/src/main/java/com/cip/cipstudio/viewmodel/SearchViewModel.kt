@@ -46,14 +46,13 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     }
 
     private lateinit var lastViewdGames : ArrayList<GameDetails>
-    private lateinit var lastViewGamesRecyclerViewAdapter: GamesBigRecyclerViewAdapter
 
     private val historyRepository: HistoryRepository = HistoryRepositoryLocal(binding.root.context)
 
     init {
 
         viewModelScope.launch(Dispatchers.Main){
-            val list = User.getRecentlyViewed(historyRepository)
+            val list = User.getRecentlyViewed(historyRepository, 0)
 
             lastViewdGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
@@ -69,7 +68,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     }
 
     private fun initializeRecyclerView(games : List<GameDetails>) {
-        lastViewGamesRecyclerViewAdapter =
+        val lastViewGamesRecyclerViewAdapter =
             GamesBigRecyclerViewAdapter(binding.root.context,
                 games)
         val manager = LinearLayoutManager(binding.root.context)

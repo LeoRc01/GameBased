@@ -25,26 +25,32 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
 
     lateinit var favouriteGames : ArrayList<GameDetails>
 
-    fun initialize(refresh : Boolean, updateUI: (ArrayList<GameDetails>) -> Unit) {
+    fun initialize(refresh : Boolean,
+                   updateUI: (ArrayList<GameDetails>) -> Unit,
+                   noFavouriteUI: () -> Unit,
+                   notLoggedInUI: () -> Unit) {
         isPageLoading.postValue(true)
         user.getFavouriteGames().addOnSuccessListener {
-            (it.value as Map<*, *>).forEach {
-                favouriteGamesIds.add(it.value.toString())
-            }
-            viewModelScope.launch(Dispatchers.Main) {
-                favouriteGames = withContext(Dispatchers.IO){
-                    IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh) as ArrayList<GameDetails>
+            if (it.value != null) {
+                (it.value as Map<*, *>).forEach {
+                    favouriteGamesIds.add(it.value.toString())
                 }
-                updateUI.invoke(favouriteGames)
+                viewModelScope.launch(Dispatchers.Main) {
+                    favouriteGames = withContext(Dispatchers.IO){
+                        IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh) as ArrayList<GameDetails>
+                    }
+                    updateUI.invoke(favouriteGames)
+                    isPageLoading.postValue(false)
+                }
+            }
+            else {
+                noFavouriteUI.invoke()
                 isPageLoading.postValue(false)
             }
         }
             .addOnFailureListener {
-                Toast.makeText(
-                        binding.root.context,
-                        binding.root.context.getString(R.string.invalid_operation_must_logged),
-                        Toast.LENGTH_SHORT)
-                    .show()
+                notLoggedInUI.invoke()
+                isPageLoading.postValue(false)
             }
     }
 

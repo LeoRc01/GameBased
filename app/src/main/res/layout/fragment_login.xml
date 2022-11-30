@@ -125,12 +125,13 @@
                 android:id="@+id/f_login_ll_switchMode"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/f_login_btn_login">
+                app:layout_constraintTop_toBottomOf="@+id/f_login_btn_login"
+                app:layout_constraintBottom_toBottomOf="parent">
                 <TextView
                     android:id="@+id/f_login_tv_new_user"
                     android:layout_width="wrap_content"
@@ -149,19 +150,6 @@
                     android:textStyle="bold"/>
             </LinearLayout>
             <!-- Temporaneo-->
-            <TextView
-                android:id="@+id/f_login_tv_guest"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/guest_login"
-                android:textColor="@color/grey_login"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/f_login_ll_switchMode"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -12,16 +12,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentUsernameChangeBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangeUsernameViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class ChangeUsernameFragment : Fragment() {
     private val TAG = "ChangeUsernameFragment"
 
     private lateinit var changeUsernameViewModel: ChangeUsernameViewModel
     private lateinit var changeUsernameBinding: FragmentUsernameChangeBinding
+    private val user = User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +33,22 @@ class ChangeUsernameFragment : Fragment() {
         changeUsernameBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_username_change, container, false)
         changeUsernameViewModel = ChangeUsernameViewModel()
         changeUsernameBinding.changeUsernameViewModel = changeUsernameViewModel
-
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        changeUsernameBinding.fUsernameChangeTvUsername.text = currentUser?.displayName
-        changeUsernameBinding.fUsernameChangeTvEmail.text = currentUser?.email
         changeUsernameBinding.executePendingBindings()
+
+
+        changeUsernameBinding.fUsernameChangeTvUsername.text = user.username
+        changeUsernameBinding.fUsernameChangeTvEmail.text = user.email
+        user.downloadUrl.let {
+            if (it != null) {
+                Log.d(TAG, "Photo download url: $it")
+                Picasso.get().load(it).into(changeUsernameBinding.fUsernameChangeIvProfilePicture)
+            }
+            else {
+                Log.d(TAG, "no photo")
+            }
+        }
+
+
 
         initializeChangeUsernameButton()
 
@@ -56,7 +70,7 @@ class ChangeUsernameFragment : Fragment() {
                             changeUsernameBinding.fUsernameChangeLayoutNewUsername.error =
                                 getString(it.getErrorId())
                         }
-                        AuthTypeErrorEnum.UNKNOWN -> {
+                        AuthTypeErrorEnum.UNKNOWN, AuthTypeErrorEnum.LOGIN -> {
                             Toast.makeText(requireContext(), it.getErrorId(), Toast.LENGTH_SHORT).show()
                         }
                         else -> {}

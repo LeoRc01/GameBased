@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -33,8 +34,8 @@ class GamesBigRecyclerViewAdapter (val context : Context,
     private val TAG = "GamesRecyclerViewAdapt"
     private lateinit var historyDB: HistoryRepository
 
-    fun importItems(gamesDetailsJson : List<GameDetails>){
-        games  = gamesDetailsJson
+    fun addItems(gamesDetailsJson : List<GameDetails>){
+        games += gamesDetailsJson
         notifyDataSetChanged()
     }
 
@@ -46,11 +47,17 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         val ivBlurBackground : ImageView
         val ivGameCoverForeground : ImageView
         val tvGameNameBigCover : TextView
+        val card : CardView
+        val tvGameGenres : TextView
+        val tvGameReleaseDate : TextView
 
         init {
             ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
             ivGameCoverForeground = view.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
-            tvGameNameBigCover = view.findViewById(R.id.tvGameNameBigCover)
+            tvGameNameBigCover = view.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
+            tvGameGenres = view.findViewById(R.id.i_recently_viewed_game_tv_GameGenresBigCover)
+            tvGameReleaseDate = view.findViewById(R.id.i_recently_viewed_game_tv_GameReleaseDateBigCover)
+            card = view.findViewById(R.id.i_recently_viewed_game_cover)
         }
     }
 
@@ -58,7 +65,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.recently_viewed_game_item, viewGroup, false)
+            .inflate(R.layout.game_big_item, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -69,19 +76,32 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         historyDB = HistoryRepositoryLocal(viewHolder.itemView.context)
 
         viewHolder.tvGameNameBigCover.text = games[position].name
+
+        viewHolder.tvGameGenres.text = (games[position].genres.map {
+                                            it.getString("name")
+                                        } as ArrayList<String>).joinToString(", ")
+        viewHolder.tvGameReleaseDate.text = games[position].releaseDate
+
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)
                 Picasso.get().load(it).into(viewHolder.ivBlurBackground)
-                viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
-                viewHolder.ivGameCoverForeground.setOnClickListener {
-                    val bundle = bundleOf()
-                    bundle.putString("game_id", games[position].id)
-                    GlobalScope.launch {
-                        User.addGamesToRecentlyViewed(games[position].id, historyDB)
-                    }
-                    viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
+            }
+            else {
+                viewHolder.ivGameCoverForeground.setImageDrawable(context.getDrawable(R.drawable.ic_image_not_supported))
+                viewHolder.ivGameCoverForeground.setBackgroundColor(context.getColor(R.color.primary_color))
+                viewHolder.ivGameCoverForeground.scaleType = ImageView.ScaleType.CENTER
+                viewHolder.ivBlurBackground.setImageDrawable(context.getDrawable(R.drawable.fading_red))
+                viewHolder.ivBlurBackground.setBackgroundColor(context.getColor(R.color.primary_color))
+            }
+            viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))
+            viewHolder.card.setOnClickListener {
+                val bundle = bundleOf()
+                bundle.putString("game_id", games[position].id)
+                GlobalScope.launch {
+                    User.addGamesToRecentlyViewed(games[position].id, historyDB)
                 }
+                viewHolder.itemView.findNavController().navigate(actionGameDetails.getAction(), bundle)
             }
         }
 

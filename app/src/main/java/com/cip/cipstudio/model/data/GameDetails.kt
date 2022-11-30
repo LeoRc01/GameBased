@@ -12,8 +12,8 @@ data class GameDetails(val id: String,
     var coverUrl: String = ""
     var summary: String = ""
     var releaseDate: String = ""
-    var rating: String = "0"
-    var ratingCount: String = "0"
+    var criticsRating: String = "0"
+    var criticsRatingCount: String = "0"
     var totalRating: String = "0"
     var totalRatingCount: String = "0"
     var screenshots: List<JSONObject> = ArrayList()
@@ -48,8 +48,8 @@ data class GameDetails(val id: String,
         }
 
         summary = jsonGame.getStringOrEmpty("summary")
-        rating = jsonGame.getDoubleOrEmpty("rating")
-        ratingCount = jsonGame.getIntOrZero("rating_count")
+        criticsRating = jsonGame.getDoubleOrEmpty("aggregated_rating")
+        criticsRatingCount = jsonGame.getIntOrZero("aggregated_rating_count")
         totalRating = jsonGame.getDoubleOrEmpty("total_rating")
         totalRatingCount = jsonGame.getIntOrZero("total_rating_count")
         screenshots = jsonGame.getListOrEmpty("screenshots")
