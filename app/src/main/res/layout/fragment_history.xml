@@ -5,9 +5,9 @@
 
     <data>
         <import type="android.view.View"/>
-            <variable
-                name="vm"
-                type="com.cip.cipstudio.viewmodel.HistoryViewModel" />
+        <variable
+            name="vm"
+            type="com.cip.cipstudio.viewmodel.HistoryViewModel" />
     </data>
 
     <FrameLayout
@@ -45,15 +45,40 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_history_rv_games"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:verticalSpacing="10dp"
+                    android:numColumns="1"
+                    android:visibility="visible" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/f_history_rv_games"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:verticalSpacing="10dp"
-                android:numColumns="1"
-                android:visibility="visible" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/f_history_shimmer_layout"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
 

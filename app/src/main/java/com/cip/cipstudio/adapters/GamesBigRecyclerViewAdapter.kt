@@ -48,11 +48,15 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         val ivGameCoverForeground : ImageView
         val tvGameNameBigCover : TextView
         val card : CardView
+        val tvGameGenres : TextView
+        val tvGameReleaseDate : TextView
 
         init {
             ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
             ivGameCoverForeground = view.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
             tvGameNameBigCover = view.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
+            tvGameGenres = view.findViewById(R.id.i_recently_viewed_game_tv_GameGenresBigCover)
+            tvGameReleaseDate = view.findViewById(R.id.i_recently_viewed_game_tv_GameReleaseDateBigCover)
             card = view.findViewById(R.id.i_recently_viewed_game_cover)
         }
     }
@@ -61,7 +65,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.recently_viewed_game_item, viewGroup, false)
+            .inflate(R.layout.game_big_item, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -72,6 +76,12 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         historyDB = HistoryRepositoryLocal(viewHolder.itemView.context)
 
         viewHolder.tvGameNameBigCover.text = games[position].name
+
+        viewHolder.tvGameGenres.text = (games[position].genres.map {
+                                            it.getString("name")
+                                        } as ArrayList<String>).joinToString(", ")
+        viewHolder.tvGameReleaseDate.text = games[position].releaseDate
+
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)

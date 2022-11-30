@@ -60,18 +60,7 @@ class GameDetailsFragment : Fragment() {
 
         gameDetailsBinding.loadingModel = Loading()
         gameDetailsBinding.user = User
-
-        gameDetailsBinding.fGameDetailsSrlSwipeRefresh.setOnRefreshListener {
-            Log.i(TAG, "Refreshing game details page")
-            gameDetailsBinding.loadingModel!!.isPageLoading.postValue(true)
-            initializeFragment(true)
-            Handler(Looper.getMainLooper())
-                .postDelayed( {
-                    gameDetailsBinding.fGameDetailsSrlSwipeRefresh.isRefreshing = false
-                }, 2000)
-        }
-
-
+        
         initializeFragment()
 
         setCollectionStringClickable()
