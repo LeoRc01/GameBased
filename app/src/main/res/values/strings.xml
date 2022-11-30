@@ -117,4 +117,9 @@
     <string name="login_from_guest_user">Login to see your profile</string>
     <string name="login_from_guest_favourite">Login to see your favourites</string>
     <string name="to_login">toLogin</string>
+    <string name="yes">Yes</string>
+    <string name="delete_history">Delete history</string>
+    <string name="delete_history_message">Are you sure you want to clear history?</string>
+    <string name="no">No</string>
+    <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
 </resources>

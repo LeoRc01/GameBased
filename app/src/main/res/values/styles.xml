@@ -30,16 +30,9 @@
         <item name="android:textColor">#aacbb4</item>
     </style>
 
-    <style name="ThemeOverlay.MySwitchCompat" parent="">
-        <item name="colorControlActivated">@color/primary_color</item>
-        <item name="colorSwitchThumbNormal">@color/primary_color</item>
-        <item name="android:colorForeground">#B037373A</item>
-    </style>
-
     <style name="titleCicciottello" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="fontFamily">@font/poppins_extrabold</item>
     </style>
-
 
     <style name="BottomSheetDialogLight" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
@@ -55,6 +48,22 @@
 
     <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
         <item name="colorPrimary">@color/primary_color</item>
+    </style>
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.DayNight">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/primary_color</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/grey
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f
+        </item>
+
+
+
     </style>
 
 </resources>
