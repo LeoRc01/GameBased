@@ -173,6 +173,25 @@ class UserFragment : Fragment() {
         userBinding.fUserTvHistory.setOnClickListener {
              findNavController().navigate(R.id.action_userFragment_to_historyFragment) }
 
+        userBinding.fUserTvDeleteAccount.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_account))
+                .setMessage(getString(R.string.delete_account_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    userViewModel.deleteAccount(onSuccess = {
+                        Toast.makeText(requireContext(), getString(R.string.account_deleted), Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), AuthActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    })
+                         {
+                            Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ -> }
+                .show()
+        }
+
 
         return userBinding.root
     }

@@ -123,4 +123,6 @@
     <string name="no">No</string>
     <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
     <string name="delete_account">Delete account</string>
+    <string name="delete_account_message">Are you sure? all your account data will be PERMANENTLY removed</string>
+    <string name="account_deleted">Account deleted</string>
 </resources>

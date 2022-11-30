@@ -12,9 +12,11 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -227,5 +229,20 @@ object User {
                 firebaseRepository.deleteGamesFromRecentlyViewed()
             }
         }
+    }
+
+    suspend fun delete(db: HistoryRepository) : Task<*> {
+        if (!isLogged()) {
+            throw NotLoggedException()
+        }
+        retrieveDataFromCurrentUser()
+        db.deleteAll(uid)
+        storageReference!!.delete().addOnSuccessListener {
+            Log.i(TAG, "Image deleted successfully")
+        }
+        return Firebase.auth.currentUser!!.delete().addOnSuccessListener {
+            retrieveDataFromCurrentUser()
+        }
+
     }
 }
