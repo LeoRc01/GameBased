@@ -503,13 +503,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerHorizontal="true"
                                         android:layout_centerVertical="true"
-                                        android:text='@{vm.game.totalRating == "0" ? "N/A" : vm.game.totalRating}'/>
+                                        android:text='@{vm.game.rating == "0" ? "N/A" : vm.game.rating}'/>
 
                                     <com.google.android.material.progressindicator.CircularProgressIndicator
                                         android:id="@+id/f_gameDetails_cpi_userRating"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:progress='@{Integer.parseInt(vm.game.totalRating ?? "0")}'
+                                        android:progress='@{Integer.parseInt(vm.game.rating ?? "0")}'
                                         app:indicatorSize="75dp"
                                         app:trackColor="@color/trackColor"
                                         app:trackCornerRadius="10dp"
@@ -520,7 +520,7 @@
                                     android:id="@+id/f_gameDetails_tv_userRatingCounter"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{"User rating (" + (vm.game.totalRatingCount == "0" ? "N/A" : vm.game.totalRatingCount) + ")"}' />
+                                    android:text='@{"User rating (" + (vm.game.ratingCount == "0" ? "N/A" : vm.game.ratingCount) + ")"}' />
 
                             </LinearLayout>
 
