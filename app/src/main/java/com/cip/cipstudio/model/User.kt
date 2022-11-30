@@ -54,6 +54,7 @@ object User {
             email = null
             username = null
             storageReference = null
+            downloadUrl = null
 
         }
     }
