@@ -122,4 +122,5 @@
     <string name="delete_history_message">Are you sure you want to clear history?</string>
     <string name="no">No</string>
     <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
+    <string name="delete_account">Delete account</string>
 </resources>
