@@ -309,7 +309,7 @@
                     android:layout_marginEnd="25dp"
                     android:drawablePadding="10dp"
                     android:text="@string/dark_mode"
-                    android:theme="@style/ThemeOverlay.MySwitchCompat"
+                    android:theme="@style/SCBSwitch"
                     app:drawableLeftCompat="@drawable/ic_dark_mode"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

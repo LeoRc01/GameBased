@@ -2,6 +2,7 @@ package com.cip.cipstudio.view.fragment
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -25,6 +26,7 @@ import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -70,15 +72,22 @@ class UserFragment : Fragment() {
 
 
         userBinding.fUserTvLogout.setOnClickListener {
-            userViewModel.logout ( onSuccess = {
-                Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
-                val intent = Intent(requireContext(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            },
-            onFailure = {
-                Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
-            })
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.logout))
+                .setMessage(getString(R.string.logout_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    userViewModel.logout ( onSuccess = {
+                        Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), AuthActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    },
+                        onFailure = {
+                            Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
+                        })
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ -> }
+                .show()
         }
 
         userBinding.fUserTvChangeEmail.setOnClickListener {

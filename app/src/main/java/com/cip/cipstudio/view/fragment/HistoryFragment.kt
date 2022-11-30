@@ -16,6 +16,7 @@ import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentHistoryBinding
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.HistoryViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class HistoryFragment : Fragment() {
@@ -37,11 +38,21 @@ class HistoryFragment : Fragment() {
         historyBinding.lifecycleOwner = this
 
         historyBinding.fHistoryIvDelete.setOnClickListener {
-            lifecycleScope.launch{
-                historyViewModel.deleteHistory()
-                initializeHistory()
-                Toast.makeText(context, "History deleted", Toast.LENGTH_SHORT).show()
-            }
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_history))
+                .setMessage(getString(R.string.delete_history_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    lifecycleScope.launch{
+                        historyViewModel.deleteHistory()
+                        initializeHistory()
+                        Toast.makeText(context, "History deleted", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+
         }
 
         return historyBinding.root
