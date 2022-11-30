@@ -1,12 +1,15 @@
 package com.cip.cipstudio.viewmodel
 
+import android.content.SharedPreferences
 import android.annotation.SuppressLint
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,13 +20,19 @@ import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.ItalianEnglishTranslator
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DataSnapshot
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
@@ -39,6 +48,8 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
     private val user = User
     private val gameRepository = IGDBRepositoryRemote
+
+    private lateinit var preferences: SharedPreferences
 
     constructor(gameId : String,
                 binding: FragmentGameDetailsBinding,
@@ -60,9 +71,16 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             platformDetails = withContext(Dispatchers.IO) {
                  gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)
             }
-            val fav : DataSnapshot
-            // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
 
+            preferences = binding.root.context.getSharedPreferences(binding.root.context.getString(R.string.setting_preferences),
+                AppCompatActivity.MODE_PRIVATE
+            )
+            val language = preferences.getString(binding.root.context.getString(R.string.language_settings), "en")
+
+            if(language == "it")
+                game.summary = ItalianEnglishTranslator.translate(game.summary)
+
+            // await aspetta il valore di fav prima di eseguire il resto, è usabile sui task
             isGameFavourite = MutableLiveData<Boolean>(game.isFavourite)
             user.isGameFavourite(gameId).addOnSuccessListener {
                 if (it != null) {
@@ -86,6 +104,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             setPlatformsUI.invoke(platformDetails)
             setGenresUI.invoke(game.genres)
             onSuccess.invoke()
+
         }
     }
 
