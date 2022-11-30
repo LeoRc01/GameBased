@@ -31,6 +31,8 @@ class GamesBigGridViewAdapter(val context : Context,
     private lateinit var tvGameNameBigCover : TextView
     private lateinit var ivBlurBackground : ImageView
     private lateinit var ivGameCoverForeground : ImageView
+    private lateinit var tvGameGenres : TextView
+    private lateinit var tvGameReleaseDate : TextView
     private lateinit var historyDB : HistoryRepository
 
     override fun getCount(): Int {
@@ -55,12 +57,13 @@ class GamesBigGridViewAdapter(val context : Context,
         }
 
         if (convertView == null) {
-            convertView = layoutInflater!!.inflate(R.layout.recently_viewed_game_item, null)
+            convertView = layoutInflater!!.inflate(R.layout.game_big_item, null)
         }
 
         tvGameNameBigCover = convertView!!.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
         ivBlurBackground = convertView!!.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
         ivGameCoverForeground = convertView!!.findViewById(R.id.i_recently_viewed_game_iv_game_cover_foreground)
+
 
         tvGameNameBigCover.text = games[position].name
 

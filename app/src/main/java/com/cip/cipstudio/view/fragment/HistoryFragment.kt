@@ -50,13 +50,13 @@ class HistoryFragment : Fragment() {
     private fun initializeHistory() {
         historyViewModel.addMoreGame { it ->
             val adapter = GamesBigRecyclerViewAdapter(requireContext(), it, ActionGameDetailsEnum.HISTORY)
-
             val manager = LinearLayoutManager(requireContext())
             manager.orientation = RecyclerView.VERTICAL
             historyBinding.fHistoryRvGames.layoutManager = manager
             historyBinding.fHistoryRvGames.setItemViewCacheSize(50)
             historyBinding.fHistoryRvGames.itemAnimator = null
             historyBinding.fHistoryRvGames.adapter = adapter
+            historyBinding.fHistoryShimmerLayout.visibility = View.GONE
             historyBinding.fHistoryRvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)

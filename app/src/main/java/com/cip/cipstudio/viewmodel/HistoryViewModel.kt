@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,14 +26,11 @@ class HistoryViewModel(val binding : FragmentHistoryBinding) : ViewModel() {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
             val list = User.getRecentlyViewed(historyRepository, offset)
-
             lastViewedGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
             }
             isPageLoading.postValue(false)
             onSuccess.invoke(lastViewedGames.sortedBy { list.indexOf(it.id) })
-
-
         }
     }
 

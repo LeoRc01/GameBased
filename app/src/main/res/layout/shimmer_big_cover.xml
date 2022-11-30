@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/i_recently_viewed_game_cover"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="10dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"/>
