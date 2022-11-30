@@ -3,12 +3,10 @@
     <style
         name="Title"
         parent="Widget.AppCompat.TextView">
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">25sp</item>
     </style>
-    <style name="genre_chip" parent="@style/Widget.Material3.Chip.Assist">
+    <style name="genre_chip" parent="@style/Widget.MaterialComponents.Chip.Action">
         <item name="chipStrokeWidth">1dp</item>
-        <item name="fontFamily">@font/montserrat_regular</item>
         <item name="chipBackgroundColor">@color/light_secondary_color</item>
         <item name="chipStrokeColor">@color/primary_color</item>
         <item name="android:clickable">false</item>
@@ -82,6 +80,28 @@
 
     <style name="CipTitleMedium.line.arrowRight" parent="CipTitleMedium.line">
         <item name="drawableEndCompat">@drawable/ic_arrow_right</item>
+    </style>
+
+    <style name="GameDetails.title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GameDetails.labelField" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="GameDetails.field" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/primary_color</item>
     </style>
 
 </resources>

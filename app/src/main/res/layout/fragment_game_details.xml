@@ -94,12 +94,8 @@
 
                         <TextView
                             android:id="@+id/f_gameDetails_tv_gameDetailsTitle"
-                            style="@style/Title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/GameDetails.title"
                             android:layout_marginVertical="10dp"
-                            android:textSize="30sp"
-                            android:textAlignment="center"
                             android:text="@{vm.game.name}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -188,18 +184,13 @@
                                 android:visibility='@{vm.game.fields.contains("parent_game")? View.VISIBLE : View.GONE}'>
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/this_game_is_dlc_for"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/this_game_is_dlc_for"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_parent_game"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{vm.game.parentGame.name}"
-                                    android:textColor="@color/primary_color" />
+                                    style="@style/GameDetails.field"
+                                    android:text="@{vm.game.parentGame.name}" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -210,18 +201,13 @@
                                 android:visibility='@{vm.game.fields.contains("first_release_date")? View.VISIBLE : View.GONE}'>
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/release_date"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/release_date"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_ReleaseDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{vm.game.releaseDate}"
-                                    android:textColor="@color/primary_color" />
+                                    style="@style/GameDetails.field"
+                                    android:text="@{vm.game.releaseDate}" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -236,11 +222,8 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/platforms"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/platforms"/>
 
 
                                 <GridLayout
@@ -265,18 +248,13 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/developer"
-                                    android:textStyle="bold"/>
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/developer"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_developer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
-                                    android:text="@{vm.game.developers}"/>
+                                    style="@style/GameDetails.field"
+                                    android:textColor="@color/primary_color" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -289,18 +267,13 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/publisher"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/publisher"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_publisher"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
-                                    android:text="@{vm.game.publishers}"/>
+                                    style="@style/GameDetails.field"
+                                    android:textColor="@color/primary_color" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -313,17 +286,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/support"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/support"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_support"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.supporters}"/>
                             </LinearLayout>
 
@@ -337,17 +305,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/porting_developer"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/porting_developer"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_porting"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.porters}"/>
                             </LinearLayout>
 
@@ -361,17 +324,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/language"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/language" />
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_language"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.languageString}"/>
                             </LinearLayout>
 
@@ -385,17 +343,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/player_perspectives"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/player_perspectives"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_playerPerspectives"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.playerPerspectivesString}"/>
                             </LinearLayout>
 
@@ -409,17 +362,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/game_modes"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/game_modes"/>
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_gameModes"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.gameModesString}"/>
                             </LinearLayout>
 
@@ -433,17 +381,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/franchise"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/franchise" />
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_franchise"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.franchiseString}"/>
                             </LinearLayout>
 
@@ -457,17 +400,12 @@
 
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
-                                    android:text="@string/collection"
-                                    android:textStyle="bold" />
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/collection" />
 
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_collection"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/primary_color"
+                                    style="@style/GameDetails.field"
                                     android:text="@{vm.game.collectionString}"/>
                             </LinearLayout>
 
@@ -570,13 +508,11 @@
 
                         <TextView
                             android:id="@+id/f_gameDetails_tv_screenshots"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/GameDetails.labelField"
                             android:layout_gravity="start"
                             android:layout_marginTop="16dp"
                             android:text="@string/screenshots"
                             android:textSize="16sp"
-                            android:textStyle="bold"
                             android:visibility='@{vm.game.fields.contains("screenshots")? View.VISIBLE : View.GONE}'
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_cl_ratingLayout" />
@@ -595,13 +531,11 @@
 
                         <TextView
                             android:id="@+id/f_gameDetails_tv_dlcs"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/GameDetails.labelField"
                             android:layout_gravity="start"
                             android:layout_marginTop="12dp"
                             android:text="@string/dlcs"
                             android:textSize="16sp"
-                            android:textStyle="bold"
                             android:visibility='@{vm.game.fields.contains("dlcs")? View.VISIBLE : View.GONE}'
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_screenshots" />
@@ -621,13 +555,11 @@
 
                         <TextView
                             android:id="@+id/f_gameDetails_tv_similarGames"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/GameDetails.labelField"
                             android:layout_gravity="start"
                             android:layout_marginTop="12dp"
                             android:text="@string/similar_games"
                             android:textSize="16sp"
-                            android:textStyle="bold"
                             android:visibility='@{vm.game.fields.contains("similar_games")? View.VISIBLE : View.GONE}'
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_rv_dlcs" />
