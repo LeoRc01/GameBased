@@ -285,7 +285,8 @@
                     app:drawableLeftCompat="@drawable/ic_delete_account"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_logout" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_logout"
+                    android:visibility="@{userLoggedIn ? View.VISIBLE : View.GONE}"/>
 
                 <!-- Placeholder -->
                 <TextView
