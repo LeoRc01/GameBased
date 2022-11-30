@@ -28,13 +28,8 @@
 
                 <TextView
                     android:text="@string/recently_viewed"
-                    style="@style/TextAppearance.Material3.TitleMedium"
-                    android:layout_weight="1"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:drawableStartCompat="@drawable/ic_vertical_line" />
+                    style="@style/CipTitleMedium.line"
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/f_history_iv_delete"

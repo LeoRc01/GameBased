@@ -22,17 +22,12 @@
 
         <TextView
             android:id="@+id/f_gameList_tv_title"
-            style="@style/TextAppearance.Material3.HeadlineMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CipTitleMedium.line"
             android:text="@{title}"
-            android:textSize="25sp"
-            android:textStyle="bold"
             android:layout_marginTop="24dp"
             android:layout_marginStart="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:drawableStartCompat="@drawable/ic_vertical_line"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <RelativeLayout
             android:id="@+id/f_gameList_rl_favourites"
