@@ -63,16 +63,21 @@
             <TextView
                 android:id="@+id/f_firstScreen_tv_titleApp"
                 style="@style/titleCicciottello"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 android:text="@string/app_name"
                 android:textColor="@color/white"
-                android:textSize="60sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeStepGranularity="2sp"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/f_firstScreen_cv_logo_ex"
-                app:layout_constraintVertical_bias="0.25" />
+                app:layout_constraintVertical_bias="0.25"
+                tools:targetApi="o" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -98,16 +103,11 @@
 
                 <Button
                     android:id="@+id/f_firstScreen_btn_login"
-                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="@string/login"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    style="@style/CipButton"/>
 
                 <TextView
                     android:id="@+id/f_firstScreen_tv_register"
@@ -120,30 +120,20 @@
 
                 <Button
                     android:id="@+id/f_firstScreen_btn_register"
-                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="@string/register"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    style="@style/CipButton" />
 
                 <Button
                     android:id="@+id/f_firstScreen_btn_guest"
-                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="36dp"
                     android:backgroundTint="@color/primary_color_dark_darker_even_darker"
                     android:text="@string/guest_login"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    style="@style/CipButton" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

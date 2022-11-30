@@ -65,4 +65,13 @@
 
     </style>
 
+    <style name="CipButton" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium </item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.15</item>
+    </style>
+
 </resources>
