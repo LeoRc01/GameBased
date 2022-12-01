@@ -7,12 +7,17 @@
 
     </data>
 
+
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.fragment.FirstScreenFragment"
         android:background="#1E0000">
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -138,6 +143,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        </ScrollView>
     </FrameLayout>
+
+
 </layout>
