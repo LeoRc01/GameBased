@@ -45,6 +45,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="400dp">
 
+
+
                         <androidx.cardview.widget.CardView
                             android:id="@+id/f_gameDetails_cardView_smallGameLogo"
                             app:cardCornerRadius="20dp"
@@ -76,6 +78,17 @@
                             android:scaleType="centerCrop"
                             app:blurredImageUrl="@{vm.game.coverUrl}"
                              />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:backgroundTint="@color/light_secondary_color"
+                            app:iconTint="@color/primary_color"
+                            android:id="@+id/f_gameDetails_iv_share"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="10dp"
+                            style="?attr/floatingActionButtonSmallStyle"
+                            android:src="@drawable/ic_share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
                     </RelativeLayout>
 
