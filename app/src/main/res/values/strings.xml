@@ -125,4 +125,5 @@
     <string name="delete_account">Delete account</string>
     <string name="delete_account_message">Are you sure? all your account data will be PERMANENTLY removed</string>
     <string name="account_deleted">Account deleted</string>
+    <string name="no_recently_viewed">You don\'t have any recently viewed yet</string>
 </resources>
