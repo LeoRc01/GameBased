@@ -20,11 +20,11 @@ class HistoryRepositoryLocal(context: Context) : HistoryRepository {
     }
 
     override suspend fun getAllHistory(userId: String): List<String> {
-        return localDB.getAllOrderedByTime(userId).map { it.id }
+        return localDB.getAllOrderedByTime(userId).map { it.gameId }
     }
 
     override suspend fun getHistory(userId: String, pageSize: Int, pageIndex: Int): List<String> {
-        return localDB.getOrderedByTime(userId, pageSize, pageIndex).map { it.id }
+        return localDB.getOrderedByTime(userId, pageSize, pageIndex).map { it.gameId }
     }
 
     override suspend fun syncHistory(list: List<GameViewedHistoryEntry>) {
