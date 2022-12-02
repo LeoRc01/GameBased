@@ -4,6 +4,8 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
@@ -14,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
-class LoginViewModel() : ViewModel(){
+class LoginViewModel(val binding: FragmentLoginBinding) : ViewModel(){
 
     private val TAG = "LoginViewModel"
 
@@ -45,6 +47,9 @@ class LoginViewModel() : ViewModel(){
         User.login(email, password)
             .addOnSuccessListener {
                 onSuccess.invoke()
+            }
+            .addOnSuccessListener {
+                User.syncRecentlyViewedGames(HistoryRepositoryLocal(binding.root.context))
             }
             .addOnFailureListener {
                 LoadingSpinner.dismiss()
