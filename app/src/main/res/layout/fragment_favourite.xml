@@ -55,17 +55,13 @@
 
                 <TextView
                     android:id="@+id/f_favourite_tv_title"
-                    style="@style/TextAppearance.Material3.TitleMedium"
+                    style="@style/CipTitleMedium.line"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/favourite"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
                     android:layout_marginTop="24dp"
-                    android:layout_marginStart="12dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:drawableStartCompat="@drawable/ic_vertical_line"/>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/f_fragment_tv_no_favourite"

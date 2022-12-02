@@ -20,16 +20,16 @@ import org.json.JSONArray
 
 object IGDBRepositoryRemote : IGDBRepository {
 
-    private val TAG= "IGDBWrapper"
-    private val CLIENT_ID = "fyniflwh4wnvh1ww0i139mwolan1g5"
-    private val CLIENT_SECRET = "4ot4bg1eqxvb2syuko6cewv5ccsn6s"
+    private const val TAG= "IGDBWrapper"
+    private const val CLIENT_ID = "fyniflwh4wnvh1ww0i139mwolan1g5"
+    private const val CLIENT_SECRET = "4ot4bg1eqxvb2syuko6cewv5ccsn6s"
     private var isInitialized = false
 
     private val cache = LruCache<String, JSONArray>(100)
 
-    private val secondsInAWeek = 604800L
-    private val secondsInADay = 86400L
-    private val secondsInAMonth = 2592000L
+    private const val secondsInAWeek = 604800L
+    private const val secondsInADay = 86400L
+    private const val secondsInAMonth = 2592000L
 
     private fun init() {
         synchronized(this) {
@@ -107,7 +107,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext JSONArray(json)
     }
 
-    suspend fun getGamesByCollectionName(collectionName : String,refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getGamesByCollectionName(collectionName : String, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("collection.name = \"$collectionName\"")
             .limit(10)
@@ -115,6 +115,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         Log.i("QUERY", apicalypse.buildQuery())
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
+
     override suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean) : List<PlatformDetails> = withContext(Dispatchers.IO){
         val platformIdsString = buildIdsForRequest(platformIds)
         val apicalypse = APICalypse().fields("abbreviation, " +
@@ -138,7 +139,7 @@ object IGDBRepositoryRemote : IGDBRepository {
 
     override suspend fun getGameDetails(gameId: String, refresh: Boolean): GameDetails = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name, summary, first_release_date, cover.url," +
-                "aggregated_rating, aggregated_rating_count, total_rating, total_rating_count," +
+                "aggregated_rating, aggregated_rating_count, rating, rating_count," +
                 "screenshots.url, genres.name, genres.id, platforms.name, platforms.id," +
                 "similar_games.name, similar_games.id, similar_games.cover.url," +
                 "involved_companies.company.name, involved_companies.developer," +
@@ -187,24 +188,24 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> {
+    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10")
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}", refresh) }
-        return Converter.fromJsonArrayToGameDetailsArrayList(json)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getLovedByCriticsGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> {
+    private suspend fun getLovedByCriticsGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO)  {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating_count >= 10 & total_rating != 0 & aggregated_rating_count >=10")
             .sort("aggregated_rating", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getLovedByCriticsGames${pageIndex}", refresh) }
-        return Converter.fromJsonArrayToGameDetailsArrayList(json)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
     private suspend fun getGamesMostHyped(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
