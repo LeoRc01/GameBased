@@ -86,7 +86,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                                         } as ArrayList<String>).joinToString(", ")
         viewHolder.tvGameReleaseDate.text = games[position].releaseDate
 
-        val rating : Double = games[position].totalRating.toInt().toDouble() / 10
+        val rating : Double = games[position].rating.toInt().toDouble() / 10
         if(rating.equals(0.0)){
             viewHolder.tvGameRating.text = "N/A"
             viewHolder.ivStar.setImageDrawable(context.getDrawable(R.drawable.ic_star_border))

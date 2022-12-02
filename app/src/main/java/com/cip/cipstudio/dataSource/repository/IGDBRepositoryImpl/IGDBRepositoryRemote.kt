@@ -168,7 +168,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             return@withContext arrayListOf()
         val idListString = buildIdsForRequest(gameIds)
         val apicalypse = APICalypse()
-            .fields("name, id, cover.url, genres.name, total_rating, platforms.name, first_release_date")
+            .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
             .where("id = $idListString")
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByIds${idListString}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
