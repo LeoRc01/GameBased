@@ -45,6 +45,14 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/f_history_tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_recently_viewed"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -57,6 +65,7 @@
                     android:numColumns="1"
                     android:visibility="visible" />
 
+           
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/f_history_shimmer_layout"
                     android:layout_marginTop="5dp"
