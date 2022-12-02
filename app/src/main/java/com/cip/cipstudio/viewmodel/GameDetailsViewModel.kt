@@ -1,11 +1,9 @@
 package com.cip.cipstudio.viewmodel
 
 import android.content.SharedPreferences
-import android.annotation.SuppressLint
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -24,15 +22,9 @@ import com.cip.cipstudio.dataSource.repository.ItalianEnglishTranslator
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.database.DataSnapshot
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslatorOptions
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
@@ -137,7 +129,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
             }
             else {
-                view.setImageDrawable(view.context.getDrawable(R.drawable.fading_red))
+                view.setImageDrawable(view.context.getDrawable(R.drawable.fading_primary))
                 view.scaleType = ImageView.ScaleType.CENTER
             }
 
@@ -170,17 +162,20 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
 
     fun setFavouriteStatus(){
-        LoadingSpinner.showLoadingDialog(binding.root.context)
+        //LoadingSpinner.showLoadingDialog(binding.root.context)
+
         if(!isGameFavourite.value!!){
             // Aggiungere ai preferiti
+            (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                      binding.root.context.getDrawable(R.drawable.ic_favorite)
             game.setGameToFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(true)
-                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
-                    binding.root.context.getDrawable(R.drawable.ic_favorite)
-                LoadingSpinner.dismiss()
+                //LoadingSpinner.dismiss()
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_add), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                LoadingSpinner.dismiss()
+                //LoadingSpinner.dismiss()
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite_border)
                 if (it is NotLoggedException){
                     Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
                 } else {
@@ -189,15 +184,15 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             }
         }else{
             // rimuovere dai preferiti
-
+            (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                binding.root.context.getDrawable(R.drawable.ic_favorite_border)
             game.removeGameFromFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(false)
-                LoadingSpinner.dismiss()
-                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
-                    binding.root.context.getDrawable(R.drawable.ic_favorite_border)
+
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_remove), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                LoadingSpinner.dismiss()
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite)
                 if (it is NotLoggedException){
                     Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
                 } else {

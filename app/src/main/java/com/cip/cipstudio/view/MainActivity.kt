@@ -2,8 +2,11 @@ package com.cip.cipstudio.view
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +15,9 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.utils.ContextWrapper
 import com.cip.cipstudio.view.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
@@ -94,6 +100,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
+
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData: PendingDynamicLinkData? ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    val gameId : String = deepLink!!.getQueryParameter("gameId").toString()
+                    val bundle = bundleOf()
+                    bundle.putString("game_id", gameId)
+                    navController.navigate(R.id.action_homeScreen_to_game_details_home, bundle)
+                }
+
+                // Handle the deep link. For example, open the linked
+                // content, or apply promotional credit to the user's
+                // account.
+                // ...
+
+            }
+            .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
+
     }
 
     override fun attachBaseContext(newBase: Context) {

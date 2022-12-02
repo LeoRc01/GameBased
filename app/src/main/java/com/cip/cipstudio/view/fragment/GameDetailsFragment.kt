@@ -3,7 +3,9 @@ package com.cip.cipstudio.view.fragment
 
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -37,6 +40,9 @@ import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.GameDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
 
 
@@ -98,7 +104,28 @@ class GameDetailsFragment : Fragment() {
             // onSuccess
             gameDetailsBinding.vm = gameDetailsViewModel
             gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.VISIBLE
+
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
+
+            gameDetailsBinding.fGameDetailsIvBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            gameDetailsBinding.fGameDetailsIvShare.setOnClickListener {
+                val url = "https://cipstudio.page.link/?link=https://cipstudio.page.link/gameDetails?gameId=${gameId}&apn=com.cip.cipstudio"
+                val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+                    longLink = Uri.parse(url)
+                }.addOnSuccessListener {
+                    val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, (it.shortLink as Uri).toString())
+                    type = "text/plain"
+                }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }
+            }
+
             gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
                 hideShowMore()
             }

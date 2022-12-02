@@ -50,6 +50,8 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         val card : CardView
         val tvGameGenres : TextView
         val tvGameReleaseDate : TextView
+        val tvGameRating : TextView
+        val ivStar : ImageView
 
         init {
             ivBlurBackground = view.findViewById(R.id.i_recently_viewed_game_iv_blur_background)
@@ -57,7 +59,9 @@ class GamesBigRecyclerViewAdapter (val context : Context,
             tvGameNameBigCover = view.findViewById(R.id.i_recently_viewed_game_tv_GameNameBigCover)
             tvGameGenres = view.findViewById(R.id.i_recently_viewed_game_tv_GameGenresBigCover)
             tvGameReleaseDate = view.findViewById(R.id.i_recently_viewed_game_tv_GameReleaseDateBigCover)
+            tvGameRating = view.findViewById(R.id.i_recently_viewed_game_rating)
             card = view.findViewById(R.id.i_recently_viewed_game_cover)
+            ivStar = view.findViewById(R.id.i_recently_viewed_game_star)
         }
     }
 
@@ -82,6 +86,15 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                                         } as ArrayList<String>).joinToString(", ")
         viewHolder.tvGameReleaseDate.text = games[position].releaseDate
 
+        val rating : Double = games[position].totalRating.toInt().toDouble() / 10
+        if(rating.equals(0.0)){
+            viewHolder.tvGameRating.text = "N/A"
+            viewHolder.ivStar.setImageDrawable(context.getDrawable(R.drawable.ic_star_border))
+        }else{
+            viewHolder.tvGameRating.text = rating.toString()
+        }
+
+
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(viewHolder.ivGameCoverForeground)
@@ -91,7 +104,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
                 viewHolder.ivGameCoverForeground.setImageDrawable(context.getDrawable(R.drawable.ic_image_not_supported))
                 viewHolder.ivGameCoverForeground.setBackgroundColor(context.getColor(R.color.primary_color))
                 viewHolder.ivGameCoverForeground.scaleType = ImageView.ScaleType.CENTER
-                viewHolder.ivBlurBackground.setImageDrawable(context.getDrawable(R.drawable.fading_red))
+                viewHolder.ivBlurBackground.setImageDrawable(context.getDrawable(R.drawable.fading_primary))
                 viewHolder.ivBlurBackground.setBackgroundColor(context.getColor(R.color.primary_color))
             }
             viewHolder.ivBlurBackground.setRenderEffect(RenderEffect.createBlurEffect(30F, 30F, Shader.TileMode.MIRROR))

@@ -45,6 +45,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="400dp">
 
+
+
                         <androidx.cardview.widget.CardView
                             android:id="@+id/f_gameDetails_cardView_smallGameLogo"
                             app:cardCornerRadius="20dp"
@@ -77,6 +79,55 @@
                             app:blurredImageUrl="@{vm.game.coverUrl}"
                              />
 
+                        <LinearLayout
+                            android:layout_alignParentEnd="true"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+                            <Button
+                                android:id="@+id/f_gameDetails_iv_share"
+                                style="?attr/materialIconButtonFilledStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginVertical="10dp"
+                                android:backgroundTint="@color/light_secondary_color"
+                                app:icon="@drawable/ic_share"
+                                app:iconTint="@color/primary_color" />
+
+                            <Button
+                                app:iconTint="@color/primary_color"
+                                android:id="@+id/f_gameDetails_btn_favorite"
+                                style="?attr/materialIconButtonFilledStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="10dp"
+                                android:layout_marginRight="5dp"
+                                android:onClick="@{() -> vm.setFavouriteStatus()}"
+                                android:visibility="@{user.logged ? View.VISIBLE : View.GONE}"
+                                app:backgroundTint="@color/light_secondary_color"
+                                app:icon="@drawable/ic_favorite_border"
+                                app:strokeWidth="0dp" />
+
+                        </LinearLayout>
+
+
+
+
+
+                        <Button
+                            android:backgroundTint="@color/light_secondary_color"
+                            app:iconTint="@color/primary_color"
+                            android:id="@+id/f_gameDetails_iv_back"
+                            android:layout_margin="10dp"
+                            style="?attr/materialIconButtonFilledStyle"
+                            app:icon="@drawable/ic_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
                     </RelativeLayout>
 
 
@@ -102,31 +153,12 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
-                        <Button
-                            android:id="@+id/f_gameDetails_btn_favorite"
-                            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:onClick="@{() -> vm.setFavouriteStatus()}"
-                            android:text='@{!vm.isGameFavourite ? @string/add_to_favourite : @string/remove_favourite}'
-                            android:visibility="@{user.logged ? View.VISIBLE : View.GONE}"
-                            android:textAppearance="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                            android:textColor="?attr/colorOnSecondary"
-                            android:textSize="15sp"
-                            app:backgroundTint="@color/light_secondary_color"
-                            app:icon="@drawable/ic_favorite_border"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"
-                            app:strokeWidth="0dp" />
-
                         <HorizontalScrollView
                             android:scrollbarSize="0dp"
                             android:id="@+id/f_gameDetails_hsv_viewGenreLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_btn_favorite"
+                            app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <GridLayout

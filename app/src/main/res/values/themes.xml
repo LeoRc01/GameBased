@@ -3,6 +3,7 @@
     <style name="Theme.CIPStudio" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
         <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="colorOnPrimaryContainer">@color/primary_color</item>
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/primary_color_dark</item>
         <item name="colorOnPrimary">@color/white</item>

@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fading_red">
+        android:background="@drawable/fading_primary">
 
         <TextView
             android:id="@+id/f_gameList_tv_title"

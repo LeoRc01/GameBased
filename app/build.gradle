@@ -75,6 +75,7 @@ dependencies {
     implementation 'com.mayakapps.lrucache:lru-cache:1.0.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:21.1.0'
     kapt "androidx.room:room-compiler:2.4.3"
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.google.mlkit:translate:17.0.1'

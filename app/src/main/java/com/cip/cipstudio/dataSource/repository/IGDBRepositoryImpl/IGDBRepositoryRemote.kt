@@ -110,7 +110,6 @@ object IGDBRepositoryRemote : IGDBRepository {
     override suspend fun getGamesByCollectionName(collectionName : String, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("collection.name = \"$collectionName\"")
-            .limit(10)
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByCollectionName${collectionName}", refresh)
         Log.i("QUERY", apicalypse.buildQuery())
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
