@@ -35,11 +35,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/f_login_layout_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="12dp"
+                style="@style/TextInputLayout.Login"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="6dp"
                 android:hint="@string/email_placeholder"
                 app:startIconContentDescription="Email"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,8 +50,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/f_login_et_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputEditText.Login"
                     android:inputType="textEmailAddress"
                     android:text="@={loginViewModel.email}"/>
 
@@ -61,10 +58,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/f_login_layout_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                style="@style/TextInputLayout.Login"
                 android:layout_marginBottom="32dp"
                 android:hint="@string/password_placeholder"
                 app:endIconMode="password_toggle"
@@ -77,8 +71,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/f_login_et_pwd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputEditText.Login"
                     android:inputType="textPassword"
                     android:text="@={loginViewModel.password}"/>
 
@@ -112,7 +105,7 @@
             <LinearLayout
                 android:id="@+id/f_login_ll_switchMode"
                 android:layout_gravity="center"
-                android:layout_marginBottom="48dp"
+                android:layout_marginBottom="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
