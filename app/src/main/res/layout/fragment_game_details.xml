@@ -83,49 +83,36 @@
                             android:layout_alignParentEnd="true"
                             android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp">
 
 
                             <Button
                                 android:id="@+id/f_gameDetails_iv_share"
-                                style="?attr/materialIconButtonFilledStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
+                                style="@style/IconButton.GameDetails"
                                 android:layout_marginVertical="10dp"
-                                android:backgroundTint="@color/light_secondary_color"
-                                app:icon="@drawable/ic_share"
-                                app:iconTint="@color/primary_color" />
+                                app:icon="@drawable/ic_share" />
 
                             <Button
-                                app:iconTint="@color/primary_color"
                                 android:id="@+id/f_gameDetails_btn_favorite"
-                                style="?attr/materialIconButtonFilledStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                style="@style/IconButton.GameDetails"
                                 android:layout_marginVertical="10dp"
-                                android:layout_marginRight="5dp"
                                 android:onClick="@{() -> vm.setFavouriteStatus()}"
                                 android:visibility="@{user.logged ? View.VISIBLE : View.GONE}"
-                                app:backgroundTint="@color/light_secondary_color"
                                 app:icon="@drawable/ic_favorite_border"
                                 app:strokeWidth="0dp" />
 
                         </LinearLayout>
 
 
-
-
-
                         <Button
-                            android:backgroundTint="@color/light_secondary_color"
-                            app:iconTint="@color/primary_color"
                             android:id="@+id/f_gameDetails_iv_back"
-                            android:layout_margin="10dp"
-                            style="?attr/materialIconButtonFilledStyle"
-                            app:icon="@drawable/ic_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            style="@style/IconButton.GameDetails"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            app:icon="@drawable/ic_back"/>
 
 
                     </RelativeLayout>

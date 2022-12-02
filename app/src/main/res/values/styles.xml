@@ -117,4 +117,12 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="IconButton.GameDetails" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:backgroundTint">@color/light_secondary_color</item>
+        <item name="iconTint">@color/primary_color</item>
+
+    </style>
+
 </resources>
