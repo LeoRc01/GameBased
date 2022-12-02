@@ -1,11 +1,9 @@
 package com.cip.cipstudio.viewmodel
 
 import android.content.SharedPreferences
-import android.annotation.SuppressLint
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -24,15 +22,9 @@ import com.cip.cipstudio.dataSource.repository.ItalianEnglishTranslator
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.database.DataSnapshot
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslatorOptions
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
@@ -137,7 +129,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
             }
             else {
-                view.setImageDrawable(view.context.getDrawable(R.drawable.fading_red))
+                view.setImageDrawable(view.context.getDrawable(R.drawable.fading_primary))
                 view.scaleType = ImageView.ScaleType.CENTER
             }
 

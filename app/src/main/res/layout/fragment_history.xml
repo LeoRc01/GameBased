@@ -11,6 +11,7 @@
     </data>
 
     <FrameLayout
+        android:background="@drawable/fading_primary"
         android:paddingHorizontal="20dp"
         android:paddingTop="20dp"
         android:layout_width="match_parent"
