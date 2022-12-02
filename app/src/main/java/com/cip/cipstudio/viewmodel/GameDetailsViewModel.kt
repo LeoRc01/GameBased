@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -82,11 +83,7 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                             binding.root.context.getDrawable(R.drawable.ic_favorite)
                 }
             }.addOnFailureListener {
-                Toast.makeText(
-                    binding.root.context,
-                    binding.root.context.getString(R.string.invalid_operation_must_logged),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Log.i(TAG, "User not logged")
             }
 
             // queste funzioni servono a dividere il ruolo di viewModel e view

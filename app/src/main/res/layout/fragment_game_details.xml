@@ -286,7 +286,8 @@
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_developer"
                                     style="@style/GameDetails.field"
-                                    android:textColor="@color/primary_color" />
+                                    android:textColor="@color/primary_color"
+                                    android:text="@{vm.game.developers}"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -305,7 +306,8 @@
                                 <TextView
                                     android:id="@+id/f_gameDetails_tv_GameDetails_publisher"
                                     style="@style/GameDetails.field"
-                                    android:textColor="@color/primary_color" />
+                                    android:textColor="@color/primary_color"
+                                    android:text="@{vm.game.publishers}"/>
                             </LinearLayout>
 
                             <LinearLayout
