@@ -107,6 +107,10 @@ class GameDetailsFragment : Fragment() {
 
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
 
+            gameDetailsBinding.fGameDetailsIvBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             gameDetailsBinding.fGameDetailsIvShare.setOnClickListener {
                 val url = "https://cipstudio.page.link/?link=https://cipstudio.page.link/gameDetails?gameId=${gameId}&apn=com.cip.cipstudio"
                 val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {

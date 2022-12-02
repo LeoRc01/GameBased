@@ -162,17 +162,20 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
 
     fun setFavouriteStatus(){
-        LoadingSpinner.showLoadingDialog(binding.root.context)
+        //LoadingSpinner.showLoadingDialog(binding.root.context)
+
         if(!isGameFavourite.value!!){
             // Aggiungere ai preferiti
+            (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                      binding.root.context.getDrawable(R.drawable.ic_favorite)
             game.setGameToFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(true)
-                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
-                    binding.root.context.getDrawable(R.drawable.ic_favorite)
-                LoadingSpinner.dismiss()
+                //LoadingSpinner.dismiss()
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_add), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                LoadingSpinner.dismiss()
+                //LoadingSpinner.dismiss()
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite_border)
                 if (it is NotLoggedException){
                     Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
                 } else {
@@ -181,15 +184,15 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             }
         }else{
             // rimuovere dai preferiti
-
+            (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                binding.root.context.getDrawable(R.drawable.ic_favorite_border)
             game.removeGameFromFavourite().addOnSuccessListener {
                 isGameFavourite.postValue(false)
-                LoadingSpinner.dismiss()
-                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
-                    binding.root.context.getDrawable(R.drawable.ic_favorite_border)
+
                 Toast.makeText(binding.root.context, binding.root.context.getString(R.string.fav_success_remove), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                LoadingSpinner.dismiss()
+                (binding.fGameDetailsBtnFavorite as MaterialButton).icon =
+                    binding.root.context.getDrawable(R.drawable.ic_favorite)
                 if (it is NotLoggedException){
                     Toast.makeText(binding.root.context, binding.root.context.getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
                 } else {
