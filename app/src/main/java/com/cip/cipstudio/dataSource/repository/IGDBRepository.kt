@@ -16,5 +16,6 @@ interface IGDBRepository {
     suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean = false) : List<PlatformDetails>
 
     suspend fun getGamesByPlatform(platformId : String, refresh: Boolean = false, pageSize: Int = 10, pageIndex: Int = 0) : List<GameDetails>
-    
+
+    suspend fun getGamesByCollectionName(collectionName : String, refresh: Boolean = false): List<GameDetails>
 }
