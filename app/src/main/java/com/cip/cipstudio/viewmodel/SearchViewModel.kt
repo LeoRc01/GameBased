@@ -1,5 +1,7 @@
 package com.cip.cipstudio.viewmodel
 
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +15,7 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
+import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,64 +24,20 @@ import kotlinx.coroutines.withContext
 
 class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
-    var searchtext : MutableLiveData<String> = MutableLiveData()
-
     private val gameRepository : IGDBRepository = IGDBRepositoryRemote
 
     fun initializeRecyclerView(refresh : Boolean,
+                               query:String,
                                updateUI : (List<GameDetails>)->Unit) {
 
-        var games :List<GameDetails>
+        var gamesResults : ArrayList<GameDetails>
         viewModelScope.launch(Dispatchers.Main) {
-            games = withContext(Dispatchers.IO) {
-                gameRepository.searchGames(searchtext, refresh)
+            gamesResults = withContext(Dispatchers.IO) {
+                gameRepository.searchGames(query, refresh) as ArrayList<GameDetails>
             }
-            updateUI.invoke(games)
+            updateUI.invoke(gamesResults)
         }
 
-
     }
-
-    /*
-
-    val isPageLoading : MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>(true)
-    }
-
-    private lateinit var lastViewdGames : ArrayList<GameDetails>
-
-    private val historyRepository: HistoryRepository = HistoryRepositoryLocal(binding.root.context)
-
-    init {
-
-        viewModelScope.launch(Dispatchers.Main){
-            val list = User.getRecentlyViewed(historyRepository, 0)
-
-            lastViewdGames = withContext(Dispatchers.IO){
-                IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
-            }
-
-            initializeRecyclerView(lastViewdGames.sortedBy { list.indexOf(it.id) })
-
-            isPageLoading.postValue(false)
-        }
-
-
-
-    }
-
-    private fun initializeRecyclerView(games : List<GameDetails>) {
-        val lastViewGamesRecyclerViewAdapter =
-            GamesBigRecyclerViewAdapter(binding.root.context,
-                games)
-        val manager = LinearLayoutManager(binding.root.context)
-        manager.orientation = RecyclerView.HORIZONTAL
-        binding.fSearchRvLastViewedGames.layoutManager = manager
-        binding.fSearchRvLastViewedGames.setItemViewCacheSize(50)
-        binding.fSearchRvLastViewedGames.itemAnimator = null
-        binding.fSearchRvLastViewedGames.adapter = lastViewGamesRecyclerViewAdapter
-    }
-
-    */
 
 }

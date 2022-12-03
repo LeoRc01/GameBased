@@ -3,16 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <import type="android.view.View"/>
-        <variable
-            name="vm"
-            type="com.cip.cipstudio.viewmodel.SearchViewModel" />
-        <variable
-            name="searchViewModel"
-            type="com.cip.cipstudio.viewmodel.SearchViewModel" />
-    </data>
-
     <FrameLayout
         android:padding="20dp"
         android:layout_width="match_parent"
@@ -43,8 +33,7 @@
                     android:queryHint="@string/search_placeholder"
                     android:background="@drawable/search_box_background"
                     android:queryBackground="@null"
-                    app:errorEnabled="true"
-                    android:text="@={searchViewModel.searchtext}"/>
+                    app:errorEnabled="true" />
 
                 <Button
                     android:id="@+id/f_search_filter_button"
@@ -96,8 +85,7 @@
                 android:id="@+id/f_search_results"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.90"
-                android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}" />
+                android:layout_weight="0.90" />
 
         </LinearLayout>
 
@@ -111,7 +99,8 @@
                 android:clipChildren="false"
                 android:id="@+id/f_search_shimmerLayout_results"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -126,6 +115,29 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/f_search_bg"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/grey_login"
+                    android:layout_marginTop="100dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 
