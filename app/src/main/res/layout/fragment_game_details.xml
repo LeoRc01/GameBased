@@ -114,18 +114,10 @@
                         </LinearLayout>
 
 
-
-
-
-                        <Button
-                            android:backgroundTint="@color/light_secondary_color"
-                            app:iconTint="@color/primary_color"
+                        <include
                             android:id="@+id/f_gameDetails_iv_back"
-                            android:layout_margin="10dp"
-                            style="?attr/materialIconButtonFilledStyle"
-                            app:icon="@drawable/ic_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            layout="@layout/back_button"/>
+
 
 
                     </RelativeLayout>

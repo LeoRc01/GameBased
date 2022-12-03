@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -38,6 +39,10 @@ class HistoryFragment : Fragment() {
         initializeHistory()
         historyBinding.vm = historyViewModel
         historyBinding.lifecycleOwner = this
+
+        historyBinding.fHistoryBtnBack.root.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         historyBinding.fHistoryIvDelete.setOnClickListener {
             if (historyBinding.fHistoryTvEmpty.visibility == View.GONE) {

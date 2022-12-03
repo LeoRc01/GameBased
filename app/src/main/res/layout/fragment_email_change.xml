@@ -10,6 +10,7 @@
     </data>
 
     <FrameLayout
+        android:background="@drawable/fading_primary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.fragment.UserFragment">
@@ -21,20 +22,28 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:paddingTop="15dp"
+                android:paddingHorizontal="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <include
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/f_email_change_btn_back"
+                    layout="@layout/back_button"
+                    />
 
                 <androidx.cardview.widget.CardView
+                    android:layout_marginTop="20dp"
                     android:id="@+id/f_email_change_cw_profilePicture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
                     app:cardCornerRadius="200dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.14"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/f_email_change_btn_back">
 
                     <ImageView
                         android:id="@+id/f_email_change_iv_profilePicture"

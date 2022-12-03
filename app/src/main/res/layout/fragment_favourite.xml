@@ -10,6 +10,7 @@
             type="com.cip.cipstudio.viewmodel.FavouriteViewModel" />
     </data>
     <FrameLayout
+        android:background="@drawable/fading_primary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.fragment.FavouriteFragment">

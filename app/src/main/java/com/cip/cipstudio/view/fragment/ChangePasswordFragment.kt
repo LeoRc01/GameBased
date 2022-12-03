@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
 import com.cip.cipstudio.model.User
@@ -34,6 +36,10 @@ class ChangePasswordFragment : Fragment() {
         changePasswordViewModel = ChangePasswordViewModel()
         changePasswordBinding.changePasswordViewModel = changePasswordViewModel
         changePasswordBinding.executePendingBindings()
+
+        changePasswordBinding.fPasswordChangeBtnBack.root.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
 
         changePasswordBinding.fPasswordChangeTvUsername.text = user.username

@@ -9,6 +9,7 @@ import android.widget.AbsListView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.databinding.FragmentGameListBinding
@@ -44,6 +45,11 @@ class GameListFragment : Fragment() {
     private fun initializeGames() {
         gameListViewModel.getGames(
             gameType){
+
+            gameListBinding.fGameListBtnBack.root.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
                 gameListBinding.root.findNavController(),

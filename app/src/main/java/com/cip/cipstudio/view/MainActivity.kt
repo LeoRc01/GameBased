@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.a_main_cv_container) as NavHostFragment
         navController = navHostFragment.navController
 
