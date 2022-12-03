@@ -25,8 +25,9 @@ import kotlinx.coroutines.withContext
 class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
     private val gameRepository : IGDBRepository = IGDBRepositoryRemote
+    private lateinit var gamesResults : ArrayList<GameDetails>
 
-    fun initializeRecyclerView(refresh : Boolean,
+    /*fun initializeRecyclerView(refresh : Boolean,
                                query:String,
                                updateUI : (List<GameDetails>)->Unit) {
 
@@ -38,6 +39,21 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
             updateUI.invoke(gamesResults)
         }
 
+    }*/
+
+    val isPageLoading : MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
+
+    fun addGameResults(offset: Int, query: String, onSuccess: (List<GameDetails>) -> Unit) {
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main){
+            gamesResults = withContext(Dispatchers.IO){
+                gameRepository.searchGames(query, offset) as ArrayList<GameDetails>
+            }
+            isPageLoading.postValue(false)
+            onSuccess.invoke(gamesResults)
+        }
     }
 
 }

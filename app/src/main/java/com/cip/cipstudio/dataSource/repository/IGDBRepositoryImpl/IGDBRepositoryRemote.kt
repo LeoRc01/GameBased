@@ -174,13 +174,15 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun searchGames(searchText: String, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun searchGames(searchText: String, pageIndex: Int, pageSize: Int, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
 
         val apicalypse = APICalypse()
             .search(searchText)
             .fields("name, id, cover.url, genres.name, total_rating, platforms.name, first_release_date")
+            .limit(pageSize)
+            .offset(pageIndex * pageSize)
 
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "searchGames${searchText}", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "searchGames${searchText}offset${pageIndex}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 

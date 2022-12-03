@@ -28,13 +28,15 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.*
 
 class SearchFragment : Fragment() {
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    /*private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-    }
+    }*/
     private lateinit var searchBinding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private val TAG = "SearchFragment"
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var offset : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +46,9 @@ class SearchFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
 
         searchViewModel = SearchViewModel(searchBinding)
+
+        initializeSearchView()
+
         searchBinding.executePendingBindings()
         searchBinding.lifecycleOwner = this
 
@@ -54,7 +59,7 @@ class SearchFragment : Fragment() {
             AppCompatActivity.MODE_PRIVATE
         )
 
-        initializeSearchView()
+
 
         return searchBinding.root
     }
@@ -82,13 +87,12 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun initializeSearchResultsList(query: String, refresh: Boolean = false) {
+    private fun initializeSearchResultsList(query: String) {
         // SearchResults
         initializeRecyclerView(
             query,
             searchBinding.fSearchResults,
-            searchBinding.fSearchShimmerLayoutResults,
-            refresh
+            searchBinding.fSearchShimmerLayoutResults
         )
     }
 
@@ -103,8 +107,7 @@ class SearchFragment : Fragment() {
     private fun initializeRecyclerView(
         query: String,
         recyclerView: RecyclerView,
-        shimmerLayout: ShimmerFrameLayout,
-        refresh: Boolean
+        shimmerLayout: ShimmerFrameLayout
     ) {
         shimmerLayout.visibility = View.VISIBLE
         shimmerLayout.startShimmer()
@@ -122,11 +125,34 @@ class SearchFragment : Fragment() {
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        searchViewModel.initializeRecyclerView(refresh, query) {
+        // chiamata iniziale
+
+        searchViewModel.addGameResults(offset, query) {
             adapter.addItems(it)
             shimmerLayout.stopShimmer()
             shimmerLayout.visibility = View.GONE
         }
+
+        offset = 0
+
+        // setta l'onscroll listener
+
+        searchBinding.fSearchResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
+                    offset++
+                    Log.i(TAG, "OFFSET")
+                    Log.i(TAG, offset.toString())
+                    searchViewModel.addGameResults(offset, query) { games ->
+                        (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
+                        Log.i(TAG, games.toString())
+                    }
+                    Log.i(TAG, "onScrollStateChanged")
+
+                }
+            }
+        })
     }
 
 }
