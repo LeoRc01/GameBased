@@ -3,15 +3,7 @@
     android:id="@+id/back_button"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/materialIconButtonFilledStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
-    android:backgroundTint="@color/light_secondary_color"
+    style="@style/IconButton.Cip"
     app:icon="@drawable/ic_back"
-    app:iconTint="@color/primary_color"
     />
 
