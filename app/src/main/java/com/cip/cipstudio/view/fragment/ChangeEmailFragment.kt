@@ -48,7 +48,7 @@ class ChangeEmailFragment : Fragment() {
             }
         }
 
-        changeEmailBinding.fEmailChangeBtnBack.root.setOnClickListener {
+        changeEmailBinding.fEmailChangeBtnBack.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 

@@ -46,7 +46,7 @@ class GameListFragment : Fragment() {
         gameListViewModel.getGames(
             gameType){
 
-            gameListBinding.fGameListBtnBack.root.setOnClickListener {
+            gameListBinding.fGameListBtnBack.backButton.setOnClickListener {
                 findNavController().popBackStack()
             }
 

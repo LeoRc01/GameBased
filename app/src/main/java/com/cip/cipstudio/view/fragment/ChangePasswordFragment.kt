@@ -37,7 +37,7 @@ class ChangePasswordFragment : Fragment() {
         changePasswordBinding.changePasswordViewModel = changePasswordViewModel
         changePasswordBinding.executePendingBindings()
 
-        changePasswordBinding.fPasswordChangeBtnBack.root.setOnClickListener {
+        changePasswordBinding.fPasswordChangeBtnBack.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 

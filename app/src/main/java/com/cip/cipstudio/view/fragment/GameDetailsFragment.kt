@@ -108,7 +108,7 @@ class GameDetailsFragment : Fragment() {
 
             gameDetailsBinding.loadingModel!!.isPageLoading.postValue(false)
 
-            gameDetailsBinding.fGameDetailsIvBack.root.setOnClickListener {
+            gameDetailsBinding.fGameDetailsIvBack.backButton.setOnClickListener {
                 findNavController().popBackStack()
             }
 

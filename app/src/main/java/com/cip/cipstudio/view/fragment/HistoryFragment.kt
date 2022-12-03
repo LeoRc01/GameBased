@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
         historyBinding.vm = historyViewModel
         historyBinding.lifecycleOwner = this
 
-        historyBinding.fHistoryBtnBack.root.setOnClickListener {
+        historyBinding.fHistoryBtnBack.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 

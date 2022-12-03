@@ -35,7 +35,7 @@ class ChangeUsernameFragment : Fragment() {
         changeUsernameBinding.changeUsernameViewModel = changeUsernameViewModel
         changeUsernameBinding.executePendingBindings()
 
-        changeUsernameBinding.fUsernameChangeBtnBack.root.setOnClickListener {
+        changeUsernameBinding.fUsernameChangeBtnBack.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
