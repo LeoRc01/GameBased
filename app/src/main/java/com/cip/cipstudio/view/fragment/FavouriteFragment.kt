@@ -41,6 +41,11 @@ class FavouriteFragment : Fragment() {
 
         initializeFavourites()
 
+        favouriteBinding.fFavouriteNoFavoritesYetInclude.button.setOnClickListener {
+            startActivity(Intent(favouriteBinding.root.context, AuthActivity::class.java))
+            activity?.finish()
+        }
+
         favouriteBinding.vm = favouriteViewModel
         favouriteBinding.lifecycleOwner = this
 
@@ -59,7 +64,8 @@ class FavouriteFragment : Fragment() {
 
             },
             noFavouriteUI = {
-                favouriteBinding.fFragmentTvNoFavourite.visibility = View.VISIBLE
+                favouriteBinding.fFavouriteRlFavourites.visibility = View.GONE
+                favouriteBinding.fFavouriteNoFavoritesYet.visibility = View.VISIBLE
             },
             notLoggedInUI = {
                 favouriteBinding.fFavouriteRlFavourites.visibility = View.GONE

@@ -126,4 +126,9 @@
     <string name="delete_account_message">Are you sure? all your account data will be PERMANENTLY removed</string>
     <string name="account_deleted">Account deleted</string>
     <string name="no_recently_viewed">You don\'t have any recently viewed yet</string>
+    <string name="no_favourites_yet">No favourites yet</string>
+    <string name="add_some_games_to_your_favourites">Add some games to your favourites</string>
+    <string name="new_favourite">Add new favourite</string>
+    <string name="no_recent_activities">No recent activities</string>
+    <string name="discover_new_games">Discover new games</string>
 </resources>

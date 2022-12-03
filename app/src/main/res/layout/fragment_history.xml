@@ -41,15 +41,17 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/f_history_tv_empty"
+            <LinearLayout
+                android:id="@+id/f_history_ll_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_recently_viewed"
-                android:layout_marginTop="20dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
+                android:layout_gravity="center"
+                android:visibility="gone">
+                <include
+                    android:id="@+id/reusable_no_recent_activities_include"
+                    layout="@layout/reusable_no_recently_viewed"/>
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
