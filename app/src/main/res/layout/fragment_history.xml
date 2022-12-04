@@ -38,6 +38,7 @@
                     android:layout_weight="1" />
 
                 <ImageView
+                    android:layout_marginHorizontal="15dp"
                     android:id="@+id/f_history_iv_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
