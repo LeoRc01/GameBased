@@ -23,7 +23,7 @@
             android:layout_height="wrap_content">
 
             <include layout="@layout/reusable_icon_start"
-                android:id="@+id/f_login_view_logo_ex"
+                android:id="@+id/f_login_view_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/f_login_layout_pwd"
-                app:layout_constraintTop_toBottomOf="@+id/f_login_view_logo_ex"
+                app:layout_constraintTop_toBottomOf="@+id/f_login_view_logo"
                 app:layout_constraintVertical_bias="1"
                 app:startIconDrawable="@drawable/ic_email"
                 app:errorEnabled="true">

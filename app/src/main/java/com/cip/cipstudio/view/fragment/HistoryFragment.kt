@@ -1,5 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,12 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentHistoryBinding
-import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
+import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.HistoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 class HistoryFragment : Fragment() {
 
@@ -45,14 +45,15 @@ class HistoryFragment : Fragment() {
         }
 
         historyBinding.fHistoryIvDelete.setOnClickListener {
-            if (historyBinding.fHistoryTvEmpty.visibility == View.GONE) {
+            if (historyBinding.fHistoryLlEmpty.visibility == View.GONE) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(getString(R.string.delete_history))
                     .setMessage(getString(R.string.delete_history_message))
                     .setPositiveButton(getString(R.string.yes)) { _, _ ->
                         lifecycleScope.launch{
                             historyViewModel.deleteHistory()
-                            historyBinding.fHistoryTvEmpty.visibility = View.VISIBLE
+                            historyBinding.fHistoryLlEmpty.visibility = View.VISIBLE
+                            historyBinding.fHistoryIvDelete.visibility = View.GONE
                             initializeHistory()
                             Toast.makeText(context, "History deleted", Toast.LENGTH_SHORT).show()
                         }
@@ -64,8 +65,13 @@ class HistoryFragment : Fragment() {
             } else {
                 Toast.makeText(context, "History is empty", Toast.LENGTH_SHORT).show()
             }
-
         }
+
+        historyBinding.reusableNoRecentActivitiesInclude.button.setOnClickListener {
+            startActivity(Intent(historyBinding.root.context, MainActivity::class.java))
+            activity?.finish()
+        }
+
 
         return historyBinding.root
     }
@@ -96,9 +102,11 @@ class HistoryFragment : Fragment() {
             })
 
             if (it.isEmpty()) {
-                historyBinding.fHistoryTvEmpty.visibility = View.VISIBLE
+                historyBinding.fHistoryIvDelete.visibility = View.GONE
+                historyBinding.fHistoryLlEmpty.visibility = View.VISIBLE
             } else {
-                historyBinding.fHistoryTvEmpty.visibility = View.GONE
+                historyBinding.fHistoryIvDelete.visibility = View.VISIBLE
+                historyBinding.fHistoryLlEmpty.visibility = View.GONE
             }
         }
     }

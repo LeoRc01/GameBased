@@ -64,18 +64,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/f_fragment_tv_no_favourite"
-                    android:layout_marginTop="20dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                <LinearLayout
+                    android:id="@+id/f_favourite_no_favorites_yet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/you_don_t_have_any_favourites_yet"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_favourite_tv_title"
-                    android:visibility="gone"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35"
+                    android:visibility="gone">
+                    <include layout="@layout/reusable_no_favorites_yet"
+                        android:id="@+id/f_favourite_no_favorites_yet_include"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/f_favourite_rl_favourites"
