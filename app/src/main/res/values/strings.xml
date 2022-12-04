@@ -40,8 +40,8 @@
     <string name="internal_error">internal error</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
-    <string name="most_rated_games">Most rated games</string>
-    <string name="most_hyped_games">Most Hyped games</string>
+    <string name="most_rated_games">Most rated</string>
+    <string name="most_hyped_games">Most Hyped</string>
     <string name="favourite">Favourites</string>
     <string name="name">name</string>
     <string name="settings">settings</string>
@@ -105,7 +105,7 @@
     <string name="English">English</string>
     <string name="language_settings">language_settings</string>
     <string name="you_don_t_have_any_favourites_yet">You don\'t have any favourites yet</string>
-    <string name="most_popular_games">Most Popular Games</string>
+    <string name="most_popular_games">Most Popular</string>
     <string name="recently_released">Recently released</string>
     <string name="coming_soon">Coming soon</string>
     <string name="worst_rated">Worst rated</string>
@@ -131,4 +131,8 @@
     <string name="new_favourite">Add new favourite</string>
     <string name="no_recent_activities">No recent activities</string>
     <string name="discover_new_games">Discover new games</string>
+    <string name="filter">Filter</string>
+    <string name="filter_by_rating">Rating</string>
+    <string name="filter_by_platform">Platform</string>
+    <string name="PC">Pc</string>
 </resources>

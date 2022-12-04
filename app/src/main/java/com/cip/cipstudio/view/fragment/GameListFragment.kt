@@ -2,10 +2,13 @@ package com.cip.cipstudio.view.fragment
 
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -36,6 +39,10 @@ class GameListFragment : Fragment() {
         gameListViewModel = GameListViewModel()
         gameListBinding.vm = gameListViewModel
         gameListBinding.title = getString(gameType.getName())
+        gameListBinding.fGameListBtnFilter.setOnClickListener {
+            gameListBinding.fGameListRvGameList.drawerLayout.openDrawer(GravityCompat.END)
+        }
+
         initializeGames()
 
 

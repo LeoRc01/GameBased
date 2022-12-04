@@ -13,46 +13,67 @@
             type="String" />
     </data>
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingHorizontal="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fading_primary">
 
+        <include
+            android:id="@+id/f_gameList_rv_gameList"
+            layout="@layout/fragment_filter"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <include
                 android:id="@+id/f_gameList_btn_back"
-                layout="@layout/back_button"/>
+                layout="@layout/back_button" />
 
-            <TextView android:id="@+id/f_gameList_tv_title"
-                style="@style/CipTitleMedium.line"
-                android:text="@{title}"
-                />
+            <TextView
+                android:id="@+id/f_gameList_tv_title"
+                style="@style/CipTitleMedium"
+                android:text="@{title}" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/f_gameList_btn_filter"
+            style="@style/IconButton.Cip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_filter_gl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1"/>
 
         <RelativeLayout
             android:id="@+id/f_gameList_rl_favourites"
-            android:clipChildren="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content"
+            android:clipChildren="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <com.facebook.shimmer.ShimmerFrameLayout
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -66,25 +87,12 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"/>
+                        android:layout_height="10dp" />
 
                     <LinearLayout
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <include layout="@layout/shimmer_small_placeholder" />
-
-                        <include layout="@layout/shimmer_small_placeholder" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"/>
-
-                    <LinearLayout
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
 
                         <include layout="@layout/shimmer_small_placeholder" />
 
@@ -93,12 +101,26 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"/>
+                        android:layout_height="10dp" />
 
                     <LinearLayout
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <include layout="@layout/shimmer_small_placeholder" />
+
+                        <include layout="@layout/shimmer_small_placeholder" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
 
                         <include layout="@layout/shimmer_small_placeholder" />
 
@@ -118,7 +140,6 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

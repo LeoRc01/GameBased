@@ -84,7 +84,8 @@
                             android:orientation="horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp">
+                            android:layout_marginEnd="5dp"
+                            android:elevation="20dp">
 
 
                             <Button
@@ -97,7 +98,7 @@
                                 app:icon="@drawable/ic_share"
                                 app:iconTint="@color/primary_color"
                                 app:iconSize="26dp"
-                                android:padding="6dp"/>
+                                android:padding="6dp" />
 
                             <Button
                                 android:id="@+id/f_gameDetails_btn_favorite"
