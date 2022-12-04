@@ -102,6 +102,8 @@
                             <Button
                                 android:id="@+id/f_gameDetails_btn_favorite"
                                 style="?attr/materialIconButtonFilledStyle"
+                                app:iconTint="@color/primary_color"
+                                android:backgroundTint="@color/light_secondary_color"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_margin="5dp"
@@ -110,7 +112,7 @@
                                 app:icon="@drawable/ic_favorite_border"
                                 app:strokeWidth="0dp"
                                 app:iconSize="26dp"
-                                android:padding="7dp"/>
+                                android:padding="7.2dp"/>
 
                         </LinearLayout>
 
