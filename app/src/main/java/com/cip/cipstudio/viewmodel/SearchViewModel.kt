@@ -13,19 +13,25 @@ import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
     private val gameRepository : IGDBRepository = IGDBRepositoryRemote
     private lateinit var gamesResults : ArrayList<GameDetails>
+    private lateinit var recentSearchResults : ArrayList<String>
+    //private lateinit var filteredSearchResults : ArrayList<String>
 
     /*fun initializeRecyclerView(refresh : Boolean,
                                query:String,
@@ -54,6 +60,31 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
             isPageLoading.postValue(false)
             onSuccess.invoke(gamesResults)
         }
+
+    }
+
+    fun addRecentSearches(offset: Int, query: String, searchDB: RecentSearchesRepository, onSuccess: (List<String>) -> Unit) {
+        isPageLoading.postValue(true)
+
+        viewModelScope.launch(Dispatchers.Main){
+            recentSearchResults = withContext(Dispatchers.IO){
+                User.getRecentlySearched(query, searchDB, offset) as ArrayList<String>
+            }
+
+            isPageLoading.postValue(false)
+
+            /*filteredSearchResults = ArrayList()
+
+            for (result in recentSearchResults.indices) {
+                if(result contains(query))
+                    filteredSearchResults += result.toString()
+            }*/
+
+            onSuccess.invoke(recentSearchResults)
+            //onSuccess.invoke(filteredSearchResults)
+
+        }
+
     }
 
 }

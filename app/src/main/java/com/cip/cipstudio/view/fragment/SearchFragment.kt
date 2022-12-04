@@ -18,7 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
+import com.cip.cipstudio.adapters.RecentSearchesRecyclerViewAdapter
+import com.cip.cipstudio.dataSource.repository.HistoryRepository
+import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentSearchBinding
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -36,7 +41,12 @@ class SearchFragment : Fragment() {
     private val TAG = "SearchFragment"
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var offset : Int = 0
+    private lateinit var searchDB : RecentSearchesRepository
+
+    private var scimmiaCheck: Boolean = true
+
+    private var resultsOffset : Int = 0
+    private var recentOffset : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,10 +77,15 @@ class SearchFragment : Fragment() {
 
     private fun initializeSearchView() {
 
+        searchBinding.fSearchBg.visibility = View.VISIBLE
+
         searchBinding.fSearchSearchBox.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
+
+                initializeRecentSearchesList(newText)
+
                 return false
             }
 
@@ -78,7 +93,6 @@ class SearchFragment : Fragment() {
 
                 // roba che fa avviata la ricerca
                 initializeSearchResultsList(query)
-                searchBinding.fSearchBg.visibility = View.GONE
 
                 return false
             }
@@ -87,9 +101,20 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun initializeSearchResultsList(query: String) {
+    fun initializeSearchResultsList(query: String) {
         // SearchResults
-        initializeRecyclerView(
+
+        searchBinding.fSearchBg.visibility = View.GONE
+        searchBinding.fSearchHistory.visibility = View.GONE
+        searchBinding.fSearchResults.visibility = View.VISIBLE
+
+        searchDB = RecentSearchesRepositoryLocal(requireContext())
+
+        GlobalScope.launch {
+            User.addSearchToRecentlySearched(query, searchDB)
+        }
+
+        initializeResultsRecyclerView(
             query,
             searchBinding.fSearchResults,
             searchBinding.fSearchShimmerLayoutResults
@@ -97,14 +122,20 @@ class SearchFragment : Fragment() {
     }
 
     // senza shimmer, non posso usare la stessa funzione, da vedere dopo
-    /*private fun initializeSearchHistoryList() {
+    fun initializeRecentSearchesList(newText: String = "") {
         // SearchHistory
-        initializeRecyclerView(
-            searchBinding.fSearchHistoryList,
-        )
-    }*/
 
-    private fun initializeRecyclerView(
+        searchBinding.fSearchBg.visibility = View.GONE
+        searchBinding.fSearchResults.visibility = View.GONE
+        searchBinding.fSearchHistory.visibility = View.VISIBLE
+
+        initializeRecentRecyclerView(
+            newText,
+            searchBinding.fSearchHistoryList
+        )
+    }
+
+    private fun initializeResultsRecyclerView(
         query: String,
         recyclerView: RecyclerView,
         shimmerLayout: ShimmerFrameLayout
@@ -127,32 +158,84 @@ class SearchFragment : Fragment() {
 
         // chiamata iniziale
 
-        searchViewModel.addGameResults(offset, query) {
+        resultsOffset = 0
+
+        searchViewModel.addGameResults(resultsOffset, query) {
             adapter.addItems(it)
             shimmerLayout.stopShimmer()
             shimmerLayout.visibility = View.GONE
         }
 
-        offset = 0
-
         // setta l'onscroll listener
 
-        searchBinding.fSearchResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        if(scimmiaCheck) {
+            searchBinding.fSearchResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
+                        resultsOffset++
+                        Log.i(TAG, "OFFSET")
+                        Log.i(TAG, resultsOffset.toString())
+                        searchViewModel.addGameResults(resultsOffset, query) { games ->
+                            (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
+                            Log.i(TAG, games.toString())
+                        }
+                        Log.i(TAG, "onScrollStateChanged")
+
+                    }
+                }
+            })
+
+            scimmiaCheck = false
+
+        }
+
+    }
+
+    private fun initializeRecentRecyclerView(
+        query: String,
+        recyclerView: RecyclerView
+    ) {
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
+        val adapter = RecentSearchesRecyclerViewAdapter(
+            requireContext(),
+            ArrayList(),
+            this
+            //ActionGameDetailsEnum.SEARCH
+        )
+
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
+        recyclerView.setItemViewCacheSize(50)
+
+        searchDB = RecentSearchesRepositoryLocal(requireContext())
+
+        recentOffset = 0
+
+        searchViewModel.addRecentSearches(recentOffset, query, searchDB) {
+            adapter.addItems(it)
+        }
+
+        searchBinding.fSearchHistoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
-                    offset++
+                    recentOffset++
                     Log.i(TAG, "OFFSET")
-                    Log.i(TAG, offset.toString())
-                    searchViewModel.addGameResults(offset, query) { games ->
-                        (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
-                        Log.i(TAG, games.toString())
+                    Log.i(TAG, recentOffset.toString())
+                    searchViewModel.addRecentSearches(recentOffset, query, searchDB) { queries ->
+                        (searchBinding.fSearchHistoryList.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries)
+                        Log.i(TAG, queries.toString())
                     }
                     Log.i(TAG, "onScrollStateChanged")
 
                 }
             }
         })
+
     }
 
 }
