@@ -29,7 +29,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         loginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        loginViewModel = LoginViewModel()
+        loginViewModel = LoginViewModel(loginBinding)
         loginBinding.loginViewModel = loginViewModel
         loginBinding.executePendingBindings()
 
