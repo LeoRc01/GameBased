@@ -12,7 +12,6 @@
 
     <FrameLayout
         android:background="@drawable/fading_primary"
-        android:paddingHorizontal="20dp"
         android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,9 +22,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/f_history_btn_back"
+                    layout="@layout/back_button"
+                    />
 
                 <TextView
                     android:text="@string/recently_viewed"
@@ -33,6 +38,7 @@
                     android:layout_weight="1" />
 
                 <ImageView
+                    android:layout_marginHorizontal="15dp"
                     android:id="@+id/f_history_iv_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,6 +57,7 @@
                 android:textStyle="bold"
                 android:visibility="gone"/>
             <RelativeLayout
+                android:paddingHorizontal="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <androidx.recyclerview.widget.RecyclerView

@@ -116,4 +116,16 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="IconButton.Cip" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="android:backgroundTint">@color/light_secondary_color</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="iconSize">28dp</item>
+        <item name="iconTint">@color/primary_color</item>
+        <item name="android:layout_margin">5dp</item>
+
+    </style>
+
 </resources>

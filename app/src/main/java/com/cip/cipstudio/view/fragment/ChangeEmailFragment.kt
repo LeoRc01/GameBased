@@ -10,6 +10,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentEmailChangeBinding
 import com.cip.cipstudio.model.User
@@ -45,6 +46,10 @@ class ChangeEmailFragment : Fragment() {
             else {
                 Log.d(TAG, "no photo")
             }
+        }
+
+        changeEmailBinding.fEmailChangeBtnBack.backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
 
