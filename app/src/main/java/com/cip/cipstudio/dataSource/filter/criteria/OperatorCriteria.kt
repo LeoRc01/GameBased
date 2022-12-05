@@ -1,20 +1,27 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
 class OperatorCriteria(private val operator : Operator): Criteria {
-    private val listCriteria = mutableListOf<Criteria>()
+    private var criteriaList : MutableList<Criteria> = ArrayList()
 
-    constructor(operator : Operator, criteriaLeft : Criteria, criteriaRight : Criteria) : this(operator) {
-        listCriteria.add(criteriaLeft)
-        listCriteria.add(criteriaRight)
+    constructor(operator : Operator, criteriaList: List<Criteria>) : this(operator) {
+        this.criteriaList = criteriaList as MutableList<Criteria>
+    }
+
+    fun addCriteria(criteria: Criteria) {
+        criteriaList += criteria
+    }
+
+    fun clearCriteria() {
+        criteriaList.clear()
     }
 
     override fun buildQuery(): String {
-        if (listCriteria.size == 0) {
+        if (criteriaList.isEmpty()) {
             return ""
         }
-        if (listCriteria.size == 1) {
-            return listCriteria[0].buildQuery()
+        if (criteriaList.size == 1) {
+            return criteriaList[0].buildQuery()
         }
-        return listCriteria.joinToString(" ${operator.getOperator()} ") { it.buildQuery() }
+        return criteriaList.joinToString(" ${operator.getOperator()} ") { it.buildQuery() }
     }
 }

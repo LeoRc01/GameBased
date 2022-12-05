@@ -1,5 +1,7 @@
 package com.cip.cipstudio.dataSource.repository
 
+import com.cip.cipstudio.dataSource.filter.criteria.Operator
+import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -7,7 +9,11 @@ import com.cip.cipstudio.utils.GameTypeEnum
 
 interface IGDBRepository {
 
-    suspend fun getGamesByType(type : GameTypeEnum, refresh: Boolean = false, pageSize: Int = 10, pageIndex: Int = 0): List<GameDetails>
+    suspend fun getGamesByType(type : GameTypeEnum,
+                               refresh: Boolean = false,
+                               pageSize: Int = 10,
+                               pageIndex: Int = 0,
+                               filterCriteria: OperatorCriteria = OperatorCriteria(Operator.AND)): List<GameDetails>
 
     suspend fun getGameDetails(gameId : String, refresh: Boolean = false) : GameDetails
 

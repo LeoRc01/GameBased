@@ -5,6 +5,8 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.*
+import com.cip.cipstudio.dataSource.filter.criteria.Operator
+import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -13,6 +15,7 @@ import com.cip.cipstudio.utils.GameTypeEnum
 import com.mayakapps.lrucache.LruCache
 import kotlinx.coroutines.*
 import org.json.JSONArray
+import org.json.JSONObject
 
 
 object IGDBRepositoryRemote : IGDBRepository {
@@ -41,7 +44,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun makeRequest(request: () -> String, key: String, refresh: Boolean):
+    private suspend fun makeRequest(request: () -> String, key: String, refresh: Boolean = false):
             JSONArray = withContext(Dispatchers.IO) {
         init()
 
@@ -133,10 +136,10 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
-    suspend fun getGenres(refresh: Boolean) : List<String> = withContext(Dispatchers.IO){
-        val apicalypse = APICalypse().fields("name").limit(50)
-        val json = makeRequest ({ IGDBWrapper.jsonGenres(apicalypse) }, "getGenres", refresh)
-        return@withContext Converter.fromJsonArrayToListString(json, "name")
+    suspend fun getGenres() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+        val apicalypse = APICalypse().fields("id, name").limit(50)
+        val json = makeRequest ({ IGDBWrapper.jsonGenres(apicalypse) }, "getGenres")
+        return@withContext Converter.fromJsonArrayToArrayList(json)
     }
 
     override suspend fun getGameDetails(gameId: String, refresh: Boolean): GameDetails = withContext(Dispatchers.IO){
@@ -177,10 +180,10 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun getGamesByType(type: GameTypeEnum, refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getGamesByType(type: GameTypeEnum, refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
         return@withContext when (type) {
             GameTypeEnum.MOST_HYPED -> getGamesMostHyped(refresh, pageSize, pageIndex)
-            GameTypeEnum.MOST_RATED -> getGamesMostRated(refresh, pageSize, pageIndex)
+            GameTypeEnum.MOST_RATED -> getGamesMostRated(refresh, pageSize, pageIndex, filterCriteria)
             GameTypeEnum.UPCOMING -> getUpcomingGames(refresh, pageSize, pageIndex)
             GameTypeEnum.RECENTLY_RELEASED -> getRecentlyReleasedGames(refresh, pageSize, pageIndex)
             GameTypeEnum.MOST_POPULAR -> getMostPopularGames(refresh, pageSize, pageIndex)
@@ -190,13 +193,13 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
-            .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10")
+            .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10 ${filterCriteria.concatCriteria()}" )
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}", refresh) }
+        val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}${filterCriteria.concatCriteria()}", refresh) }
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 

@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
+import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.databinding.FragmentGameListBinding
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -29,6 +30,9 @@ class GameListFragment : Fragment() {
 
     private lateinit var gameListViewModel: GameListViewModel
     private lateinit var gameListBinding: FragmentGameListBinding
+    private val TAG = "GameListFragment"
+
+    private val filterCriteria = OperatorCriteria(Operator.AND)
 
     private var offset : Int = 0
 
@@ -49,6 +53,25 @@ class GameListFragment : Fragment() {
 
         initializeGames()
         initializeGenres()
+
+        gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                filterCriteria.clearCriteria()
+                val listChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
+                val criteriaGenre : Criteria = FieldCriteria(FilterField.GENRES, listChecked)
+                filterCriteria.addCriteria(criteriaGenre)
+                initializeGames()
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+            }
+        })
 
         gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setOnClickListener {
             if (gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility == View.VISIBLE) {
@@ -75,8 +98,7 @@ class GameListFragment : Fragment() {
     }
 
     private fun initializeGames() {
-        gameListViewModel.getGames(
-            gameType){
+        gameListViewModel.getGames(gameType, filterCriteria){
 
             gameListBinding.fGameListBtnBack.backButton.setOnClickListener {
                 findNavController().popBackStack()
@@ -97,7 +119,7 @@ class GameListFragment : Fragment() {
                 ) {
                     if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && gameListViewModel.isPageLoading.value == false) {
                         offset++
-                        gameListViewModel.getGames(gameType, offset){ games ->
+                        gameListViewModel.getGames(gameType, filterCriteria, offset){ games ->
 
                             (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
                                 .addMoreGames(games)
@@ -116,9 +138,10 @@ class GameListFragment : Fragment() {
     private fun initializeGenres(){
         gameListViewModel.getGenres {
             gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.removeAllViews()
-            it.forEach { genre ->
+            it.forEach { jsonObject ->
                 val chipButton = Chip(requireContext(), null, R.layout.genre_chip_filter)
-                chipButton.text = genre
+                chipButton.id = jsonObject.getInt("id")
+                chipButton.text = jsonObject.getString("name")
                 chipButton.isClickable = true
                 val chipDrawable = ChipDrawable.createFromAttributes(
                     requireContext(),

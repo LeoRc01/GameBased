@@ -1,16 +1,15 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
 class FieldCriteria(private val field: FilterField): Criteria {
-    private val values: MutableList<String> = mutableListOf()
+    private var values: List<String> = ArrayList()
 
-    fun addValue(value: String) {
-        values.add(value)
+    constructor(field: FilterField, values: List<String>) : this(field) {
+        this.values = values
     }
 
-
     override fun buildQuery(): String {
-        return if (values.size == 0)
-            "${field.getFilterFieldIGDBName()} = (${values.joinToString(", ")}) & ${field.getFieldControl()}"
+        return if (values.size > 0)
+            "${field.getFilterFieldIGDBName()} = (${values.joinToString(",")}) & ${field.getFieldControl()}"
         else
             ""
     }
