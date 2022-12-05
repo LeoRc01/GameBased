@@ -136,6 +136,14 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
+    suspend fun getPlatforms(offset : Int) : List<PlatformDetails> = withContext(Dispatchers.IO){
+        val apicalypse = APICalypse().fields("id, name")
+            .limit(10)
+            .offset(offset*10)
+        val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) }, "getPlatforms$offset")
+        return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
+    }
+
     suspend fun getGenres() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name").limit(50)
         val json = makeRequest ({ IGDBWrapper.jsonGenres(apicalypse) }, "getGenres")

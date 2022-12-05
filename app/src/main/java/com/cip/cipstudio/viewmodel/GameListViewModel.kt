@@ -47,4 +47,18 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getMorePlatforms(
+        offset: Int,
+        updateUI : (List<PlatformDetails>) -> Unit
+    ){
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val platforms = withContext(Dispatchers.IO) {
+                gameRepository.getPlatforms(offset)
+            }
+            updateUI.invoke(platforms)
+            isPageLoading.postValue(false)
+        }
+    }
+
 }

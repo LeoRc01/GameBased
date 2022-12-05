@@ -145,4 +145,5 @@
     <string name="android">Android</string>
     <string name="mac">Mac</string>
     <string name="linux">Linux</string>
+    <string name="load_more">Load more...</string>
 </resources>
