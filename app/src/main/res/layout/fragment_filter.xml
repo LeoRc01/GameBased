@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.fragment.FilterFragment"
-    tools:openDrawer="end">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/fFilter_tv_FilterByPlatform"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@android:color/background_dark">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:drawablePadding="7dp"
+        android:text="@string/filter_by_platform"
+        android:textColor="@color/primary_color"
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true" />
 
-</androidx.drawerlayout.widget.DrawerLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/f_Filter_cg_FilterByPlatform"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/fFilter_tv_FilterByPlatform"
+        app:layout_constraintStart_toStartOf="@+id/fFilter_tv_FilterByPlatform"
+        app:layout_constraintEnd_toEndOf="@+id/fFilter_tv_FilterByPlatform"
+        android:visibility="gone">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_1"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/pc"/>
+
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

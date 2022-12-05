@@ -40,10 +40,20 @@ class GameListFragment : Fragment() {
         gameListBinding.vm = gameListViewModel
         gameListBinding.title = getString(gameType.getName())
         gameListBinding.fGameListBtnFilter.setOnClickListener {
-            gameListBinding.fGameListRvGameList.drawerLayout.openDrawer(GravityCompat.END)
+            gameListBinding.drawerLayout.openDrawer(GravityCompat.END)
         }
 
         initializeGames()
+
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setOnClickListener {
+            if (gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility == View.VISIBLE) {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            } else {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
 
 
         return gameListBinding.root

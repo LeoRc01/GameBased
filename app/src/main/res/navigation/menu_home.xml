@@ -38,17 +38,5 @@
         <action
             android:id="@+id/action_gameListFragment_to_homeScreen"
             app:destination="@id/homeScreen" />
-        <action
-            android:id="@+id/action_gameListFragment_to_filterFragment"
-            app:destination="@id/filterFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/filterFragment"
-        android:name="com.cip.cipstudio.view.fragment.FilterFragment"
-        android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" >
-        <action
-            android:id="@+id/action_filterFragment_to_gameListFragment"
-            app:destination="@id/gameListFragment" />
     </fragment>
 </navigation>
