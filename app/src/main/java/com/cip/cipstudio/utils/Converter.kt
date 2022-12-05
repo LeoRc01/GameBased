@@ -46,5 +46,13 @@ class Converter{
             }
             return result
         }
+
+        fun fromJsonArrayToListString(jsonArray: JSONArray, key: String): ArrayList<String> {
+            val result = ArrayList<String>()
+            for (i in 0 until jsonArray.length()) {
+                result.add(jsonArray.getJSONObject(i).getString(key))
+            }
+            return result
+        }
     }
 }

@@ -13,7 +13,7 @@ data class PlatformDetails(
     var platformLogo : String,
     var summary : String,
     var url : String,
-    val hardwareDetails: PlatformHardwareDetails
+    val hardwareDetails: PlatformHardwareDetails?
 ) : java.io.Serializable {
     constructor(jsonGame: JSONObject) : this(
         jsonGame.getStringOrEmpty("id"),
@@ -24,7 +24,7 @@ data class PlatformDetails(
         if (jsonGame.has("platform_logo")) jsonGame.getJSONObject("platform_logo").getStringOrEmpty("url").getCorrectPlatformLogo() else "",
         jsonGame.getStringOrEmpty("summary"),
         jsonGame.getStringOrEmpty("url"),
-        PlatformHardwareDetails(jsonGame.getJSONArray("versions").getJSONObject(0))
+        if (jsonGame.has("versions")) PlatformHardwareDetails(jsonGame.getJSONArray("versions").getJSONObject(0)) else null
     ){
         category = getCategoryString(if(category.isEmpty()) -1 else category.toInt())
         if(summary.isEmpty()) summary = "No summary provided."

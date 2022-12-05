@@ -138,4 +138,11 @@
     <string name="pc">Pc</string>
     <string name="playstation_4">Playstation 4</string>
     <string name="playstation_5">Playstation5</string>
+    <string name="xbox_one">Xbox one</string>
+    <string name="xbox_series_x">Xbox series x</string>
+    <string name="ios">Ios</string>
+    <string name="nintendoSwitch">Nintendo Switch</string>
+    <string name="android">Android</string>
+    <string name="mac">Mac</string>
+    <string name="linux">Linux</string>
 </resources>

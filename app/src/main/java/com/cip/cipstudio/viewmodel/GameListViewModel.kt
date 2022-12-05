@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
 import com.cip.cipstudio.model.data.GameDetails
+import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
+import com.squareup.okhttp.internal.Platform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,6 +28,17 @@ class GameListViewModel : ViewModel() {
                 gameRepository.getGamesByType(gameTypeEnum, false, pageIndex= offset)
             }
             updateUI.invoke(games as ArrayList<GameDetails>)
+            isPageLoading.postValue(false)
+        }
+    }
+
+    fun getGenres(updateUI : (ArrayList<String>)->Unit) {
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val genres = withContext(Dispatchers.IO) {
+                gameRepository.getGenres( false)
+            }
+            updateUI.invoke(genres as ArrayList<String>)
             isPageLoading.postValue(false)
         }
     }

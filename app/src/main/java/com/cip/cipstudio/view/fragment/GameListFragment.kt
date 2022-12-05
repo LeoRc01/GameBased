@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.RadioButton
 import androidx.core.view.GravityCompat
+import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -19,6 +21,8 @@ import com.cip.cipstudio.databinding.FragmentGameListBinding
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.viewmodel.GameListViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 
 
 class GameListFragment : Fragment() {
@@ -44,6 +48,7 @@ class GameListFragment : Fragment() {
         }
 
         initializeGames()
+        initializeGenres()
 
         gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setOnClickListener {
             if (gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility == View.VISIBLE) {
@@ -52,6 +57,16 @@ class GameListFragment : Fragment() {
             } else {
                 gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.VISIBLE
                 gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
+
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setOnClickListener {
+            if (gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility == View.VISIBLE) {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            } else {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
             }
         }
 
@@ -95,6 +110,25 @@ class GameListFragment : Fragment() {
                 override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
             })
 
+        }
+    }
+
+    private fun initializeGenres(){
+        gameListViewModel.getGenres {
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.removeAllViews()
+            it.forEach { genre ->
+                val chipButton = Chip(requireContext(), null, R.layout.genre_chip_filter)
+                chipButton.text = genre
+                chipButton.isClickable = true
+                val chipDrawable = ChipDrawable.createFromAttributes(
+                    requireContext(),
+                    null,
+                    0,
+                    com.google.android.material.R.style.Widget_Material3_Chip_Filter
+                )
+                chipButton.setChipDrawable(chipDrawable)
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.addView(chipButton)
+            }
         }
     }
 

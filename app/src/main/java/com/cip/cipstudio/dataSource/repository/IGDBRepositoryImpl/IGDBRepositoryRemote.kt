@@ -4,10 +4,7 @@ import android.util.Log
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
-import com.api.igdb.request.IGDBWrapper
-import com.api.igdb.request.TwitchAuthenticator
-import com.api.igdb.request.jsonGames
-import com.api.igdb.request.jsonPlatforms
+import com.api.igdb.request.*
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -134,6 +131,12 @@ object IGDBRepositoryRemote : IGDBRepository {
             .where("id = $platformIdsString")
         val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) }, "getPlatformsInfo$platformIdsString", refresh)
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
+    }
+
+    suspend fun getGenres(refresh: Boolean) : List<String> = withContext(Dispatchers.IO){
+        val apicalypse = APICalypse().fields("name").limit(50)
+        val json = makeRequest ({ IGDBWrapper.jsonGenres(apicalypse) }, "getGenres", refresh)
+        return@withContext Converter.fromJsonArrayToListString(json, "name")
     }
 
     override suspend fun getGameDetails(gameId: String, refresh: Boolean): GameDetails = withContext(Dispatchers.IO){
