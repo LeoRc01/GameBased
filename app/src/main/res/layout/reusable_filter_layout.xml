@@ -38,10 +38,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/fFilter_tv_FilterByPlatform"
             app:layout_constraintStart_toStartOf="@+id/fFilter_tv_FilterByPlatform"
-            app:layout_constraintEnd_toEndOf="@+id/fFilter_tv_FilterByPlatform"
-            >
+            app:layout_constraintEnd_toEndOf="@+id/fFilter_tv_FilterByPlatform">
+
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/f_Filter_cg_FilterByPlatform"
+                android:theme="@style/genre_chip"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 app:chipSpacingVertical="-3dp"/>
