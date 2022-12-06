@@ -1,6 +1,8 @@
 package com.cip.cipstudio.view.fragment
 
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -198,6 +200,7 @@ class GameListFragment : Fragment() {
                 list.forEach {
                     if(!platforms.contains(it)){
                         val chipButton = _createChip(it.id, it.name)
+                        platforms.add(it)
                         gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
                     }
                 }

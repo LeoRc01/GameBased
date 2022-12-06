@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@android:color/background_dark">
+        android:background="?attr/colorOnPrimarySurface">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -169,11 +169,11 @@
             android:layout_gravity="end"
             android:clickable="true"
             android:focusable="true"
-            android:background="@android:color/background_dark">
+            android:background="?attr/colorOnPrimary">
 
             <include
                 android:id="@+id/f_gameList_fl_filter"
-                layout="@layout/fragment_filter"
+                layout="@layout/reusable_filter_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
