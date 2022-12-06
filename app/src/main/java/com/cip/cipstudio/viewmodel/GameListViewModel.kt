@@ -36,6 +36,20 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getMorePlatforms(
+        offset: Int,
+        updateUI : (List<PlatformDetails>) -> Unit
+    ){
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val platforms = withContext(Dispatchers.IO) {
+                gameRepository.getPlatforms(offset)
+            }
+            updateUI.invoke(platforms)
+            isPageLoading.postValue(false)
+        }
+    }
+
     fun getGenres(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
@@ -47,16 +61,13 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getMorePlatforms(
-        offset: Int,
-        updateUI : (List<PlatformDetails>) -> Unit
-    ){
+    fun getPlayerPerspectives(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val platforms = withContext(Dispatchers.IO) {
-                gameRepository.getPlatforms(offset)
+            val playerPerspectives = withContext(Dispatchers.IO) {
+                gameRepository.getPlayerPerspectives()
             }
-            updateUI.invoke(platforms)
+            updateUI.invoke(playerPerspectives)
             isPageLoading.postValue(false)
         }
     }

@@ -56,6 +56,7 @@ class GameListFragment : Fragment() {
         initializeGames()
         initializeGenres()
         initializePlatforms()
+        initializePlayerPerspectives()
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -101,6 +102,16 @@ class GameListFragment : Fragment() {
             } else {
                 gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility = View.VISIBLE
                 gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
+
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setOnClickListener {
+            if (gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility == View.VISIBLE) {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            } else {
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
             }
         }
 
@@ -151,16 +162,6 @@ class GameListFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun initializeGenres(){
-        gameListViewModel.getGenres {
-            gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.removeAllViews()
-            it.forEach { jsonObject ->
-                val chipButton = _createChip(jsonObject.getString("id"), jsonObject.getString("name"))
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.addView(chipButton)
-            }
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializePlatforms(){
@@ -198,6 +199,28 @@ class GameListFragment : Fragment() {
                 offset++
                 gameListBinding.fGameListFlFilter.fFilterCpLoadingPlatformsIndicator.visibility = View.GONE
                 gameListBinding.fGameListFlFilter.fFilterTvLoadMorePlatforms.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeGenres(){
+        gameListViewModel.getGenres {
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.removeAllViews()
+            it.forEach { jsonObject ->
+                val chipButton = _createChip(jsonObject.getString("id"), jsonObject.getString("name"))
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.addView(chipButton)
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializePlayerPerspectives(){
+        gameListViewModel.getPlayerPerspectives {
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.removeAllViews()
+            it.forEach { jsonObject ->
+                val chipButton = _createChip(jsonObject.getString("id"), jsonObject.getString("name"))
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.addView(chipButton)
             }
         }
     }
