@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.api.igdb.utils.Endpoints
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.criteria.*
@@ -76,6 +77,10 @@ class GameListFragment : Fragment() {
                 val platformsListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.checkedChipIds.map { it.toString() }
                 val criteriaPlatforms : Criteria = FieldCriteria(FilterField.PLATFORMS, platformsListChecked)
                 filterCriteria.addCriteria(criteriaPlatforms)
+
+                val playerPerspectivesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.checkedChipIds.map { it.toString() }
+                val criteriaPlayerPerspectives : Criteria = FieldCriteria(FilterField.PLAYER_PERSPECTIVE, playerPerspectivesListChecked)
+                filterCriteria.addCriteria(criteriaPlayerPerspectives)
 
                 initializeGames()
             }
