@@ -1,8 +1,6 @@
 package com.cip.cipstudio.view.fragment
 
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,10 +23,8 @@ import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.viewmodel.GameListViewModel
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
 import org.json.JSONObject
-import java.util.zip.Inflater
 
 
 class GameListFragment : Fragment() {
@@ -92,19 +88,6 @@ class GameListFragment : Fragment() {
             override fun onDrawerOpened(drawerView: View) {
             }
         })
-
-        gameListBinding.fGameListFlFilter
-            .fFilterTvFilterByPlatform.setOnClickListener {
-            if (gameListBinding.fGameListFlFilter.fFilterPlatformsLinearLayout.visibility == View.VISIBLE) {
-                gameListBinding.fGameListFlFilter.fFilterPlatformsLinearLayout.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            } else {
-                gameListBinding.fGameListFlFilter.fFilterPlatformsLinearLayout.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
-        }
-
-
         return gameListBinding.root
     }
 
@@ -154,37 +137,27 @@ class GameListFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializePlatforms(){
-        val platforms = arrayListOf<PlatformDetails>()
-        var offset = 1;
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform,
+            GameListViewModel::getPlatforms)
 
-        platforms.add(PlatformDetails("6", "PC (Microsoft Windows)"))
-        platforms.add(PlatformDetails("130", "Nintendo Switch"))
-        platforms.add(PlatformDetails("48", "PlayStation 4"))
-        platforms.add(PlatformDetails("167", "PlayStation 5"))
-        platforms.add(PlatformDetails("169", "Xbox Series X|S"))
-        platforms.add(PlatformDetails("49", "Xbox One"))
-        platforms.add(PlatformDetails("9", "PlayStation 3"))
-        platforms.add(PlatformDetails("14", "Mac"))
-        platforms.add(PlatformDetails("3", "Linux"))
-        platforms.add(PlatformDetails("12", "Xbox 360"))
-        platforms.add(PlatformDetails("20", "Nintendo DS"))
-
-
-        platforms.forEach { item ->
-            val chipButton = createChip(item.id, item.name, gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform)
-            gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterRlFilterByPlatform.visibility = View.GONE
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterRlFilterByPlatform.visibility = View.VISIBLE
+            }
         }
 
         gameListBinding.fGameListFlFilter.fFilterTvLoadMorePlatforms.setOnClickListener {
             gameListBinding.fGameListFlFilter.fFilterCpLoadingPlatformsIndicator.visibility = View.VISIBLE
             gameListBinding.fGameListFlFilter.fFilterTvLoadMorePlatforms.visibility = View.GONE
-            gameListViewModel.getMorePlatforms(offset){ list ->
+            gameListViewModel.getPlatforms { list ->
                 list.forEach {
-                    if(!platforms.contains(it)){
-                        val chipButton = createChip(it.id, it.name, gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform)
-                        platforms.add(it)
-                        gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
-                    }
+                    val chip = createChip(it.id, it.name, gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform)
+                    gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chip)
                 }
                 offset++
                 gameListBinding.fGameListFlFilter.fFilterCpLoadingPlatformsIndicator.visibility = View.GONE
@@ -219,11 +192,27 @@ class GameListFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun initializeFilter(textView: TextView, chipGroup: ChipGroup, getFilter: GameListViewModel.((ArrayList<JSONObject>) -> Unit) -> Unit) {
+    private fun initializeFilter(textView: TextView, chipGroup: ChipGroup, getFilter: GameListViewModel.((List<*>) -> Unit) -> Unit) {
         gameListViewModel.getFilter {
             chipGroup.removeAllViews()
-            it.forEach { jsonObject ->
-                val chipButton = createChip(jsonObject.getString("id"), jsonObject.getString("name"), chipGroup)
+            it.forEach { chipObject ->
+                val id: String
+                val name: String
+                when (chipObject) {
+                    is PlatformDetails -> {
+                        id = chipObject.id
+                        name = chipObject.name
+                    }
+                    is JSONObject -> {
+                        id = chipObject.getString("id")
+                        name = chipObject.getString("name")
+                    }
+                    else -> {
+                        id = ""
+                        name = ""
+                    }
+                }
+                val chipButton = createChip(id, name, chipGroup)
                 chipGroup.addView(chipButton)
             }
             textView.setOnClickListener {

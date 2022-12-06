@@ -136,10 +136,13 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
-    suspend fun getPlatforms(offset : Int) : List<PlatformDetails> = withContext(Dispatchers.IO){
+    suspend fun getPlatforms(offset : Int, exclude: List<String> = arrayListOf()) : List<PlatformDetails> = withContext(Dispatchers.IO){
+        val excludeString = if (exclude.isNotEmpty()) "id != (${exclude.joinToString (",")})" else ""
         val apicalypse = APICalypse().fields("id, name")
             .limit(10)
             .offset(offset*10)
+            .where(excludeString)
+        Log.i(TAG, apicalypse.buildQuery())
         val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) }, "getPlatforms$offset")
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }

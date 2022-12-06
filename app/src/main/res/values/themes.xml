@@ -25,10 +25,10 @@
     </style>
 
     <style name="Theme.Chip.CipStudio" parent="Theme.Material3.DayNight">
-        <item name="colorOnSurfaceVariant">@color/primary_color</item>
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorOnSurface">@color/primary_color</item>
-        <item name="colorOnSecondaryContainer">@color/primary_color</item>
-        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurfaceVariant">@color/light_grey</item>
+        <item name="colorOnSecondaryContainer">@color/light_grey</item>
+        <item name="colorSurface">@color/primary_color_dark_darker</item>
+        <item name="colorOnContainer">@color/primary_color</item>
+        <item name="colorSecondaryContainer">@color/primary_color</item>
     </style>
 </resources>
