@@ -1,19 +1,15 @@
 package com.cip.cipstudio.view.fragment
 
 
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
-import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -52,6 +48,7 @@ class GameListFragment : Fragment() {
         gameListViewModel = GameListViewModel()
         gameListBinding.vm = gameListViewModel
         gameListBinding.title = getString(gameType.getName())
+        gameListBinding.lifecycleOwner = this
         gameListBinding.fGameListBtnFilter.setOnClickListener {
             gameListBinding.drawerLayout.openDrawer(GravityCompat.END)
         }
@@ -69,9 +66,16 @@ class GameListFragment : Fragment() {
 
             override fun onDrawerClosed(drawerView: View) {
                 filterCriteria.clearCriteria()
-                val listChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
-                val criteriaGenre : Criteria = FieldCriteria(FilterField.GENRES, listChecked)
+
+                val genreListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
+                val criteriaGenre : Criteria = FieldCriteria(FilterField.GENRES, genreListChecked)
                 filterCriteria.addCriteria(criteriaGenre)
+
+
+                val platformsListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.checkedChipIds.map { it.toString() }
+                val criteriaPlatforms : Criteria = FieldCriteria(FilterField.PLATFORMS, platformsListChecked)
+                filterCriteria.addCriteria(criteriaPlatforms)
+
                 initializeGames()
             }
 
@@ -79,7 +83,8 @@ class GameListFragment : Fragment() {
             }
         })
 
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setOnClickListener {
+        gameListBinding.fGameListFlFilter
+            .fFilterTvFilterByPlatform.setOnClickListener {
             if (gameListBinding.fGameListFlFilter.fFilterPlatformsLinearLayout.visibility == View.VISIBLE) {
                 gameListBinding.fGameListFlFilter.fFilterPlatformsLinearLayout.visibility = View.GONE
                 gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
@@ -104,12 +109,19 @@ class GameListFragment : Fragment() {
     }
 
     private fun initializeGames() {
+        gameListBinding.fGameListLoading.visibility = View.VISIBLE
+        gameListBinding.fGameListGvGames.visibility = View.GONE
+        gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.GONE
         gameListViewModel.getGames(gameType, filterCriteria){
-
+            gameListBinding.fGameListLoading.visibility = View.GONE
+            gameListBinding.fGameListGvGames.visibility = View.VISIBLE
             gameListBinding.fGameListBtnBack.backButton.setOnClickListener {
                 findNavController().popBackStack()
             }
 
+            if(it.isEmpty()){
+                gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.VISIBLE
+            }
             val gvAdapter = FavouriteGridViewAdapter(requireContext(),
                 it,
                 gameListBinding.root.findNavController(),
@@ -130,8 +142,6 @@ class GameListFragment : Fragment() {
                             (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
                                 .addMoreGames(games)
                         }
-
-
                     }
                 }
 
@@ -169,7 +179,7 @@ class GameListFragment : Fragment() {
         platforms.add(PlatformDetails("12", "Xbox 360"))
         platforms.add(PlatformDetails("20", "Nintendo DS"))
 
-        gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.removeAllViews()
+
         platforms.forEach { item ->
             val chipButton = _createChip(item.id, item.name)
             gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
@@ -198,12 +208,14 @@ class GameListFragment : Fragment() {
         chipButton.id = id.toInt()
         chipButton.text = name
         chipButton.isClickable = true
+
         val chipDrawable = ChipDrawable.createFromAttributes(
             requireContext(),
             null,
             0,
             com.google.android.material.R.style.Widget_Material3_Chip_Filter
         )
+
         chipButton.typeface = resources.getFont(R.font.montserrat_regular)
         chipButton.setChipDrawable(chipDrawable)
         return chipButton

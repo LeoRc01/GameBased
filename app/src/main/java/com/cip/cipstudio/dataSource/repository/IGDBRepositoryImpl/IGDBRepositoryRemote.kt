@@ -188,7 +188,12 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun getGamesByType(type: GameTypeEnum, refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getGamesByType(type: GameTypeEnum,
+                                        refresh: Boolean,
+                                        pageSize: Int,
+                                        pageIndex: Int,
+                                        filterCriteria: OperatorCriteria)
+    : List<GameDetails> = withContext(Dispatchers.IO) {
         return@withContext when (type) {
             GameTypeEnum.MOST_HYPED -> getGamesMostHyped(refresh, pageSize, pageIndex)
             GameTypeEnum.MOST_RATED -> getGamesMostRated(refresh, pageSize, pageIndex, filterCriteria)
@@ -207,6 +212,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
+        Log.i("CRITERIA", "${filterCriteria.concatCriteria()}")
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}${filterCriteria.concatCriteria()}", refresh) }
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }

@@ -69,11 +69,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/f_gameList_sfl_loadingShimmer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone">
-
+                    android:visibility="gone"/>
+                    <!--
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -132,14 +133,30 @@
                         </LinearLayout>
 
                     </LinearLayout>
-                </com.facebook.shimmer.ShimmerFrameLayout>
+                    -->
+                    <pl.droidsonroids.gif.GifImageView
+                        android:id="@+id/f_gameList_loading"
+                        android:padding="100dp"
+                        android:src="@drawable/spongebob"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
+
+                <!-- </com.facebook.shimmer.ShimmerFrameLayout> -->
+                <include
+                    android:id="@+id/f_gameList_loading_noGamesFound"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_centerVertical="true"
+                    layout="@layout/reusable_no_games_found"
+                    />
                 <GridView
                     android:id="@+id/f_gameList_gv_games"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:numColumns="2"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
 
             </RelativeLayout>

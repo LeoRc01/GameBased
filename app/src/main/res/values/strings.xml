@@ -146,4 +146,6 @@
     <string name="mac">Mac</string>
     <string name="linux">Linux</string>
     <string name="load_more">Load more...</string>
+    <string name="no_games_found">No games found</string>
+    <string name="change_your_filter_criterias">Change your filter criterias</string>
 </resources>

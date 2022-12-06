@@ -1,5 +1,7 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
+import android.util.Log
+
 class OperatorCriteria(private val operator : Operator): Criteria {
     private var criteriaList : MutableList<Criteria> = ArrayList()
 
@@ -8,7 +10,8 @@ class OperatorCriteria(private val operator : Operator): Criteria {
     }
 
     fun addCriteria(criteria: Criteria) {
-        criteriaList += criteria
+        if(!criteria.isEmpty())
+            criteriaList += criteria
     }
 
     fun clearCriteria() {
@@ -23,5 +26,9 @@ class OperatorCriteria(private val operator : Operator): Criteria {
             return criteriaList[0].buildQuery()
         }
         return criteriaList.joinToString(" ${operator.getOperator()} ") { it.buildQuery() }
+    }
+
+    override fun isEmpty(): Boolean {
+        TODO("Not yet implemented")
     }
 }

@@ -8,9 +8,13 @@ class FieldCriteria(private val field: FilterField): Criteria {
     }
 
     override fun buildQuery(): String {
-        return if (values.size > 0)
+        return if (values.isNotEmpty())
             "${field.getFilterFieldIGDBName()} = (${values.joinToString(",")}) & ${field.getFieldControl()}"
         else
             ""
+    }
+
+    override fun isEmpty() : Boolean {
+        return values.isEmpty()
     }
 }

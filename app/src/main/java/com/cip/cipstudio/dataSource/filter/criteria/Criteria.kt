@@ -7,4 +7,6 @@ interface Criteria {
         val query = buildQuery()
         return if (query.isNotEmpty()) " & ($query)" else ""
     }
+
+    fun isEmpty() : Boolean
 }
