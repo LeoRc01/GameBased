@@ -5,18 +5,17 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.api.igdb.utils.Endpoints
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.criteria.*
@@ -27,6 +26,9 @@ import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.viewmodel.GameListViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import com.google.android.material.chip.ChipGroup
+import org.json.JSONObject
+import java.util.zip.Inflater
 
 
 class GameListFragment : Fragment() {
@@ -102,26 +104,6 @@ class GameListFragment : Fragment() {
             }
         }
 
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setOnClickListener {
-            if (gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility == View.VISIBLE) {
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            } else {
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
-        }
-
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setOnClickListener {
-            if (gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility == View.VISIBLE) {
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            } else {
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
-        }
-
 
         return gameListBinding.root
     }
@@ -189,7 +171,7 @@ class GameListFragment : Fragment() {
 
 
         platforms.forEach { item ->
-            val chipButton = _createChip(item.id, item.name)
+            val chipButton = createChip(item.id, item.name, gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform)
             gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
         }
 
@@ -199,7 +181,7 @@ class GameListFragment : Fragment() {
             gameListViewModel.getMorePlatforms(offset){ list ->
                 list.forEach {
                     if(!platforms.contains(it)){
-                        val chipButton = _createChip(it.id, it.name)
+                        val chipButton = createChip(it.id, it.name, gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform)
                         platforms.add(it)
                         gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.addView(chipButton)
                     }
@@ -213,43 +195,48 @@ class GameListFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeGenres(){
-        gameListViewModel.getGenres {
-            gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.removeAllViews()
-            it.forEach { jsonObject ->
-                val chipButton = _createChip(jsonObject.getString("id"), jsonObject.getString("name"))
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.addView(chipButton)
-            }
-        }
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByGenre,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres,
+            GameListViewModel::getGenres)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializePlayerPerspectives(){
-        gameListViewModel.getPlayerPerspectives {
-            gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.removeAllViews()
-            it.forEach { jsonObject ->
-                val chipButton = _createChip(jsonObject.getString("id"), jsonObject.getString("name"))
-                gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.addView(chipButton)
-            }
-        }
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives,
+            GameListViewModel::getPlayerPerspectives)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun _createChip(id : String, name : String) : Chip{
-        val chipButton = Chip(requireContext(), null, R.layout.genre_chip_filter)
+    private fun createChip(id : String, name : String, chipGroup: ChipGroup) : Chip {
+        val chipButton = layoutInflater.inflate(R.layout.genre_chip_filter, chipGroup, false) as Chip
         chipButton.id = id.toInt()
         chipButton.text = name
         chipButton.isClickable = true
 
-        val chipDrawable = ChipDrawable.createFromAttributes(
-            requireContext(),
-            null,
-            0,
-            com.google.android.material.R.style.Widget_Material3_Chip_Filter
-        )
-
-        chipButton.typeface = resources.getFont(R.font.montserrat_regular)
-        chipButton.setChipDrawable(chipDrawable)
         return chipButton
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeFilter(textView: TextView, chipGroup: ChipGroup, getFilter: GameListViewModel.((ArrayList<JSONObject>) -> Unit) -> Unit) {
+        gameListViewModel.getFilter {
+            chipGroup.removeAllViews()
+            it.forEach { jsonObject ->
+                val chipButton = createChip(jsonObject.getString("id"), jsonObject.getString("name"), chipGroup)
+                chipGroup.addView(chipButton)
+            }
+            textView.setOnClickListener {
+                if (chipGroup.visibility == View.GONE) {
+                    chipGroup.visibility = View.VISIBLE
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+                } else {
+                    chipGroup.visibility = View.GONE
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+                }
+            }
+
+        }
     }
 
 

@@ -128,5 +128,9 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
+    <style name="Chip.Filter.Cip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:theme">@style/Theme.Chip.CipStudio</item>
+    </style>
+
 
 </resources>

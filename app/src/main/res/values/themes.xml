@@ -23,4 +23,13 @@
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorOnSurface">@color/white</item>
     </style>
+
+    <style name="Theme.Chip.CipStudio" parent="Theme.Material3.DayNight">
+        <item name="colorOnSurfaceVariant">@android:color/holo_orange_light</item>
+        <item name="colorPrimary">@android:color/holo_orange_light</item>
+        <item name="colorOnSurface">@android:color/holo_orange_light</item>
+        <item name="colorOnSecondaryContainer">@android:color/holo_orange_light</item>
+        <item name="android:shadowColor">@android:color/holo_orange_light</item>
+
+    </style>
 </resources>
