@@ -21,11 +21,12 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/fading_primary" >
+            android:background="@drawable/fading_primary">
 
 
             <include android:id="@+id/f_gameList_btn_back"
@@ -83,7 +84,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/f_gameList_btn_back"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:paddingBottom="60dp">
                 <GridView
                     android:id="@+id/f_gameList_gv_games"
