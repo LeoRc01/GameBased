@@ -1,6 +1,7 @@
 package com.cip.cipstudio.view.fragment
 
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -73,6 +74,7 @@ class GameListFragment : Fragment() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
+                offset = 0
                 filterCriteria.clearCriteria()
 
                 val genreListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
@@ -126,11 +128,15 @@ class GameListFragment : Fragment() {
             if(it.isEmpty()){
                 gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.VISIBLE
             }
-            val gvAdapter = FavouriteGridViewAdapter(requireContext(),
-                it,
-                gameListBinding.root.findNavController(),
-                ActionGameDetailsEnum.GAME_LIST)
-            gameListBinding.fGameListGvGames.adapter = gvAdapter
+            checkIfFragmentAttached {
+                val gvAdapter = FavouriteGridViewAdapter(
+                    requireContext(),
+                    it,
+                    gameListBinding.root.findNavController(),
+                    ActionGameDetailsEnum.GAME_LIST
+                )
+                gameListBinding.fGameListGvGames.adapter = gvAdapter
+            }
 
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScroll(
@@ -139,7 +145,9 @@ class GameListFragment : Fragment() {
                     visibleItemCount: Int,
                     totalItemCount: Int
                 ) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && gameListViewModel.isPageLoading.value == false) {
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 &&
+                        gameListViewModel.isPageLoading.value == false &&
+                        gameListViewModel.isMoreDataAvailable.value == true) {
                         offset++
                         gameListViewModel.getGames(gameType, filterCriteria, offset){ games ->
 
@@ -286,6 +294,12 @@ class GameListFragment : Fragment() {
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueFrom = it.first()
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueTo = it.last()
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
+        }
+    }
+
+    private fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
         }
     }
 }

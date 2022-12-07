@@ -20,6 +20,9 @@ class GameListViewModel : ViewModel() {
     val isPageLoading : MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(true)
     }
+    val isMoreDataAvailable : MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(true)
+    }
     private val gameRepository = IGDBRepositoryRemote
     private var offsetPlatform = -1
     private val platformDefault : ArrayList<PlatformDetails> = Costant.platformDefault
@@ -36,6 +39,7 @@ class GameListViewModel : ViewModel() {
             games = withContext(Dispatchers.IO) {
                 gameRepository.getGamesByType(gameTypeEnum, pageIndex= offset, filterCriteria = filterCriteria)
             }
+            isMoreDataAvailable.postValue(games.isNotEmpty())
             updateUI.invoke(games as ArrayList<GameDetails>)
             isPageLoading.postValue(false)
         }

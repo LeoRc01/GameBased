@@ -18,6 +18,9 @@ class HistoryViewModel(val binding : FragmentHistoryBinding) : ViewModel() {
     val isPageLoading : MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(true)
     }
+    val isMoreDataAvailable : MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(true)
+    }
 
     private lateinit var lastViewedGames : ArrayList<GameDetails>
     private val historyRepository: HistoryRepository = HistoryRepositoryLocal(binding.root.context)
@@ -29,8 +32,9 @@ class HistoryViewModel(val binding : FragmentHistoryBinding) : ViewModel() {
             lastViewedGames = withContext(Dispatchers.IO){
                 IGDBRepositoryRemote.getGamesByIds(list, false) as ArrayList<GameDetails>
             }
+            isMoreDataAvailable.postValue(lastViewedGames.isNotEmpty())
+            onSuccess(lastViewedGames.sortedBy { list.indexOf(it.id) })
             isPageLoading.postValue(false)
-            onSuccess.invoke(lastViewedGames.sortedBy { list.indexOf(it.id) })
         }
     }
 
