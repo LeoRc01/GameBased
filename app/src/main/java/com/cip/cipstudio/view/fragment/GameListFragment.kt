@@ -26,6 +26,7 @@ import com.cip.cipstudio.viewmodel.GameListViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.json.JSONObject
+import java.util.*
 
 
 class GameListFragment : Fragment() {
@@ -55,13 +56,14 @@ class GameListFragment : Fragment() {
             gameListBinding.drawerLayout.openDrawer(GravityCompat.END)
         }
 
+
         initializeGames()
         initializeGenres()
         initializePlatforms()
         initializePlayerPerspectives()
         initializeGameModes()
         initializeThemes()
-        initializeReleaseDates()
+        initializeYearFilterSlider()
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -98,6 +100,7 @@ class GameListFragment : Fragment() {
             }
 
             override fun onDrawerOpened(drawerView: View) {
+
             }
         })
         return gameListBinding.root
@@ -268,5 +271,15 @@ class GameListFragment : Fragment() {
         }
     }
 
+    fun initializeYearFilterSlider(){
+        gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
 
+        initializeReleaseDates()
+
+        gameListViewModel.getYears {
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueFrom = it.first()
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueTo = it.last()
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
+        }
+    }
 }

@@ -105,4 +105,15 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getYears(updateUI : (List<Float>)->Unit) {
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val years = withContext(Dispatchers.IO) {
+                gameRepository.getFirstAndLastYearsOfRelease()
+            }
+            updateUI.invoke(years)
+            isPageLoading.postValue(false)
+        }
+    }
+
 }

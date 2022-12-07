@@ -209,6 +209,29 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
+    suspend fun getFirstAndLastYearsOfRelease(): List<Float> = withContext(Dispatchers.IO) {
+        val apicalypse1 = APICalypse()
+            .fields("first_release_date")
+            .where("first_release_date != null")
+            .sort("first_release_date", Sort.ASCENDING)
+
+            .limit(1)
+        val json1 = makeRequest ({ IGDBWrapper.jsonGames(apicalypse1) }, "getFirstReleaseDate")
+
+        val apicalypse2 = APICalypse()
+            .fields("first_release_date")
+            .where("first_release_date != null")
+            .sort("first_release_date", Sort.DESCENDING)
+            .limit(1)
+        val json2 = makeRequest ({ IGDBWrapper.jsonGames(apicalypse2) }, "getLastReleaseDate")
+
+        val firstReleaseDate : Float =(Converter.fromJsonArrayToYear(json1)).toFloat()
+        val lastReleaseDate : Float = (Converter.fromJsonArrayToYear(json2)).toFloat()
+
+        return@withContext listOf<Float>(firstReleaseDate, lastReleaseDate)
+        //return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
     override suspend fun getGamesByType(type: GameTypeEnum,
                                         refresh: Boolean,
                                         pageSize: Int,

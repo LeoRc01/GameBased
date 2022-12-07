@@ -21,7 +21,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/filter_by_platform"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:focusable="true"
@@ -94,7 +94,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/genre"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:focusable="true"
@@ -139,7 +139,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/playerPerspectives"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:focusable="true"
@@ -184,7 +184,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/gameModes"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:focusable="true"
@@ -227,7 +227,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/theme"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:focusable="true"
@@ -270,7 +270,7 @@
             android:layout_marginStart="16dp"
             android:drawablePadding="7dp"
             android:text="@string/releaseDate"
-            android:textColor="@color/primary_color"
+            style="@style/MaterialAlertDialog.Material3.Body.Text"
             android:textSize="16sp"
             android:textStyle="bold"
             app:drawableEndCompat="@drawable/ic_arrow_down"
@@ -280,10 +280,11 @@
             android:focusable="true" />
 
         <LinearLayout
+            android:visibility="visible"
             android:id="@+id/f_Filter_ll_ReleaseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:orientation="vertical"
@@ -294,52 +295,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single Year"
-                android:textColor="@color/primary_color"
+                android:text="@string/years"
+                android:textColor="@color/grey"
                 android:textSize="14sp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"/>
-
-            <com.google.android.material.slider.Slider
-                android:id="@+id/f_Filter_slider_ReleaseDateSingle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:stepSize="1"
-                android:valueFrom="2000"
-                android:valueTo="2030"
-                app:thumbColor="@color/primary_color"
-                app:trackColor="@color/primary_color"
-                app:trackHeight="2dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Between two years"
-                android:textColor="@color/primary_color"
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="8dp"/>
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/f_Filter_sld_FilterByReleaseDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
                 android:stepSize="1"
                 android:valueFrom="2000"
                 android:valueTo="2030"
                 app:thumbColor="@color/primary_color"
-                app:trackColor="@color/primary_color"
+                app:tickColor="@android:color/transparent"
                 app:trackHeight="2dp"
                 app:values="@array/releaseDateRange" />
         </LinearLayout>
