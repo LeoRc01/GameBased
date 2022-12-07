@@ -28,10 +28,8 @@ import kotlinx.coroutines.launch
 
 
 class RecentSearchesRecyclerViewAdapter (val context : Context,
-                                         var queries : ArrayList<String>,
-                                         val searchFunction: (input: String) -> Unit
-                                         //var searchFragment: SearchFragment
-                                         //private val actionGameDetails: ActionGameDetailsEnum = ActionGameDetailsEnum.SEARCH_PAGE
+                                         private val queries : ArrayList<String>,
+                                         val searchFunction: (String) -> Unit
 ) : RecyclerView.Adapter<RecentSearchesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "RecentRecyclerViewAdapt"
@@ -39,7 +37,7 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
 
     fun addItems(queriesJson : ArrayList<String>){
         queries += queriesJson
-        notifyDataSetChanged()
+        notifyItemInserted(queries.size - 1)
     }
 
     /**
@@ -73,28 +71,18 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
         viewHolder.tvQuery.text = queries[position]
 
         viewHolder.tvQuery.setOnClickListener {
-            //searchFragment.initializeSearchResultsList(queries[position])
             searchFunction(queries[position])
         }
 
         viewHolder.btnDelete.setOnClickListener {
-            /*GlobalScope.launch(Dispatchers.Main) {
-                val job = GlobalScope.launch(Dispatchers.IO) {
-                    User.delete(queries[position], searchDB)
-                }
-
-                job.join()
-
-                searchFragment.initializeRecentSearchesList()
-            }*/
+            val query = queries[position]
 
             GlobalScope.launch {
-                User.delete(queries[position], searchDB)
-                //searchFragment.initializeRecentSearchesList()
+                User.delete(query, searchDB)
             }
             queries.removeAt(position)
             notifyItemRemoved(position)
-            notifyDataSetChanged()
+            notifyItemRangeChanged(position, queries.size);
 
         }
 
