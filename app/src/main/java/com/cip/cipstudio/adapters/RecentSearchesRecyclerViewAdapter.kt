@@ -28,15 +28,16 @@ import kotlinx.coroutines.launch
 
 
 class RecentSearchesRecyclerViewAdapter (val context : Context,
-                                         var queries : List<String>,
-                                         var searchFragment: SearchFragment
+                                         var queries : ArrayList<String>,
+                                         val searchFunction: (input: String) -> Unit
+                                         //var searchFragment: SearchFragment
                                          //private val actionGameDetails: ActionGameDetailsEnum = ActionGameDetailsEnum.SEARCH_PAGE
 ) : RecyclerView.Adapter<RecentSearchesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "RecentRecyclerViewAdapt"
     private lateinit var searchDB: RecentSearchesRepository
 
-    fun addItems(queriesJson : List<String>){
+    fun addItems(queriesJson : ArrayList<String>){
         queries += queriesJson
         notifyDataSetChanged()
     }
@@ -72,11 +73,12 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
         viewHolder.tvQuery.text = queries[position]
 
         viewHolder.tvQuery.setOnClickListener {
-            searchFragment.initializeSearchResultsList(queries[position])
+            //searchFragment.initializeSearchResultsList(queries[position])
+            searchFunction(queries[position])
         }
 
         viewHolder.btnDelete.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
+            /*GlobalScope.launch(Dispatchers.Main) {
                 val job = GlobalScope.launch(Dispatchers.IO) {
                     User.delete(queries[position], searchDB)
                 }
@@ -84,7 +86,16 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
                 job.join()
 
                 searchFragment.initializeRecentSearchesList()
+            }*/
+
+            GlobalScope.launch {
+                User.delete(queries[position], searchDB)
+                //searchFragment.initializeRecentSearchesList()
             }
+            queries.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
+
         }
 
     }

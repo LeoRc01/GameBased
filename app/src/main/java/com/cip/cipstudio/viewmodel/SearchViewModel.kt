@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.provider.ContactsContract.CommonDataKinds.StructuredName
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData

@@ -33,17 +33,13 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.*
 
 class SearchFragment : Fragment() {
-    /*private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
-    }*/
+
     private lateinit var searchBinding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private val TAG = "SearchFragment"
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var searchDB : RecentSearchesRepository
-
-    private var scimmiaCheck: Boolean = true
 
     private var resultsOffset : Int = 0
     private var recentOffset : Int = 0
@@ -168,27 +164,24 @@ class SearchFragment : Fragment() {
 
         // setta l'onscroll listener
 
-        if(scimmiaCheck) {
-            searchBinding.fSearchResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
-                        resultsOffset++
-                        Log.i(TAG, "OFFSET")
-                        Log.i(TAG, resultsOffset.toString())
-                        searchViewModel.addGameResults(resultsOffset, query) { games ->
-                            (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
-                            Log.i(TAG, games.toString())
-                        }
-                        Log.i(TAG, "onScrollStateChanged")
+        searchBinding.fSearchResults.clearOnScrollListeners()
 
+        searchBinding.fSearchResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
+                    resultsOffset++
+                    Log.i(TAG, "OFFSET")
+                    Log.i(TAG, resultsOffset.toString())
+                    searchViewModel.addGameResults(resultsOffset, query) { games ->
+                        (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
+                        Log.i(TAG, games.toString())
                     }
+                    Log.i(TAG, "onScrollStateChanged")
+
                 }
-            })
-
-            scimmiaCheck = false
-
-        }
+            }
+        })
 
     }
 
@@ -202,7 +195,7 @@ class SearchFragment : Fragment() {
         val adapter = RecentSearchesRecyclerViewAdapter(
             requireContext(),
             ArrayList(),
-            this
+            ::initializeSearchResultsList
             //ActionGameDetailsEnum.SEARCH
         )
 
@@ -216,8 +209,10 @@ class SearchFragment : Fragment() {
         recentOffset = 0
 
         searchViewModel.addRecentSearches(recentOffset, query, searchDB) {
-            adapter.addItems(it)
+            adapter.addItems(it as ArrayList<String>)
         }
+
+        searchBinding.fSearchResults.clearOnScrollListeners()
 
         searchBinding.fSearchHistoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -227,7 +222,7 @@ class SearchFragment : Fragment() {
                     Log.i(TAG, "OFFSET")
                     Log.i(TAG, recentOffset.toString())
                     searchViewModel.addRecentSearches(recentOffset, query, searchDB) { queries ->
-                        (searchBinding.fSearchHistoryList.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries)
+                        (searchBinding.fSearchHistoryList.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
                         Log.i(TAG, queries.toString())
                     }
                     Log.i(TAG, "onScrollStateChanged")
