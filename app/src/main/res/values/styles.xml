@@ -119,13 +119,16 @@
 
     <style name="IconButton.Cip" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
         <item name="android:backgroundTint">@color/light_secondary_color</item>
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:drawablePadding">0dp</item>
-        <item name="android:padding">6dp</item>
-        <item name="iconSize">28dp</item>
+        <item name="android:padding">4.3dp</item>
+        <item name="iconSize">24dp</item>
         <item name="iconTint">@color/primary_color</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="Chip.Filter.Cip" parent="Widget.Material3.Chip.Filter">
