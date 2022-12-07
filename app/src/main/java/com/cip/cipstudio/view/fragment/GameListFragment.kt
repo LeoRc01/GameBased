@@ -61,6 +61,7 @@ class GameListFragment : Fragment() {
         initializePlayerPerspectives()
         initializeGameModes()
         initializeThemes()
+        initializeReleaseDates()
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -205,6 +206,18 @@ class GameListFragment : Fragment() {
         initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByTheme,
             gameListBinding.fGameListFlFilter.fFilterCgFilterByTheme,
             GameListViewModel::getThemes)
+    }
+
+    private fun initializeReleaseDates(){
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -151,4 +151,5 @@
     <string name="playerPerspectives">Player perspectives</string>
     <string name="gameModes">Game modes</string>
     <string name="theme">Theme</string>
+    <string name="releaseDate">Release date</string>
 </resources>

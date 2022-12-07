@@ -4,4 +4,10 @@
         <item>Italian</item>
         <item>English</item>
     </array>
+
+    <array name="releaseDateRange">
+        <item>2008</item>
+        <item>2022</item>
+    </array>
+
 </resources>
