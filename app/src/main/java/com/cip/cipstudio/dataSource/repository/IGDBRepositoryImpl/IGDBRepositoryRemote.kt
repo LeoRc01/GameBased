@@ -257,6 +257,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .limit(pageSize)
             .offset(pageIndex * pageSize)
         Log.i("CRITERIA", "${filterCriteria.concatCriteria()}")
+        Log.i("QUERY", "${apicalypse.buildQuery()}")
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}${filterCriteria.concatCriteria()}", refresh) }
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }

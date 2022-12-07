@@ -96,6 +96,12 @@ class GameListFragment : Fragment() {
                 val criteriaThemes : Criteria = FieldCriteria(FilterField.THEMES, themesListChecked)
                 filterCriteria.addCriteria(criteriaThemes)
 
+                val yearsSelected = gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values
+                val criteriaYears : Criteria = RangeCriteria(FilterField.RELEASE_DATE_YEAR,
+                    yearsSelected.first(),
+                    yearsSelected.last())
+                filterCriteria.addCriteria(criteriaYears)
+
                 initializeGames()
             }
 

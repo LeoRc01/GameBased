@@ -10,8 +10,8 @@ enum class FilterField {
         override fun getFieldControl(): String = "status != null"
     },
     RELEASE_DATE_YEAR{
-        override fun getFilterFieldIGDBName(): String = "release_dates.y"
-        override fun getFieldControl(): String = "release_dates != null & release_dates.y != null"
+        override fun getFilterFieldIGDBName(): String = "first_release_date"
+        override fun getFieldControl(): String = "first_release_date != null"
     },
     GENRES{
         override fun getFilterFieldIGDBName(): String = "genres"
