@@ -150,4 +150,5 @@
     <string name="change_your_filter_criterias">Change your filter criteria</string>
     <string name="playerPerspectives">Player perspectives</string>
     <string name="gameModes">Game modes</string>
+    <string name="theme">Theme</string>
 </resources>

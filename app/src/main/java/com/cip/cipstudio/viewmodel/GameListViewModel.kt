@@ -94,4 +94,15 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getThemes(updateUI : (ArrayList<JSONObject>)->Unit) {
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val themes = withContext(Dispatchers.IO) {
+                gameRepository.getThemes()
+            }
+            updateUI.invoke(themes)
+            isPageLoading.postValue(false)
+        }
+    }
+
 }

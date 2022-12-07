@@ -202,6 +202,48 @@
             app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByGameMode"
             android:visibility="gone"/>
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/f_Filter_divider_gamemodes_theme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:dividerThickness="0.5dp"
+            app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByGameModes"
+            app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByGenres"/>
+
+        <TextView
+            android:id="@+id/f_Filter_tv_FilterByTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:drawablePadding="7dp"
+            android:text="@string/theme"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_arrow_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/f_Filter_divider_gamemodes_theme"
+            android:focusable="true" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/f_Filter_cg_FilterByTheme"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:chipSpacingVertical="-3dp"
+            app:layout_constraintTop_toBottomOf="@+id/f_Filter_tv_FilterByTheme"
+            app:layout_constraintStart_toStartOf="@+id/f_Filter_tv_FilterByTheme"
+            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByTheme"
+            android:visibility="gone"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

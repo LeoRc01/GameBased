@@ -60,6 +60,7 @@ class GameListFragment : Fragment() {
         initializePlatforms()
         initializePlayerPerspectives()
         initializeGameModes()
+        initializeThemes()
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -87,6 +88,10 @@ class GameListFragment : Fragment() {
                 val gameModesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGameModes.checkedChipIds.map { it.toString() }
                 val criteriaGameModes : Criteria = FieldCriteria(FilterField.GAME_MODE, gameModesListChecked)
                 filterCriteria.addCriteria(criteriaGameModes)
+
+                val themesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByTheme.checkedChipIds.map { it.toString() }
+                val criteriaThemes : Criteria = FieldCriteria(FilterField.THEMES, themesListChecked)
+                filterCriteria.addCriteria(criteriaThemes)
 
                 initializeGames()
             }
@@ -151,9 +156,11 @@ class GameListFragment : Fragment() {
             if(gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility == View.VISIBLE){
                 gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.GONE
                 gameListBinding.fGameListFlFilter.fFilterRlFilterByPlatform.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
             }else{
                 gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.visibility = View.VISIBLE
                 gameListBinding.fGameListFlFilter.fFilterRlFilterByPlatform.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByPlatform.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
             }
         }
 
@@ -191,6 +198,13 @@ class GameListFragment : Fragment() {
         initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByGameMode,
             gameListBinding.fGameListFlFilter.fFilterCgFilterByGameModes,
             GameListViewModel::getGameModes)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeThemes(){
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByTheme,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByTheme,
+            GameListViewModel::getThemes)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
