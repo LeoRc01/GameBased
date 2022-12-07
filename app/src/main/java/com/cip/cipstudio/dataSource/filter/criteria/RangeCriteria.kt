@@ -5,28 +5,24 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 class RangeCriteria(private val field: FilterField): Criteria {
-    var min: Int? = null
-    var max: Int? = null
+    var min: Long? = null
+    var max: Long? = null
 
     constructor(
         field: FilterField,
         min: Float,
-        max:Float
-    ) : this(field){
-        this.min = min.toInt()
-        this.max = max.toInt()
+        max: Float
+    ) : this(field) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+        val minDate = dateFormat.parse("${min.toInt()}-01-01 00:00:00")
+        val maxDate = dateFormat.parse("${max.toInt()}-12-31 23:59:59")
+        this.min = minDate.time / 1000
+        this.max = maxDate.time / 1000
     }
 
     override fun buildQuery(): String {
-        lateinit var minQuery : String
-        lateinit var maxQuery : String
-        if(min == max){
-            minQuery = if (min != null) "${field.getFilterFieldIGDBName()} >= ${toTimestamp(min!!)}" else ""
-            maxQuery = if (max != null) "${field.getFilterFieldIGDBName()} <= ${toTimestamp(max!!+1)}" else ""
-        }else{
-            minQuery = if (min != null) "${field.getFilterFieldIGDBName()} >= ${toTimestamp(min!!)}" else ""
-            maxQuery = if (max != null) "${field.getFilterFieldIGDBName()} <= ${toTimestamp(max!!)}" else ""
-        }
+        val minQuery = if (min != null) "${field.getFilterFieldIGDBName()} >= $min" else ""
+        val maxQuery = if (max != null) "${field.getFilterFieldIGDBName()} <= $max" else ""
         val queryTemp =  listOf(minQuery, maxQuery).filter { it.isNotEmpty() }.joinToString(" & ")
         return if (queryTemp.isNotEmpty()) "$queryTemp & ${field.getFieldControl()}" else ""
     }

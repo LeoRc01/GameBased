@@ -5,7 +5,7 @@ interface Criteria {
 
     fun concatCriteria(): String {
         val query = buildQuery()
-        return if (query.isNotEmpty()) " & $query" else ""
+        return if (query.isNotEmpty()) " & ($query)" else ""
     }
 
     fun isEmpty() : Boolean
