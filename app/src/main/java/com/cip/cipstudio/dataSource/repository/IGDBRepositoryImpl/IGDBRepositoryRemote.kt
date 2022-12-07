@@ -159,6 +159,12 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToArrayList(json)
     }
 
+    suspend fun getGameModes() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+        val apicalypse = APICalypse().fields("id, name").limit(50)
+        val json = makeRequest ({ IGDBWrapper.jsonGameModes(apicalypse) }, "getGameModes")
+        return@withContext Converter.fromJsonArrayToArrayList(json)
+    }
+
     override suspend fun getGameDetails(gameId: String, refresh: Boolean): GameDetails = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name, summary, first_release_date, cover.url," +
                 "aggregated_rating, aggregated_rating_count, rating, rating_count," +

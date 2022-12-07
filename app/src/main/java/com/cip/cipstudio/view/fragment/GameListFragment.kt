@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.api.igdb.utils.Endpoints
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.criteria.*
@@ -58,6 +59,7 @@ class GameListFragment : Fragment() {
         initializeGenres()
         initializePlatforms()
         initializePlayerPerspectives()
+        initializeGameModes()
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -81,6 +83,10 @@ class GameListFragment : Fragment() {
                 val playerPerspectivesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.checkedChipIds.map { it.toString() }
                 val criteriaPlayerPerspectives : Criteria = FieldCriteria(FilterField.PLAYER_PERSPECTIVE, playerPerspectivesListChecked)
                 filterCriteria.addCriteria(criteriaPlayerPerspectives)
+
+                val gameModesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGameModes.checkedChipIds.map { it.toString() }
+                val criteriaGameModes : Criteria = FieldCriteria(FilterField.GAME_MODE, gameModesListChecked)
+                filterCriteria.addCriteria(criteriaGameModes)
 
                 initializeGames()
             }
@@ -178,6 +184,13 @@ class GameListFragment : Fragment() {
         initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByPlayerPerspective,
             gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives,
             GameListViewModel::getPlayerPerspectives)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeGameModes(){
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByGameMode,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByGameModes,
+            GameListViewModel::getGameModes)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

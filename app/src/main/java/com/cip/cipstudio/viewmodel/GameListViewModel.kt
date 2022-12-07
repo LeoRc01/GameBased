@@ -83,4 +83,15 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getGameModes(updateUI : (ArrayList<JSONObject>)->Unit) {
+        isPageLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.Main) {
+            val gameModes = withContext(Dispatchers.IO) {
+                gameRepository.getGameModes()
+            }
+            updateUI.invoke(gameModes)
+            isPageLoading.postValue(false)
+        }
+    }
+
 }
