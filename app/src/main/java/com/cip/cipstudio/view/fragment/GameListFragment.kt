@@ -186,7 +186,7 @@ class GameListFragment : Fragment() {
         chipButton.id = id.toInt()
         chipButton.text = name
         chipButton.isClickable = true
-
+        chipButton.typeface = resources.getFont(R.font.montserrat_regular)
         return chipButton
     }
 
