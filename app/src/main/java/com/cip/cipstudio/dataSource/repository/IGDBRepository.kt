@@ -1,6 +1,6 @@
 package com.cip.cipstudio.dataSource.repository
 
-import com.cip.cipstudio.dataSource.filter.criteria.Operator
+import com.cip.cipstudio.dataSource.filter.criteria.OperatorEnum
 import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -13,7 +13,7 @@ interface IGDBRepository {
                                refresh: Boolean = false,
                                pageSize: Int = 10,
                                pageIndex: Int = 0,
-                               filterCriteria: OperatorCriteria = OperatorCriteria(Operator.AND)): List<GameDetails>
+                               filterCriteria: OperatorCriteria = OperatorCriteria(OperatorEnum.AND)): List<GameDetails>
 
     suspend fun getGameDetails(gameId : String, refresh: Boolean = false) : GameDetails
 

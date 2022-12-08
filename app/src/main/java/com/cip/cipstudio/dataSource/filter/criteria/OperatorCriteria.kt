@@ -1,11 +1,9 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
-import android.util.Log
-
-class OperatorCriteria(private val operator : Operator): Criteria {
+class OperatorCriteria(private val operatorEnum : OperatorEnum): Criteria {
     private var criteriaList : MutableList<Criteria> = ArrayList()
 
-    constructor(operator : Operator, criteriaList: List<Criteria>) : this(operator) {
+    constructor(operatorEnum : OperatorEnum, criteriaList: List<Criteria>) : this(operatorEnum) {
         this.criteriaList = criteriaList as MutableList<Criteria>
     }
 
@@ -25,10 +23,10 @@ class OperatorCriteria(private val operator : Operator): Criteria {
         if (criteriaList.size == 1) {
             return criteriaList[0].buildQuery()
         }
-        return criteriaList.joinToString(" ${operator.getOperator()} ") { it.buildQuery() }
+        return criteriaList.joinToString(" ${operatorEnum.getOperator()} ") { it.buildQuery() }
     }
 
     override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
+        return criteriaList.isEmpty()
     }
 }

@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.api.igdb.utils.Endpoints
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.criteria.*
@@ -27,7 +26,6 @@ import com.cip.cipstudio.viewmodel.GameListViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.json.JSONObject
-import java.util.*
 
 
 class GameListFragment : Fragment() {
@@ -36,9 +34,11 @@ class GameListFragment : Fragment() {
     private lateinit var gameListBinding: FragmentGameListBinding
     private val TAG = "GameListFragment"
 
-    private val filterCriteria = OperatorCriteria(Operator.AND)
+    private val filterCriteria = OperatorCriteria(OperatorEnum.AND)
 
     private var offset : Int = 0
+    private var yearMin : Int = 0
+    private var yearMax : Int = 0
 
     private lateinit var gameType: GameTypeEnum
 
@@ -64,7 +64,19 @@ class GameListFragment : Fragment() {
         initializePlayerPerspectives()
         initializeGameModes()
         initializeThemes()
-        initializeYearFilterSlider()
+
+        when(gameType){
+            GameTypeEnum.BEST_RATED, GameTypeEnum.WORST_RATED, GameTypeEnum.LOVED_BY_CRITICS, GameTypeEnum.MOST_RATED, GameTypeEnum.MOST_POPULAR -> {
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
+                initializeReleaseYear()
+            }
+            GameTypeEnum.UPCOMING, GameTypeEnum.RECENTLY_RELEASED, GameTypeEnum.MOST_HYPED -> {
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                initializeRating()
+            }
+        }
 
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -78,31 +90,55 @@ class GameListFragment : Fragment() {
                 filterCriteria.clearCriteria()
 
                 val genreListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
-                val criteriaGenre : Criteria = FieldCriteria(FilterField.GENRES, genreListChecked)
+                val criteriaGenre : Criteria = FieldCriteria(FilterFieldEnum.GENRES, genreListChecked)
                 filterCriteria.addCriteria(criteriaGenre)
 
 
                 val platformsListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlatform.checkedChipIds.map { it.toString() }
-                val criteriaPlatforms : Criteria = FieldCriteria(FilterField.PLATFORMS, platformsListChecked)
+                val criteriaPlatforms : Criteria = FieldCriteria(FilterFieldEnum.PLATFORMS, platformsListChecked)
                 filterCriteria.addCriteria(criteriaPlatforms)
 
                 val playerPerspectivesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByPlayerPerspectives.checkedChipIds.map { it.toString() }
-                val criteriaPlayerPerspectives : Criteria = FieldCriteria(FilterField.PLAYER_PERSPECTIVE, playerPerspectivesListChecked)
+                val criteriaPlayerPerspectives : Criteria = FieldCriteria(FilterFieldEnum.PLAYER_PERSPECTIVE, playerPerspectivesListChecked)
                 filterCriteria.addCriteria(criteriaPlayerPerspectives)
 
                 val gameModesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGameModes.checkedChipIds.map { it.toString() }
-                val criteriaGameModes : Criteria = FieldCriteria(FilterField.GAME_MODE, gameModesListChecked)
+                val criteriaGameModes : Criteria = FieldCriteria(FilterFieldEnum.GAME_MODE, gameModesListChecked)
                 filterCriteria.addCriteria(criteriaGameModes)
 
                 val themesListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByTheme.checkedChipIds.map { it.toString() }
-                val criteriaThemes : Criteria = FieldCriteria(FilterField.THEMES, themesListChecked)
+                val criteriaThemes : Criteria = FieldCriteria(FilterFieldEnum.THEMES, themesListChecked)
                 filterCriteria.addCriteria(criteriaThemes)
 
-                val yearsSelected = gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values
-                val criteriaYears : Criteria = RangeCriteria(FilterField.RELEASE_DATE_YEAR,
-                    yearsSelected.first(),
-                    yearsSelected.last())
-                filterCriteria.addCriteria(criteriaYears)
+                when(gameType){
+                    GameTypeEnum.BEST_RATED, GameTypeEnum.WORST_RATED, GameTypeEnum.LOVED_BY_CRITICS, GameTypeEnum.MOST_RATED, GameTypeEnum.MOST_POPULAR -> {
+                        val yearsSelected = gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values
+                        val criteriaYears = RangeCriteria(FilterFieldEnum.RELEASE_DATE_YEAR)
+                        if (yearsSelected.first().toInt() != yearMin){
+                            criteriaYears.setMin(yearsSelected.first())
+                        }
+                        if (yearsSelected.last().toInt() != yearMax){
+                            criteriaYears.setMax(yearsSelected.last())
+                        }
+                        filterCriteria.addCriteria(criteriaYears)
+                    }
+                    GameTypeEnum.UPCOMING, GameTypeEnum.RECENTLY_RELEASED, GameTypeEnum.MOST_HYPED -> {
+                        val userRating = gameListBinding.fGameListFlFilter.fFilterSldFilterByUserRating.value
+                        val criteriaUserRating = RangeCriteria(FilterFieldEnum.USER_RATING)
+                        if (userRating.toInt() != 0){
+                            criteriaUserRating.setMin(userRating)
+                        }
+                        filterCriteria.addCriteria(criteriaUserRating)
+
+                        val criticsRating = gameListBinding.fGameListFlFilter.fFilterSldFilterByCriticsRating.value
+                        val criteriaCriticsRating = RangeCriteria(FilterFieldEnum.CRITICS_RATING)
+                        if (criticsRating.toInt() != 0){
+                            criteriaCriticsRating.setMin(criticsRating)
+                        }
+                        filterCriteria.addCriteria(criteriaCriticsRating)
+
+                    }
+                }
 
                 initializeGames()
             }
@@ -225,18 +261,6 @@ class GameListFragment : Fragment() {
             GameListViewModel::getThemes)
     }
 
-    private fun initializeReleaseDates(){
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setOnClickListener {
-            if(gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility == View.VISIBLE){
-                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            }else{
-                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChip(id : String, name : String, chipGroup: ChipGroup) : Chip {
         val chipButton = layoutInflater.inflate(R.layout.genre_chip_filter, chipGroup, false) as Chip
@@ -285,15 +309,35 @@ class GameListFragment : Fragment() {
         }
     }
 
-    fun initializeYearFilterSlider(){
-        gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
-
-        initializeReleaseDates()
+    private fun initializeReleaseYear(){
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
 
         gameListViewModel.getYears {
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueFrom = it.first()
+            yearMin = it.first().toInt()
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueTo = it.last()
+            yearMax = it.last().toInt()
             gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
+        }
+    }
+
+    private fun initializeRating(){
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterLlRating.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
         }
     }
 

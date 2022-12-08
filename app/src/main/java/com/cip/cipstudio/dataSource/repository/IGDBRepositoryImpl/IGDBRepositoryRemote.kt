@@ -5,7 +5,6 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.*
-import com.cip.cipstudio.dataSource.filter.criteria.Operator
 import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
@@ -256,6 +255,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
+        Log.i(TAG, "getGamesMostRated: ${apicalypse.buildQuery()}")
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}${filterCriteria.concatCriteria()}", refresh) }
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }

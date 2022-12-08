@@ -1,6 +1,6 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
-enum class FilterField {
+enum class FilterFieldEnum {
     CATEGORY {
         override fun getFilterFieldIGDBName(): String = "category"
         override fun getFieldControl(): String = "category != null"
@@ -21,11 +21,11 @@ enum class FilterField {
         override fun getFilterFieldIGDBName(): String = "platforms"
         override fun getFieldControl(): String = "platforms != null"
     },
-    RATING{
+    USER_RATING{
         override fun getFilterFieldIGDBName(): String = "rating"
         override fun getFieldControl(): String = "rating != null & rating > 0"
     },
-    RATING_COUNT{
+    USER_RATING_COUNT{
         override fun getFilterFieldIGDBName(): String = "rating_count"
         override fun getFieldControl(): String = "rating_count != null & rating_count > 0"
     },

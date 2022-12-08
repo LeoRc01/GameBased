@@ -153,4 +153,7 @@
     <string name="theme">Theme</string>
     <string name="releaseDate">Release date</string>
     <string name="years">Years</string>
+    <string name="user_rating">User Rating</string>
+    <string name="critics_rating">Critics Rating</string>
+    <string name="rating_filters">Rating</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
-enum class Operator {
+enum class OperatorEnum {
     AND {
         override fun getOperator(): String {
             return "&"

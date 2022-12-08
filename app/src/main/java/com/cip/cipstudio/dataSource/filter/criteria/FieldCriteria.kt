@@ -1,9 +1,9 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
-class FieldCriteria(private val field: FilterField): Criteria {
+class FieldCriteria(private val field: FilterFieldEnum): Criteria {
     private var values: List<String> = ArrayList()
 
-    constructor(field: FilterField, values: List<String>) : this(field) {
+    constructor(field: FilterFieldEnum, values: List<String>) : this(field) {
         this.values = values
     }
 

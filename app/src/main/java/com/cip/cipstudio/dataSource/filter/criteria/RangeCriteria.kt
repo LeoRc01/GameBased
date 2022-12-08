@@ -1,23 +1,24 @@
 package com.cip.cipstudio.dataSource.filter.criteria
 
-import android.util.Log
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
-class RangeCriteria(private val field: FilterField): Criteria {
-    var min: Long? = null
-    var max: Long? = null
+class RangeCriteria(private val field: FilterFieldEnum): Criteria {
+    private var min: Long? = null
+    private var max: Long? = null
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
 
-    constructor(
-        field: FilterField,
-        min: Float,
-        max: Float
-    ) : this(field) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
-        val minDate = dateFormat.parse("${min.toInt()}-01-01 00:00:00")
-        val maxDate = dateFormat.parse("${max.toInt()}-12-31 23:59:59")
-        this.min = minDate.time / 1000
-        this.max = maxDate.time / 1000
+    fun setMin(min: Float) {
+        this.min = if (field == FilterFieldEnum.RELEASE_DATE_YEAR)
+                dateFormat.parse("${min.toInt()}-01-01 00:00:00")!!.time.div(1000)
+            else
+                min.toLong()
+    }
+
+    fun setMax(max: Float) {
+        this.max = if (field == FilterFieldEnum.RELEASE_DATE_YEAR)
+                dateFormat.parse("${max.toInt()}-12-31 23:59:59")!!.time.div(1000)
+            else
+                max.toLong()
     }
 
     override fun buildQuery(): String {
