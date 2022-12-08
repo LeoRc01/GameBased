@@ -391,6 +391,25 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/f_gameDetails_ll_gameDetails_themes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:visibility='@{vm.game.fields.contains("themes")? View.VISIBLE : View.GONE}'>
+
+
+                                <TextView
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/themes"/>
+
+                                <TextView
+                                    android:id="@+id/f_gameDetails_tv_GameDetails_themes"
+                                    style="@style/GameDetails.field"
+                                    android:text="@{vm.game.themesString}"/>
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:id="@+id/f_gameDetails_ll_gameDetails_franchise"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

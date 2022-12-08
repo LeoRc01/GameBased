@@ -158,4 +158,5 @@
     <string name="rating_filters">Rating</string>
     <string name="category">Category</string>
     <string name="status">Status</string>
+    <string name="themes">Themes:</string>
 </resources>

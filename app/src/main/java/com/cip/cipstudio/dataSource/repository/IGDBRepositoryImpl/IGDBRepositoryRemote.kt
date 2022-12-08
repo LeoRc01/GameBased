@@ -180,7 +180,7 @@ object IGDBRepositoryRemote : IGDBRepository {
                 "involved_companies.porting, franchise.name, franchise.id," +
                 "game_modes.name, player_perspectives.name, language_supports.language.name," +
                 "collection.name, collection.id, parent_game.name, parent_game.id," +
-                "dlcs.name, dlcs.id, dlcs.cover.url")
+                "dlcs.name, dlcs.id, dlcs.cover.url, themes.name, themes.id")
             .where("id = $gameId")
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGameDetails$gameId", refresh)
         return@withContext GameDetails(json.getJSONObject(0))
