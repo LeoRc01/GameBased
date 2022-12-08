@@ -59,27 +59,13 @@ class GameListFragment : Fragment() {
 
 
         initializeGames()
-        initializeGenres()
-        initializePlatforms()
-        initializePlayerPerspectives()
-        initializeGameModes()
-        initializeThemes()
+        initializeDrawer()
 
-        when(gameType){
-            GameTypeEnum.BEST_RATED, GameTypeEnum.WORST_RATED, GameTypeEnum.LOVED_BY_CRITICS, GameTypeEnum.MOST_RATED, GameTypeEnum.MOST_POPULAR -> {
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterDividerReleaseDateRating.visibility = View.GONE
-                initializeReleaseYear()
-            }
-            GameTypeEnum.UPCOMING, GameTypeEnum.RECENTLY_RELEASED, GameTypeEnum.MOST_HYPED -> {
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterDividerThemeReleaseDate.visibility = View.GONE
-                initializeRating()
-            }
-        }
+        return gameListBinding.root
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeDrawer() {
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
             }
@@ -90,6 +76,10 @@ class GameListFragment : Fragment() {
             override fun onDrawerClosed(drawerView: View) {
                 offset = 0
                 filterCriteria.clearCriteria()
+
+                val categoryListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByCategory.checkedChipIds.map { it.toString() }
+                val criteriaCategory : Criteria = FieldCriteria(FilterFieldEnum.CATEGORY, categoryListChecked)
+                filterCriteria.addCriteria(criteriaCategory)
 
                 val genreListChecked = gameListBinding.fGameListFlFilter.fFilterCgFilterByGenres.checkedChipIds.map { it.toString() }
                 val criteriaGenre : Criteria = FieldCriteria(FilterFieldEnum.GENRES, genreListChecked)
@@ -149,7 +139,36 @@ class GameListFragment : Fragment() {
 
             }
         })
-        return gameListBinding.root
+
+        initializeGenres()
+        initializePlatforms()
+        initializePlayerPerspectives()
+        initializeGameModes()
+        initializeThemes()
+        initializeCategory()
+        when(gameType){
+            GameTypeEnum.BEST_RATED, GameTypeEnum.WORST_RATED, GameTypeEnum.LOVED_BY_CRITICS, GameTypeEnum.MOST_RATED, GameTypeEnum.MOST_POPULAR -> {
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterDividerReleaseDateRating.visibility = View.GONE
+                initializeReleaseYear()
+            }
+            GameTypeEnum.UPCOMING, GameTypeEnum.RECENTLY_RELEASED, GameTypeEnum.MOST_HYPED -> {
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterDividerThemeReleaseDate.visibility = View.GONE
+                initializeRating()
+            }
+        }
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByStatus.visibility = View.GONE
+        gameListBinding.fGameListFlFilter.fFilterDividerStatusPlatform.visibility = View.GONE
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initializeCategory() {
+        initializeFilter(gameListBinding.fGameListFlFilter.fFilterTvFilterByCategory,
+            gameListBinding.fGameListFlFilter.fFilterCgFilterByCategory,
+            GameListViewModel::getCategory)
     }
 
     private fun initializeGames() {
@@ -200,7 +219,6 @@ class GameListFragment : Fragment() {
 
         }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializePlatforms(){

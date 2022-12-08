@@ -85,7 +85,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/f_gameList_btn_back"
                 android:layout_marginTop="6dp"
-                android:paddingBottom="60dp">
+                android:paddingBottom="40dp">
                 <GridView
                     android:id="@+id/f_gameList_gv_games"
                     android:layout_width="match_parent"

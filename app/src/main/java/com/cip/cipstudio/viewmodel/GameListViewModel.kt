@@ -120,4 +120,10 @@ class GameListViewModel : ViewModel() {
         }
     }
 
+    fun getCategory(updateUI : (ArrayList<JSONObject>)->Unit) {
+        isPageLoading.postValue(true)
+        updateUI.invoke(Costant.categoryDefault)
+        isPageLoading.postValue(false)
+    }
+
 }

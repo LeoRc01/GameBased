@@ -156,4 +156,6 @@
     <string name="user_rating">User Rating</string>
     <string name="critics_rating">Critics Rating</string>
     <string name="rating_filters">Rating</string>
+    <string name="category">Category</string>
+    <string name="status">Status</string>
 </resources>
