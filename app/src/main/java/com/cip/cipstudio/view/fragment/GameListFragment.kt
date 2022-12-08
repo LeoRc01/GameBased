@@ -69,11 +69,13 @@ class GameListFragment : Fragment() {
             GameTypeEnum.BEST_RATED, GameTypeEnum.WORST_RATED, GameTypeEnum.LOVED_BY_CRITICS, GameTypeEnum.MOST_RATED, GameTypeEnum.MOST_POPULAR -> {
                 gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.visibility = View.GONE
                 gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterDividerReleaseDateRating.visibility = View.GONE
                 initializeReleaseYear()
             }
             GameTypeEnum.UPCOMING, GameTypeEnum.RECENTLY_RELEASED, GameTypeEnum.MOST_HYPED -> {
                 gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.visibility = View.GONE
                 gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterDividerThemeReleaseDate.visibility = View.GONE
                 initializeRating()
             }
         }
@@ -261,6 +263,38 @@ class GameListFragment : Fragment() {
             GameListViewModel::getThemes)
     }
 
+    private fun initializeReleaseYear(){
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
+
+        gameListViewModel.getYears {
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueFrom = it.first()
+            yearMin = it.first().toInt()
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueTo = it.last()
+            yearMax = it.last().toInt()
+            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
+        }
+    }
+
+    private fun initializeRating(){
+        gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setOnClickListener {
+            if(gameListBinding.fGameListFlFilter.fFilterLlRating.visibility == View.VISIBLE){
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+            }else{
+                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.VISIBLE
+                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChip(id : String, name : String, chipGroup: ChipGroup) : Chip {
         val chipButton = layoutInflater.inflate(R.layout.genre_chip_filter, chipGroup, false) as Chip
@@ -306,38 +340,6 @@ class GameListFragment : Fragment() {
                 }
             }
 
-        }
-    }
-
-    private fun initializeReleaseYear(){
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setOnClickListener {
-            if(gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility == View.VISIBLE){
-                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            }else{
-                gameListBinding.fGameListFlFilter.fFilterLlReleaseDate.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByReleaseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
-        }
-
-        gameListViewModel.getYears {
-            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueFrom = it.first()
-            yearMin = it.first().toInt()
-            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.valueTo = it.last()
-            yearMax = it.last().toInt()
-            gameListBinding.fGameListFlFilter.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
-        }
-    }
-
-    private fun initializeRating(){
-        gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setOnClickListener {
-            if(gameListBinding.fGameListFlFilter.fFilterLlRating.visibility == View.VISIBLE){
-                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.GONE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-            }else{
-                gameListBinding.fGameListFlFilter.fFilterLlRating.visibility = View.VISIBLE
-                gameListBinding.fGameListFlFilter.fFilterTvFilterByRating.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-            }
         }
     }
 

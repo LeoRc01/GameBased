@@ -13,18 +13,8 @@
 
         <TextView
             android:id="@+id/fFilter_tv_FilterByPlatform"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/filter_by_platform"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:focusable="true"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,12 +22,7 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/f_Filter_cg_FilterByPlatform"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterChipGroup"
             app:chipSpacingVertical="-3dp"
             app:layout_constraintTop_toBottomOf="@+id/fFilter_tv_FilterByPlatform"
             app:layout_constraintStart_toStartOf="@+id/fFilter_tv_FilterByPlatform"
@@ -73,31 +58,15 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/fFilter_divider_platform_genres"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/fFilter_rl_FilterByPlatform"
             app:layout_constraintStart_toStartOf="@+id/fFilter_rl_FilterByPlatform"/>
 
-
-
         <TextView
             android:id="@+id/f_Filter_tv_FilterByGenre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/genre"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:focusable="true"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,44 +74,24 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/f_Filter_cg_FilterByGenres"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterChipGroup"
             app:chipSpacingVertical="-3dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_tv_FilterByGenre"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_tv_FilterByGenre"
-            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByGenre"
-            android:visibility="gone">
-
+            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByGenre">
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/fFilter_divider_genres_playerperspectives"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByGenres"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByGenres"/>
 
         <TextView
             android:id="@+id/f_Filter_tv_FilterByPlayerPerspective"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/playerPerspectives"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:focusable="true"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -150,44 +99,25 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/f_Filter_cg_FilterByPlayerPerspectives"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterChipGroup"
             app:chipSpacingVertical="-3dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_tv_FilterByPlayerPerspective"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_tv_FilterByPlayerPerspective"
-            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByPlayerPerspective"
-            android:visibility="gone">
+            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByPlayerPerspective">
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/f_Filter_divider_playerperspectives_gamemodes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByPlayerPerspectives"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByGenres"/>
 
         <TextView
             android:id="@+id/f_Filter_tv_FilterByGameMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/gameModes"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:focusable="true"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -195,42 +125,23 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/f_Filter_cg_FilterByGameModes"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterChipGroup"
             app:chipSpacingVertical="-3dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_tv_FilterByGameMode"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_tv_FilterByGameMode"
-            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByGameMode"
-            android:visibility="gone"/>
+            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByGameMode" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/f_Filter_divider_gamemodes_theme"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByGameModes"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByGenres"/>
 
         <TextView
             android:id="@+id/f_Filter_tv_FilterByTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/theme"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:focusable="true"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -238,46 +149,27 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/f_Filter_cg_FilterByTheme"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterChipGroup"
             app:chipSpacingVertical="-3dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_tv_FilterByTheme"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_tv_FilterByTheme"
-            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByTheme"
-            android:visibility="gone"/>
+            app:layout_constraintEnd_toEndOf="@+id/f_Filter_tv_FilterByTheme" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/f_Filter_divider_theme_releaseDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByTheme"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByGenres"/>
 
         <TextView
             android:id="@+id/f_Filter_tv_FilterByReleaseDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/releaseDate"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_Filter_divider_theme_releaseDate"
-            android:focusable="true" />
+            app:layout_constraintTop_toBottomOf="@+id/f_Filter_divider_theme_releaseDate" />
 
         <LinearLayout
             android:visibility="gone"
@@ -315,33 +207,19 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/f_Filter_divider_releaseDate_rating"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            style="@style/FilterDivider"
             app:dividerThickness="0.5dp"
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_ll_ReleaseDate"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_ll_ReleaseDate"/>
 
         <TextView
             android:id="@+id/f_Filter_tv_FilterByRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:drawablePadding="7dp"
             android:text="@string/rating_filters"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            style="@style/FilterTextView"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_Filter_divider_releaseDate_rating"
-            android:focusable="true" />
+            app:layout_constraintTop_toBottomOf="@+id/f_Filter_divider_releaseDate_rating" />
 
         <LinearLayout
             android:visibility="gone"
