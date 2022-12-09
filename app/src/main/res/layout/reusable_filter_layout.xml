@@ -38,8 +38,7 @@
                 android:saveEnabled="false"
                 app:simpleItems="@array/sorts"
                 tools:ignore="TouchTargetSizeCheck"
-                android:hint="@string/default_sort"
-                 />
+                android:hint="@string/default_sort" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

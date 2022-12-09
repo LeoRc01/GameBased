@@ -15,6 +15,8 @@ import com.mayakapps.lrucache.LruCache
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 
 object IGDBRepositoryRemote : IGDBRepository {
@@ -25,6 +27,10 @@ object IGDBRepositoryRemote : IGDBRepository {
     private var isInitialized = false
 
     private val cache = LruCache<String, JSONArray>(100)
+
+    private var countRequest = 0
+    private val lock = ReentrantLock()
+    private val condition = lock.newCondition()
 
     private const val secondsInAWeek = 604800L
     private const val secondsInADay = 86400L
@@ -84,7 +90,17 @@ object IGDBRepositoryRemote : IGDBRepository {
         try {
             Log.i(TAG, "Retrieving data from remote")
             Log.i(TAG, "Making request, attempt: $attempt")
+            lock.withLock {
+                if (countRequest > 3)
+                    condition.await()
+                countRequest++
+            }
             json = request.invoke()
+            lock.withLock {
+                countRequest--
+                condition.signalAll()
+            }
+
         } catch (RequestException: RequestException) {
             if (RequestException.statusCode == 401 && attempt <= 10) {
                 Log.i(TAG, "Token expired, refreshing...")
@@ -99,7 +115,9 @@ object IGDBRepositoryRemote : IGDBRepository {
                     Log.e(TAG, "retrieveDataFromRemote: Too many attempts, aborting")
                 Log.e(TAG, "Request failed, status code: ${RequestException.statusCode}")
                 Log.e(TAG, "Request failed, message: ${RequestException.message}")
-                throw RequestException
+                Log.e(TAG, "Request failed, cause: ${RequestException.cause}")
+                Thread.sleep(5000)
+                return@withContext retrieveDataFromRemote(request, attempt + 1)
             }
         }
         Log.d(TAG, "request successful")
