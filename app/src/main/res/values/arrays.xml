@@ -5,9 +5,16 @@
         <item>English</item>
     </array>
 
-    <array name="releaseDateRange">
-        <item>2008</item>
-        <item>2022</item>
+    <array name="sorts">
+        <item>Alphabetical (a-z)</item>
+        <item>Alphabetical (z-a)</item>
+        <item>Top rated</item>
+        <item>Worst rated</item>
+        <item>Most recent</item>
+        <item>Least recent</item>
+        <item>Most discussed</item>
+        <item>Least discussed</item>
+        <item>Default</item>
     </array>
 
 </resources>

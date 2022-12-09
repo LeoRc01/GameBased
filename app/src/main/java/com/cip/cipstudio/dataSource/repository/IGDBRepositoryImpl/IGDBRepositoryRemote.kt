@@ -135,7 +135,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
-    suspend fun getPlatforms(offset : Int, exclude: List<String> = arrayListOf()) : List<PlatformDetails> = withContext(Dispatchers.IO){
+    override suspend fun getPlatforms(offset : Int, exclude: List<String>) : List<PlatformDetails> = withContext(Dispatchers.IO){
         val excludeString = if (exclude.isNotEmpty()) "id != (${exclude.joinToString (",")})" else ""
         val apicalypse = APICalypse().fields("id, name")
             .limit(10)
@@ -146,25 +146,25 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
 
-    suspend fun getGenres() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+    override suspend fun getGenres() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name").limit(50)
         val json = makeRequest ({ IGDBWrapper.jsonGenres(apicalypse) }, "getGenres")
         return@withContext Converter.fromJsonArrayToArrayList(json)
     }
 
-    suspend fun getPlayerPerspectives() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+    override suspend fun getPlayerPerspectives() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name").limit(50)
         val json = makeRequest ({ IGDBWrapper.jsonPlayerPerspectives(apicalypse) }, "getPlayerPerspectives")
         return@withContext Converter.fromJsonArrayToArrayList(json)
     }
 
-    suspend fun getGameModes() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+    override suspend fun getGameModes() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name").limit(50)
         val json = makeRequest ({ IGDBWrapper.jsonGameModes(apicalypse) }, "getGameModes")
         return@withContext Converter.fromJsonArrayToArrayList(json)
     }
 
-    suspend fun getThemes() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
+    override suspend fun getThemes() : ArrayList<JSONObject> = withContext(Dispatchers.IO){
         val apicalypse = APICalypse().fields("id, name").limit(50)
         val json = makeRequest ({ IGDBWrapper.jsonThemes(apicalypse) }, "getThemes")
         return@withContext Converter.fromJsonArrayToArrayList(json)
@@ -208,7 +208,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    suspend fun getFirstAndLastYearsOfRelease(): List<Float> = withContext(Dispatchers.IO) {
+    override suspend fun getFirstAndLastYearsOfRelease(): List<Float> = withContext(Dispatchers.IO) {
         val apicalypse1 = APICalypse()
             .fields("first_release_date")
             .where("first_release_date != null")

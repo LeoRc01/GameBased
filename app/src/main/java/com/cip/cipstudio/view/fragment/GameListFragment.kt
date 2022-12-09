@@ -162,6 +162,9 @@ class GameListFragment : Fragment() {
         }
         gameListBinding.fGameListFlFilter.fFilterTvFilterByStatus.visibility = View.GONE
         gameListBinding.fGameListFlFilter.fFilterDividerStatusPlatform.visibility = View.GONE
+        gameListBinding.fGameListFlFilter.fFilterTvSortBy.visibility = View.GONE
+        gameListBinding.fGameListFlFilter.fFilterDividerSortCategory.visibility = View.GONE
+        gameListBinding.fGameListFlFilter.fFilterActvChangeSort.visibility = View.GONE
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

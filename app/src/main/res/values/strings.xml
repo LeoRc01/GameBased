@@ -159,4 +159,6 @@
     <string name="category">Category</string>
     <string name="status">Status</string>
     <string name="themes">Themes:</string>
+    <string name="sort_by">Sort by</string>
+    <string name="default_sort">Default</string>
 </resources>
