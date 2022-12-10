@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -54,6 +55,8 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 setGenresUI: (List<JSONObject>)-> Unit,
                 onSuccess: () -> Unit) : this(binding) {
 
+
+
         viewModelScope.launch(Dispatchers.Main) {
             // withContext serve per cambiare il contesto di esecuzione
             // quindi se prima era in main thread ora è in IO thread
@@ -61,6 +64,10 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
             game = withContext(Dispatchers.IO) {
                 gameRepository.getGameDetails(gameId, refresh)
             }
+
+            AISelector.addItemsToWeightedList(game.genres)
+            Log.i(TAG, AISelector.weightedItems.toString())
+
             platformDetails = withContext(Dispatchers.IO) {
                  gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)
             }

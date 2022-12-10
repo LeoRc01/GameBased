@@ -3,6 +3,9 @@ package com.cip.cipstudio.utils
 import com.cip.cipstudio.R
 
 enum class GameTypeEnum {
+    FOR_YOU {
+        override fun getName() = R.string.for_you
+    },
     MOST_HYPED {
         override fun getName() = R.string.most_hyped_games
               },

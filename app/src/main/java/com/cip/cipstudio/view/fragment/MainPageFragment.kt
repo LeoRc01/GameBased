@@ -55,6 +55,19 @@ class MainPageFragment : Fragment() {
     }
 
     private fun initializeFragment(refresh: Boolean = false) {
+
+        // For you games
+        initializeRecyclerView(
+            mainPageBinding.fMainPageRvForYou,
+            GameTypeEnum.FOR_YOU,
+            mainPageBinding.fMainPageShimmerLayoutForYou,
+            refresh
+        )
+        mainPageBinding.fMainPageTvForYou.setOnClickListener {
+            val bundle = bundleOf("gameType" to GameTypeEnum.FOR_YOU.name)
+            findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+        }
+
         // Most rated games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,
