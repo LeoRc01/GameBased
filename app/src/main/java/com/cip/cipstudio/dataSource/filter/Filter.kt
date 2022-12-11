@@ -245,7 +245,6 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     private fun initializeCategory() {
         initializeChipGroup(binding.fFilterCgFilterByCategory, ViewModelFilter::getCategory)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByCategory, binding.fFilterCgFilterByCategory)
-        if ()
     }
 
     private fun initializeGenres(){
