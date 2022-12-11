@@ -29,6 +29,7 @@ class MainPageFragment : Fragment() {
 
     private lateinit var mainPageViewModel: MainPageViewModel
     private lateinit var mainPageBinding: FragmentMainPageBinding
+    private val tagPosition = "position"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +55,21 @@ class MainPageFragment : Fragment() {
         initializeFragment()
 
         return mainPageBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val map = StateInstanceSaver.restoreState(TAG)
+        if (map != null && map.containsKey(tagPosition)) {
+            mainPageBinding.fMainPageScrollView.y = map[tagPosition] as Float
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val map : HashMap<String, Any> = HashMap()
+        map[tagPosition] = mainPageBinding.fMainPageScrollView.y
+        StateInstanceSaver.saveState(TAG, map)
     }
 
     private fun initializeFragment(refresh: Boolean = false) {
