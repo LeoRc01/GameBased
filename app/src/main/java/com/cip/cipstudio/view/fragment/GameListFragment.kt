@@ -62,8 +62,8 @@ class GameListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val filterContainer = StateInstanceSaver.restoreState(TAG) as FilterContainer?
-        filter.initializeFilters(filterContainer)
+        val mapInstanceStateSaved = StateInstanceSaver.restoreState(TAG)
+        filter.initializeFilters(mapInstanceStateSaved)
         initializeDrawer()
         initializeGames()
 
@@ -74,7 +74,7 @@ class GameListFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        StateInstanceSaver.saveState(TAG, filter.getContainer())
+        StateInstanceSaver.saveState(TAG, filter.getMap())
     }
 
     private fun initializeDrawer() {

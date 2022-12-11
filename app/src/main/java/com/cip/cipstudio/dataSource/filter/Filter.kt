@@ -4,14 +4,11 @@ import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.databinding.ReusableFilterLayoutBinding
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
-import com.cip.cipstudio.viewmodel.GameListViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.json.JSONObject
@@ -26,7 +23,9 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     private var yearMin: Int = 1950
     private var yearMax: Int = 2021
-    private var offsetPlatforms = -1
+    var offsetPlatforms = 0
+    private val tagContainer = "FilterContainer"
+    private val tagOffsetPlatforms = "OffsetPlatforms"
 
     constructor(binding : ReusableFilterLayoutBinding,
                 viewModel: ViewModelFilter,
@@ -36,12 +35,16 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         this.gameType = gameListType
     }
 
-    fun initializeFilters(filterContainerInitializer: FilterContainer? = null) {
-        if (filterContainerInitializer != null) {
-            filterContainer = filterContainerInitializer
+    fun initializeFilters(map: Map<String, Any>? = null) {
+        var offset = 0
+        if (map != null) {
+            if (map.containsKey(tagContainer))
+                filterContainer = map[tagContainer] as FilterContainer
+            if (map.containsKey(tagOffsetPlatforms))
+                offset = map[tagOffsetPlatforms] as Int
         }
         initializeCategory()
-        initializePlatforms()
+        initializePlatforms(offset)
         initializeGenres()
         initializeThemes()
         initializeGameModes()
@@ -249,11 +252,10 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
-    private fun initializePlatforms() {
+    private fun initializePlatforms(offset: Int = 0) {
         initializeChipGroup(binding.fFilterCgFilterByPlatform, ViewModelFilter::getPlatforms)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, binding.fFilterRlFilterByPlatform)
-
-
+        initializeMorePlatforms(offset)
 
         binding.fFilterTvLoadMorePlatforms.setOnClickListener {
             binding.fFilterCpLoadingPlatformsIndicator.visibility = View.VISIBLE
@@ -271,6 +273,34 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
+    private fun initializeMorePlatforms(offset: Int) {
+        if (offset > 0) {
+            viewModel.getPlatforms {
+                it.forEach {
+                    val chip = createChip(it.id, it.name, binding.fFilterCgFilterByPlatform)
+                    binding.fFilterCgFilterByPlatform.addView(chip)
+                }
+                offsetPlatforms++
+                if (offset > offsetPlatforms)
+                    initializeMorePlatforms(offset)
+                else {
+                    if (filterContainer.platformList != null) {
+                        filterContainer.platformList?.forEach { id ->
+                            binding.fFilterCgFilterByPlatform.check(id)
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            if (filterContainer.platformList != null) {
+                filterContainer.platformList?.forEach { id ->
+                    binding.fFilterCgFilterByPlatform.check(id)
+                }
+            }
+        }
+    }
+
     private fun initializeRating() {
         initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating)
         if (filterContainer.userRating != null) {
@@ -281,8 +311,11 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
-    fun getContainer() : java.io.Serializable {
-        return filterContainer
+    fun getMap() : Map<String, Any> {
+        val map : HashMap<String, Any> = HashMap()
+        map[tagContainer] = filterContainer
+        map[tagOffsetPlatforms] = offsetPlatforms
+        return map
     }
 
 

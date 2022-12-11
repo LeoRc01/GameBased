@@ -1,13 +1,13 @@
 package com.cip.cipstudio
 
 object StateInstanceSaver {
-    private val stateInstanceSaved = mutableMapOf<String, java.io.Serializable?>()
+    private val stateInstanceSaved = mutableMapOf<String, Map<String, Any>?>()
 
-    fun saveState(key: String, value: java.io.Serializable) {
+    fun saveState(key: String, value: Map<String, Any>?) {
         stateInstanceSaved[key] = value
     }
 
-    fun restoreState(key: String): java.io.Serializable? {
+    fun restoreState(key: String): Map<String, Any>? {
         return stateInstanceSaved[key]
     }
 
