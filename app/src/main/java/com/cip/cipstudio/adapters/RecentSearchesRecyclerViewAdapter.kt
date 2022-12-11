@@ -1,28 +1,20 @@
 package com.cip.cipstudio.adapters
 
 import android.content.Context
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
-import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.model.User
-import com.cip.cipstudio.utils.ActionGameDetailsEnum
-import com.cip.cipstudio.view.fragment.SearchFragment
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -35,9 +27,16 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
     private val TAG = "RecentRecyclerViewAdapt"
     private lateinit var searchDB: RecentSearchesRepository
 
-    fun addItems(queriesJson : ArrayList<String>){
+    private var isSuggestion: ArrayList<Boolean> = arrayListOf()
+
+    fun addItems(queriesJson : ArrayList<String>, suggestion: Boolean = false){
         queries += queriesJson
         notifyItemInserted(queries.size - 1)
+
+        for(query in queries)
+            isSuggestion += suggestion
+
+        Log.i(TAG, "addItems: $isSuggestion")
     }
 
     /**
@@ -46,7 +45,7 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvQuery : TextView
-        val btnDelete : Button
+        val btnDelete : TextView
 
         init {
             tvQuery = view.findViewById(R.id.i_search_history_query)
@@ -74,16 +73,30 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
             searchFunction(queries[position])
         }
 
-        viewHolder.btnDelete.setOnClickListener {
-            val query = queries[position]
+        Log.i(TAG, isSuggestion.toString())
 
-            GlobalScope.launch {
-                User.delete(query, searchDB)
+        if(isSuggestion[position]) {
+            viewHolder.btnDelete.visibility = GONE
+
+            viewHolder.tvQuery.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search, 0, 0, 0)
+
+            val darkRed = ContextCompat.getColor(viewHolder.tvQuery.context, R.color.primary_color_dark)
+            viewHolder.tvQuery.setTextColor(darkRed)
+            viewHolder.tvQuery.compoundDrawables[0]?.setTint(darkRed)
+
+        }
+        else {
+            viewHolder.btnDelete.setOnClickListener {
+                val query = queries[position]
+
+                GlobalScope.launch {
+                    User.delete(query, searchDB)
+                }
+                queries.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, queries.size);
+
             }
-            queries.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, queries.size);
-
         }
 
     }

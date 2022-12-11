@@ -1,33 +1,25 @@
 package com.cip.cipstudio.view.fragment
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.adapters.RecentSearchesRecyclerViewAdapter
-import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
-import com.cip.cipstudio.utils.AuthTypeErrorEnum
-import com.cip.cipstudio.utils.GameTypeEnum
-import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.SearchViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.*
@@ -48,48 +40,57 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         searchBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
 
         searchViewModel = SearchViewModel(searchBinding)
 
-        initializeSearchView()
-
         searchBinding.executePendingBindings()
         searchBinding.lifecycleOwner = this
-
-        // roba che fa avviata la gui
 
         sharedPreferences = searchBinding.root.context.getSharedPreferences(
             getString(R.string.setting_preferences),
             AppCompatActivity.MODE_PRIVATE
         )
 
-
+        initializeSearchView()
 
         return searchBinding.root
+
+    }
+
+    private fun setVisible(widgetId: String){
+        searchBinding.fSearchBg.visibility = View.GONE
+        searchBinding.fSearchHistory.visibility = View.GONE
+        searchBinding.fSearchResults.visibility = View.GONE
+        searchBinding.fSearchNotFound.visibility = View.GONE
+        searchBinding.fSearchNoSuggestions.visibility = View.GONE
+
+        when(widgetId) {
+            "fSearchBg" -> { searchBinding.fSearchBg.visibility = View.VISIBLE }
+            "fSearchHistory" -> { searchBinding.fSearchHistory.visibility = View.VISIBLE }
+            "fSearchResults" -> { searchBinding.fSearchResults.visibility = View.VISIBLE }
+            "fSearchNotFound" -> { searchBinding.fSearchNotFound.visibility = View.VISIBLE }
+            "fSearchNoSuggestions" -> { searchBinding.fSearchNoSuggestions.visibility = View.VISIBLE }
+        }
     }
 
 
     private fun initializeSearchView() {
 
-        searchBinding.fSearchBg.visibility = View.VISIBLE
+        setVisible("fSearchBg")
 
         searchBinding.fSearchSearchBox.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-
                 initializeRecentSearchesList(newText)
-
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-
-                // roba che fa avviata la ricerca
                 initializeSearchResultsList(query)
-
                 return false
             }
 
@@ -97,12 +98,9 @@ class SearchFragment : Fragment() {
 
     }
 
-    fun initializeSearchResultsList(query: String) {
-        // SearchResults
+    private fun initializeSearchResultsList(query: String) {
 
-        searchBinding.fSearchBg.visibility = View.GONE
-        searchBinding.fSearchHistory.visibility = View.GONE
-        searchBinding.fSearchResults.visibility = View.VISIBLE
+        setVisible("fSearchResults")
 
         searchDB = RecentSearchesRepositoryLocal(requireContext())
 
@@ -117,18 +115,25 @@ class SearchFragment : Fragment() {
         )
     }
 
-    // senza shimmer, non posso usare la stessa funzione, da vedere dopo
-    fun initializeRecentSearchesList(newText: String = "") {
-        // SearchHistory
+    private fun initializeRecentSearchesList(newText: String = "") {
 
-        searchBinding.fSearchBg.visibility = View.GONE
-        searchBinding.fSearchResults.visibility = View.GONE
-        searchBinding.fSearchHistory.visibility = View.VISIBLE
+        setVisible("fSearchHistory")
+
+        Log.i(TAG, "TEXTCHANGED")
 
         initializeRecentRecyclerView(
             newText,
-            searchBinding.fSearchHistoryList
+            searchBinding.fSearchHistory
         )
+    }
+
+    private fun searchRecent(query: String) {
+
+        // set the query as the search text and run a search with it
+        searchBinding.fSearchSearchBox.setQuery(query, false)
+        searchBinding.fSearchSearchBox.clearFocus()
+        initializeSearchResultsList(query)
+
     }
 
     private fun initializeResultsRecyclerView(
@@ -152,17 +157,16 @@ class SearchFragment : Fragment() {
         recyclerView.itemAnimator = null
         recyclerView.setItemViewCacheSize(50)
 
-        // chiamata iniziale
-
         resultsOffset = 0
 
         searchViewModel.addGameResults(resultsOffset, query) {
             adapter.addItems(it)
             shimmerLayout.stopShimmer()
             shimmerLayout.visibility = View.GONE
-        }
 
-        // setta l'onscroll listener
+            if(adapter.itemCount == 0)
+                setVisible("fSearchNotFound")
+        }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
 
@@ -195,8 +199,7 @@ class SearchFragment : Fragment() {
         val adapter = RecentSearchesRecyclerViewAdapter(
             requireContext(),
             ArrayList(),
-            ::initializeSearchResultsList
-            //ActionGameDetailsEnum.SEARCH
+            ::searchRecent
         )
 
         recyclerView.layoutManager = linearLayoutManager
@@ -208,13 +211,21 @@ class SearchFragment : Fragment() {
 
         recentOffset = 0
 
-        searchViewModel.addRecentSearches(recentOffset, query, searchDB) {
-            adapter.addItems(it as ArrayList<String>)
+        searchViewModel.addSearchSuggestions(query) { suggestionList ->
+            adapter.addItems(suggestionList as ArrayList<String>, true)
+
+            searchViewModel.addRecentSearches(recentOffset, query, searchDB) { recentList ->
+                adapter.addItems(recentList as ArrayList<String>)
+
+                if(adapter.itemCount == 0)
+                    setVisible("fSearchNoSuggestions")
+            }
+
         }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
 
-        searchBinding.fSearchHistoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        searchBinding.fSearchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
@@ -222,7 +233,7 @@ class SearchFragment : Fragment() {
                     Log.i(TAG, "OFFSET")
                     Log.i(TAG, recentOffset.toString())
                     searchViewModel.addRecentSearches(recentOffset, query, searchDB) { queries ->
-                        (searchBinding.fSearchHistoryList.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
+                        (searchBinding.fSearchHistory.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
                         Log.i(TAG, queries.toString())
                     }
                     Log.i(TAG, "onScrollStateChanged")

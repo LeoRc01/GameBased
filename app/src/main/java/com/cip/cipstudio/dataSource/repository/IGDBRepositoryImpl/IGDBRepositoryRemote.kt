@@ -186,6 +186,17 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
+    override suspend fun getSearchSuggestions(searchText: String, number: Int, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+
+        val apicalypse = APICalypse().fields("name, id")
+            .where("name ~ *\"$searchText\"*")
+            .sort("total_rating", Sort.DESCENDING)
+            .limit(number)
+
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "searchSuggestions${searchText}", refresh)
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
     override suspend fun getGamesByType(type: GameTypeEnum, refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
         return@withContext when (type) {
             GameTypeEnum.MOST_HYPED -> getGamesMostHyped(refresh, pageSize, pageIndex)

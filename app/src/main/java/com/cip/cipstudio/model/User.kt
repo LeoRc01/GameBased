@@ -238,10 +238,13 @@ object User {
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
             db.delete(query)
+        }
+    }
 
-            /*if (isLogged()) {
-                firebaseRepository.deleteGamesFromRecentlyViewed()
-            }*/
+    suspend fun deleteRecentSearchHistory(db: RecentSearchesRepository) {
+        retrieveDataFromCurrentUser()
+        withContext(Dispatchers.Main) {
+            db.deleteAll(uid)
         }
     }
 
@@ -251,15 +254,6 @@ object User {
         withContext(Dispatchers.Main) {
             recentSearches = db.getRecentSearches(userId = uid)
             db.insert(query, uid)
-
-            /*if (isLogged()) {
-                val gameIdDelete =
-                    if (recentSearches.size == 10 && recentSearches.last() != query)
-                        recentSearches.last()
-                    else
-                        null
-                firebaseRepository.addGamesToRecentlyViewed(query, gameIdDelete)
-            }*/
         }
     }
 

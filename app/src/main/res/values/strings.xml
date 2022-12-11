@@ -124,4 +124,6 @@
     <string name="delete_history_message">Are you sure you want to clear history?</string>
     <string name="no">No</string>
     <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
+    <string name="no_results_found">No results found. Sorry :(</string>
+    <string name="no_suggestions_found">No suggestions found</string>
 </resources>
