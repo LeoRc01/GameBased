@@ -2,14 +2,11 @@ package com.cip.cipstudio.view.fragment
 
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,7 +16,6 @@ import com.cip.cipstudio.R
 import com.cip.cipstudio.StateInstanceSaver
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.Filter
-import com.cip.cipstudio.dataSource.filter.FilterContainer
 import com.cip.cipstudio.databinding.FragmentGameListBinding
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -35,13 +31,15 @@ class GameListFragment : Fragment() {
     private lateinit var filter: Filter
 
     private var offset : Int = 0
+    private val tagOffset = "offset"
+    private val tagPosition = "position"
 
     private lateinit var gameType: GameTypeEnum
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         gameType = GameTypeEnum.valueOf(arguments?.getString("gameType")!!)
         gameListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_list, container, false)
         gameListViewModel = GameListViewModel()
@@ -64,8 +62,18 @@ class GameListFragment : Fragment() {
         super.onResume()
         val mapInstanceStateSaved = StateInstanceSaver.restoreState(TAG)
         filter.initializeFilters(mapInstanceStateSaved)
+        val offsetStart = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagOffset))
+                mapInstanceStateSaved[tagOffset] as Int
+            else
+                0
+        val positionStart = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagPosition))
+                mapInstanceStateSaved[tagPosition] as Int
+            else
+                0
+
+
         initializeDrawer()
-        initializeGames()
+        initializeGames(offsetStart, positionStart)
 
         gameListBinding.fGameListBtnFilter.setOnClickListener {
             gameListBinding.drawerLayout.openDrawer(GravityCompat.END)
@@ -74,7 +82,11 @@ class GameListFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        StateInstanceSaver.saveState(TAG, filter.getMap())
+        val mapInstanceStateToSave = filter.getMap()
+        (mapInstanceStateToSave as HashMap<String, Any>)[tagOffset] = offset
+        (mapInstanceStateToSave as HashMap<String, Any>)[tagPosition] = gameListBinding.fGameListGvGames.lastVisiblePosition
+        StateInstanceSaver.saveState(TAG, mapInstanceStateToSave)
+
     }
 
     private fun initializeDrawer() {
@@ -97,7 +109,7 @@ class GameListFragment : Fragment() {
     }
 
 
-    private fun initializeGames() {
+    private fun initializeGames(startOffset: Int = 0, startPosition: Int = 0) {
         gameListBinding.fGameListLoading.visibility = View.VISIBLE
         gameListBinding.fGameListGvGames.visibility = View.GONE
         gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.GONE
@@ -122,6 +134,12 @@ class GameListFragment : Fragment() {
                 )
                 gameListBinding.fGameListGvGames.adapter = gvAdapter
             }
+            if (startOffset != 0) {
+                addStartGames(startOffset, startPosition)
+            }
+            else {
+                gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
+            }
 
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
                 override fun onScroll(
@@ -145,6 +163,21 @@ class GameListFragment : Fragment() {
                 override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
             })
 
+        }
+    }
+
+    private fun addStartGames(startOffset: Int, startPosition: Int) {
+        if (startOffset >= offset) {
+            offset++
+            gameListViewModel.getGames(gameType, filter.getFilterCriteria(), offset){ games ->
+                offset++
+                (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
+                    .addMoreGames(games)
+                addStartGames(startOffset, startPosition)
+            }
+        }
+        else {
+            gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
         }
     }
 
