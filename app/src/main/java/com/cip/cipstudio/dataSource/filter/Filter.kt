@@ -37,6 +37,9 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     fun initializeFilters(filterContainerInitializer: FilterContainer? = null) {
+        if (filterContainerInitializer != null) {
+            filterContainer = filterContainerInitializer
+        }
         initializeCategory()
         initializePlatforms()
         initializeGenres()
@@ -89,14 +92,14 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         textView.setOnClickListener {
             if (child.visibility == View.VISIBLE) {
                 child.visibility = View.GONE
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
                 for (c in otherChildren) {
                     c.visibility = View.GONE
                 }
             }
             else {
                 child.visibility = View.VISIBLE
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
                 for (c in otherChildren) {
                     c.visibility = View.VISIBLE
                 }
@@ -183,88 +186,54 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
-    fun initializeFromFilterContainer(filterContainerInitializer: FilterContainer? = null) {
-        if (filterContainerInitializer == null) {
-            filterContainer = FilterContainer()
-        }
-        else {
-            filterContainer = filterContainerInitializer
-            if (filterContainer.sorting != null) {
-                binding.fFilterActvChangeSort.editText?.setText(filterContainer.sorting)
-            }
-            if (filterContainer.categoryList != null) {
-                filterContainer.categoryList?.forEach {
-                    binding.fFilterCgFilterByCategory.check(it)
-                }
-            }
-            if (filterContainer.statusList != null) {
-                filterContainer.statusList?.forEach {
-                    binding.fFilterCgFilterByStatus.check(it)
-                }
-            }
-            if (filterContainer.platformList != null) {
-                filterContainer.platformList?.forEach {
-                    binding.fFilterCgFilterByPlatform.check(it)
-                }
-            }
-            if (filterContainer.genreList != null) {
-                filterContainer.genreList?.forEach {
-                    binding.fFilterCgFilterByGenres.check(it)
-                }
-            }
-            if (filterContainer.playerPerspectiveList != null) {
-                filterContainer.playerPerspectiveList?.forEach {
-                    binding.fFilterCgFilterByPlayerPerspectives.check(it)
-                }
-            }
-            if (filterContainer.gameModesList != null) {
-                filterContainer.gameModesList?.forEach {
-                    binding.fFilterCgFilterByGameModes.check(it)
-                }
-            }
-            if (filterContainer.themeList != null) {
-                filterContainer.themeList?.forEach {
-                    binding.fFilterCgFilterByTheme.check(it)
-                }
-            }
-            if (filterContainer.releaseDateMin != null) {
-                binding.fFilterSldFilterByReleaseDate.values[0] = filterContainer.releaseDateMin!!
-            }
-            if (filterContainer.releaseDateMax != null) {
-                binding.fFilterSldFilterByReleaseDate.values[1] = filterContainer.releaseDateMax!!
-            }
-            if (filterContainer.userRating != null) {
-                binding.fFilterSldFilterByUserRating.value = filterContainer.userRating!!
-            }
-            if (filterContainer.criticsRating != null) {
-                binding.fFilterSldFilterByCriticsRating.value = filterContainer.criticsRating!!
-            }
-        }
-    }
-
     private fun initializeCategory() {
         initializeChipGroup(binding.fFilterCgFilterByCategory, ViewModelFilter::getCategory)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByCategory, binding.fFilterCgFilterByCategory)
+        if (filterContainer.categoryList != null) {
+            filterContainer.categoryList?.forEach {
+                binding.fFilterCgFilterByCategory.check(it)
+            }
+        }
     }
 
     private fun initializeGenres(){
         initializeChipGroup(binding.fFilterCgFilterByGenres, ViewModelFilter::getGenres)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByGenre, binding.fFilterCgFilterByGenres)
+        if (filterContainer.genreList != null) {
+            filterContainer.genreList?.forEach {
+                binding.fFilterCgFilterByGenres.check(it)
+            }
+        }
     }
 
     private fun initializePlayerPerspectives(){
         initializeChipGroup(binding.fFilterCgFilterByPlayerPerspectives, ViewModelFilter::getPlayerPerspectives)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByPlayerPerspective, binding.fFilterCgFilterByPlayerPerspectives)
+        if (filterContainer.playerPerspectiveList != null) {
+            filterContainer.playerPerspectiveList?.forEach {
+                binding.fFilterCgFilterByPlayerPerspectives.check(it)
+            }
+        }
     }
 
     private fun initializeGameModes(){
         initializeChipGroup(binding.fFilterCgFilterByGameModes, ViewModelFilter::getGameModes)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByGameMode, binding.fFilterCgFilterByGameModes)
+        if (filterContainer.gameModesList != null) {
+            filterContainer.gameModesList?.forEach {
+                binding.fFilterCgFilterByGameModes.check(it)
+            }
+        }
     }
 
     private fun initializeThemes(){
         initializeChipGroup(binding.fFilterCgFilterByTheme, ViewModelFilter::getThemes)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByTheme, binding.fFilterCgFilterByTheme)
+        if (filterContainer.themeList != null) {
+            filterContainer.themeList?.forEach {
+                binding.fFilterCgFilterByTheme.check(it)
+            }
+        }
     }
 
     private fun initializeReleaseDate() {
@@ -274,13 +243,17 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             yearMin = it.first().toInt()
             binding.fFilterSldFilterByReleaseDate.valueTo = it.last()
             yearMax = it.last().toInt()
-            binding.fFilterSldFilterByReleaseDate.values = listOf<Float>(it.first(), it.last())
+            val tempMin = if (filterContainer.releaseDateMin != null ) filterContainer.releaseDateMin else it.first()
+            val tempMax = if (filterContainer.releaseDateMax != null ) filterContainer.releaseDateMax else it.last()
+            binding.fFilterSldFilterByReleaseDate.values = listOf<Float>(tempMin!!, tempMax!!)
         }
     }
 
     private fun initializePlatforms() {
         initializeChipGroup(binding.fFilterCgFilterByPlatform, ViewModelFilter::getPlatforms)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, binding.fFilterRlFilterByPlatform)
+
+
 
         binding.fFilterTvLoadMorePlatforms.setOnClickListener {
             binding.fFilterCpLoadingPlatformsIndicator.visibility = View.VISIBLE
@@ -300,6 +273,12 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     private fun initializeRating() {
         initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating)
+        if (filterContainer.userRating != null) {
+            binding.fFilterSldFilterByUserRating.value = filterContainer.userRating!!
+        }
+        if (filterContainer.criticsRating != null) {
+            binding.fFilterSldFilterByCriticsRating.value = filterContainer.criticsRating!!
+        }
     }
 
     fun getContainer() : java.io.Serializable {

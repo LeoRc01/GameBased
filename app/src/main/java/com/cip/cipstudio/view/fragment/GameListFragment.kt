@@ -4,11 +4,11 @@ package com.cip.cipstudio.view.fragment
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -16,18 +16,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
+import com.cip.cipstudio.StateInstanceSaver
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.Filter
 import com.cip.cipstudio.dataSource.filter.FilterContainer
-import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.databinding.FragmentGameListBinding
-import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.viewmodel.GameListViewModel
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import org.json.JSONObject
 
 
 class GameListFragment : Fragment() {
@@ -39,12 +35,9 @@ class GameListFragment : Fragment() {
     private lateinit var filter: Filter
 
     private var offset : Int = 0
-    private var yearMin : Int = 0
-    private var yearMax : Int = 0
 
     private lateinit var gameType: GameTypeEnum
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,32 +55,28 @@ class GameListFragment : Fragment() {
                         resources,
                         gameType)
 
-        initializeGames()
-        val filterContainer = savedInstanceState
-            ?.getSerializable("filter_container") as FilterContainer
+        return gameListBinding.root
+    }
+
+
+
+    override fun onResume() {
+        super.onResume()
+        val filterContainer = StateInstanceSaver.restoreState(TAG) as FilterContainer?
         filter.initializeFilters(filterContainer)
         initializeDrawer()
-
-
-
+        initializeGames()
 
         gameListBinding.fGameListBtnFilter.setOnClickListener {
             gameListBinding.drawerLayout.openDrawer(GravityCompat.END)
         }
-
-
-
-
-
-        return gameListBinding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("filter_container", filter.getContainer())
+    override fun onPause() {
+        super.onPause()
+        StateInstanceSaver.saveState(TAG, filter.getContainer())
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeDrawer() {
         gameListBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -112,12 +101,14 @@ class GameListFragment : Fragment() {
         gameListBinding.fGameListLoading.visibility = View.VISIBLE
         gameListBinding.fGameListGvGames.visibility = View.GONE
         gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.GONE
+        gameListBinding.fGameListBtnBack.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         gameListViewModel.getGames(gameType, filter.getFilterCriteria()){
             gameListBinding.fGameListLoading.visibility = View.GONE
             gameListBinding.fGameListGvGames.visibility = View.VISIBLE
-            gameListBinding.fGameListBtnBack.backButton.setOnClickListener {
-                findNavController().popBackStack()
-            }
+
 
             if(it.isEmpty()){
                 gameListBinding.fGameListLoadingNoGamesFound.root.visibility = View.VISIBLE
