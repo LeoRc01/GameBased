@@ -5,7 +5,7 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.*
-import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
+import com.cip.cipstudio.dataSource.filter.criteria.Criteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -253,7 +253,7 @@ object IGDBRepositoryRemote : IGDBRepository {
                                         refresh: Boolean,
                                         pageSize: Int,
                                         pageIndex: Int,
-                                        filterCriteria: OperatorCriteria)
+                                        filterCriteria: Criteria)
     : List<GameDetails> = withContext(Dispatchers.IO) {
         return@withContext when (type) {
             GameTypeEnum.MOST_HYPED -> getGamesMostHyped(refresh, pageSize, pageIndex, filterCriteria)
@@ -267,7 +267,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         }
     }
 
-    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getGamesMostRated(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating != 0 & aggregated_rating != 0 & aggregated_rating_count >=10 ${filterCriteria.concatCriteria()}" )
             .sort("total_rating_count", Sort.DESCENDING)
@@ -278,7 +278,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getLovedByCriticsGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO)  {
+    private suspend fun getLovedByCriticsGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO)  {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("total_rating_count >= 10 & total_rating != 0 & aggregated_rating_count >=10 ${filterCriteria.concatCriteria()}")
             .sort("aggregated_rating", Sort.DESCENDING)
@@ -288,7 +288,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getGamesMostHyped(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getGamesMostHyped(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & hypes != 0 & first_release_date > " + (System.currentTimeMillis() / 1000L) + " ${filterCriteria.concatCriteria()}")
             .sort("hypes", Sort.DESCENDING)
@@ -298,7 +298,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getBestRatedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getBestRatedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 &  aggregated_rating_count >= 10 ${filterCriteria.concatCriteria()}")
             .sort("total_rating", Sort.DESCENDING)
@@ -308,7 +308,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getWorstRatedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getWorstRatedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 ${filterCriteria.concatCriteria()}")
             .sort("total_rating", Sort.ASCENDING)
@@ -318,7 +318,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getMostPopularGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getMostPopularGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
             .where("first_release_date > " + ((System.currentTimeMillis() / 1000) - 6 * secondsInAWeek)
@@ -330,7 +330,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getRecentlyReleasedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getRecentlyReleasedGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
             .where("first_release_date < " + (System.currentTimeMillis() / 1000L) + " ${filterCriteria.concatCriteria()}")
@@ -341,7 +341,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getUpcomingGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: OperatorCriteria): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getUpcomingGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val apicalypse = APICalypse()
             .fields("name, id, cover.url")
             .where("first_release_date > " + (System.currentTimeMillis() / 1000) + " ${filterCriteria.concatCriteria()}")

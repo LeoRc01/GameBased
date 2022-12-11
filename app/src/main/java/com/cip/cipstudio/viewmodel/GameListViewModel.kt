@@ -3,7 +3,9 @@ package com.cip.cipstudio.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cip.cipstudio.dataSource.filter.criteria.Criteria
 import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
+import com.cip.cipstudio.dataSource.filter.criteria.ViewModelFilter
 import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -14,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
-class GameListViewModel : ViewModel() {
+class GameListViewModel : ViewModel(), ViewModelFilter {
     private val TAG = "GameListViewModel"
 
     val isPageLoading : MutableLiveData<Boolean> by lazy {
@@ -30,7 +32,7 @@ class GameListViewModel : ViewModel() {
 
 
     fun getGames(gameTypeEnum: GameTypeEnum,
-                 filterCriteria: OperatorCriteria,
+                 filterCriteria: Criteria,
                  offset: Int = 0,
                  updateUI : (ArrayList<GameDetails>)->Unit) {
         isPageLoading.postValue(true)
@@ -45,7 +47,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getPlatforms(
+    override fun getPlatforms(
         updateUI : (List<PlatformDetails>) -> Unit
     ){
         isPageLoading.postValue(true)
@@ -65,7 +67,7 @@ class GameListViewModel : ViewModel() {
         offsetPlatform++
     }
 
-    fun getGenres(updateUI : (ArrayList<JSONObject>)->Unit) {
+    override fun getGenres(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
             val genres = withContext(Dispatchers.IO) {
@@ -76,7 +78,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getPlayerPerspectives(updateUI : (ArrayList<JSONObject>)->Unit) {
+    override fun getPlayerPerspectives(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
             val playerPerspectives = withContext(Dispatchers.IO) {
@@ -87,7 +89,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getGameModes(updateUI : (ArrayList<JSONObject>)->Unit) {
+    override fun getGameModes(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
             val gameModes = withContext(Dispatchers.IO) {
@@ -98,7 +100,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getThemes(updateUI : (ArrayList<JSONObject>)->Unit) {
+    override fun getThemes(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
             val themes = withContext(Dispatchers.IO) {
@@ -109,7 +111,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getYears(updateUI : (List<Float>)->Unit) {
+    override fun getYears(updateUI : (List<Float>)->Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main) {
             val years = withContext(Dispatchers.IO) {
@@ -120,7 +122,7 @@ class GameListViewModel : ViewModel() {
         }
     }
 
-    fun getCategory(updateUI : (ArrayList<JSONObject>)->Unit) {
+    override fun getCategory(updateUI : (ArrayList<JSONObject>)->Unit) {
         isPageLoading.postValue(true)
         updateUI.invoke(Costant.categoryDefault)
         isPageLoading.postValue(false)
