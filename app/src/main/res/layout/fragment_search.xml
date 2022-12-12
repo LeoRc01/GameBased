@@ -52,7 +52,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="5dp"
                 android:visibility="gone"/>
 
             <TextView
@@ -66,13 +66,6 @@
                 android:paddingEnd="20dp"
                 android:padding="5dp"
                 android:visibility="gone"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="?android:attr/listDivider"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/f_search_results"
@@ -129,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="110dp"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="15dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">

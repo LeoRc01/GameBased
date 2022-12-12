@@ -85,7 +85,11 @@ class SearchFragment : Fragment() {
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-                initializeRecentSearchesList(newText)
+                if (newText.isNotBlank()){
+                    initializeRecentSearchesList(newText)
+                }else{
+                    searchBinding.fSearchResults.visibility = View.GONE }
+
                 return false
             }
 
@@ -94,7 +98,61 @@ class SearchFragment : Fragment() {
                 return false
             }
 
+
         })
+
+        searchBinding.fSearchSearchBox.setOnQueryTextFocusChangeListener{ _, hasFocus ->
+            if (hasFocus) {
+                searchBinding.fSearchHistory.visibility = View.VISIBLE
+                Log.d(TAG, "onCreateView: hasFocus")
+                val recyclerView = searchBinding.fSearchHistory
+                val linearLayoutManager = LinearLayoutManager(requireContext())
+                linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
+                val adapter = RecentSearchesRecyclerViewAdapter(
+                    requireContext(),
+                    ArrayList(),
+                    ::searchRecent
+                )
+
+
+                recyclerView.layoutManager = linearLayoutManager
+                recyclerView.adapter = adapter
+                recyclerView.itemAnimator = null
+                recyclerView.setItemViewCacheSize(50)
+
+                searchDB = RecentSearchesRepositoryLocal(requireContext())
+
+                recentOffset = 0
+
+
+                searchViewModel.addRecentSearches(recentOffset, "", searchDB) { recentList ->
+                    adapter.addItems(recentList as ArrayList<String>)
+
+                    if(adapter.itemCount == 0)
+                        setVisible("fSearchNoSuggestions")
+                }
+
+                searchBinding.fSearchResults.clearOnScrollListeners()
+
+                searchBinding.fSearchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
+                            recentOffset++
+                            Log.i(TAG, "OFFSET")
+                            Log.i(TAG, recentOffset.toString())
+                            searchViewModel.addRecentSearches(recentOffset, "", searchDB) { queries ->
+                                (searchBinding.fSearchHistory.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
+                                Log.i(TAG, queries.toString())
+                            }
+                            Log.i(TAG, "onScrollStateChanged")
+
+                        }
+                    }
+                })
+            }
+        }
 
     }
 
