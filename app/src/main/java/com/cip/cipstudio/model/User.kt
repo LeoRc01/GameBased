@@ -2,9 +2,11 @@ package com.cip.cipstudio.model
 
 import android.net.Uri
 import android.util.Log
+import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.dataSource.repository.FirebaseRepository
+import com.cip.cipstudio.model.data.AIModel
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks.forException
@@ -163,7 +165,7 @@ object User {
         if (!isLogged()) {
             throw NotLoggedException()
         }
-
+        AISelector.weightedItems = arrayListOf<AIModel>()
         auth.signOut()
         retrieveDataFromCurrentUser()
     }

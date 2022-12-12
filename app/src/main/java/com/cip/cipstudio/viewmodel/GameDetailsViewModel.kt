@@ -65,8 +65,9 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
                 gameRepository.getGameDetails(gameId, refresh)
             }
 
-            AISelector.addItemsToWeightedList(game.genres)
-            Log.i(TAG, AISelector.weightedItems.toString())
+            if(user.isLogged())
+                AISelector.addItemsToWeightedList(game.genres)
+
 
             platformDetails = withContext(Dispatchers.IO) {
                  gameRepository.getPlatformsInfo(getIdsFromListJSONObject(game.platforms), refresh)

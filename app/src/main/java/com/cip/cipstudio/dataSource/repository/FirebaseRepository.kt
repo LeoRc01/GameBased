@@ -1,9 +1,11 @@
 package com.cip.cipstudio.dataSource.repository
 
+import android.util.Log
 import com.cip.cipstudio.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 object FirebaseRepository {
@@ -19,6 +21,23 @@ object FirebaseRepository {
         if (FirebaseAuth.getInstance().currentUser != null) {
             userId = FirebaseAuth.getInstance().currentUser!!.uid
         }
+    }
+
+    fun addGenreToFYP(genreId: String): Task<Void> {
+        val data: Map<String, Any> = hashMapOf("weight" to 1)
+        val ref = db!!.getReference("users/$userId/forYou")
+        return ref.child(genreId).setValue(data)
+    }
+
+    fun updateFYPGenreWeight(genreId: String, weight : Int) : Task<Void>{
+        val data: Map<String, Any> = hashMapOf("weight" to weight)
+        val ref = db!!.getReference("users/$userId/forYou")
+        return ref.child(genreId).updateChildren(data)
+    }
+
+    fun getFYP() : Task<DataSnapshot> {
+        val ref = db!!.getReference("users/$userId/forYou")
+        return ref.get()
     }
 
     fun addGamesToRecentlyViewed(gameIdToAdd : String, gameIdToDelete : String? = null) : Task<Void> {

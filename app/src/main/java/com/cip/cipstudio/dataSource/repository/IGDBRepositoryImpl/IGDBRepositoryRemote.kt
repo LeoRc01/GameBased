@@ -165,10 +165,10 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
-        
-        val genreIds = AISelector.weightedItems.subList(0,
-            if (AISelector.weightedItems.size < 3)
-                AISelector.weightedItems.size
+        val models = AISelector.getOnlyPositiveWeightsModels()
+        val genreIds = models.subList(0,
+            if (models.size < 3)
+                models.size
             else
                 3
         ).map {
