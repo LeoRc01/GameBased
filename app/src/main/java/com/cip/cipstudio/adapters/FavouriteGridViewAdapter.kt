@@ -12,15 +12,20 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.model.User
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class FavouriteGridViewAdapter(val context : Context,
                                val games : ArrayList<GameDetails>,
                                private val navController: NavController,
-                               private val actionAdapter: ActionGameDetailsEnum = ActionGameDetailsEnum.FAVOURITE_PAGE) : BaseAdapter() {
+                               private val actionAdapter: ActionGameDetailsEnum = ActionGameDetailsEnum.FAVOURITE_PAGE,
+                               private val saveToHistory: Boolean = false) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
     private lateinit var tvGameTitle : TextView
@@ -62,10 +67,17 @@ class FavouriteGridViewAdapter(val context : Context,
 
         tvGameTitle.text = games[position].name
 
+        val historyDB = HistoryRepositoryLocal(context)
+
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(ivGameCover)
                 ivGameCover.setOnClickListener {
+                    if (saveToHistory) {
+                        GlobalScope.launch {
+                            User.addGamesToRecentlyViewed(games[position].id, historyDB)
+                        }
+                    }
                     val bundle = bundleOf()
                     bundle.putString("game_id", games[position].id)
                     navController.navigate(actionAdapter.getAction(), bundle)

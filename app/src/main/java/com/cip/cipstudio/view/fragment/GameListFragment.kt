@@ -130,7 +130,8 @@ class GameListFragment : Fragment() {
                     requireContext(),
                     it,
                     gameListBinding.root.findNavController(),
-                    ActionGameDetailsEnum.GAME_LIST
+                    ActionGameDetailsEnum.GAME_LIST,
+                    saveToHistory = true
                 )
                 gameListBinding.fGameListGvGames.adapter = gvAdapter
             }
