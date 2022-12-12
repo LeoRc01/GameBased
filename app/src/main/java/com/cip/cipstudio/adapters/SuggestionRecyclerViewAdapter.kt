@@ -19,24 +19,23 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class RecentSearchesRecyclerViewAdapter (val context : Context,
-                                         private val queries : ArrayList<String>,
-                                         val searchFunction: (String) -> Unit
-) : RecyclerView.Adapter<RecentSearchesRecyclerViewAdapter.ViewHolder>() {
+class SuggestionRecyclerViewAdapter (val context : Context,
+                                     val searchFunction: (String) -> Unit
+) : RecyclerView.Adapter<SuggestionRecyclerViewAdapter.ViewHolder>() {
 
+    private val queries : ArrayList<String> = arrayListOf()
     private val TAG = "RecentRecyclerViewAdapt"
     private lateinit var searchDB: RecentSearchesRepository
 
     private var isSuggestion: ArrayList<Boolean> = arrayListOf()
 
-    fun addItems(queriesJson : ArrayList<String>, suggestion: Boolean = false){
+    fun addItems(queriesJson : List<String>, suggestion: Boolean = false){
         queries += queriesJson
         notifyItemInserted(queries.size - 1)
 
         for(query in queries)
             isSuggestion += suggestion
 
-        Log.i(TAG, "addItems: $isSuggestion")
     }
 
     /**
@@ -80,9 +79,9 @@ class RecentSearchesRecyclerViewAdapter (val context : Context,
 
             viewHolder.tvQuery.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search, 0, 0, 0)
 
-            val darkRed = ContextCompat.getColor(viewHolder.tvQuery.context, R.color.primary_color_dark)
-            viewHolder.tvQuery.setTextColor(darkRed)
-            viewHolder.tvQuery.compoundDrawables[0]?.setTint(darkRed)
+            val primaryColor = ContextCompat.getColor(viewHolder.tvQuery.context, R.color.primary_color)
+
+            viewHolder.tvQuery.compoundDrawables[0]?.setTint(primaryColor)
 
         }
         else {

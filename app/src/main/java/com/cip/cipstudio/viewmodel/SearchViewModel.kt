@@ -18,7 +18,6 @@ import kotlin.collections.ArrayList
 class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
     private val gameRepository : IGDBRepository = IGDBRepositoryRemote
-    private lateinit var gamesResults : ArrayList<GameDetails>
     private lateinit var recentSearchResults : ArrayList<String>
 
     val isPageLoading : MutableLiveData<Boolean> by lazy {
@@ -28,7 +27,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
     fun addGameResults(offset: Int, query: String, onSuccess: (List<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
-            gamesResults = withContext(Dispatchers.IO){
+            val gamesResults = withContext(Dispatchers.IO){
                 gameRepository.searchGames(query, offset) as ArrayList<GameDetails>
             }
             isPageLoading.postValue(false)
@@ -37,26 +36,23 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(){
 
     }
 
-    fun addSearchSuggestions(query: String, onSuccess: (List<String>) -> Unit) {
-
-        val searchSuggestionsResults = arrayListOf<String>()
+    fun addSearchSuggestions(offset: Int, query: String,searchDB: RecentSearchesRepository, onSuccess: (List<String>) -> Unit) {
 
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
-            gamesResults = withContext(Dispatchers.IO){
+            val suggestion = withContext(Dispatchers.IO){
                 gameRepository.getSearchSuggestions(query) as ArrayList<GameDetails>
+            }
+            val recentSearch = withContext(Dispatchers.IO){
+                User.getRecentlySearched(query, searchDB, offset) as ArrayList<String>
             }
             isPageLoading.postValue(false)
 
-            for (game in gamesResults)
-                searchSuggestionsResults += game.name
-
-            onSuccess.invoke(searchSuggestionsResults)
+            onSuccess.invoke((recentSearch + suggestion.map { it.name }).distinct())
         }
-
     }
 
-    fun addRecentSearches(offset: Int, query: String, searchDB: RecentSearchesRepository, onSuccess: (List<String>) -> Unit) {
+    fun addRecentSearches(offset: Int, query: String = "", searchDB: RecentSearchesRepository, onSuccess: (List<String>) -> Unit) {
         isPageLoading.postValue(true)
 
         viewModelScope.launch(Dispatchers.Main){

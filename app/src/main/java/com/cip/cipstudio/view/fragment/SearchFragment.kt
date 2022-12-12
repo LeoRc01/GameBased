@@ -1,20 +1,19 @@
 package com.cip.cipstudio.view.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
-import com.cip.cipstudio.adapters.RecentSearchesRecyclerViewAdapter
+import com.cip.cipstudio.adapters.SuggestionRecyclerViewAdapter
 import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentSearchBinding
@@ -29,7 +28,6 @@ class SearchFragment : Fragment() {
     private lateinit var searchBinding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private val TAG = "SearchFragment"
-    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var searchDB : RecentSearchesRepository
 
@@ -49,10 +47,9 @@ class SearchFragment : Fragment() {
         searchBinding.executePendingBindings()
         searchBinding.lifecycleOwner = this
 
-        sharedPreferences = searchBinding.root.context.getSharedPreferences(
-            getString(R.string.setting_preferences),
-            AppCompatActivity.MODE_PRIVATE
-        )
+
+        showRecentSearches()
+
 
         initializeSearchView()
 
@@ -73,116 +70,98 @@ class SearchFragment : Fragment() {
             "fSearchResults" -> { searchBinding.fSearchResults.visibility = View.VISIBLE }
             "fSearchNotFound" -> { searchBinding.fSearchNotFound.visibility = View.VISIBLE }
             "fSearchNoSuggestions" -> { searchBinding.fSearchNoSuggestions.visibility = View.VISIBLE }
+            else -> { }
         }
     }
 
 
     private fun initializeSearchView() {
 
-        setVisible("fSearchBg")
-
         searchBinding.fSearchSearchBox.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.isNotBlank()){
-                    initializeRecentSearchesList(newText)
+                    setSuggestions(newText)
                 }else{
-                    searchBinding.fSearchResults.visibility = View.GONE }
+                    showRecentSearches()
+                }
 
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                initializeSearchResultsList(query)
+                searchResults(query)
                 return false
             }
 
 
         })
 
-        searchBinding.fSearchSearchBox.setOnQueryTextFocusChangeListener{ _, hasFocus ->
-            if (hasFocus) {
-                searchBinding.fSearchHistory.visibility = View.VISIBLE
-                Log.d(TAG, "onCreateView: hasFocus")
-                val recyclerView = searchBinding.fSearchHistory
-                val linearLayoutManager = LinearLayoutManager(requireContext())
-                linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-
-                val adapter = RecentSearchesRecyclerViewAdapter(
-                    requireContext(),
-                    ArrayList(),
-                    ::searchRecent
-                )
-
-
-                recyclerView.layoutManager = linearLayoutManager
-                recyclerView.adapter = adapter
-                recyclerView.itemAnimator = null
-                recyclerView.setItemViewCacheSize(50)
-
-                searchDB = RecentSearchesRepositoryLocal(requireContext())
-
-                recentOffset = 0
-
-
-                searchViewModel.addRecentSearches(recentOffset, "", searchDB) { recentList ->
-                    adapter.addItems(recentList as ArrayList<String>)
-
-                    if(adapter.itemCount == 0)
-                        setVisible("fSearchNoSuggestions")
-                }
-
-                searchBinding.fSearchResults.clearOnScrollListeners()
-
-                searchBinding.fSearchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
-                            recentOffset++
-                            Log.i(TAG, "OFFSET")
-                            Log.i(TAG, recentOffset.toString())
-                            searchViewModel.addRecentSearches(recentOffset, "", searchDB) { queries ->
-                                (searchBinding.fSearchHistory.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
-                                Log.i(TAG, queries.toString())
-                            }
-                            Log.i(TAG, "onScrollStateChanged")
-
-                        }
-                    }
-                })
-            }
-        }
-
     }
 
-    private fun initializeSearchResultsList(query: String) {
+    private fun showRecentSearches() {
+        setVisible("fSearchHistory")
+        val recyclerView = searchBinding.fSearchHistory
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
+        val adapter = SuggestionRecyclerViewAdapter(
+            requireContext(),
+            ::searchRecent
+        )
+
+
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
+        recyclerView.setItemViewCacheSize(50)
+
+        searchDB = RecentSearchesRepositoryLocal(requireContext())
+
+        recentOffset = 0
+
+
+        searchViewModel.addRecentSearches(recentOffset, searchDB =  searchDB) { recentList ->
+            adapter.addItems(recentList as ArrayList<String>)
+
+            if (recentList.isEmpty())
+                setVisible("fSearchNoSuggestions")
+        }
+
+        searchBinding.fSearchResults.clearOnScrollListeners()
+
+        searchBinding.fSearchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
+                    recentOffset++
+                    searchViewModel.addRecentSearches(recentOffset, "", searchDB) { queries ->
+                        (searchBinding.fSearchHistory.adapter as SuggestionRecyclerViewAdapter).addItems(queries as ArrayList<String>)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun searchResults(query: String) {
 
         setVisible("fSearchResults")
 
         searchDB = RecentSearchesRepositoryLocal(requireContext())
 
-        GlobalScope.launch {
+        lifecycleScope.launch {
             User.addSearchToRecentlySearched(query, searchDB)
         }
 
-        initializeResultsRecyclerView(
-            query,
-            searchBinding.fSearchResults,
-            searchBinding.fSearchShimmerLayoutResults
-        )
+        initializeResultsRecyclerView(query)
     }
 
-    private fun initializeRecentSearchesList(newText: String = "") {
+    private fun setSuggestions(newText: String = "") {
 
         setVisible("fSearchHistory")
 
-        Log.i(TAG, "TEXTCHANGED")
-
-        initializeRecentRecyclerView(
-            newText,
-            searchBinding.fSearchHistory
-        )
+        initializeRecentRecyclerView(newText)
     }
 
     private fun searchRecent(query: String) {
@@ -190,19 +169,14 @@ class SearchFragment : Fragment() {
         // set the query as the search text and run a search with it
         searchBinding.fSearchSearchBox.setQuery(query, false)
         searchBinding.fSearchSearchBox.clearFocus()
-        initializeSearchResultsList(query)
+        searchResults(query)
 
     }
 
-    private fun initializeResultsRecyclerView(
-        query: String,
-        recyclerView: RecyclerView,
-        shimmerLayout: ShimmerFrameLayout
-    ) {
+    private fun initializeResultsRecyclerView(query: String) {
+        val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
         shimmerLayout.visibility = View.VISIBLE
         shimmerLayout.startShimmer()
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
 
         val adapter = GamesBigRecyclerViewAdapter(
             requireContext(),
@@ -210,6 +184,10 @@ class SearchFragment : Fragment() {
             ActionGameDetailsEnum.SEARCH
         )
 
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
+        val recyclerView = searchBinding.fSearchResults
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
@@ -233,13 +211,9 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
                     resultsOffset++
-                    Log.i(TAG, "OFFSET")
-                    Log.i(TAG, resultsOffset.toString())
                     searchViewModel.addGameResults(resultsOffset, query) { games ->
                         (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
-                        Log.i(TAG, games.toString())
                     }
-                    Log.i(TAG, "onScrollStateChanged")
 
                 }
             }
@@ -248,17 +222,17 @@ class SearchFragment : Fragment() {
     }
 
     private fun initializeRecentRecyclerView(
-        query: String,
-        recyclerView: RecyclerView
+        query: String
     ) {
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        val recyclerView = searchBinding.fSearchHistory
 
-        val adapter = RecentSearchesRecyclerViewAdapter(
+        val adapter = SuggestionRecyclerViewAdapter(
             requireContext(),
-            ArrayList(),
             ::searchRecent
         )
+
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
 
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
@@ -269,15 +243,10 @@ class SearchFragment : Fragment() {
 
         recentOffset = 0
 
-        searchViewModel.addSearchSuggestions(query) { suggestionList ->
-            adapter.addItems(suggestionList as ArrayList<String>, true)
-
-            searchViewModel.addRecentSearches(recentOffset, query, searchDB) { recentList ->
-                adapter.addItems(recentList as ArrayList<String>)
-
-                if(adapter.itemCount == 0)
-                    setVisible("fSearchNoSuggestions")
-            }
+        searchViewModel.addSearchSuggestions(recentOffset, query, searchDB) { suggestionList ->
+            adapter.addItems(suggestionList, true)
+            if(adapter.itemCount == 0)
+                setVisible("fSearchNoSuggestions")
 
         }
 
@@ -288,13 +257,9 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
                     recentOffset++
-                    Log.i(TAG, "OFFSET")
-                    Log.i(TAG, recentOffset.toString())
                     searchViewModel.addRecentSearches(recentOffset, query, searchDB) { queries ->
-                        (searchBinding.fSearchHistory.adapter as RecentSearchesRecyclerViewAdapter).addItems(queries as ArrayList<String>)
-                        Log.i(TAG, queries.toString())
+                        (searchBinding.fSearchHistory.adapter as SuggestionRecyclerViewAdapter).addItems(queries as ArrayList<String>)
                     }
-                    Log.i(TAG, "onScrollStateChanged")
 
                 }
             }
