@@ -23,9 +23,7 @@ data class PlatformHardwareDetails(
         jsonObject.getStringOrNotDefined("output"),
         jsonObject.getStringOrNotDefined("storage"),
         jsonObject.getStringOrNotDefined("resolutions")
-    ){
-        Log.i("HARDWARE", jsonObject.toString())
-    }
+    ){}
 
 
 }

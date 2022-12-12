@@ -89,7 +89,9 @@ class HistoryFragment : Fragment() {
             historyBinding.fHistoryRvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (!recyclerView.canScrollVertically(1) && historyViewModel.isPageLoading.value == false) {
+                    if (!recyclerView.canScrollVertically(1) &&
+                        historyViewModel.isPageLoading.value == false &&
+                        historyViewModel.isMoreDataAvailable.value == true) {
                         offset++
                         historyViewModel.addMoreGame(offset) { games ->
                             (historyBinding.fHistoryRvGames.adapter as GamesBigRecyclerViewAdapter).addItems(games)

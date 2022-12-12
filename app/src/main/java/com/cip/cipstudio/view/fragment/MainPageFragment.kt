@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
+import com.cip.cipstudio.StateInstanceSaver
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.model.data.Loading
@@ -28,6 +29,7 @@ class MainPageFragment : Fragment() {
 
     private lateinit var mainPageViewModel: MainPageViewModel
     private lateinit var mainPageBinding: FragmentMainPageBinding
+    private val tagPosition = "position"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,7 @@ class MainPageFragment : Fragment() {
     ): View? {
         mainPageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
         mainPageViewModel = MainPageViewModel()
+        StateInstanceSaver.deleteState("GameListFragment")
 
 
 
@@ -52,6 +55,21 @@ class MainPageFragment : Fragment() {
         initializeFragment()
 
         return mainPageBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val map = StateInstanceSaver.restoreState(TAG)
+        if (map != null && map.containsKey(tagPosition)) {
+            mainPageBinding.fMainPageScrollView.y = map[tagPosition] as Float
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val map : HashMap<String, Any> = HashMap()
+        map[tagPosition] = mainPageBinding.fMainPageScrollView.y
+        StateInstanceSaver.saveState(TAG, map)
     }
 
     private fun initializeFragment(refresh: Boolean = false) {

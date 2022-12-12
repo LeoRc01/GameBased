@@ -70,7 +70,7 @@
     <style name="CipTitleMedium" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -119,14 +119,51 @@
 
     <style name="IconButton.Cip" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
         <item name="android:backgroundTint">@color/light_secondary_color</item>
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:drawablePadding">0dp</item>
-        <item name="android:padding">6dp</item>
-        <item name="iconSize">28dp</item>
+        <item name="android:padding">4.3dp</item>
+        <item name="iconSize">24dp</item>
         <item name="iconTint">@color/primary_color</item>
-        <item name="android:layout_margin">5dp</item>
-
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
+    <style name="Chip.Filter.Cip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:theme">@style/Theme.Chip.CipStudio</item>
+    </style>
+
+    <style name="FilterTextView" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:drawablePadding">7dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="FilterChipGroup" parent="">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="FilterDivider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="thickness">1dp</item>
+    </style>
 </resources>

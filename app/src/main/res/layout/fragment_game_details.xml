@@ -50,8 +50,7 @@
                         <androidx.cardview.widget.CardView
                             android:id="@+id/f_gameDetails_cardView_smallGameLogo"
                             app:cardCornerRadius="20dp"
-                            android:layout_marginTop="30dp"
-
+                            android:layout_marginTop="45dp"
                             android:layout_centerHorizontal="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -70,7 +69,7 @@
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="400dp"
+                            android:layout_height="420dp"
                             android:adjustViewBounds="true"
                             android:fadingEdge="vertical"
                             android:fadingEdgeLength="20dp"
@@ -84,35 +83,26 @@
                             android:orientation="horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp">
+                            android:elevation="20dp">
 
 
                             <Button
                                 android:id="@+id/f_gameDetails_iv_share"
-                                style="?attr/materialIconButtonFilledStyle"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_marginVertical="5dp"
-                                android:backgroundTint="@color/light_secondary_color"
+                                style="@style/IconButton.Cip"
                                 app:icon="@drawable/ic_share"
-                                app:iconTint="@color/primary_color"
-                                app:iconSize="26dp"
-                                android:padding="6dp"/>
+                                app:iconSize="20dp"
+                                android:padding="5.5dp"
+                                android:layout_marginEnd="2dp"/>
 
                             <Button
                                 android:id="@+id/f_gameDetails_btn_favorite"
-                                style="?attr/materialIconButtonFilledStyle"
-                                app:iconTint="@color/primary_color"
-                                android:backgroundTint="@color/light_secondary_color"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_margin="5dp"
+                                style="@style/IconButton.Cip"
+                                android:layout_marginStart="0dp"
                                 android:onClick="@{() -> vm.setFavouriteStatus()}"
                                 android:visibility="@{user.logged ? View.VISIBLE : View.GONE}"
                                 app:icon="@drawable/ic_favorite_border"
                                 app:strokeWidth="0dp"
-                                app:iconSize="26dp"
-                                android:padding="7.2dp"/>
+                                android:padding="4.4dp"/>
 
                         </LinearLayout>
 
@@ -398,6 +388,25 @@
                                     android:id="@+id/f_gameDetails_tv_GameDetails_gameModes"
                                     style="@style/GameDetails.field"
                                     android:text="@{vm.game.gameModesString}"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/f_gameDetails_ll_gameDetails_themes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:visibility='@{vm.game.fields.contains("themes")? View.VISIBLE : View.GONE}'>
+
+
+                                <TextView
+                                    style="@style/GameDetails.labelField"
+                                    android:text="@string/themes"/>
+
+                                <TextView
+                                    android:id="@+id/f_gameDetails_tv_GameDetails_themes"
+                                    style="@style/GameDetails.field"
+                                    android:text="@{vm.game.themesString}"/>
                             </LinearLayout>
 
                             <LinearLayout

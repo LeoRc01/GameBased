@@ -28,6 +28,7 @@ data class GameDetails(val id: String,
     var franchise: JSONObject? = null
     var languageSupport: List<JSONObject> = ArrayList()
     var gameModes: List<JSONObject> = ArrayList()
+    var themes : List<JSONObject> = ArrayList()
     var playerPerspectives: List<JSONObject> = ArrayList()
     var collection: JSONObject? = null
     var parentGame: GameDetails? = null
@@ -58,6 +59,7 @@ data class GameDetails(val id: String,
         similarGames = jsonGame.getGameDetailsListOrEmpty("similar_games")
         setInvolvedCompany(jsonGame)
         gameModes = jsonGame.getListOrEmpty("game_modes")
+        themes = jsonGame.getListOrEmpty("themes")
         playerPerspectives = jsonGame.getListOrEmpty("player_perspectives")
         if (jsonGame.has("language_support")) {
             languageSupport = jsonGame
@@ -238,6 +240,10 @@ data class GameDetails(val id: String,
 
     fun getGameModesString() : String {
         return getStringFromListOfJSONObject(gameModes)
+    }
+
+    fun getThemesString() : String {
+        return getStringFromListOfJSONObject(themes)
     }
 
     fun getPlayerPerspectivesString() : String {

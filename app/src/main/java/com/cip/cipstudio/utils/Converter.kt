@@ -5,6 +5,10 @@ import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import org.json.JSONArray
 import org.json.JSONObject
+import java.sql.Date
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class Converter{
     companion object {
@@ -43,6 +47,27 @@ class Converter{
             val result = ArrayList<PlatformDetails>()
             for (i in 0 until jsonArray.length()) {
                 result.add(PlatformDetails(jsonArray.getJSONObject(i)))
+            }
+            return result
+        }
+
+        fun fromJsonArrayToYear(jsonArray: JSONArray) : Int{
+            return fromTimestampToYear(
+                jsonArray.getJSONObject(0).getLong("first_release_date")
+            )
+        }
+
+        fun fromTimestampToYear(timestamp: Long) : Int{
+            val cal : Calendar = Calendar.getInstance();
+            cal.timeInMillis = timestamp*1000;
+            return cal.get(Calendar.YEAR);
+
+        }
+
+        fun fromJsonArrayToListString(jsonArray: JSONArray, key: String): ArrayList<String> {
+            val result = ArrayList<String>()
+            for (i in 0 until jsonArray.length()) {
+                result.add(jsonArray.getJSONObject(i).getString(key))
             }
             return result
         }
