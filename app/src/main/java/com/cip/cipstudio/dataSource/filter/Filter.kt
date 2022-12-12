@@ -110,7 +110,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
-    private fun initializeChipGroup(chipGroup: ChipGroup, getFilter: ViewModelFilter.((List<*>) -> Unit) -> Unit) {
+    private fun initializeChipGroup(chipGroup: ChipGroup, list: List<Int>? = null, getFilter: ViewModelFilter.((List<*>) -> Unit) -> Unit) {
         viewModel.getFilter {
             chipGroup.removeAllViews()
             it.forEach { chipObject ->
@@ -132,6 +132,11 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 }
                 val chipButton = createChip(id, name, chipGroup)
                 chipGroup.addView(chipButton)
+            }
+            if (list != null && list.isNotEmpty()) {
+                list?.forEach {id ->
+                    chipGroup.check(id)
+                }
             }
         }
     }
@@ -190,53 +195,28 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializeCategory() {
-        initializeChipGroup(binding.fFilterCgFilterByCategory, ViewModelFilter::getCategory)
+        initializeChipGroup(binding.fFilterCgFilterByCategory, filterContainer.categoryList, ViewModelFilter::getCategory)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByCategory, binding.fFilterCgFilterByCategory)
-        if (filterContainer.categoryList != null) {
-            filterContainer.categoryList?.forEach {
-                binding.fFilterCgFilterByCategory.check(it)
-            }
-        }
     }
 
     private fun initializeGenres(){
-        initializeChipGroup(binding.fFilterCgFilterByGenres, ViewModelFilter::getGenres)
+        initializeChipGroup(binding.fFilterCgFilterByGenres,filterContainer.genreList, ViewModelFilter::getGenres)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByGenre, binding.fFilterCgFilterByGenres)
-        if (filterContainer.genreList != null) {
-            filterContainer.genreList?.forEach {
-                binding.fFilterCgFilterByGenres.check(it)
-            }
-        }
     }
 
     private fun initializePlayerPerspectives(){
-        initializeChipGroup(binding.fFilterCgFilterByPlayerPerspectives, ViewModelFilter::getPlayerPerspectives)
+        initializeChipGroup(binding.fFilterCgFilterByPlayerPerspectives, filterContainer.playerPerspectiveList, ViewModelFilter::getPlayerPerspectives)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByPlayerPerspective, binding.fFilterCgFilterByPlayerPerspectives)
-        if (filterContainer.playerPerspectiveList != null) {
-            filterContainer.playerPerspectiveList?.forEach {
-                binding.fFilterCgFilterByPlayerPerspectives.check(it)
-            }
-        }
     }
 
     private fun initializeGameModes(){
-        initializeChipGroup(binding.fFilterCgFilterByGameModes, ViewModelFilter::getGameModes)
+        initializeChipGroup(binding.fFilterCgFilterByGameModes, filterContainer.gameModesList, ViewModelFilter::getGameModes)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByGameMode, binding.fFilterCgFilterByGameModes)
-        if (filterContainer.gameModesList != null) {
-            filterContainer.gameModesList?.forEach {
-                binding.fFilterCgFilterByGameModes.check(it)
-            }
-        }
     }
 
     private fun initializeThemes(){
-        initializeChipGroup(binding.fFilterCgFilterByTheme, ViewModelFilter::getThemes)
+        initializeChipGroup(binding.fFilterCgFilterByTheme, filterContainer.themeList, ViewModelFilter::getThemes)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByTheme, binding.fFilterCgFilterByTheme)
-        if (filterContainer.themeList != null) {
-            filterContainer.themeList?.forEach {
-                binding.fFilterCgFilterByTheme.check(it)
-            }
-        }
     }
 
     private fun initializeReleaseDate() {
@@ -253,7 +233,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializePlatforms(offset: Int = 0) {
-        initializeChipGroup(binding.fFilterCgFilterByPlatform, ViewModelFilter::getPlatforms)
+        initializeChipGroup(binding.fFilterCgFilterByPlatform, null, ViewModelFilter::getPlatforms)
         initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, binding.fFilterRlFilterByPlatform)
         initializeMorePlatforms(offset)
 
