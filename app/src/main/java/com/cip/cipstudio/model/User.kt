@@ -7,6 +7,7 @@ import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.dataSource.repository.FirebaseRepository
 import com.cip.cipstudio.model.data.AIModel
+import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks.forException
@@ -85,7 +86,7 @@ object User {
         return task
     }
 
-    suspend fun getRecentlyViewed(db: HistoryRepository, offset: Int) : List<String> {
+    suspend fun getRecentlyViewed(db: HistoryRepository, offset: Int = 0) : List<String> {
         return db.getHistory(uid, pageIndex= offset)
     }
 
@@ -250,4 +251,32 @@ object User {
         }
 
     }
+
+    suspend fun getRecentlySearched(query: String, db: RecentSearchesRepository, offset: Int = 0) : List<String> {
+        return db.getRecentSearches(query, userId = uid, pageIndex= offset)
+    }
+
+    suspend fun deleteQueryFromRecentSearchHistory(query: String, db: RecentSearchesRepository) {
+        retrieveDataFromCurrentUser()
+        withContext(Dispatchers.Main) {
+            db.delete(query)
+        }
+    }
+
+    suspend fun deleteRecentSearchHistory(db: RecentSearchesRepository) {
+        retrieveDataFromCurrentUser()
+        withContext(Dispatchers.Main) {
+            db.deleteAll(uid)
+        }
+    }
+
+    suspend fun addSearchToRecentlySearched(query: String, db: RecentSearchesRepository) {
+        lateinit var recentSearches: List<String>
+        retrieveDataFromCurrentUser()
+        withContext(Dispatchers.Main) {
+            recentSearches = db.getRecentSearches(userId = uid)
+            db.insert(query, uid)
+        }
+    }
+
 }

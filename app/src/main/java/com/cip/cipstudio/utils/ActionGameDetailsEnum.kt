@@ -26,6 +26,9 @@ enum class ActionGameDetailsEnum {
     },
     HISTORY {
         override fun getAction() = R.id.action_historyFragment_to_game_details_profile
+    },
+    SEARCH {
+        override fun getAction() = R.id.action_searchScreen_to_game_details_search
     },;
 
 

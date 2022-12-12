@@ -5,6 +5,7 @@
     <string name="email_placeholder" translatable="false">Email</string>
     <string name="password_placeholder" translatable="false">Password</string>
     <string name="repeat_password_placeholder">Confirm password</string>
+    <string name="search_placeholder">Search</string>
     <string name="rating" translatable="false">Rating:</string>
     <string name="platforms">Platforms:</string>
     <string name="release_date">Release Date:</string>
@@ -47,6 +48,7 @@
     <string name="settings">settings</string>
     <string name="back">back</string>
     <string name="recently_viewed">Recently viewed</string>
+    <string name="recently_searched">Recently searched</string>
     <string name="genre">Genre</string>
     <string name="developer">Developers:</string>
     <string name="publisher">Publishers:</string>
@@ -122,6 +124,8 @@
     <string name="delete_history_message">Are you sure you want to clear history?</string>
     <string name="no">No</string>
     <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
+    <string name="no_results_found">No results found.</string>
+    <string name="no_suggestions_found">No suggestions found</string>
     <string name="delete_account">Delete account</string>
     <string name="delete_account_message">Are you sure? all your account data will be PERMANENTLY removed</string>
     <string name="account_deleted">Account deleted</string>
