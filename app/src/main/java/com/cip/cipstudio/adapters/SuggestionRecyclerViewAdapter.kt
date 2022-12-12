@@ -89,7 +89,7 @@ class SuggestionRecyclerViewAdapter (val context : Context,
                 val query = queries[position]
 
                 GlobalScope.launch {
-                    User.delete(query, searchDB)
+                    User.deleteQueryFromRecentSearchHistory(query, searchDB)
                 }
                 queries.removeAt(position)
                 notifyItemRemoved(position)

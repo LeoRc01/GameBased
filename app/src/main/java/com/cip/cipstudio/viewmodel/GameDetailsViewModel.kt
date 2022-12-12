@@ -58,9 +58,6 @@ class GameDetailsViewModel(private val binding: FragmentGameDetailsBinding
 
 
         viewModelScope.launch(Dispatchers.Main) {
-            // withContext serve per cambiare il contesto di esecuzione
-            // quindi se prima era in main thread ora è in IO thread
-            // ha le stesse funzionalità di async e await
             game = withContext(Dispatchers.IO) {
                 gameRepository.getGameDetails(gameId, refresh)
             }

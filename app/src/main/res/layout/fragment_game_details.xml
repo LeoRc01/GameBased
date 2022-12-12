@@ -235,7 +235,8 @@
                                 android:orientation="vertical"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate">
+                                app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_ll_gameDetails_releaseDate"
+                                android:visibility='@{vm.game.fields.contains("platforms")? View.VISIBLE : View.GONE}'>
 
 
                                 <TextView

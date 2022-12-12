@@ -138,6 +138,8 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     override suspend fun getPlatformsInfo(platformIds : List<String>, refresh: Boolean) : List<PlatformDetails> = withContext(Dispatchers.IO){
+        if (platformIds.isEmpty())
+            return@withContext emptyList<PlatformDetails>()
         val platformIdsString = buildIdsForRequest(platformIds)
         val apicalypse = APICalypse().fields("abbreviation, " +
                 "alternative_name, " +
