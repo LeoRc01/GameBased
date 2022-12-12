@@ -20,8 +20,10 @@ object AISelector {
             if (containsAiModel(model)) {
                 weightedItems.forEach {
                     if (it.genreId == model.genreId) {
-                        it.weight+=1
-                        FirebaseRepository.updateFYPGenreWeight(it.genreId, it.weight)
+                        if(it.weight < 5){
+                            it.weight+=1
+                            FirebaseRepository.updateFYPGenreWeight(it.genreId, it.weight)
+                        }
                     }
                 }
             } else {
