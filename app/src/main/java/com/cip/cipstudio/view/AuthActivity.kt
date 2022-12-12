@@ -10,9 +10,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.R
+import com.cip.cipstudio.dataSource.repository.AISelector
+import com.cip.cipstudio.dataSource.repository.FirebaseRepository
 import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ContextWrapper
+import com.cip.cipstudio.view.widgets.LoadingSpinner
+import okhttp3.internal.wait
 
 class AuthActivity : AppCompatActivity() {
     private val TAG = "AuthActivity"
@@ -40,12 +44,15 @@ class AuthActivity : AppCompatActivity() {
 
         if(User.isLogged() || preferences.contains(getString(R.string.guest_settings))) {
             try {
+
                 User.syncRecentlyViewedGames(HistoryRepositoryLocal(this))
                 Log.i(TAG, "Login as User")
+
             } catch (_: NotLoggedException) {
                 Log.i(TAG, "Login as guest")
             }
             startMainActivity()
+
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment

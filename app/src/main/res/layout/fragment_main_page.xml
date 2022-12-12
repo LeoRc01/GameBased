@@ -27,6 +27,62 @@
                 <!-- Most rated games -->
 
                 <TextView
+                    android:id="@+id/f_mainPage_tv_forYou"
+                    style="@style/CipTitleMedium.line.arrowRight"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/for_you" />
+
+                <RelativeLayout
+                    android:clipChildren="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:clipChildren="false"
+                        android:id="@+id/f_mainPage_shimmerLayout_forYou"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                            <include layout="@layout/shimmer_small_placeholder"/>
+                        </LinearLayout>
+
+
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/f_mainPage_rv_forYou"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:divider="@null"
+                        android:orientation="horizontal"
+                        />
+
+                </RelativeLayout>
+
+                <!-- Most rated games -->
+
+                <TextView
                     android:id="@+id/f_mainPage_tv_mostRatedGames"
                     style="@style/CipTitleMedium.line.arrowRight"
                     android:layout_marginStart="12dp"
@@ -80,7 +136,7 @@
 
                 </RelativeLayout>
 
-                <!-- Most rated games -->
+                <!-- Top rated games -->
 
                 <TextView
                     android:id="@+id/f_mainPage_tv_bestRatedGames"

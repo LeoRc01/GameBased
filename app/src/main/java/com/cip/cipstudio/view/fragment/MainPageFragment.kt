@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.StateInstanceSaver
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
+import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
 import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -36,10 +37,10 @@ class MainPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainPageBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
-        mainPageViewModel = MainPageViewModel()
+        mainPageViewModel = MainPageViewModel(){
+            initializeFragment()
+        }
         StateInstanceSaver.deleteState("GameListFragment")
-
-
 
 
         mainPageBinding.fMainPageSrlSwipeRefresh.setOnRefreshListener {
@@ -51,8 +52,6 @@ class MainPageFragment : Fragment() {
                     mainPageBinding.fMainPageSrlSwipeRefresh.isRefreshing = false
                 }, 2000)
         }
-
-        initializeFragment()
 
         return mainPageBinding.root
     }
@@ -73,6 +72,29 @@ class MainPageFragment : Fragment() {
     }
 
     private fun initializeFragment(refresh: Boolean = false) {
+
+        // For you games
+        if(AISelector.weightedItems.isNotEmpty()){
+            mainPageBinding.fMainPageRvForYou.visibility = View.VISIBLE
+            mainPageBinding.fMainPageTvForYou.visibility = View.VISIBLE
+            mainPageBinding.fMainPageShimmerLayoutForYou.visibility = View.VISIBLE
+            initializeRecyclerView(
+                mainPageBinding.fMainPageRvForYou,
+                GameTypeEnum.FOR_YOU,
+                mainPageBinding.fMainPageShimmerLayoutForYou,
+                refresh
+            )
+            mainPageBinding.fMainPageTvForYou.setOnClickListener {
+                val bundle = bundleOf("gameType" to GameTypeEnum.FOR_YOU.name)
+                findNavController().navigate(R.id.action_homeScreen_to_gameListFragment, bundle)
+            }
+        }else{
+            mainPageBinding.fMainPageRvForYou.visibility = View.GONE
+            mainPageBinding.fMainPageTvForYou.visibility = View.GONE
+            mainPageBinding.fMainPageShimmerLayoutForYou.visibility = View.GONE
+        }
+
+
         // Most rated games
         initializeRecyclerView(
             mainPageBinding.fMainPageRvMostRatedGames,

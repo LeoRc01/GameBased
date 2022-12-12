@@ -131,6 +131,7 @@
     <string name="new_favourite">Add new favourite</string>
     <string name="no_recent_activities">No recent activities</string>
     <string name="discover_new_games">Discover new games</string>
+    <string name="for_you">For you</string>
     <string name="filter">Filter</string>
     <string name="filter_by_rating">Rating</string>
     <string name="filter_by_platform">Platform</string>

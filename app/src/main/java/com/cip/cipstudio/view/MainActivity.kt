@@ -118,7 +118,6 @@ class MainActivity : AppCompatActivity() {
                 // content, or apply promotional credit to the user's
                 // account.
                 // ...
-
             }
             .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
 

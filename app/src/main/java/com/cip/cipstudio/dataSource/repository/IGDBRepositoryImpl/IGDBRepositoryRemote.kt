@@ -4,6 +4,11 @@ import android.util.Log
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
+import com.api.igdb.request.IGDBWrapper
+import com.api.igdb.request.TwitchAuthenticator
+import com.api.igdb.request.jsonGames
+import com.api.igdb.request.jsonPlatforms
+import com.cip.cipstudio.dataSource.repository.AISelector
 import com.api.igdb.request.*
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
@@ -215,6 +220,33 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
+    private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
+        val models = AISelector.getOnlyPositiveWeightsModels()
+        val genreIds = models.subList(0,
+            if (models.size < 3)
+                models.size
+            else
+                3
+        ).map {
+            it.genreId
+        }.toList()
+
+        if (genreIds.isEmpty())
+            return@withContext arrayListOf()
+        val idListString = buildIdsForRequest(genreIds)
+        Log.i("idListString", idListString)
+        val apicalypse = APICalypse().fields("name, id, cover.url")
+            .where("cover != n & total_rating_count >= 10 &  " +
+                    "aggregated_rating_count >= 10 &" +
+                    " genres = $idListString")
+            .sort("total_rating", Sort.DESCENDING)
+            .limit(pageSize)
+            .offset(pageIndex * pageSize)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getForYouGames${idListString}${pageIndex}", refresh)
+
+        return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
+    }
+
     override suspend fun getGamesByIds(gameIds: List<String>, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
         if (gameIds.isEmpty())
             return@withContext arrayListOf()
@@ -264,6 +296,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             GameTypeEnum.WORST_RATED -> getWorstRatedGames(refresh, pageSize, pageIndex, filterCriteria)
             GameTypeEnum.LOVED_BY_CRITICS -> getLovedByCriticsGames(refresh, pageSize, pageIndex, filterCriteria)
             GameTypeEnum.BEST_RATED -> getBestRatedGames(refresh, pageSize, pageIndex, filterCriteria)
+            GameTypeEnum.FOR_YOU -> getForYouGames(refresh, pageSize, pageIndex)
         }
     }
 
