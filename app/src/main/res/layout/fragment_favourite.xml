@@ -107,7 +107,7 @@
                                 android:gravity="center">
 
                                 <include layout="@layout/shimmer_small_placeholder" />
-
+                                <View android:layout_width="30dp" android:layout_height="0dp"/>
                                 <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
 
@@ -121,7 +121,7 @@
                                 android:layout_height="wrap_content">
 
                                 <include layout="@layout/shimmer_small_placeholder" />
-
+                                <View android:layout_width="30dp" android:layout_height="0dp"/>
                                 <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
                             <View
@@ -134,7 +134,7 @@
                                 android:layout_height="wrap_content">
 
                                 <include layout="@layout/shimmer_small_placeholder" />
-
+                                <View android:layout_width="30dp" android:layout_height="0dp"/>
                                 <include layout="@layout/shimmer_small_placeholder" />
                             </LinearLayout>
 
@@ -156,6 +156,7 @@
                     </com.facebook.shimmer.ShimmerFrameLayout>
 
                     <GridView
+                        android:layoutAnimation="@anim/layout_animation"
                         android:visibility="@{!vm.isPageLoading ? View.VISIBLE : View.GONE}"
                         android:numColumns="2"
                         android:id="@+id/gvFavoriteGames"

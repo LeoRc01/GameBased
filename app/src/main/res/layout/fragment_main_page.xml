@@ -14,6 +14,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:layoutAnimation="@anim/main_page_animation"
             android:id="@+id/f_mainPage_scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

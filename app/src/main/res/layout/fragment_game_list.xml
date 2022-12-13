@@ -87,6 +87,7 @@
                 android:layout_marginTop="6dp"
                 android:paddingBottom="40dp">
                 <GridView
+                    android:layoutAnimation="@anim/layout_animation"
                     android:id="@+id/f_gameList_gv_games"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
