@@ -11,6 +11,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_color">#303030</color>
+    <color name="transparent">#00000000</color>
     <color name="grey">#8D99AE</color>
     <color name="transparent_grey">#85000000</color>
     <color name="less_transparent_grey">#DA000000</color>
