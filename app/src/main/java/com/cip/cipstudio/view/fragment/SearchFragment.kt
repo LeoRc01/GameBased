@@ -286,7 +286,9 @@ class SearchFragment : Fragment() {
 
             override fun onDrawerClosed(drawerView: View) {
                 filter.buildFilterContainer()
-                initializeSearchView()
+                searchBinding.fSearchNotFound.visibility = View.GONE
+                if (searchBinding.fSearchSearchBox.query.isNotEmpty())
+                    searchResults(searchBinding.fSearchSearchBox.query.toString())
             }
 
             override fun onDrawerOpened(drawerView: View) {
