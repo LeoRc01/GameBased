@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,8 @@ import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.SearchViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.cip.cipstudio.dataSource.filter.Filter
+import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.*
 
 class SearchFragment : Fragment() {
@@ -30,6 +33,7 @@ class SearchFragment : Fragment() {
     private val TAG = "SearchFragment"
 
     private lateinit var searchDB : RecentSearchesRepository
+    private lateinit var filter: Filter
 
     private var resultsOffset : Int = 0
     private var recentOffset : Int = 0
@@ -37,25 +41,30 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        searchBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
-
+    ): View {
+        searchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         searchViewModel = SearchViewModel(searchBinding)
-
         searchBinding.executePendingBindings()
         searchBinding.lifecycleOwner = this
 
+        filter = Filter(searchBinding.fSearchFlFilter,
+                        searchViewModel,
+                        layoutInflater,
+                        resources)
+
+        initializeDrawer()
+
+        searchBinding.fSearchFilterButton.setOnClickListener {
+            searchBinding.drawerLayout.openDrawer(GravityCompat.END)
+        }
 
         showRecentSearches()
-
-
         initializeSearchView()
 
         return searchBinding.root
 
     }
+
 
     private fun setVisible(widgetId: String){
         searchBinding.fSearchBg.visibility = View.GONE
@@ -265,6 +274,31 @@ class SearchFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun initializeDrawer() {
+        searchBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                //filter.buildFilterContainer()
+                //initializeSearchView()
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+        })
+    }
+
+    override fun onResume(){
+        super.onResume()
+        searchBinding.fSearchSearchBox.clearFocus()
+        filter.initializeFilters()
     }
 
 }
