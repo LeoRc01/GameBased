@@ -12,6 +12,7 @@ import com.cip.cipstudio.dataSource.repository.AISelector
 import com.api.igdb.request.*
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
+import com.cip.cipstudio.model.data.AIModel
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Converter
@@ -223,7 +224,15 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
-        val models = AISelector.getOnlyPositiveWeightsModels()
+        var models = AISelector.getOnlyPositiveWeightsModels()
+        if(models.isEmpty()){
+            models = AISelector.weightedItems.subList(0,
+                if (AISelector.weightedItems.size < 3)
+                    AISelector.weightedItems.size
+                else
+                    3
+            ).toList() as ArrayList<AIModel>
+        }
         val genreIds = models.subList(0,
             if (models.size < 3)
                 models.size
