@@ -287,7 +287,7 @@ object IGDBRepositoryRemote : IGDBRepository {
 
         val apicalypse = APICalypse()
             .search(searchText)
-            .fields("name, id, cover.url, genres.name, total_rating, platforms.name, first_release_date")
+            .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
             .limit(pageSize)
             .offset(pageIndex * pageSize)
 
