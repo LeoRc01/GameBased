@@ -63,6 +63,10 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                     binding.fFilterDividerThemeReleaseDate.visibility = View.GONE
                     initializeRating()
                 }
+                GameTypeEnum.FOR_YOU ->{
+                    initializeRating()
+                    initializeReleaseDate()
+                }
                 else -> {}
             }
             binding.fFilterTvFilterByStatus.visibility = View.GONE

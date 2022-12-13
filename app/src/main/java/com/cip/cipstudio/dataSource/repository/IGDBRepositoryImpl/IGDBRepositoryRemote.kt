@@ -222,7 +222,7 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int): List<GameDetails> = withContext(Dispatchers.IO) {
+    private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val models = AISelector.getOnlyPositiveWeightsModels()
         val genreIds = models.subList(0,
             if (models.size < 3)
@@ -240,11 +240,11 @@ object IGDBRepositoryRemote : IGDBRepository {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 &  " +
                     "aggregated_rating_count >= 10 &" +
-                    " genres = $idListString")
+                    " genres = $idListString ${filterCriteria.concatCriteria()} ")
             .sort("total_rating", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getForYouGames${idListString}${pageIndex}", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getForYouGames${idListString}${pageIndex}${filterCriteria.concatCriteria()}", refresh)
 
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
@@ -321,7 +321,7 @@ object IGDBRepositoryRemote : IGDBRepository {
             GameTypeEnum.WORST_RATED -> getWorstRatedGames(refresh, pageSize, pageIndex, filterCriteria)
             GameTypeEnum.LOVED_BY_CRITICS -> getLovedByCriticsGames(refresh, pageSize, pageIndex, filterCriteria)
             GameTypeEnum.BEST_RATED -> getBestRatedGames(refresh, pageSize, pageIndex, filterCriteria)
-            GameTypeEnum.FOR_YOU -> getForYouGames(refresh, pageSize, pageIndex)
+            GameTypeEnum.FOR_YOU -> getForYouGames(refresh, pageSize, pageIndex, filterCriteria)
         }
     }
 
