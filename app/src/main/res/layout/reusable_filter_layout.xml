@@ -70,7 +70,6 @@
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/fFilter_divider_category_status"
             style="@style/FilterDivider"
-            
             app:layout_constraintTop_toBottomOf="@+id/f_Filter_cg_FilterByCategory"
             app:layout_constraintStart_toStartOf="@+id/f_Filter_cg_FilterByCategory"/>
 
