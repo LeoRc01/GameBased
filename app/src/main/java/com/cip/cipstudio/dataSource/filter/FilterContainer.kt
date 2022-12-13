@@ -63,4 +63,8 @@ class FilterContainer: Serializable {
             }
         }
     }
+
+    fun isEmpty() : Boolean {
+        return getFilterCriteria().isEmpty()
+    }
 }

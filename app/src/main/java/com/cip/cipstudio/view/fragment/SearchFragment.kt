@@ -204,7 +204,7 @@ class SearchFragment : Fragment() {
 
         resultsOffset = 0
 
-        searchViewModel.addGameResults(resultsOffset, query) {
+        searchViewModel.addGameResults(resultsOffset, query, filter.getFilterCriteria()) {
             adapter.addItems(it)
             shimmerLayout.stopShimmer()
             shimmerLayout.visibility = View.GONE
@@ -220,7 +220,7 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
                     resultsOffset++
-                    searchViewModel.addGameResults(resultsOffset, query) { games ->
+                    searchViewModel.addGameResults(resultsOffset, query, filter.getFilterCriteria()) { games ->
                         (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
                     }
 
@@ -285,8 +285,8 @@ class SearchFragment : Fragment() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                //filter.buildFilterContainer()
-                //initializeSearchView()
+                filter.buildFilterContainer()
+                initializeSearchView()
             }
 
             override fun onDrawerOpened(drawerView: View) {

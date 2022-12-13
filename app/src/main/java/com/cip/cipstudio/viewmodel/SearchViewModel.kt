@@ -37,11 +37,11 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(), ViewMo
     private val platformDefault : ArrayList<PlatformDetails> = Costant.platformDefault
     private val platformDefaultIds = platformDefault.map { it.id }
 
-    fun addGameResults(offset: Int, query: String, onSuccess: (List<GameDetails>) -> Unit) {
+    fun addGameResults(offset: Int, query: String, filterCriteria: Criteria, onSuccess: (List<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
             val gamesResults = withContext(Dispatchers.IO){
-                gameRepository.searchGames(query, offset) as ArrayList<GameDetails>
+                gameRepository.searchGames(query, offset, 10, false, filterCriteria) as ArrayList<GameDetails>
             }
             isPageLoading.postValue(false)
             onSuccess.invoke(gamesResults)
