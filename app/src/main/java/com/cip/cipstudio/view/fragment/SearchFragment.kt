@@ -126,7 +126,7 @@ class SearchFragment : Fragment() {
             adapter.addItems(recentList as ArrayList<String>)
 
             if (recentList.isEmpty())
-                setVisible("fSearchNoSuggestions")
+                setVisible("fSearchBg")
         }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
