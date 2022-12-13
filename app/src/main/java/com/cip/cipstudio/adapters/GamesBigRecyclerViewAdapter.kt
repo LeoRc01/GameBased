@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class GamesBigRecyclerViewAdapter (val context : Context,
 
     fun addItems(gamesDetailsJson : List<GameDetails>){
         games += gamesDetailsJson
+        Log.i(TAG, (gamesDetailsJson[0].rating.toInt().toDouble() / 10).toString())
         notifyDataSetChanged()
     }
 
