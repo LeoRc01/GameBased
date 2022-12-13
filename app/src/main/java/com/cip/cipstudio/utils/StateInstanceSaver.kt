@@ -1,4 +1,4 @@
-package com.cip.cipstudio
+package com.cip.cipstudio.utils
 
 object StateInstanceSaver {
     private val stateInstanceSaved = mutableMapOf<String, Map<String, Any>?>()

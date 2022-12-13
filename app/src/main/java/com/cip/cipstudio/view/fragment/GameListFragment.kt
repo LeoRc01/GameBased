@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
-import com.cip.cipstudio.StateInstanceSaver
+import com.cip.cipstudio.utils.StateInstanceSaver
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.Filter
 import com.cip.cipstudio.databinding.FragmentGameListBinding
@@ -61,6 +61,7 @@ class GameListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        offset = 0
         val mapInstanceStateSaved = StateInstanceSaver.restoreState(TAG)
         filter.initializeFilters(mapInstanceStateSaved)
         val offsetStart = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagOffset))
@@ -136,11 +137,13 @@ class GameListFragment : Fragment() {
                 )
                 gameListBinding.fGameListGvGames.adapter = gvAdapter
             }
-            if (startOffset != 0) {
-                addStartGames(startOffset, startPosition)
-            }
-            else {
-                gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
+            if (gameType != GameTypeEnum.FOR_YOU) {
+                if (startOffset != 0 ) {
+                    addStartGames(startOffset, startPosition)
+                }
+                else {
+                    gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
+                }
             }
 
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
@@ -172,7 +175,6 @@ class GameListFragment : Fragment() {
         if (startOffset >= offset) {
             offset++
             gameListViewModel.getGames(gameType, filter.getFilterCriteria(), offset){ games ->
-                offset++
                 (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
                     .addMoreGames(games)
                 addStartGames(startOffset, startPosition)

@@ -79,22 +79,6 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(), ViewMo
 
     }
 
-    fun getGames(gameTypeEnum: GameTypeEnum,
-                 filterCriteria: Criteria,
-                 offset: Int = 0,
-                 updateUI : (ArrayList<GameDetails>)->Unit) {
-        isPageLoading.postValue(true)
-        var games :List<GameDetails>
-        viewModelScope.launch(Dispatchers.Main) {
-            games = withContext(Dispatchers.IO) {
-                gameRepository.getGamesByType(gameTypeEnum, pageIndex= offset, filterCriteria = filterCriteria)
-            }
-            isMoreDataAvailable.postValue(games.isNotEmpty())
-            updateUI.invoke(games as ArrayList<GameDetails>)
-            isPageLoading.postValue(false)
-        }
-    }
-
     override fun getPlatforms(
         updateUI : (List<PlatformDetails>) -> Unit
     ){
@@ -175,5 +159,6 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel(), ViewMo
         updateUI.invoke(Costant.categoryDefault)
         isPageLoading.postValue(false)
     }
+
 
 }
