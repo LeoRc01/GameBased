@@ -37,7 +37,6 @@ class GamesBigRecyclerViewAdapter (val context : Context,
 
     fun addItems(gamesDetailsJson : List<GameDetails>){
         games += gamesDetailsJson
-        Log.i(TAG, (gamesDetailsJson[0].rating.toInt().toDouble() / 10).toString())
         notifyDataSetChanged()
     }
 
