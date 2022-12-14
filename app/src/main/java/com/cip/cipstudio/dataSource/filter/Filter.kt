@@ -86,7 +86,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             initializeRating()
             initializeStatus()
             initializeReleaseDate()
-            initializeRating()
+            initializeSorting()
         }
     }
 
@@ -164,7 +164,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     fun buildFilterContainer() {
         if (binding.fFilterActvChangeSort.visibility == View.VISIBLE) {
-            filterContainer.sorting = binding.fFilterActvChangeSort.editText?.text ?: "Default"
+            filterContainer.sorting = binding.fFilterActvChangeSort.text ?: "Default"
         }
         if (binding.fFilterTvFilterByCategory.visibility == View.VISIBLE) {
             filterContainer.categoryList = binding.fFilterCgFilterByCategory.checkedChipIds
@@ -322,7 +322,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     private fun initializeSorting() {
         if (filterContainer.sorting != null && filterContainer.sorting.toString() != "Default") {
-            binding.fFilterActvChangeSort.editText?.text = filterContainer.sorting as Editable
+            binding.fFilterActvChangeSort.setText(filterContainer.sorting as Editable, false)
         }
     }
 

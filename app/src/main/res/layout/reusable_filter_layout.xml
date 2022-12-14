@@ -20,7 +20,7 @@
             android:layout_marginTop="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fFilter_actv_changeSort"
+            android:id="@+id/fFilter_til_changeSort"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
@@ -32,6 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <AutoCompleteTextView
+                android:id="@+id/fFilter_actv_changeSort"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="none"
@@ -46,8 +47,8 @@
             android:id="@+id/fFilter_divider_sort_category"
             style="@style/FilterDivider"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/fFilter_actv_changeSort"
-            app:layout_constraintStart_toStartOf="@+id/fFilter_actv_changeSort"/>
+            app:layout_constraintTop_toBottomOf="@+id/fFilter_til_changeSort"
+            app:layout_constraintStart_toStartOf="@+id/fFilter_til_changeSort"/>
 
         <TextView
             android:id="@+id/fFilter_tv_FilterByCategory"
