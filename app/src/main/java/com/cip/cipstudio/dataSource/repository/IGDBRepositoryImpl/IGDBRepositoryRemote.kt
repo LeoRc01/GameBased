@@ -11,6 +11,7 @@ import com.api.igdb.request.jsonPlatforms
 import com.cip.cipstudio.dataSource.repository.AISelector
 import com.api.igdb.request.*
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
+import com.cip.cipstudio.dataSource.filter.criteria.SortCriteria
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
@@ -283,24 +284,43 @@ object IGDBRepositoryRemote : IGDBRepository {
         //return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun searchGames(searchText: String, pageIndex: Int, pageSize: Int, refresh: Boolean, filterCriteria: Criteria ): List<GameDetails> = withContext(Dispatchers.IO) {
-        lateinit var apicalypse: APICalypse
-        Log.d("searchGames", filterCriteria.concatCriteria())
-        if (filterCriteria.isEmpty()) {
-            apicalypse = APICalypse()
-                .search(searchText)
-                .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
-                .limit(pageSize)
-                .offset(pageIndex * pageSize)
+    override suspend fun searchGames(
+        searchText: String,
+        pageIndex: Int,
+        pageSize: Int,
+        refresh: Boolean,
+        filterCriteria: Criteria,
+        sortCriteria: SortCriteria
+    ): List<GameDetails> = withContext(Dispatchers.IO) {
+
+        val apicalypse = if (sortCriteria.isEmpty()) {
+            if (filterCriteria.isEmpty()) {
+                APICalypse()
+                    .search(searchText)
+                    .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
+                    .limit(pageSize)
+                    .offset(pageIndex * pageSize)
+            } else {
+                APICalypse()
+                    .search(searchText)
+                    .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
+                    .where(filterCriteria.buildQuery())
+                    .limit(pageSize)
+                    .offset(pageIndex * pageSize)
+            }
         } else {
-            apicalypse = APICalypse()
+            APICalypse()
                 .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
-                .where("name ~ *\"$searchText\"*" + filterCriteria.concatCriteria())
+                .where("name ~ *\"$searchText\"*" + filterCriteria.concatCriteria() + " & ${sortCriteria.getCondition()}")
+                .sort(sortCriteria.getName(), sortCriteria.getSortType())
                 .limit(pageSize)
                 .offset(pageIndex * pageSize)
         }
+
         Log.d("searchGames", apicalypse.buildQuery())
-        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "searchGames${searchText}offset${pageIndex}${filterCriteria.concatCriteria()}", refresh)
+        val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) },
+            "searchGames${searchText}offset${pageIndex}${filterCriteria.concatCriteria()}${sortCriteria.getValues()}",
+            refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 

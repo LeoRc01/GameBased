@@ -2,6 +2,7 @@ package com.cip.cipstudio.dataSource.filter
 
 import android.graphics.Typeface
 import android.os.Build
+import android.text.Editable
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
@@ -16,8 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import org.json.JSONObject
 
 class Filter(private val binding : ReusableFilterLayoutBinding,
-             private val coroutineScope: CoroutineScope,
-             private val isPageLoading: MutableLiveData<Boolean>,
+             coroutineScope: CoroutineScope,
+             isPageLoading: MutableLiveData<Boolean>,
              private val layoutInflater: android.view.LayoutInflater,
              private val resources: android.content.res.Resources) {
 
@@ -82,6 +83,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             binding.fFilterActvChangeSort.visibility = View.GONE
         }
         else {
+            initializeRating()
             initializeStatus()
             initializeReleaseDate()
             initializeRating()
@@ -156,9 +158,13 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         return filterContainer.getFilterCriteria()
     }
 
+    fun getSortCriteria() : SortCriteria {
+        return filterContainer.getSortCriteria()
+    }
+
     fun buildFilterContainer() {
         if (binding.fFilterActvChangeSort.visibility == View.VISIBLE) {
-            filterContainer.sorting = binding.fFilterActvChangeSort.editText?.text
+            filterContainer.sorting = binding.fFilterActvChangeSort.editText?.text ?: "Default"
         }
         if (binding.fFilterTvFilterByCategory.visibility == View.VISIBLE) {
             filterContainer.categoryList = binding.fFilterCgFilterByCategory.checkedChipIds
@@ -312,6 +318,12 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         map[tagContainer] = filterContainer
         map[tagOffsetPlatforms] = offsetPlatforms
         return map
+    }
+
+    private fun initializeSorting() {
+        if (filterContainer.sorting != null && filterContainer.sorting.toString() != "Default") {
+            binding.fFilterActvChangeSort.editText?.text = filterContainer.sorting as Editable
+        }
     }
 
 

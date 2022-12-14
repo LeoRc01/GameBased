@@ -253,7 +253,7 @@ class SearchFragment : Fragment() {
 
             resultsOffset = 0
 
-            searchViewModel.addGameResults(resultsOffset, query, filter.getFilterCriteria()) {
+            searchViewModel.addGameResults(resultsOffset, query, filter) {
                 adapter.addItems(it)
 
 
@@ -279,7 +279,7 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
                     resultsOffset++
-                    searchViewModel.addGameResults(resultsOffset, query, filter.getFilterCriteria()) { games ->
+                    searchViewModel.addGameResults(resultsOffset, query, filter) { games ->
                         (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
                     }
 
@@ -359,8 +359,7 @@ class SearchFragment : Fragment() {
     private fun initializeStartResult(offsetStartResult: Int, positionStartResult: Int) {
         if (offsetStartResult  != 0 && offsetStartResult >= resultsOffset) {
             resultsOffset++
-            searchViewModel.addGameResults(resultsOffset, searchBinding.fSearchSearchBox.query.toString(), filter.getFilterCriteria()){ games ->
-                //resultsOffset++
+            searchViewModel.addGameResults(resultsOffset, searchBinding.fSearchSearchBox.query.toString(), filter){ games ->
                 (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter)
                     .addItems(games)
                 initializeStartResult(offsetStartResult, positionStartResult)

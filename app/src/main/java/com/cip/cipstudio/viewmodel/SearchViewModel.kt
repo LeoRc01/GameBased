@@ -3,7 +3,10 @@ package com.cip.cipstudio.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cip.cipstudio.dataSource.filter.Filter
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
+import com.cip.cipstudio.dataSource.filter.criteria.SortCriteria
+import com.cip.cipstudio.dataSource.filter.criteria.ViewModelFilter
 import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
@@ -28,11 +31,11 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
         MutableLiveData<Boolean>(true)
     }
 
-    fun addGameResults(offset: Int, query: String, filterCriteria: Criteria, onSuccess: (List<GameDetails>) -> Unit) {
+    fun addGameResults(offset: Int, query: String, filter: Filter, onSuccess: (List<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
             val gamesResults = withContext(Dispatchers.IO){
-                gameRepository.searchGames(query, offset, 10, false, filterCriteria) as ArrayList<GameDetails>
+                gameRepository.searchGames(query, offset, 10, false, filter.getFilterCriteria(), filter.getSortCriteria()) as ArrayList<GameDetails>
             }
             isPageLoading.postValue(false)
             onSuccess.invoke(gamesResults)
