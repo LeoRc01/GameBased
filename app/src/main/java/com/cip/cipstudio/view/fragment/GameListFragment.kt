@@ -11,6 +11,7 @@ import android.widget.AbsListView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
@@ -49,7 +50,8 @@ class GameListFragment : Fragment() {
         gameListBinding.lifecycleOwner = this
 
         filter = Filter(gameListBinding.fGameListFlFilter,
-                        gameListViewModel,
+                        gameListViewModel.viewModelScope,
+                        gameListViewModel.isPageLoading,
                         layoutInflater,
                         resources,
                         gameType)

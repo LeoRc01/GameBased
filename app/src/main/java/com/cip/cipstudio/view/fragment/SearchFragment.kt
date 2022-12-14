@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
@@ -51,7 +52,8 @@ class SearchFragment : Fragment() {
         searchBinding.lifecycleOwner = this
 
         filter = Filter(searchBinding.fSearchFlFilter,
-                        searchViewModel,
+                        searchViewModel.viewModelScope,
+                        searchViewModel.isPageLoading,
                         layoutInflater,
                         resources)
 

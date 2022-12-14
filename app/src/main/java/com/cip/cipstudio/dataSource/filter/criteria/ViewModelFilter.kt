@@ -11,5 +11,6 @@ interface ViewModelFilter {
     fun getGameModes(updateUI : (ArrayList<JSONObject>)->Unit)
     fun getYears(updateUI : (List<Float>)->Unit)
     fun getPlayerPerspectives(updateUI : (ArrayList<JSONObject>)->Unit)
+    fun getStatus(updateUI : (ArrayList<JSONObject>)->Unit)
 
 }

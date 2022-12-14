@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.databinding.ReusableFilterLayoutBinding
@@ -11,15 +12,19 @@ import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlinx.coroutines.CoroutineScope
 import org.json.JSONObject
 
 class Filter(private val binding : ReusableFilterLayoutBinding,
-             private val viewModel: ViewModelFilter,
+             private val coroutineScope: CoroutineScope,
+             private val isPageLoading: MutableLiveData<Boolean>,
              private val layoutInflater: android.view.LayoutInflater,
              private val resources: android.content.res.Resources) {
 
+
     private var gameType: GameTypeEnum? = null
     private var filterContainer = FilterContainer()
+    private val viewModel: ViewModelFilter = FilterRemote(coroutineScope, isPageLoading)
 
     private var yearMin: Int = 1950
     private var yearMax: Int = 2021
@@ -28,10 +33,11 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     private val tagOffsetPlatforms = "OffsetPlatforms"
 
     constructor(binding : ReusableFilterLayoutBinding,
-                viewModel: ViewModelFilter,
+                coroutineScope: CoroutineScope,
+                isPageLoading: MutableLiveData<Boolean>,
                 layoutInflater: android.view.LayoutInflater,
                 resources: android.content.res.Resources,
-                gameListType: GameTypeEnum) : this(binding, viewModel, layoutInflater, resources) {
+                gameListType: GameTypeEnum) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources) {
         this.gameType = gameListType
     }
 
@@ -76,6 +82,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             binding.fFilterActvChangeSort.visibility = View.GONE
         }
         else {
+            initializeStatus()
             initializeReleaseDate()
             initializeRating()
         }
@@ -293,6 +300,11 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         if (filterContainer.criticsRating != null) {
             binding.fFilterSldFilterByCriticsRating.value = filterContainer.criticsRating!!
         }
+    }
+
+    private fun initializeStatus() {
+        initializeChipGroup(binding.fFilterCgFilterByStatus, filterContainer.statusList, ViewModelFilter::getStatus)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByStatus, binding.fFilterCgFilterByStatus)
     }
 
     fun getMap() : Map<String, Any> {
