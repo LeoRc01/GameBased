@@ -191,23 +191,31 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         if (binding.fFilterTvFilterByReleaseDate.visibility == View.VISIBLE) {
             val min = binding.fFilterSldFilterByReleaseDate.values[0]
             val max = binding.fFilterSldFilterByReleaseDate.values[1]
-            if (min.toInt() != yearMin) {
-                filterContainer.releaseDateMin = min
-            }
-            if (max.toInt() != yearMax) {
-                filterContainer.releaseDateMax = max
-            }
+            filterContainer.releaseDateMin = if (min.toInt() != yearMin)
+                     min
+                else
+                    null
+
+            filterContainer.releaseDateMax = if (max.toInt() != yearMax)
+                     max
+                else
+                    null
+
         }
         if (binding.fFilterTvFilterByRating.visibility == View.VISIBLE) {
             val tempUserRating = binding.fFilterSldFilterByUserRating.value
-            if (tempUserRating != 0f) {
-                filterContainer.userRating = tempUserRating
-            }
+            filterContainer.userRating = if (tempUserRating != 0f)
+                    tempUserRating
+                else
+                    null
+
+
 
             val tempCriticsRating = binding.fFilterSldFilterByCriticsRating.value
-            if (tempCriticsRating != 0f) {
-                filterContainer.criticsRating = tempCriticsRating
-            }
+            filterContainer.criticsRating = if (tempCriticsRating != 0f)
+                     tempCriticsRating
+                else
+                    null
         }
     }
 
