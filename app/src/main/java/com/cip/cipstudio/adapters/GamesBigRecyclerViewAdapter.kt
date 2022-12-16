@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +16,9 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
-import com.cip.cipstudio.dataSource.repository.HistoryRepository
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepository
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.squareup.picasso.Picasso

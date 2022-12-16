@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.utils.GameTypeEnum
 import kotlinx.coroutines.Dispatchers

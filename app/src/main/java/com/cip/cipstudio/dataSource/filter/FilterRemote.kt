@@ -2,7 +2,7 @@ package com.cip.cipstudio.dataSource.filter
 
 import androidx.lifecycle.MutableLiveData
 import com.cip.cipstudio.dataSource.filter.criteria.ViewModelFilter
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Costant
 import kotlinx.coroutines.CoroutineScope

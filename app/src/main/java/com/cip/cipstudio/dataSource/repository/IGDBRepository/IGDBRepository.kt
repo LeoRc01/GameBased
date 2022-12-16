@@ -1,4 +1,4 @@
-package com.cip.cipstudio.dataSource.repository
+package com.cip.cipstudio.dataSource.repository.IGDBRepository
 
 import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.model.data.GameDetails

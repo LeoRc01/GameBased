@@ -193,6 +193,24 @@ class UserFragment : Fragment() {
         }
 
 
+        userBinding.fUserTvDeleteSearchHistory.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_search_history))
+                .setMessage(getString(R.string.delete_search_history_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    userViewModel.deleteHistory()
+                    Toast.makeText(requireContext(), getString(R.string.search_history_deleted), Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ -> }
+                .show()
+        }
+
+        userViewModel.isSearchHistoryEmpty(User.uid) {
+            userBinding.fUserTvDeleteSearchHistory.visibility = View.GONE
+            userBinding.fUserDividerHistorySearchHistory.visibility = View.GONE
+        }
+
+
         return userBinding.root
     }
 

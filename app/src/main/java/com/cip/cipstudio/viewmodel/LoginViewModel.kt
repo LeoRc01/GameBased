@@ -1,18 +1,15 @@
 package com.cip.cipstudio.viewmodel
 
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.Validator.Companion.isValidEmail
 import com.cip.cipstudio.utils.Validator.Companion.isValidLoginPassword
-import com.cip.cipstudio.utils.Validator.Companion.isValidPassword
 import com.cip.cipstudio.view.widgets.LoadingSpinner
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 

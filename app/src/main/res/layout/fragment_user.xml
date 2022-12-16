@@ -308,6 +308,23 @@
                     app:layout_constraintTop_toBottomOf="@+id/f_user_cl_groupAccountOption" />
 
                 <TextView
+                    android:id="@+id/f_user_tv_deleteSearchHistory"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/delete_search_history"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
+                    app:drawableLeftCompat="@drawable/ic_search"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_divider_History_SearchHistory" />
+
+                <TextView
                     android:id="@+id/f_user_tv_headerOptions"
                     style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="wrap_content"
@@ -319,7 +336,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_history" />
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_deleteSearchHistory" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/f_user_sc_darkMode"
@@ -347,6 +364,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/f_user_sc_darkMode" />
+
+                <View
+                    android:id="@+id/f_user_divider_History_SearchHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/f_user_tv_history" />
 
 
                 <com.google.android.material.textfield.TextInputLayout

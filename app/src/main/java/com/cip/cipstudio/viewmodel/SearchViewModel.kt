@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.dataSource.filter.Filter
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
-import com.cip.cipstudio.dataSource.filter.criteria.SortCriteria
-import com.cip.cipstudio.dataSource.filter.criteria.ViewModelFilter
-import com.cip.cipstudio.dataSource.repository.IGDBRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepository
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
-import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepository
 import com.cip.cipstudio.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,7 +53,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
                 gameRepository.getSearchSuggestions(query, filterCriteria = criteria) as ArrayList<GameDetails>
             }
             val recentSearch = withContext(Dispatchers.IO){
-                User.getRecentlySearched(query, searchDB, offset) as ArrayList<String>
+                User.getSearchHistory(query, searchDB, offset) as ArrayList<String>
             }
             isPageLoading.postValue(false)
 
@@ -68,7 +66,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
 
         viewModelScope.launch(Dispatchers.Main){
             recentSearchResults = withContext(Dispatchers.IO){
-                User.getRecentlySearched(query, searchDB, offset) as ArrayList<String>
+                User.getSearchHistory(query, searchDB, offset) as ArrayList<String>
             }
             isPageLoading.postValue(false)
             onSuccess.invoke(recentSearchResults)

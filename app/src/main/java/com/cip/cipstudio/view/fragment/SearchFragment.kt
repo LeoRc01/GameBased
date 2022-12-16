@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.adapters.SuggestionRecyclerViewAdapter
-import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepository
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum

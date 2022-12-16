@@ -1,4 +1,4 @@
-package com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl
+package com.cip.cipstudio.dataSource.repository.IGDBRepository
 
 import android.util.Log
 import com.api.igdb.apicalypse.APICalypse
@@ -12,7 +12,6 @@ import com.cip.cipstudio.dataSource.repository.AISelector
 import com.api.igdb.request.*
 import com.cip.cipstudio.dataSource.filter.criteria.Criteria
 import com.cip.cipstudio.dataSource.filter.criteria.SortCriteria
-import com.cip.cipstudio.dataSource.repository.IGDBRepository
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.Converter

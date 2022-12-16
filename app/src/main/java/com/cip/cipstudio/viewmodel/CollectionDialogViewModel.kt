@@ -1,14 +1,11 @@
 package com.cip.cipstudio.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cip.cipstudio.dataSource.repository.IGDBRepository
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
 import com.cip.cipstudio.model.data.GameDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 class CollectionDialogViewModel(collectionName : String,
                                 setGameCollection: (List<GameDetails>) -> Unit,

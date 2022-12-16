@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.databinding.PlatformBottomSheetBinding
 import com.cip.cipstudio.model.data.GameDetails
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

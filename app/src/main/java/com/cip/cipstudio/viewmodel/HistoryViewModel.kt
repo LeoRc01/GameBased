@@ -1,12 +1,11 @@
 package com.cip.cipstudio.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cip.cipstudio.dataSource.repository.HistoryRepository
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentHistoryBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.model.data.GameDetails
