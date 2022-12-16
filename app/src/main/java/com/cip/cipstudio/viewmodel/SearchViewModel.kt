@@ -43,12 +43,16 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
 
     }
 
-    fun addSearchSuggestions(offset: Int, query: String,searchDB: RecentSearchesRepository, onSuccess: (List<String>) -> Unit) {
+    fun addSearchSuggestions(offset: Int,
+                             query: String,
+                             searchDB: RecentSearchesRepository,
+                             criteria: Criteria,
+                             onSuccess: (List<String>) -> Unit) {
 
         isPageLoading.postValue(true)
         viewModelScope.launch(Dispatchers.Main){
             val suggestion = withContext(Dispatchers.IO){
-                gameRepository.getSearchSuggestions(query) as ArrayList<GameDetails>
+                gameRepository.getSearchSuggestions(query, filterCriteria = criteria) as ArrayList<GameDetails>
             }
             val recentSearch = withContext(Dispatchers.IO){
                 User.getRecentlySearched(query, searchDB, offset) as ArrayList<String>

@@ -316,18 +316,20 @@ object IGDBRepositoryRemote : IGDBRepository {
                 .limit(pageSize)
                 .offset(pageIndex * pageSize)
         }
-
-        Log.d("searchGames", apicalypse.buildQuery())
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) },
             "searchGames${searchText}offset${pageIndex}${filterCriteria.concatCriteria()}${sortCriteria.getValues()}",
             refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun getSearchSuggestions(searchText: String, number: Int, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getSearchSuggestions(
+        searchText: String,
+        number: Int,
+        refresh: Boolean,
+        filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
 
         val apicalypse = APICalypse().fields("name, id")
-            .where("name ~ *\"$searchText\"*")
+            .where("name ~ *\"$searchText\"* " + filterCriteria.concatCriteria())
             .sort("total_rating", Sort.DESCENDING)
             .limit(number)
 

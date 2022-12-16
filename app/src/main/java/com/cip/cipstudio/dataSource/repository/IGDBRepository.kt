@@ -34,7 +34,11 @@ interface IGDBRepository {
                             sortCriteria: SortCriteria = SortCriteria(SortEnum.Default)
                         ): List<GameDetails>
 
-    suspend fun getSearchSuggestions(searchText: String, limit: Int = 3, refresh: Boolean = false): List<GameDetails>
+    suspend fun getSearchSuggestions(searchText: String,
+                                     limit: Int = 3,
+                                     refresh: Boolean = false,
+                                     filterCriteria: Criteria= OperatorCriteria(OperatorEnum.AND)
+                        ): List<GameDetails>
 
     suspend fun getGamesByCollectionName(collectionName : String, refresh: Boolean = false): List<GameDetails>
 

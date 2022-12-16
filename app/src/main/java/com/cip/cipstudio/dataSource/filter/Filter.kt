@@ -88,6 +88,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             binding.fFilterTvSortBy.visibility = View.GONE
             binding.fFilterDividerSortCategory.visibility = View.GONE
             binding.fFilterActvChangeSort.visibility = View.GONE
+            binding.fFilterTilChangeSort.visibility = View.GONE
         }
         else {
             initializeRating()

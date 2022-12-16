@@ -312,7 +312,7 @@ class SearchFragment : Fragment() {
 
         recentOffset = 0
 
-        searchViewModel.addSearchSuggestions(recentOffset, query, searchDB) { suggestionList ->
+        searchViewModel.addSearchSuggestions(recentOffset, query, searchDB, filter.getFilterCriteria()) { suggestionList ->
             adapter.addItems(suggestionList, true)
             if(adapter.itemCount == 0)
                 setVisible("fSearchNoSuggestions")
