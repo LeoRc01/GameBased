@@ -54,7 +54,8 @@ class GameListFragment : Fragment() {
                         gameListViewModel.isPageLoading,
                         layoutInflater,
                         resources,
-                        gameType)
+                        gameType,
+                        gameListBinding.drawerLayout)
 
         return gameListBinding.root
     }

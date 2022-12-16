@@ -55,7 +55,8 @@ class SearchFragment : Fragment() {
                         searchViewModel.viewModelScope,
                         searchViewModel.isPageLoading,
                         layoutInflater,
-                        resources)
+                        resources,
+                        searchBinding.drawerLayout)
 
 
 

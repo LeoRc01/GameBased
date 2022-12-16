@@ -3,11 +3,16 @@ package com.cip.cipstudio.dataSource.filter
 import android.graphics.Typeface
 import android.os.Build
 import android.text.Editable
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.MutableLiveData
+import androidx.slidingpanelayout.widget.SlidingPaneLayout.LOCK_MODE_LOCKED
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.filter.criteria.*
+import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.databinding.ReusableFilterLayoutBinding
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -20,7 +25,8 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
              coroutineScope: CoroutineScope,
              isPageLoading: MutableLiveData<Boolean>,
              private val layoutInflater: android.view.LayoutInflater,
-             private val resources: android.content.res.Resources) {
+             private val resources: android.content.res.Resources,
+             private val drawerLayout: DrawerLayout? = null) {
 
 
     private var gameType: GameTypeEnum? = null
@@ -38,7 +44,8 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 isPageLoading: MutableLiveData<Boolean>,
                 layoutInflater: android.view.LayoutInflater,
                 resources: android.content.res.Resources,
-                gameListType: GameTypeEnum) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources) {
+                gameListType: GameTypeEnum,
+                drawerLayout: DrawerLayout? = null) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources, drawerLayout) {
         this.gameType = gameListType
     }
 
@@ -104,7 +111,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         return chipButton
     }
 
-    private fun initializeTextViewSetOnClick(textView: TextView, child:View, vararg otherChildren: View) {
+    private fun initializeTextViewSetOnClick(textView: TextView, child:View, drawerLayout: DrawerLayout? = null, vararg otherChildren: View) {
         textView.setOnClickListener {
             if (child.visibility == View.VISIBLE) {
                 child.visibility = View.GONE
@@ -112,12 +119,18 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 for (c in otherChildren) {
                     c.visibility = View.GONE
                 }
+                if (textView == binding.fFilterTvFilterByReleaseDate || textView == binding.fFilterTvFilterByRating) {
+                    drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                }
             }
             else {
                 child.visibility = View.VISIBLE
                 textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
                 for (c in otherChildren) {
                     c.visibility = View.VISIBLE
+                }
+                if (textView == binding.fFilterTvFilterByReleaseDate || textView == binding.fFilterTvFilterByRating) {
+                    drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 }
             }
         }
@@ -200,7 +213,6 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                      max
                 else
                     null
-
         }
         if (binding.fFilterTvFilterByRating.visibility == View.VISIBLE) {
             val tempUserRating = binding.fFilterSldFilterByUserRating.value
@@ -245,7 +257,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializeReleaseDate() {
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByReleaseDate, binding.fFilterLlReleaseDate)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByReleaseDate, binding.fFilterLlReleaseDate, drawerLayout)
         viewModel.getYears {
             binding.fFilterSldFilterByReleaseDate.valueFrom = it.first()
             yearMin = it.first().toInt()
@@ -259,7 +271,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     private fun initializePlatforms(offset: Int = 0) {
         initializeChipGroup(binding.fFilterCgFilterByPlatform, null, ViewModelFilter::getPlatforms)
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, binding.fFilterRlFilterByPlatform)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, null, binding.fFilterRlFilterByPlatform)
         initializeMorePlatforms(offset)
 
         binding.fFilterTvLoadMorePlatforms.setOnClickListener {
@@ -307,7 +319,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializeRating() {
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating, drawerLayout)
         if (filterContainer.userRating != null) {
             binding.fFilterSldFilterByUserRating.value = filterContainer.userRating!!
         }
