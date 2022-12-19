@@ -6,21 +6,19 @@ import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemo
 import com.cip.cipstudio.model.data.GameDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CollectionDialogViewModel(collectionName : String,
                                 setGameCollection: (List<GameDetails>) -> Unit,
                                 onSuccess: () -> Unit) : ViewModel() {
 
-    private lateinit var collectionGames : List<GameDetails>
     private val gameRepository = IGDBRepositoryRemote
 
     init{
         viewModelScope.launch(Dispatchers.Main) {
-            val job = viewModelScope.launch(Dispatchers.IO) {
-                collectionGames = gameRepository.getGamesByCollectionName(collectionName, false)
+            val collectionGames =  withContext(Dispatchers.IO) {
+                gameRepository.getGamesByCollectionName(collectionName, false)
             }
-            job.join()
-            //Log.i("COLLECTIONS", collectionGames.toString())
             setGameCollection.invoke(collectionGames)
             onSuccess.invoke()
         }

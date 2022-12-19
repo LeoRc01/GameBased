@@ -133,7 +133,6 @@ object IGDBRepositoryRemote : IGDBRepository {
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("collection.name = \"$collectionName\"")
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByCollectionName${collectionName}", refresh)
-        Log.i("QUERY", apicalypse.buildQuery())
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
@@ -166,7 +165,6 @@ object IGDBRepositoryRemote : IGDBRepository {
             .limit(10)
             .offset(offset*10)
             .where(excludeString)
-        Log.i(TAG, apicalypse.buildQuery())
         val json = makeRequest ({ IGDBWrapper.jsonPlatforms(apicalypse) }, "getPlatforms$offset")
         return@withContext Converter.fromJsonArrayToPlatformDetailsArrayList(json)
     }
@@ -225,18 +223,18 @@ object IGDBRepositoryRemote : IGDBRepository {
     private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
         val models = AISelector.getOnlyPositiveWeightsModels()
         val genreIds = models.subList(0,
-            if (models.size < 3)
-                models.size
-            else
-                3
-        ).map {
-            it.genreId
-        }.toList()
+                if (models.size < 3)
+                    models.size
+                else
+                    3
+            ).map {
+                it.genreId
+            }.toList()
 
         if (genreIds.isEmpty())
             return@withContext arrayListOf()
+
         val idListString = buildIdsForRequest(genreIds)
-        Log.i("idListString", idListString)
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 &  " +
                     "aggregated_rating_count >= 10 &" +
@@ -361,7 +359,6 @@ object IGDBRepositoryRemote : IGDBRepository {
             .sort("total_rating_count", Sort.DESCENDING)
             .limit(pageSize)
             .offset(pageIndex * pageSize)
-        Log.i(TAG, "getGamesMostRated: ${apicalypse.buildQuery()}")
         val json = runBlocking { makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesMostRated${pageIndex}${filterCriteria.concatCriteria()}", refresh) }
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }

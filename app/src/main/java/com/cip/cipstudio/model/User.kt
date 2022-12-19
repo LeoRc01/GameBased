@@ -119,8 +119,6 @@ object User {
                     GameViewedHistoryEntry(id, uid, a["dateTime"] as Long)
                 }
 
-                Log.i(TAG, "games: ${games.toString()}")
-
                 GlobalScope.launch(Dispatchers.IO) {
                     db.syncHistory(games)
                 }

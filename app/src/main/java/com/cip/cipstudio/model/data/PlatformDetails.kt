@@ -31,10 +31,6 @@ data class PlatformDetails(
     ) {
         category = getCategoryString(if (category.isEmpty()) -1 else category.toInt())
         if (summary.isEmpty()) summary = "No summary provided."
-        Log.i("-----", "------")
-        Log.i("ID", id)
-        Log.i("NAME", name)
-        Log.i("-----", "------")
     }
 
     constructor(id : String, name : String) : this(

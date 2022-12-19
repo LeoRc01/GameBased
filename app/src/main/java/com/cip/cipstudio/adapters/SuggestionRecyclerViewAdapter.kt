@@ -72,8 +72,6 @@ class SuggestionRecyclerViewAdapter (val context : Context,
             searchFunction(queries[position])
         }
 
-        Log.i(TAG, isSuggestion.toString())
-
         if(isSuggestion[position]) {
             viewHolder.btnDelete.visibility = GONE
 
