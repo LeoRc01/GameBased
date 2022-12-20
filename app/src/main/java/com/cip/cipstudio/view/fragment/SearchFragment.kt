@@ -166,7 +166,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showRecentSearches() {
-        setVisible("fSearchHistory")
+
         val recyclerView = searchBinding.fSearchHistory
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -192,6 +192,8 @@ class SearchFragment : Fragment() {
 
             if (recentList.isEmpty())
                 setVisible("fSearchBg")
+            else
+                setVisible("fSearchHistory")
         }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
