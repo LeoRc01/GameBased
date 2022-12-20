@@ -1,5 +1,7 @@
 package com.cip.cipstudio.dataSource.filter
 
+import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
 import android.text.Editable
@@ -7,6 +9,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
+import androidx.activity.setViewTreeOnBackPressedDispatcherOwner
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.slidingpanelayout.widget.SlidingPaneLayout.LOCK_MODE_LOCKED
@@ -26,7 +31,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
              isPageLoading: MutableLiveData<Boolean>,
              private val layoutInflater: android.view.LayoutInflater,
              private val resources: android.content.res.Resources,
-             private val drawerLayout: DrawerLayout? = null) {
+             private val drawerLayout: DrawerLayout) {
 
 
     private var gameType: GameTypeEnum? = null
@@ -34,7 +39,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     private val viewModel: ViewModelFilter = FilterRemote(coroutineScope, isPageLoading)
 
     private var yearMin: Int = 1950
-    private var yearMax: Int = 2021
+    private var yearMax: Int = 2030
     var offsetPlatforms = 0
     private val tagContainer = "FilterContainer"
     private val tagOffsetPlatforms = "OffsetPlatforms"
@@ -45,7 +50,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 layoutInflater: android.view.LayoutInflater,
                 resources: android.content.res.Resources,
                 gameListType: GameTypeEnum,
-                drawerLayout: DrawerLayout? = null) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources, drawerLayout) {
+                drawerLayout: DrawerLayout) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources, drawerLayout) {
         this.gameType = gameListType
     }
 
@@ -96,6 +101,70 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             initializeReleaseDate()
             initializeSorting()
         }
+        initializeDrawerDispatcher()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initializeDrawerDispatcher() {
+        val sliderFilterReleaseDate = Rect()
+        val sliderFilterUserRating = Rect()
+        val sliderFilterCriticsRating = Rect()
+        val scrollView = Rect()
+
+        drawerLayout.setOnTouchListener { _, event ->
+            binding.fFilterSldFilterByReleaseDate.getGlobalVisibleRect(sliderFilterReleaseDate)
+            increaseRectClickableArea(sliderFilterReleaseDate)
+            binding.fFilterSldFilterByUserRating.getGlobalVisibleRect(sliderFilterUserRating)
+            increaseRectClickableArea(sliderFilterUserRating)
+            binding.fFilterSldFilterByCriticsRating.getGlobalVisibleRect(sliderFilterCriticsRating)
+            increaseRectClickableArea(sliderFilterCriticsRating)
+
+            if (sliderFilterReleaseDate.contains(event.x.toInt(), event.y.toInt()) ||
+                sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt()) ||
+                sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt()) ) { // if the touch event is within the slider
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterFilterScroll.dispatchTouchEvent(event) // dispatch the touch event scrollview
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                false
+            }
+        }
+        binding.fFilterFilterScroll.setOnTouchListener { _, event ->
+            binding.fFilterSldFilterByReleaseDate.getGlobalVisibleRect(sliderFilterReleaseDate)
+            increaseRectClickableArea(sliderFilterReleaseDate)
+            binding.fFilterSldFilterByUserRating.getGlobalVisibleRect(sliderFilterUserRating)
+            increaseRectClickableArea(sliderFilterUserRating)
+            binding.fFilterSldFilterByCriticsRating.getGlobalVisibleRect(sliderFilterCriticsRating)
+            increaseRectClickableArea(sliderFilterCriticsRating)
+            binding.fFilterFilterScroll.getGlobalVisibleRect(scrollView)
+
+            if (sliderFilterReleaseDate.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByReleaseDate.dispatchTouchEvent(event)
+
+            } else if (sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByUserRating.dispatchTouchEvent(event)
+
+            } else if (sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByCriticsRating.dispatchTouchEvent(event)
+
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                false
+            }
+        }
+    }
+
+    private fun increaseRectClickableArea(rect: Rect, increase: Int = 4) {
+        rect.top -= increase
+        rect.left -= increase
+        rect.right += increase
+        rect.bottom += increase
     }
 
     private fun createChip(id : String, name : String, chipGroup: ChipGroup) : Chip {
@@ -120,18 +189,12 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 for (c in otherChildren) {
                     c.visibility = View.GONE
                 }
-                if (textView == binding.fFilterTvFilterByReleaseDate || textView == binding.fFilterTvFilterByRating) {
-                    drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                }
             }
             else {
                 child.visibility = View.VISIBLE
                 textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
                 for (c in otherChildren) {
                     c.visibility = View.VISIBLE
-                }
-                if (textView == binding.fFilterTvFilterByReleaseDate || textView == binding.fFilterTvFilterByRating) {
-                    drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 }
             }
         }

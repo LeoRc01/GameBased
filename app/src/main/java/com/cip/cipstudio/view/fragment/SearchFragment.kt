@@ -1,13 +1,22 @@
 package com.cip.cipstudio.view.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -355,6 +364,15 @@ class SearchFragment : Fragment() {
 
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (searchBinding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                searchBinding.drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
     }
 
     private fun initializeStartResult(offsetStartResult: Int, positionStartResult: Int) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -111,6 +112,15 @@ class GameListFragment : Fragment() {
 
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (gameListBinding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                gameListBinding.drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
     }
 
 
