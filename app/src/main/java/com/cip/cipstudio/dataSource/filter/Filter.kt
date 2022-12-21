@@ -123,11 +123,16 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt()) ||
                 sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt()) ) { // if the touch event is within the slider
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                drawerLayout.requestDisallowInterceptTouchEvent(true)
+                Log.i("Filter", "Drawer locked")
                 binding.fFilterFilterScroll.dispatchTouchEvent(event) // dispatch the touch event scrollview
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                false
             }
+            else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                drawerLayout.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+
         }
         binding.fFilterFilterScroll.setOnTouchListener { _, event ->
             binding.fFilterSldFilterByReleaseDate.getGlobalVisibleRect(sliderFilterReleaseDate)
@@ -140,30 +145,24 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
             if (sliderFilterReleaseDate.contains(event.x.toInt(), event.y.toInt())) {
                 event.setLocation(event.x - scrollView.left, event.y)
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 binding.fFilterSldFilterByReleaseDate.dispatchTouchEvent(event)
 
             } else if (sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt())) {
                 event.setLocation(event.x - scrollView.left, event.y)
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 binding.fFilterSldFilterByUserRating.dispatchTouchEvent(event)
 
             } else if (sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt())) {
                 event.setLocation(event.x - scrollView.left, event.y)
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 binding.fFilterSldFilterByCriticsRating.dispatchTouchEvent(event)
 
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                false
             }
+                false
+
         }
     }
 
     private fun increaseRectClickableArea(rect: Rect, increase: Int = 4) {
         rect.top -= increase
-        rect.left -= increase
-        rect.right += increase
         rect.bottom += increase
     }
 
