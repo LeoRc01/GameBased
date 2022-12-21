@@ -1,12 +1,11 @@
 package com.cip.cipstudio.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.dataSource.repository.FirebaseRepository
-import com.cip.cipstudio.dataSource.repository.IGDBRepository
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepository
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -14,8 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import okhttp3.internal.notify
-import okhttp3.internal.wait
 
 class MainPageViewModel() : ViewModel() {
 

@@ -1,26 +1,38 @@
 package com.cip.cipstudio.view.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
 import com.cip.cipstudio.adapters.GamesBigRecyclerViewAdapter
 import com.cip.cipstudio.adapters.SuggestionRecyclerViewAdapter
-import com.cip.cipstudio.dataSource.repository.RecentSearchesRepository
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.RecentSearchesRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepository
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.SearchViewModel
-import com.facebook.shimmer.ShimmerFrameLayout
+import com.cip.cipstudio.dataSource.filter.Filter
+import com.cip.cipstudio.utils.StateInstanceSaver
 import kotlinx.coroutines.*
 
 class SearchFragment : Fragment() {
@@ -30,6 +42,11 @@ class SearchFragment : Fragment() {
     private val TAG = "SearchFragment"
 
     private lateinit var searchDB : RecentSearchesRepository
+    private lateinit var filter: Filter
+
+    private val tagIsSearch = "isSearch"
+    private val tagOffsetResult = "OffsetResult"
+    private val tagPositionResult = "PositionResult"
 
     private var resultsOffset : Int = 0
     private var recentOffset : Int = 0
@@ -37,25 +54,73 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        searchBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
-
+    ): View {
+        searchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         searchViewModel = SearchViewModel(searchBinding)
-
         searchBinding.executePendingBindings()
         searchBinding.lifecycleOwner = this
 
+        filter = Filter(searchBinding.fSearchFlFilter,
+                        searchViewModel.viewModelScope,
+                        searchViewModel.isPageLoading,
+                        layoutInflater,
+                        resources,
+                        searchBinding.drawerLayout)
 
-        showRecentSearches()
 
 
-        initializeSearchView()
+        searchBinding.fSearchFilterButton.setOnClickListener {
+            searchBinding.fSearchSearchBox.clearFocus()
+            searchBinding.drawerLayout.openDrawer(GravityCompat.END)
+        }
+
+
 
         return searchBinding.root
 
     }
+
+    override fun onResume(){
+        super.onResume()
+        resultsOffset = 0
+        searchBinding.fSearchSearchBox.clearFocus()
+        val mapInstanceStateSaved = StateInstanceSaver.restoreState(TAG)
+        filter.initializeFilters(mapInstanceStateSaved)
+        val offsetStartResult = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagOffsetResult))
+            mapInstanceStateSaved[tagOffsetResult] as Int
+            else
+                0
+        val positionStartResult = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagPositionResult))
+            mapInstanceStateSaved[tagPositionResult] as Int
+            else
+                0
+        val isSearchStart = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagIsSearch))
+            mapInstanceStateSaved[tagIsSearch] as Boolean
+            else
+                false
+
+        if (isSearchStart)
+            initializeResults(searchBinding.fSearchSearchBox.query.toString() ,offsetStartResult, positionStartResult)
+        else if (searchBinding.fSearchSearchBox.query.isNotEmpty())
+            setSuggestions(searchBinding.fSearchSearchBox.query.toString())
+        else
+            showRecentSearches()
+
+        initializeSearchView()
+        initializeDrawer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val map = filter.getMap() as HashMap<String, Any>
+        map[tagOffsetResult] = resultsOffset
+        val isSearch = searchBinding.fSearchResults.visibility == View.VISIBLE;
+        map[tagIsSearch] = isSearch
+        if (isSearch)
+            map[tagPositionResult] = (searchBinding.fSearchResults.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        StateInstanceSaver.saveState(TAG, map)
+    }
+
 
     private fun setVisible(widgetId: String){
         searchBinding.fSearchBg.visibility = View.GONE
@@ -101,7 +166,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showRecentSearches() {
-        setVisible("fSearchHistory")
+
         val recyclerView = searchBinding.fSearchHistory
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -127,6 +192,8 @@ class SearchFragment : Fragment() {
 
             if (recentList.isEmpty())
                 setVisible("fSearchBg")
+            else
+                setVisible("fSearchHistory")
         }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
@@ -154,14 +221,14 @@ class SearchFragment : Fragment() {
             User.addSearchToRecentlySearched(query, searchDB)
         }
 
-        initializeResultsRecyclerView(query)
+        initializeResults(query)
     }
 
     private fun setSuggestions(newText: String = "") {
 
         setVisible("fSearchHistory")
 
-        initializeRecentRecyclerView(newText)
+        getRecent(newText)
     }
 
     private fun searchRecent(query: String) {
@@ -173,35 +240,48 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun initializeResultsRecyclerView(query: String) {
-        val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
-        shimmerLayout.visibility = View.VISIBLE
-        shimmerLayout.startShimmer()
+    private fun initializeResults(query: String, offsetStart: Int = 0, positionStartResult: Int = -1) {
+        checkIfFragmentAttached {
+            val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
+            shimmerLayout.visibility = View.VISIBLE
+            shimmerLayout.startShimmer()
 
-        val adapter = GamesBigRecyclerViewAdapter(
-            requireContext(),
-            ArrayList(),
-            ActionGameDetailsEnum.SEARCH
-        )
 
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+            val adapter = GamesBigRecyclerViewAdapter(
+                requireContext(),
+                ArrayList(),
+                ActionGameDetailsEnum.SEARCH
+            )
 
-        val recyclerView = searchBinding.fSearchResults
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = adapter
-        recyclerView.itemAnimator = null
-        recyclerView.setItemViewCacheSize(50)
 
-        resultsOffset = 0
+            val linearLayoutManager = LinearLayoutManager(requireContext())
+            linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
 
-        searchViewModel.addGameResults(resultsOffset, query) {
-            adapter.addItems(it)
-            shimmerLayout.stopShimmer()
-            shimmerLayout.visibility = View.GONE
+            val recyclerView = searchBinding.fSearchResults
+            recyclerView.layoutManager = linearLayoutManager
+            recyclerView.adapter = adapter
+            recyclerView.itemAnimator = null
+            recyclerView.setItemViewCacheSize(50)
 
-            if(adapter.itemCount == 0)
-                setVisible("fSearchNotFound")
+            resultsOffset = 0
+
+            searchViewModel.addGameResults(resultsOffset, query, filter) {
+                adapter.addItems(it)
+
+
+                if (adapter.itemCount == 0) {
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    setVisible("fSearchNotFound")
+                }
+                else
+                    if (positionStartResult != -1)
+                        initializeStartResult(offsetStart, positionStartResult)
+                    else {
+                        shimmerLayout.stopShimmer()
+                        shimmerLayout.visibility = View.GONE
+                    }
+            }
         }
 
         searchBinding.fSearchResults.clearOnScrollListeners()
@@ -211,7 +291,7 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && searchViewModel.isPageLoading.value == false) {
                     resultsOffset++
-                    searchViewModel.addGameResults(resultsOffset, query) { games ->
+                    searchViewModel.addGameResults(resultsOffset, query, filter) { games ->
                         (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter).addItems(games)
                     }
 
@@ -221,7 +301,7 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun initializeRecentRecyclerView(
+    private fun getRecent(
         query: String
     ) {
         val recyclerView = searchBinding.fSearchHistory
@@ -243,7 +323,7 @@ class SearchFragment : Fragment() {
 
         recentOffset = 0
 
-        searchViewModel.addSearchSuggestions(recentOffset, query, searchDB) { suggestionList ->
+        searchViewModel.addSearchSuggestions(recentOffset, query, searchDB, filter.getFilterCriteria()) { suggestionList ->
             adapter.addItems(suggestionList, true)
             if(adapter.itemCount == 0)
                 setVisible("fSearchNoSuggestions")
@@ -265,6 +345,59 @@ class SearchFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun initializeDrawer() {
+        searchBinding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                filter.buildFilterContainer()
+                searchBinding.fSearchNotFound.visibility = View.GONE
+                if (searchBinding.fSearchSearchBox.query.isNotEmpty())
+                    searchResults(searchBinding.fSearchSearchBox.query.toString())
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+        })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (searchBinding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                searchBinding.drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
+    }
+
+    private fun initializeStartResult(offsetStartResult: Int, positionStartResult: Int) {
+        if (offsetStartResult  != 0 && offsetStartResult >= resultsOffset) {
+            resultsOffset++
+            searchViewModel.addGameResults(resultsOffset, searchBinding.fSearchSearchBox.query.toString(), filter){ games ->
+                (searchBinding.fSearchResults.adapter as GamesBigRecyclerViewAdapter)
+                    .addItems(games)
+                initializeStartResult(offsetStartResult, positionStartResult)
+            }
+        }
+        else {
+            searchBinding.fSearchShimmerLayoutResults.visibility = View.GONE
+            searchBinding.fSearchShimmerLayoutResults.stopShimmer()
+            setVisible("fSearchResults")
+            searchBinding.fSearchResults.scrollToPosition(positionStartResult)
+        }
+    }
+
+    private fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
     }
 
 }

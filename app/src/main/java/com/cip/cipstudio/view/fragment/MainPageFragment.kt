@@ -14,16 +14,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cip.cipstudio.R
-import com.cip.cipstudio.StateInstanceSaver
+import com.cip.cipstudio.utils.StateInstanceSaver
 import com.cip.cipstudio.adapters.GamesRecyclerViewAdapter
 import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.databinding.FragmentMainPageBinding
-import com.cip.cipstudio.model.data.Loading
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.cip.cipstudio.utils.ActionGameDetailsEnum
 import com.cip.cipstudio.viewmodel.MainPageViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.progressindicator.CircularProgressIndicator
 
 class MainPageFragment : Fragment() {
     private val TAG = "MainPageFragment"

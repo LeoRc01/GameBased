@@ -19,10 +19,9 @@ import com.cip.cipstudio.dataSource.repository.AISelector
 import com.cip.cipstudio.databinding.FragmentGameDetailsBinding
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
-import com.cip.cipstudio.dataSource.repository.IGDBRepositoryImpl.IGDBRepositoryRemote
-import com.cip.cipstudio.dataSource.repository.ItalianEnglishTranslator
+import com.cip.cipstudio.dataSource.repository.IGDBRepository.IGDBRepositoryRemote
+import com.cip.cipstudio.utils.ItalianEnglishTranslator
 import com.cip.cipstudio.model.User
-import com.cip.cipstudio.view.widgets.LoadingSpinner
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers

@@ -12,7 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.cip.cipstudio.R
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.utils.ActionGameDetailsEnum

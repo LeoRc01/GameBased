@@ -1,4 +1,4 @@
-package com.cip.cipstudio.dataSource.repository
+package com.cip.cipstudio.utils
 
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage

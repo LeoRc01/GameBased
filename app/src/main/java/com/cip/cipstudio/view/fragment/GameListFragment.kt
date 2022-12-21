@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
-import com.cip.cipstudio.StateInstanceSaver
+import com.cip.cipstudio.utils.StateInstanceSaver
 import com.cip.cipstudio.adapters.FavouriteGridViewAdapter
 import com.cip.cipstudio.dataSource.filter.Filter
 import com.cip.cipstudio.databinding.FragmentGameListBinding
@@ -49,10 +51,12 @@ class GameListFragment : Fragment() {
         gameListBinding.lifecycleOwner = this
 
         filter = Filter(gameListBinding.fGameListFlFilter,
-                        gameListViewModel,
+                        gameListViewModel.viewModelScope,
+                        gameListViewModel.isPageLoading,
                         layoutInflater,
                         resources,
-                        gameType)
+                        gameType,
+                        gameListBinding.drawerLayout)
 
         return gameListBinding.root
     }
@@ -61,6 +65,7 @@ class GameListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        offset = 0
         val mapInstanceStateSaved = StateInstanceSaver.restoreState(TAG)
         filter.initializeFilters(mapInstanceStateSaved)
         val offsetStart = if (mapInstanceStateSaved != null && mapInstanceStateSaved.containsKey(tagOffset))
@@ -107,6 +112,15 @@ class GameListFragment : Fragment() {
 
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (gameListBinding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                gameListBinding.drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
     }
 
 
@@ -136,11 +150,13 @@ class GameListFragment : Fragment() {
                 )
                 gameListBinding.fGameListGvGames.adapter = gvAdapter
             }
-            if (startOffset != 0) {
-                addStartGames(startOffset, startPosition)
-            }
-            else {
-                gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
+            if (gameType != GameTypeEnum.FOR_YOU) {
+                if (startOffset != 0 ) {
+                    addStartGames(startOffset, startPosition)
+                }
+                else {
+                    gameListBinding.fGameListGvGames.smoothScrollToPosition(startPosition)
+                }
             }
 
             gameListBinding.fGameListGvGames.setOnScrollListener(object : AbsListView.OnScrollListener {
@@ -172,7 +188,6 @@ class GameListFragment : Fragment() {
         if (startOffset >= offset) {
             offset++
             gameListViewModel.getGames(gameType, filter.getFilterCriteria(), offset){ games ->
-                offset++
                 (gameListBinding.fGameListGvGames.adapter as FavouriteGridViewAdapter)
                     .addMoreGames(games)
                 addStartGames(startOffset, startPosition)

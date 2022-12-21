@@ -150,7 +150,7 @@
     <string name="android">Android</string>
     <string name="mac">Mac</string>
     <string name="linux">Linux</string>
-    <string name="load_more">Load more...</string>
+    <string name="load_more">Load more…</string>
     <string name="no_games_found">No games found</string>
     <string name="change_your_filter_criterias">Change your filter criteria</string>
     <string name="playerPerspectives">Player perspectives</string>
@@ -166,4 +166,7 @@
     <string name="themes">Themes:</string>
     <string name="sort_by">Sort by</string>
     <string name="default_sort">Default</string>
+    <string name="delete_search_history">Delete search history</string>
+    <string name="delete_search_history_message">Are you sure you want to clear history search?</string>
+    <string name="search_history_deleted">Search history deleted</string>
 </resources>

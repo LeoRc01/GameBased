@@ -95,9 +95,7 @@ class HistoryFragment : Fragment() {
                         offset++
                         historyViewModel.addMoreGame(offset) { games ->
                             (historyBinding.fHistoryRvGames.adapter as GamesBigRecyclerViewAdapter).addItems(games)
-                            Log.i(TAG, games.toString())
                         }
-                        Log.i(TAG, "onScrollStateChanged")
 
                     }
                 }

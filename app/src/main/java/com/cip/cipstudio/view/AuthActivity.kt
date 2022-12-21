@@ -10,13 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.R
-import com.cip.cipstudio.dataSource.repository.AISelector
-import com.cip.cipstudio.dataSource.repository.FirebaseRepository
-import com.cip.cipstudio.dataSource.repository.historyRepositoryImpl.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.ContextWrapper
-import com.cip.cipstudio.view.widgets.LoadingSpinner
-import okhttp3.internal.wait
 
 class AuthActivity : AppCompatActivity() {
     private val TAG = "AuthActivity"

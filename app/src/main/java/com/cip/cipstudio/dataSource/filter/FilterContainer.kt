@@ -52,15 +52,22 @@ class FilterContainer: Serializable {
         return criteria
     }
 
-    fun getSortingCriteria() : Criteria {
-        return object : Criteria {
-            override fun buildQuery(): String {
-                return if (sorting != null) sorting.toString() else ""
-            }
+    fun getSortCriteria() : SortCriteria {
+        val sort = when (sorting.toString()) {
+                     SortEnum.AlphabeticalAZ.nameValue() -> SortEnum.AlphabeticalAZ
+                     SortEnum.AlphabeticalZA.nameValue() -> SortEnum.AlphabeticalZA
+                        SortEnum.MostPopular.nameValue() -> SortEnum.MostPopular
+                        SortEnum.LeastPopular.nameValue() -> SortEnum.LeastPopular
+                        SortEnum.MostRecent.nameValue() -> SortEnum.MostRecent
+                        SortEnum.LeastRecent.nameValue() -> SortEnum.LeastRecent
+                        SortEnum.TopRated.nameValue() -> SortEnum.TopRated
+                        SortEnum.WorstRated.nameValue() -> SortEnum.WorstRated
+                        else -> SortEnum.Default
+                 }
+        return SortCriteria(sort)
+    }
 
-            override fun isEmpty(): Boolean {
-                return sorting == null
-            }
-        }
+    fun isEmpty() : Boolean {
+        return getFilterCriteria().isEmpty() && getSortCriteria().isEmpty()
     }
 }

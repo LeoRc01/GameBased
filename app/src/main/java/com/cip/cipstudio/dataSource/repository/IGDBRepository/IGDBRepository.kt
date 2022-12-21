@@ -1,8 +1,6 @@
-package com.cip.cipstudio.dataSource.repository
+package com.cip.cipstudio.dataSource.repository.IGDBRepository
 
-import com.cip.cipstudio.dataSource.filter.criteria.Criteria
-import com.cip.cipstudio.dataSource.filter.criteria.OperatorEnum
-import com.cip.cipstudio.dataSource.filter.criteria.OperatorCriteria
+import com.cip.cipstudio.dataSource.filter.criteria.*
 import com.cip.cipstudio.model.data.GameDetails
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
@@ -17,7 +15,8 @@ interface IGDBRepository {
                                refresh: Boolean = false,
                                pageSize: Int = 10,
                                pageIndex: Int = 0,
-                               filterCriteria: Criteria = OperatorCriteria(OperatorEnum.AND)): List<GameDetails>
+                               filterCriteria: Criteria = OperatorCriteria(OperatorEnum.AND)
+                            ): List<GameDetails>
 
     suspend fun getGameDetails(gameId : String, refresh: Boolean = false) : GameDetails
 
@@ -27,10 +26,19 @@ interface IGDBRepository {
 
     suspend fun getGamesByPlatform(platformId : String, refresh: Boolean = false, pageSize: Int = 10, pageIndex: Int = 0) : List<GameDetails>
 
-    suspend fun searchGames(searchText: String, pageIndex: Int = 0, pageSize: Int = 10, refresh: Boolean = false ): List<GameDetails>
+    suspend fun searchGames(searchText: String,
+                            pageIndex: Int = 0,
+                            pageSize: Int = 10,
+                            refresh: Boolean = false,
+                            filterCriteria: Criteria = OperatorCriteria(OperatorEnum.AND),
+                            sortCriteria: SortCriteria = SortCriteria(SortEnum.Default)
+                        ): List<GameDetails>
 
-    suspend fun getSearchSuggestions(searchText: String, number: Int = 3, refresh: Boolean = false): List<GameDetails>
-    
+    suspend fun getSearchSuggestions(searchText: String,
+                                     limit: Int = 3,
+                                     refresh: Boolean = false,
+                                     filterCriteria: Criteria= OperatorCriteria(OperatorEnum.AND)
+                        ): List<GameDetails>
 
     suspend fun getGamesByCollectionName(collectionName : String, refresh: Boolean = false): List<GameDetails>
 

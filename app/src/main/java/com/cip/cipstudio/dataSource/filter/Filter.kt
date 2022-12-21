@@ -1,37 +1,56 @@
 package com.cip.cipstudio.dataSource.filter
 
+import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
+import android.text.Editable
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
+import androidx.activity.setViewTreeOnBackPressedDispatcherOwner
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.MutableLiveData
+import androidx.slidingpanelayout.widget.SlidingPaneLayout.LOCK_MODE_LOCKED
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.filter.criteria.*
+import com.cip.cipstudio.databinding.FragmentSearchBinding
 import com.cip.cipstudio.databinding.ReusableFilterLayoutBinding
 import com.cip.cipstudio.model.data.PlatformDetails
 import com.cip.cipstudio.utils.GameTypeEnum
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlinx.coroutines.CoroutineScope
 import org.json.JSONObject
 
 class Filter(private val binding : ReusableFilterLayoutBinding,
-             private val viewModel: ViewModelFilter,
+             coroutineScope: CoroutineScope,
+             isPageLoading: MutableLiveData<Boolean>,
              private val layoutInflater: android.view.LayoutInflater,
-             private val resources: android.content.res.Resources) {
+             private val resources: android.content.res.Resources,
+             private val drawerLayout: DrawerLayout) {
+
 
     private var gameType: GameTypeEnum? = null
     private var filterContainer = FilterContainer()
+    private val viewModel: ViewModelFilter = FilterRemote(coroutineScope, isPageLoading)
 
     private var yearMin: Int = 1950
-    private var yearMax: Int = 2021
+    private var yearMax: Int = 2030
     var offsetPlatforms = 0
     private val tagContainer = "FilterContainer"
     private val tagOffsetPlatforms = "OffsetPlatforms"
 
     constructor(binding : ReusableFilterLayoutBinding,
-                viewModel: ViewModelFilter,
+                coroutineScope: CoroutineScope,
+                isPageLoading: MutableLiveData<Boolean>,
                 layoutInflater: android.view.LayoutInflater,
                 resources: android.content.res.Resources,
-                gameListType: GameTypeEnum) : this(binding, viewModel, layoutInflater, resources) {
+                gameListType: GameTypeEnum,
+                drawerLayout: DrawerLayout) : this(binding, coroutineScope, isPageLoading, layoutInflater, resources, drawerLayout) {
         this.gameType = gameListType
     }
 
@@ -74,11 +93,78 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
             binding.fFilterTvSortBy.visibility = View.GONE
             binding.fFilterDividerSortCategory.visibility = View.GONE
             binding.fFilterActvChangeSort.visibility = View.GONE
+            binding.fFilterTilChangeSort.visibility = View.GONE
         }
         else {
-            initializeReleaseDate()
             initializeRating()
+            initializeStatus()
+            initializeReleaseDate()
+            initializeSorting()
         }
+        initializeDrawerDispatcher()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initializeDrawerDispatcher() {
+        val sliderFilterReleaseDate = Rect()
+        val sliderFilterUserRating = Rect()
+        val sliderFilterCriticsRating = Rect()
+        val scrollView = Rect()
+
+        drawerLayout.setOnTouchListener { _, event ->
+            binding.fFilterSldFilterByReleaseDate.getGlobalVisibleRect(sliderFilterReleaseDate)
+            increaseRectClickableArea(sliderFilterReleaseDate)
+            binding.fFilterSldFilterByUserRating.getGlobalVisibleRect(sliderFilterUserRating)
+            increaseRectClickableArea(sliderFilterUserRating)
+            binding.fFilterSldFilterByCriticsRating.getGlobalVisibleRect(sliderFilterCriticsRating)
+            increaseRectClickableArea(sliderFilterCriticsRating)
+
+            if (sliderFilterReleaseDate.contains(event.x.toInt(), event.y.toInt()) ||
+                sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt()) ||
+                sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt()) ) { // if the touch event is within the slider
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterFilterScroll.dispatchTouchEvent(event) // dispatch the touch event scrollview
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                false
+            }
+        }
+        binding.fFilterFilterScroll.setOnTouchListener { _, event ->
+            binding.fFilterSldFilterByReleaseDate.getGlobalVisibleRect(sliderFilterReleaseDate)
+            increaseRectClickableArea(sliderFilterReleaseDate)
+            binding.fFilterSldFilterByUserRating.getGlobalVisibleRect(sliderFilterUserRating)
+            increaseRectClickableArea(sliderFilterUserRating)
+            binding.fFilterSldFilterByCriticsRating.getGlobalVisibleRect(sliderFilterCriticsRating)
+            increaseRectClickableArea(sliderFilterCriticsRating)
+            binding.fFilterFilterScroll.getGlobalVisibleRect(scrollView)
+
+            if (sliderFilterReleaseDate.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByReleaseDate.dispatchTouchEvent(event)
+
+            } else if (sliderFilterUserRating.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByUserRating.dispatchTouchEvent(event)
+
+            } else if (sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt())) {
+                event.setLocation(event.x - scrollView.left, event.y)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                binding.fFilterSldFilterByCriticsRating.dispatchTouchEvent(event)
+
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                false
+            }
+        }
+    }
+
+    private fun increaseRectClickableArea(rect: Rect, increase: Int = 4) {
+        rect.top -= increase
+        rect.left -= increase
+        rect.right += increase
+        rect.bottom += increase
     }
 
     private fun createChip(id : String, name : String, chipGroup: ChipGroup) : Chip {
@@ -95,7 +181,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         return chipButton
     }
 
-    private fun initializeTextViewSetOnClick(textView: TextView, child:View, vararg otherChildren: View) {
+    private fun initializeTextViewSetOnClick(textView: TextView, child:View, drawerLayout: DrawerLayout? = null, vararg otherChildren: View) {
         textView.setOnClickListener {
             if (child.visibility == View.VISIBLE) {
                 child.visibility = View.GONE
@@ -149,9 +235,13 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         return filterContainer.getFilterCriteria()
     }
 
+    fun getSortCriteria() : SortCriteria {
+        return filterContainer.getSortCriteria()
+    }
+
     fun buildFilterContainer() {
         if (binding.fFilterActvChangeSort.visibility == View.VISIBLE) {
-            filterContainer.sorting = binding.fFilterActvChangeSort.editText?.text
+            filterContainer.sorting = binding.fFilterActvChangeSort.text ?: "Default"
         }
         if (binding.fFilterTvFilterByCategory.visibility == View.VISIBLE) {
             filterContainer.categoryList = binding.fFilterCgFilterByCategory.checkedChipIds
@@ -178,23 +268,30 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         if (binding.fFilterTvFilterByReleaseDate.visibility == View.VISIBLE) {
             val min = binding.fFilterSldFilterByReleaseDate.values[0]
             val max = binding.fFilterSldFilterByReleaseDate.values[1]
-            if (min.toInt() != yearMin) {
-                filterContainer.releaseDateMin = min
-            }
-            if (max.toInt() != yearMax) {
-                filterContainer.releaseDateMax = max
-            }
+            filterContainer.releaseDateMin = if (min.toInt() != yearMin)
+                     min
+                else
+                    null
+
+            filterContainer.releaseDateMax = if (max.toInt() != yearMax)
+                     max
+                else
+                    null
         }
         if (binding.fFilterTvFilterByRating.visibility == View.VISIBLE) {
             val tempUserRating = binding.fFilterSldFilterByUserRating.value
-            if (tempUserRating != 0f) {
-                filterContainer.userRating = tempUserRating
-            }
+            filterContainer.userRating = if (tempUserRating != 0f)
+                    tempUserRating
+                else
+                    null
+
+
 
             val tempCriticsRating = binding.fFilterSldFilterByCriticsRating.value
-            if (tempCriticsRating != 0f) {
-                filterContainer.criticsRating = tempCriticsRating
-            }
+            filterContainer.criticsRating = if (tempCriticsRating != 0f)
+                     tempCriticsRating
+                else
+                    null
         }
     }
 
@@ -224,7 +321,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializeReleaseDate() {
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByReleaseDate, binding.fFilterLlReleaseDate)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByReleaseDate, binding.fFilterLlReleaseDate, drawerLayout)
         viewModel.getYears {
             binding.fFilterSldFilterByReleaseDate.valueFrom = it.first()
             yearMin = it.first().toInt()
@@ -238,7 +335,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
 
     private fun initializePlatforms(offset: Int = 0) {
         initializeChipGroup(binding.fFilterCgFilterByPlatform, null, ViewModelFilter::getPlatforms)
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, binding.fFilterRlFilterByPlatform)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByPlatform, binding.fFilterCgFilterByPlatform, null, binding.fFilterRlFilterByPlatform)
         initializeMorePlatforms(offset)
 
         binding.fFilterTvLoadMorePlatforms.setOnClickListener {
@@ -286,7 +383,7 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
     }
 
     private fun initializeRating() {
-        initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByRating, binding.fFilterLlRating, drawerLayout)
         if (filterContainer.userRating != null) {
             binding.fFilterSldFilterByUserRating.value = filterContainer.userRating!!
         }
@@ -295,11 +392,22 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
         }
     }
 
+    private fun initializeStatus() {
+        initializeChipGroup(binding.fFilterCgFilterByStatus, filterContainer.statusList, ViewModelFilter::getStatus)
+        initializeTextViewSetOnClick(binding.fFilterTvFilterByStatus, binding.fFilterCgFilterByStatus)
+    }
+
     fun getMap() : Map<String, Any> {
         val map : HashMap<String, Any> = HashMap()
         map[tagContainer] = filterContainer
         map[tagOffsetPlatforms] = offsetPlatforms
         return map
+    }
+
+    private fun initializeSorting() {
+        if (filterContainer.sorting != null && filterContainer.sorting.toString() != "Default") {
+            binding.fFilterActvChangeSort.setText(filterContainer.sorting as Editable, false)
+        }
     }
 
 

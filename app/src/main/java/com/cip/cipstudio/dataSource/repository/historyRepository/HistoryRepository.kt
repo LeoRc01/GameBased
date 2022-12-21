@@ -1,4 +1,4 @@
-package com.cip.cipstudio.dataSource.repository
+package com.cip.cipstudio.dataSource.repository.historyRepository
 
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 

@@ -1,8 +1,7 @@
-package com.cip.cipstudio.dataSource.repository.historyRepositoryImpl
+package com.cip.cipstudio.dataSource.repository.historyRepository
 
 import android.content.Context
 import com.cip.cipstudio.dataSource.database.GameViewedHistoryRoomDatabase
-import com.cip.cipstudio.dataSource.repository.HistoryRepository
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
 
 class HistoryRepositoryLocal(context: Context) : HistoryRepository {
