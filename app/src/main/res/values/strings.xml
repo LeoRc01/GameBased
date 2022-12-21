@@ -139,7 +139,6 @@
     <string name="filter">Filter</string>
     <string name="filter_by_rating">Rating</string>
     <string name="filter_by_platform">Platform</string>
-    <string name="load_more">Load more...</string>
     <string name="PC">Pc</string>
     <string name="pc">Pc</string>
     <string name="playstation_4">Playstation 4</string>
@@ -167,7 +166,6 @@
     <string name="themes">Themes:</string>
     <string name="sort_by">Sort by</string>
     <string name="default_sort" translatable="false">Default</string>
-    <string name="default_sort">Default</string>
     <string name="delete_search_history">Delete search history</string>
     <string name="delete_search_history_message">Are you sure you want to clear history search?</string>
     <string name="search_history_deleted">Search history deleted</string>
