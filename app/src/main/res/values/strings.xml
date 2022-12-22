@@ -1,3 +1,172 @@
 <resources>
-    <string name="app_name">CIP Studio</string>
+    <string name="app_name" translatable="false">GameBased</string>
+    <string name="login" translatable="false">Login</string>
+    <string name="register">Register</string>
+    <string name="email_placeholder" translatable="false">Email</string>
+    <string name="password_placeholder" translatable="false">Password</string>
+    <string name="repeat_password_placeholder">Confirm password</string>
+    <string name="search_placeholder" translatable="false">Search</string>
+    <string name="rating" translatable="false">Rating:</string>
+    <string name="platforms">Platforms:</string>
+    <string name="release_date">Release Date:</string>
+    <string name="lorem_ipsum" translatable="false">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
+    <string name="show_more">Show more</string>
+    <string name="similar_games">Similar games:</string>
+    <string name="screenshots" translatable="false">Screenshots:</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="remove_favourite">Remove favourite</string>
+    <string name="fav_success_add">Game successfully added to favourites!</string>
+    <string name="fav_success_remove">Game successfully removed from favourites!</string>
+    <string name="fav_error">Something went wrong.</string>
+    <string name="email_not_valid">Invalid email</string>
+    <string name="password_too_short">Password must be at least 8 characters long</string>
+    <string name="password_too_long">Password must be at most 20 characters long</string>
+    <string name="password_no_uppercase">Password must contain at least one uppercase letter</string>
+    <string name="password_no_lowercase">Password must contain at least one lowercase letter</string>
+    <string name="password_no_digit">Password must contain at least one digit</string>
+    <string name="password_no_special_character">Password must contain at least one special character</string>
+    <string name="password_not_valid">Invalid password</string>
+    <string name="passwords_not_match">Passwords do not match</string>
+    <string name="registered">Registered</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="register_now">Register now</string>
+    <string name="email_already_in_use">Email already in use</string>
+    <string name="email_not_registered">Email not registered</string>
+    <string name="password_not_correct">Password not correct</string>
+    <string name="unknown_error">An error occurred during the operation</string>
+    <string name="reset_password_title">Forgot your password?</string>
+    <string name="reset_password_body">To reset your password, enter the email address that you used to set up your account. We\'ll send you a link to help you get back into your account.</string>
+    <string name="send_email">send</string>
+    <string name="already_have_account">Login now</string>
+    <string name="internal_error">internal error</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="profile">Profile</string>
+    <string name="most_rated_games">Most rated</string>
+    <string name="most_hyped_games">Most Hyped</string>
+    <string name="favourite">Favourites</string>
+    <string name="name">name</string>
+    <string name="settings">settings</string>
+    <string name="back">back</string>
+    <string name="recently_viewed">Recently viewed</string>
+    <string name="recently_searched">Recently searched</string>
+    <string name="genre">Genre</string>
+    <string name="developer">Developers:</string>
+    <string name="publisher">Publishers:</string>
+    <string name="support">Supporting developers:</string>
+    <string name="porting_developer" translatable="false">Porting developers:</string>
+    <string name="player_perspectives">Player perspectives:</string>
+    <string name="language">Language:</string>
+    <string name="game_modes">Game modes:</string>
+    <string name="franchise" translatable="false">Franchise:</string>
+    <string name="collection" translatable="false">Collection:</string>
+    <string name="this_game_is_dlc_for">This game is DLC for:</string>
+    <string name="dlcs" translatable="false">DLCs:</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="options">Options</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="account" translatable="false">Account</string>
+    <string name="change_email">Change Email</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="new_mail">New mail</string>
+    <string name="new_username">New username</string>
+    <string name="not_defined">Not defined.</string>
+    <string name="no_summary_provided">No summary provided.</string>
+    <string name="cpu" translatable="false">CPU: </string>
+    <string name="graphics">Graphics: </string>
+    <string name="memory">Memory: </string>
+    <string name="output" translatable="false">Output: </string>
+    <string name="storage" translatable="false">Storage: </string>
+    <string name="resolutions">Resolutions: </string>
+    <string name="setting_preferences" translatable="false">com.cip.cipstudio.setting</string>
+    <string name="dark_mode_settings" translatable="false">darkMode</string>
+    <string name="recent_login_required">Recent login required</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="username_not_valid">Username invalid</string>
+    <string name="username_already_in_use">Username already in use</string>
+    <string name="username_too_short">Username too short</string>
+    <string name="username_too_long">Username too long</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="not_your_email">Not this account email</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="already_your_email">already your account\'s email</string>
+    <string name="same_password">Old password and new password cannot be the same</string>
+    <string name="email_not_found">Email not found</string>
+    <string name="guest_settings" translatable="false">guest</string>
+    <string name="guest_login">Continue as guest</string>
+    <string name="new_user_login">New user?</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="invalid_operation_must_logged">You must be logged in to access this feature</string>
+    <string name="change_language">Change Language</string>
+    <string name="Language">Language</string>
+    <string name="Italian">Italian</string>
+    <string name="English">English</string>
+    <string name="language_settings" translatable="false">language_settings</string>
+    <string name="you_don_t_have_any_favourites_yet">You don\'t have any favourites yet</string>
+    <string name="most_popular_games">Most Popular</string>
+    <string name="recently_released">Recently released</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="worst_rated">Worst rated</string>
+    <string name="best_rated">Top rated</string>
+    <string name="loved_by_critics">Loved by critics</string>
+    <string name="not_logged_in">Not logged in</string>
+    <string name="history">History</string>
+    <string name="not_logged_in_user">You are not logged in</string>
+    <string name="login_from_guest_user">Login to see your profile</string>
+    <string name="login_from_guest_favourite">Login to see your favourites</string>
+    <string name="to_login" translatable="false">toLogin</string>
+    <string name="yes">Yes</string>
+    <string name="delete_history">Delete history</string>
+    <string name="delete_history_message">Are you sure you want to clear history?</string>
+    <string name="no" translatable="false">No</string>
+    <string name="logout_message">Are you sure you want to log out? You will be returned to the login screen</string>
+    <string name="no_results_found">No results found.</string>
+    <string name="no_suggestions_found">No suggestions found</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_message">Are you sure? all your account data will be PERMANENTLY removed</string>
+    <string name="account_deleted">Account deleted</string>
+    <string name="no_recently_viewed">You don\'t have any recently viewed yet</string>
+    <string name="no_favourites_yet">No favourites yet</string>
+    <string name="add_some_games_to_your_favourites">Add some games to your favourites</string>
+    <string name="new_favourite">Add new favourite</string>
+    <string name="no_recent_activities">No recent activities</string>
+    <string name="discover_new_games">Discover new games</string>
+    <string name="for_you">For you</string>
+    <string name="filter">Filter</string>
+    <string name="filter_by_rating">Rating</string>
+    <string name="filter_by_platform">Platform</string>
+    <string name="PC">Pc</string>
+    <string name="pc">Pc</string>
+    <string name="playstation_4">Playstation 4</string>
+    <string name="playstation_5">Playstation5</string>
+    <string name="xbox_one">Xbox one</string>
+    <string name="xbox_series_x">Xbox series x</string>
+    <string name="ios">Ios</string>
+    <string name="nintendoSwitch">Nintendo Switch</string>
+    <string name="android">Android</string>
+    <string name="mac">Mac</string>
+    <string name="linux">Linux</string>
+    <string name="load_more">Load more…</string>
+    <string name="no_games_found">No games found</string>
+    <string name="change_your_filter_criterias">Change your filter criteria</string>
+    <string name="playerPerspectives">Player perspectives</string>
+    <string name="gameModes">Game modes</string>
+    <string name="theme">Theme</string>
+    <string name="releaseDate">Release date</string>
+    <string name="years">Years</string>
+    <string name="user_rating">User Rating</string>
+    <string name="critics_rating">Critics Rating</string>
+    <string name="rating_filters">Rating</string>
+    <string name="category">Category</string>
+    <string name="status" translatable="false">Status</string>
+    <string name="themes">Themes:</string>
+    <string name="sort_by">Sort by</string>
+    <string name="default_sort" translatable="false">Default</string>
+    <string name="delete_search_history">Delete search history</string>
+    <string name="delete_search_history_message">Are you sure you want to clear history search?</string>
+    <string name="search_history_deleted">Search history deleted</string>
 </resources>

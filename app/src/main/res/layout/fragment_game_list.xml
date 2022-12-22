@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.cip.cipstudio.viewmodel.GameListViewModel" />
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="?attr/colorOnPrimary">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fading_primary">
+
+
+            <include android:id="@+id/f_gameList_btn_back"
+                layout="@layout/back_button"
+                style="@style/IconButton.Cip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+            <TextView
+                android:id="@+id/f_gameList_tv_title"
+                style="@style/CipTitleMedium"
+                android:layout_width="wrap_content"
+                android:text="@{title}"
+                app:layout_constraintBottom_toBottomOf="@+id/f_gameList_btn_back"
+                app:layout_constraintEnd_toStartOf="@+id/f_gameList_btn_filter"
+                app:layout_constraintStart_toEndOf="@+id/f_gameList_btn_back"
+                app:layout_constraintTop_toTopOf="@+id/f_gameList_btn_back" />
+
+            <Button
+                android:id="@+id/f_gameList_btn_filter"
+                style="@style/IconButton.Cip"
+                app:icon="@drawable/ic_filter_gl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1"/>
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/f_gameList_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/spongebob"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_gameList_tv_title"
+                app:layout_constraintVertical_bias="0.35"/>
+            <include
+                android:id="@+id/f_gameList_loading_noGamesFound"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_centerVertical="true"
+                layout="@layout/reusable_no_games_found"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_gameList_tv_title"
+                app:layout_constraintVertical_bias="0.35" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_gameList_btn_back"
+                android:layout_marginTop="6dp"
+                android:paddingBottom="40dp">
+                <GridView
+                    android:layoutAnimation="@anim/layout_animation"
+                    android:id="@+id/f_gameList_gv_games"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:numColumns="2"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/colorOnPrimary">
+
+            <include
+                android:id="@+id/f_gameList_fl_filter"
+                layout="@layout/reusable_filter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true" />
+        </FrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

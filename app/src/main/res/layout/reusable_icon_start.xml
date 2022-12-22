@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/f_firstScreen_cv_logo_ex"
+        android:layout_width="600dp"
+        android:layout_height="600dp"
+        android:layout_marginTop="-300dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_red_black" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/f_firstScreen_cv_logo"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="110dp"
+            app:cardCornerRadius="200dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_red_black" />
+
+            <ImageView
+                android:id="@+id/f_firstScreen_iw_logo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/shape_red_black"
+                android:padding="30dp"
+                android:paddingStart="40dp"
+                android:paddingBottom="30dp"
+                android:src="@drawable/logo_white"
+                tools:ignore="RtlSymmetry" />
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

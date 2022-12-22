@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="languages">
+        <item>Italian</item>
+        <item>English</item>
+    </array>
+
+    <array name="sorts">
+        <item>Alphabetical (a-z)</item>
+        <item>Alphabetical (z-a)</item>
+        <item>Top rated</item>
+        <item>Worst rated</item>
+        <item>Most recent</item>
+        <item>Least recent</item>
+        <item>Most popular</item>
+        <item>Least popular</item>
+        <item>Default</item>
+    </array>
+
+</resources>

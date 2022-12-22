@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_profile"
+    app:startDestination="@+id/profileScreen">
+
+    <fragment
+        android:id="@+id/profileScreen"
+        android:name="com.cip.cipstudio.view.fragment.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_changeUsernameFragment"
+            app:destination="@id/changeUsernameFragment" />
+        <action
+            android:id="@+id/action_profileScreen_self"
+            app:destination="@id/profileScreen" />
+        <action
+            android:id="@+id/action_userFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeEmailFragment"
+        android:name="com.cip.cipstudio.view.fragment.ChangeEmailFragment"
+        android:label="ChangeEmailFragment" >
+        <action
+            android:id="@+id/action_changeEmailFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.cip.cipstudio.view.fragment.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeUsernameFragment"
+        android:name="com.cip.cipstudio.view.fragment.ChangeUsernameFragment"
+        android:label="ChangeUsernameFragment" >
+        <action
+            android:id="@+id/action_changeUsernameFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.cip.cipstudio.view.fragment.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_userFragment"
+            app:destination="@id/profileScreen" />
+        <action
+            android:id="@+id/action_historyFragment_to_game_details_profile"
+            app:destination="@id/game_details_profile" />
+    </fragment>
+    <navigation android:id="@+id/game_details_profile"
+        app:startDestination="@id/game_details">
+        <include app:graph="@navigation/game_details" />
+        <action
+            android:id="@+id/action_global_userFragment"
+            app:destination="@id/profileScreen" />
+    </navigation>
+</navigation>

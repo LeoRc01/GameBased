@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="seconday_color">#EF233C</color>
+    <color name="secondary_color">#EF233C</color>
+    <!-- <color name="light_seconday_color">#4AFF2C46</color> -->
+    <color name="light_secondary_color">#FFA7B0</color>
     <color name="primary_color">#D90429</color>
     <color name="primary_color_dark">#9A001B</color>
+    <color name="primary_color_dark_darker">#5E0011</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_color">#28292E</color>
+    <color name="dark_color">#303030</color>
+    <color name="transparent">#00000000</color>
     <color name="grey">#8D99AE</color>
+    <color name="transparent_grey">#85000000</color>
+    <color name="less_transparent_grey">#DA000000</color>
+    <color name="light_grey">#E1E1E1</color>
+    <color name="trackColor">#72303030</color>
+    <color name="successColor">#25C800</color>
+    <color name="successColorVariant">#4A25C800</color>
+    <color name="grey_login">#8E8E8E</color>
+    <color name="primary_color_dark_darker_even_darker">#480000</color>
+    <color name="search_box_bg_color">#338D99AE</color>
 </resources>

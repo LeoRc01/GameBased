@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.cip.cipstudio.viewmodel.HistoryViewModel" />
+    </data>
+
+    <FrameLayout
+        android:background="@drawable/fading_primary"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.fragment.HistoryFragment">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/f_history_btn_back"
+                    layout="@layout/back_button"
+                    />
+
+                <TextView
+                    android:text="@string/recently_viewed"
+                    style="@style/CipTitleMedium.line"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_marginHorizontal="15dp"
+                    android:id="@+id/f_history_iv_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/f_history_ll_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone">
+                <include
+                    android:id="@+id/reusable_no_recent_activities_include"
+                    layout="@layout/reusable_no_recently_viewed"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:paddingHorizontal="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/f_history_rv_games"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:verticalSpacing="10dp"
+                    android:numColumns="1"
+                    android:visibility="visible" />
+
+           
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/f_history_shimmer_layout"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                        <include layout="@layout/shimmer_big_cover"/>
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_favourite"
+    app:startDestination="@+id/favouriteScreen">
+
+    <fragment
+        android:id="@+id/favouriteScreen"
+        android:name="com.cip.cipstudio.view.fragment.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite">
+        <action
+            android:id="@+id/action_favouriteScreen_to_game_details_favourite"
+            app:destination="@id/game_details_favourite" />
+    </fragment>
+    <navigation android:id="@+id/game_details_favourite"
+        app:startDestination="@id/game_details">
+        <include app:graph="@navigation/game_details" />
+        <action
+            android:id="@+id/action_global_favouriteScreen"
+            app:destination="@id/favouriteScreen" />
+    </navigation>
+
+</navigation>

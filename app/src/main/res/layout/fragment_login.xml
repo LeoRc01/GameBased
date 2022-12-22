@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+            <variable
+                name="loginViewModel"
+                type="com.cip.cipstudio.viewmodel.LoginViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.fragment.LoginFragment"
+        android:fillViewport="true"
+        android:background="#1E0000">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/f_login_cl_Login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/reusable_icon_start"
+                android:id="@+id/f_login_view_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/f_login_layout_email"
+                app:layout_constraintVertical_bias="0"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/f_login_layout_email"
+                style="@style/TextInputLayout.Login"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="6dp"
+                android:hint="@string/email_placeholder"
+                app:startIconContentDescription="Email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/f_login_layout_pwd"
+                app:layout_constraintTop_toBottomOf="@+id/f_login_view_logo"
+                app:layout_constraintVertical_bias="1"
+                app:startIconDrawable="@drawable/ic_email"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/f_login_et_email"
+                    style="@style/TextInputEditText.Login"
+                    android:inputType="textEmailAddress"
+                    android:text="@={loginViewModel.email}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/f_login_layout_pwd"
+                style="@style/TextInputLayout.Login"
+                android:layout_marginBottom="32dp"
+                android:hint="@string/password_placeholder"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/f_login_btn_login"
+                app:startIconDrawable="@drawable/ic_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/f_login_et_pwd"
+                    style="@style/TextInputEditText.Login"
+                    android:inputType="textPassword"
+                    android:text="@={loginViewModel.password}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/f_login_tv_forgot_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="@string/forgot_password"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/light_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_login_layout_pwd" />
+
+            <Button
+                android:id="@+id/f_login_btn_login"
+                style="@style/CipButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/f_login_ll_switchMode" />
+
+            <LinearLayout
+                android:id="@+id/f_login_ll_switchMode"
+                android:layout_gravity="center"
+                android:layout_marginBottom="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <TextView
+                    android:id="@+id/f_login_tv_new_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_user_login"
+                    android:textColor="@color/light_grey"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/f_login_tv_switchMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/register_now"
+                    android:textColor="@color/primary_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

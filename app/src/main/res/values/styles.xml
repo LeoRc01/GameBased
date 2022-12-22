@@ -1,9 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style
         name="Title"
         parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">25sp</item>
+    </style>
+    <style name="genre_chip" parent="@style/Widget.MaterialComponents.Chip.Action">
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@color/light_secondary_color</item>
+        <item name="chipStrokeColor">@color/primary_color</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/light_secondary_color</item>
+    </style>
+
+    <style name="PlatformItem" parent="Widget.AppCompat.TextView">
+        <item name="color">@color/primary_color</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+    </style>
+
+    <style name="titleCicciottello" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="fontFamily">@font/poppins_extrabold</item>
+    </style>
+
+    <style name="BottomSheetDialogLight" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+    <style name="BottomSheetDialogDark" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/dark_color</item>
+    </style>
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
+        <item name="colorPrimary">@color/primary_color</item>
+    </style>
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.DayNight">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/primary_color</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/grey</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f</item>
+
+        <item name="drawableTint">@color/primary_color</item>
+
+
+    </style>
+
+    <style name="CipButton" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium </item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">25dp</item>
+        <item name="android:letterSpacing">0.15</item>
+    </style>
+
+    <style name="CipTitleMedium" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CipTitleMedium.line" parent="CipTitleMedium">
+        <item name="drawableStartCompat">@drawable/ic_vertical_line</item>
+    </style>
+
+    <style name="CipTitleMedium.line.arrowRight" parent="CipTitleMedium.line">
+        <item name="drawableEndCompat">@drawable/ic_arrow_right</item>
+    </style>
+
+    <style name="GameDetails.title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GameDetails.labelField" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="GameDetails.field" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/primary_color</item>
+    </style>
+
+    <style name="TextInputLayout.Login" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:theme">@style/Theme.CIPStudio.Night</item>
+    </style>
+
+    <style name="TextInputEditText.Login" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="IconButton.Cip" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="android:backgroundTint">@color/light_secondary_color</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:padding">4.3dp</item>
+        <item name="iconSize">24dp</item>
+        <item name="iconTint">@color/primary_color</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="Chip.Filter.Cip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:theme">@style/Theme.Chip.CipStudio</item>
+    </style>
+
+    <style name="FilterTextView" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:drawablePadding">7dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="FilterChipGroup" parent="">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="FilterDivider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="thickness">1dp</item>
     </style>
 </resources>
