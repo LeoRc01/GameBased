@@ -9,6 +9,7 @@ import com.cip.cipstudio.dataSource.repository.FirebaseRepository
 import com.cip.cipstudio.model.data.AIModel
 import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepository
 import com.cip.cipstudio.model.entity.GameViewedHistoryEntry
+import com.cip.cipstudio.model.entity.RecentSearchesHistoryEntry
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks.forException
 import com.google.firebase.auth.AuthResult
@@ -85,16 +86,16 @@ object User {
         return task
     }
 
-    suspend fun getRecentlyViewed(db: HistoryRepository, offset: Int = 0) : List<String> {
-        return db.getHistory(uid, pageIndex= offset)
+    suspend fun getRecentlyViewed(historyDB: HistoryRepository, offset: Int = 0) : List<String> {
+        return historyDB.getHistory(uid, pageIndex= offset)
     }
 
-    suspend fun addGamesToRecentlyViewed(gameIdAdd: String, db: HistoryRepository) {
+    suspend fun addGamesToRecentlyViewed(gameIdAdd: String, historyDB: HistoryRepository) {
         lateinit var gameViewedRecently: List<String>
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-            gameViewedRecently = db.getHistory(uid)
-            db.insert(gameIdAdd, uid)
+            gameViewedRecently = historyDB.getHistory(uid)
+            historyDB.insert(gameIdAdd, uid)
 
             if (isLogged()) {
                 val gameIdDelete =
@@ -107,7 +108,7 @@ object User {
         }
     }
 
-    fun syncRecentlyViewedGames(db: HistoryRepository) {
+    fun syncFromRemote(historyDB: HistoryRepository, recentSearchesDB: RecentSearchesRepository) {
         if (!isLogged()) {
             throw NotLoggedException()
         }
@@ -115,12 +116,26 @@ object User {
             if (it.value != null) {
                 val games = (it.value as Map<*, *>).map { el ->
                     val a = el.value as Map<*,*>
-                    val id = el.key as String
-                    GameViewedHistoryEntry(id, uid, a["dateTime"] as Long)
+                    val idGame = el.key as String
+                    GameViewedHistoryEntry(idGame, uid, a["dateTime"] as Long)
                 }
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    db.syncHistory(games)
+                    historyDB.syncHistory(games)
+                }
+            }
+        }
+
+        firebaseRepository.getRecentlySearchesQueries().addOnSuccessListener {
+            if (it.value != null) {
+                val queries = (it.value as Map<*, *>).map { el ->
+                    val a = el.value as Map<*,*>
+                    val query = el.key as String
+                    RecentSearchesHistoryEntry(query, uid, a["dateTime"] as Long)
+                }
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    recentSearchesDB.syncRecentSearches(queries)
                 }
             }
         }
@@ -223,10 +238,10 @@ object User {
         }
     }
 
-    suspend fun deleteHistory(db: HistoryRepository) {
+    suspend fun deleteHistory(historyDB: HistoryRepository) {
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-           db.deleteAll(uid)
+           historyDB.deleteAll(uid)
 
             if (isLogged()) {
                 firebaseRepository.deleteGamesFromRecentlyViewed()
@@ -234,12 +249,13 @@ object User {
         }
     }
 
-    suspend fun delete(db: HistoryRepository) : Task<*> {
+    suspend fun deleteUser(historyDB: HistoryRepository, searchDB: RecentSearchesRepository) : Task<*> {
         if (!isLogged()) {
             throw NotLoggedException()
         }
         retrieveDataFromCurrentUser()
-        db.deleteAll(uid)
+        historyDB.deleteAll(uid)
+        searchDB.deleteAll(uid)
         storageReference!!.delete().addOnSuccessListener {
             Log.i(TAG, "Image deleted successfully")
         }
@@ -249,28 +265,39 @@ object User {
 
     }
 
-    suspend fun getSearchHistory(query: String, db: RecentSearchesRepository, offset: Int = 0) : List<String> {
-        return db.getRecentSearches(query, userId = uid, pageIndex= offset)
+    suspend fun getRecentSearches(query: String, recentSearchDB: RecentSearchesRepository, offset: Int = 0) : List<String> {
+        return recentSearchDB.getRecentSearches(query, userId = uid, pageIndex= offset)
     }
 
-    suspend fun deleteQueryFromSearchHistory(query: String, db: RecentSearchesRepository) {
+    suspend fun deleteQueryFromRecentSearches(query: String, recentSearchesDB: RecentSearchesRepository) {
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-            db.delete(query, uid)
+            recentSearchesDB.delete(query, uid)
+            firebaseRepository.deleteQueryFromRecentlySearch(query)
         }
     }
 
-    suspend fun deleteSearchHistory(db: RecentSearchesRepository) {
+    suspend fun deleteRecentSearches(recentSearchesDB: RecentSearchesRepository) {
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-            db.deleteAll(uid)
+            recentSearchesDB.deleteAll(uid)
+            firebaseRepository.deleteAllQueriesFromRecentlySearch()
         }
     }
 
-    suspend fun addSearchToRecentlySearched(query: String, db: RecentSearchesRepository) {
+    suspend fun addSearchToRecentlySearched(query: String, recentSearchesDB: RecentSearchesRepository) {
         retrieveDataFromCurrentUser()
         withContext(Dispatchers.Main) {
-            db.insert(query, uid)
+            val recentSearches = recentSearchesDB.getRecentSearches(query, uid)
+            recentSearchesDB.insert(query, uid)
+            if (isLogged()) {
+                val queryToDelete =
+                    if (recentSearches.size == 10 && recentSearches.last() != query)
+                        recentSearches.last()
+                    else
+                        null
+                firebaseRepository.addQueryToRecentlySearch(query, queryToDelete)
+            }
         }
     }
 

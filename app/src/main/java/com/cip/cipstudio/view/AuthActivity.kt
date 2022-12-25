@@ -11,7 +11,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.exception.NotLoggedException
 import com.cip.cipstudio.R
 import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.model.User
+import com.cip.cipstudio.model.entity.RecentSearchesHistoryEntry
 import com.cip.cipstudio.utils.ContextWrapper
 
 class AuthActivity : AppCompatActivity() {
@@ -41,7 +43,7 @@ class AuthActivity : AppCompatActivity() {
         if(User.isLogged() || preferences.contains(getString(R.string.guest_settings))) {
             try {
 
-                User.syncRecentlyViewedGames(HistoryRepositoryLocal(this))
+                User.syncFromRemote(HistoryRepositoryLocal(this), RecentSearchesRepositoryLocal(this))
                 Log.i(TAG, "Login as User")
 
             } catch (_: NotLoggedException) {
