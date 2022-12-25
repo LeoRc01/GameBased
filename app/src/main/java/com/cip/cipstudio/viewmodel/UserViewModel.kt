@@ -52,7 +52,7 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
 
     fun deleteAccount(onSuccess: () -> Unit, OnFailure: () -> Unit = {}) {
         viewModelScope.launch {
-            User.delete(historyDB).addOnSuccessListener {
+            User.deleteUser(historyDB, searchHistoryDB).addOnSuccessListener {
                 onSuccess.invoke()
             }.addOnFailureListener(){
                 OnFailure.invoke()
@@ -62,7 +62,7 @@ class UserViewModel(val binding : FragmentUserBinding) : ViewModel() {
 
     fun deleteHistory() {
         viewModelScope.launch {
-            User.deleteSearchHistory(searchHistoryDB)
+            User.deleteRecentSearches(searchHistoryDB)
         }
     }
 

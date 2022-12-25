@@ -53,7 +53,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
                 gameRepository.getSearchSuggestions(query, filterCriteria = criteria) as ArrayList<GameDetails>
             }
             val recentSearch = withContext(Dispatchers.IO){
-                User.getSearchHistory(query, searchDB, offset) as ArrayList<String>
+                User.getRecentSearches(query, searchDB, offset) as ArrayList<String>
             }
             isPageLoading.postValue(false)
 
@@ -66,7 +66,7 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
 
         viewModelScope.launch(Dispatchers.Main){
             recentSearchResults = withContext(Dispatchers.IO){
-                User.getSearchHistory(query, searchDB, offset) as ArrayList<String>
+                User.getRecentSearches(query, searchDB, offset) as ArrayList<String>
             }
             isPageLoading.postValue(false)
             onSuccess.invoke(recentSearchResults)

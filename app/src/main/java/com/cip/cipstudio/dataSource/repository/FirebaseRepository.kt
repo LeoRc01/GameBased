@@ -60,6 +60,30 @@ object FirebaseRepository {
             .get()
     }
 
+    fun addQueryToRecentlySearch(gameIdToAdd : String, gameIdToDelete : String? = null) : Task<Void> {
+        val data : Map<String, Any> = hashMapOf("dateTime" to System.currentTimeMillis())
+        val ref = db!!.getReference("users/$userId/recentlySearch")
+        val task = ref.child(gameIdToAdd).setValue(data)
+        if(gameIdToDelete != null){
+            ref.child(gameIdToDelete).removeValue()
+        }
+        return task
+    }
+
+    fun deleteAllQueriesFromRecentlySearch() : Task<Void> {
+        return db!!.getReference("users/${User.uid}/recentlySearch").removeValue()
+    }
+
+    fun deleteQueryFromRecentlySearch(query : String) : Task<Void> {
+        return db!!.getReference("users/${User.uid}/recentlySearch/$query").removeValue()
+    }
+
+    fun getRecentlySearchesQueries() : Task<DataSnapshot>{
+        return db!!
+            .getReference("users/$userId/recentlySearch")
+            .get()
+    }
+
     fun setGameToFavourite(gameId : String) : Task<Void> {
         return db!!
             .getReference("users/$userId/favourites")

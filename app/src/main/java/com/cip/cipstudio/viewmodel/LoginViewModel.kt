@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cip.cipstudio.dataSource.repository.historyRepository.HistoryRepositoryLocal
+import com.cip.cipstudio.dataSource.repository.recentSearchesRepository.RecentSearchesRepositoryLocal
 import com.cip.cipstudio.databinding.FragmentLoginBinding
 import com.cip.cipstudio.model.User
 import com.cip.cipstudio.utils.AuthErrorEnum
@@ -46,7 +47,7 @@ class LoginViewModel(val binding: FragmentLoginBinding) : ViewModel(){
                 onSuccess.invoke()
             }
             .addOnSuccessListener {
-                User.syncRecentlyViewedGames(HistoryRepositoryLocal(binding.root.context))
+                User.syncFromRemote(HistoryRepositoryLocal(binding.root.context), RecentSearchesRepositoryLocal(binding.root.context))
             }
             .addOnFailureListener {
                 LoadingSpinner.dismiss()
