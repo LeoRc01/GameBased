@@ -318,7 +318,6 @@
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/delete_search_history"
-                    app:drawableRightCompat="@drawable/ic_arrow_right"
                     app:drawableLeftCompat="@drawable/ic_search_red"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
