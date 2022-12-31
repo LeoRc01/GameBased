@@ -57,7 +57,7 @@ class UserFragment : Fragment() {
 
 
         userBinding.fUserTvUsername.text = user.username
-        userBinding.fUserTvEmail.text = user.email
+        userBinding.fUserTvEmail.text = user.email?.lowercase()
 
         user.downloadUrl.let {
             if (it != null) {

@@ -67,12 +67,14 @@
         <item name="android:letterSpacing">0.15</item>
     </style>
 
+
     <style name="CipTitleMedium" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 
     <style name="CipTitleMedium.line" parent="CipTitleMedium">
         <item name="drawableStartCompat">@drawable/ic_vertical_line</item>
@@ -165,5 +167,15 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="thickness">1dp</item>
+    </style>
+
+    <style name="TextViewChange" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
     </style>
 </resources>

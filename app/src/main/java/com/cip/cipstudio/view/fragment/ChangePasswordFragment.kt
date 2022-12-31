@@ -41,20 +41,6 @@ class ChangePasswordFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-
-        changePasswordBinding.fPasswordChangeTvUsername.text = user.username
-        changePasswordBinding.fPasswordChangeTvEmail.text = user.email
-
-        user.downloadUrl.let {
-            if (it != null) {
-                Log.d(TAG, "Photo download url: $it")
-                Picasso.get().load(it).into(changePasswordBinding.fPasswordChangeIvProfilePicture)
-            }
-            else {
-                Log.d(TAG, "no photo")
-            }
-        }
-
         initializeChangePasswordButton()
 
         return changePasswordBinding.root
@@ -83,7 +69,7 @@ class ChangePasswordFragment : Fragment() {
                         AuthTypeErrorEnum.UNKNOWN, AuthTypeErrorEnum.LOGIN  -> {
                             Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                         }
-                        else -> {}
+                        else -> {Log.d(TAG, "Unknown error type")}
                     }
                 }
             )
