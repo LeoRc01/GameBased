@@ -10,7 +10,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +28,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,15 +57,13 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDetailsBinding: FragmentGameDetailsBinding
 
 
-    private var showMore = true
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         gameDetailsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
-
+        gameDetailsBinding.lifecycleOwner = this
         gameDetailsBinding.fGameDetailsClPageLayout.visibility = View.GONE
 
         gameDetailsBinding.loadingModel = Loading()
@@ -72,7 +73,7 @@ class GameDetailsFragment : Fragment() {
 
         setCollectionStringClickable()
 
-        gameDetailsBinding.lifecycleOwner = this
+
         return gameDetailsBinding.root
     }
 
@@ -84,7 +85,6 @@ class GameDetailsFragment : Fragment() {
         gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams = params
         gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.GONE
         gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = null
-        showMore = false
     }
 
 
@@ -114,7 +114,7 @@ class GameDetailsFragment : Fragment() {
 
             gameDetailsBinding.fGameDetailsIvShare.setOnClickListener {
                 val url = "https://cipstudio.page.link/?link=https://cipstudio.page.link/gameDetails?gameId=${gameId}&apn=com.cip.cipstudio"
-                val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+                Firebase.dynamicLinks.shortLinkAsync {
                     longLink = Uri.parse(url)
                 }.addOnSuccessListener {
                     val sendIntent: Intent = Intent().apply {
@@ -127,9 +127,28 @@ class GameDetailsFragment : Fragment() {
                 }
             }
 
-            gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
-                hideShowMore()
-            }
+            gameDetailsBinding.fGameDetailsTvGameDetailsDescription.addTextChangedListener(object :
+                TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (gameDetailsBinding.fGameDetailsTvGameDetailsDescription.text.length >= 250) {
+                        gameDetailsBinding.fGameDetailsTvGameDetailsDescription.layoutParams.height = 250
+                        gameDetailsBinding.fGameDetailsTvShowMoreDescription.visibility = View.VISIBLE
+                        gameDetailsBinding.fGameDetailsTvGameDetailsDescription.foreground = ContextCompat.getDrawable(requireContext(), R.drawable.fading_gradient)
+                        gameDetailsBinding.fGameDetailsTvShowMoreDescription.setOnClickListener {
+                            hideShowMore()
+                        }
+                    }
+                }
+            })
+
+
+
         }
     }
 

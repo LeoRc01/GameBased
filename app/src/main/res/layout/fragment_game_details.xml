@@ -161,9 +161,8 @@
                         <TextView
                             android:id="@+id/f_gameDetails_tv_gameDetailsDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="70dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:foreground="@drawable/fading_gradient"
                             android:text="@{vm.game.summary}"
                             android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
                             app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +177,7 @@
                             android:layout_gravity="start"
                             android:text="@string/show_more"
                             android:textColor="@color/primary_color"
-                            android:visibility='@{vm.game.fields.contains("summary")? View.VISIBLE : View.GONE}'
+                            android:visibility='gone'
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_gameDetailsDescription" />
 
@@ -615,7 +614,8 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/f_gameDetails_tv_similarGames"
-                            app:reverseLayout="true" />
+                            app:reverseLayout="true"
+                            tools:ignore="TooManyViews" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -628,7 +628,8 @@
             android:visibility="@{loadingModel.isPageLoading ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <include layout="@layout/shimmer_game_details"></include>
+
+            <include layout="@layout/shimmer_game_details" />
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </RelativeLayout>
