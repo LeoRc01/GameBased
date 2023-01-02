@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             (containerView.layoutParams as MarginLayoutParams).bottomMargin = 0
         } else {
             bottomNavigationView.visibility = View.VISIBLE
-            (containerView.layoutParams as MarginLayoutParams).bottomMargin = 80
+            (containerView.layoutParams as MarginLayoutParams).bottomMargin = 200
         }
     }
 
