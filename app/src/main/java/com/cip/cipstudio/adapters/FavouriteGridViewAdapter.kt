@@ -69,20 +69,26 @@ class FavouriteGridViewAdapter(val context : Context,
 
         val historyDB = HistoryRepositoryLocal(context)
 
+        ivGameCover.setOnClickListener {
+            if (saveToHistory) {
+                GlobalScope.launch {
+                    User.addGamesToRecentlyViewed(games[position].id, historyDB)
+                }
+            }
+            val bundle = bundleOf()
+            bundle.putString("game_id", games[position].id)
+            navController.navigate(actionAdapter.getAction(), bundle)
+        }
+
         games[position].coverUrl.let {
             if(!it.isEmpty() && it != "null") {
                 Picasso.get().load(it).into(ivGameCover)
-                ivGameCover.setOnClickListener {
-                    if (saveToHistory) {
-                        GlobalScope.launch {
-                            User.addGamesToRecentlyViewed(games[position].id, historyDB)
-                        }
-                    }
-                    val bundle = bundleOf()
-                    bundle.putString("game_id", games[position].id)
-                    navController.navigate(actionAdapter.getAction(), bundle)
-                }
             }
+            else{
+                val noPreview = convertView.findViewById<ImageView>(R.id.i_game_iv_no_preview)
+                noPreview.visibility = View.VISIBLE
+            }
+
         }
 
         return convertView
