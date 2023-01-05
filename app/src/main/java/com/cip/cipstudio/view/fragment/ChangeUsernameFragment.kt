@@ -40,18 +40,6 @@ class ChangeUsernameFragment : Fragment() {
         }
 
         changeUsernameBinding.fUsernameChangeTvUsername.text = user.username
-        changeUsernameBinding.fUsernameChangeTvEmail.text = user.email
-        user.downloadUrl.let {
-            if (it != null) {
-                Log.d(TAG, "Photo download url: $it")
-                Picasso.get().load(it).into(changeUsernameBinding.fUsernameChangeIvProfilePicture)
-            }
-            else {
-                Log.d(TAG, "no photo")
-            }
-        }
-
-
 
         initializeChangeUsernameButton()
 

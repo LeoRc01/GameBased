@@ -39,7 +39,7 @@
                     android:id="@+id/f_search_search_box"
                     android:layout_width="0dp"
                     android:layout_weight="0.70"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_height="wrap_content"
                     android:iconifiedByDefault="false"
                     android:imeOptions="actionDone"
@@ -52,6 +52,7 @@
 
                 <Button
                     style="@style/IconButton.Cip"
+                    android:layout_marginEnd="-3dp"
                     android:id="@+id/f_search_filter_button"
                     app:icon="@drawable/ic_filters" />
 

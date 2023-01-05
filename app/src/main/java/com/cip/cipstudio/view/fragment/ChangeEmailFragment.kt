@@ -36,18 +36,6 @@ class ChangeEmailFragment : Fragment() {
         changeEmailBinding.executePendingBindings()
 
 
-        changeEmailBinding.fEmailChangeTvEmail.text = user.email
-        changeEmailBinding.fEmailChangeTvUsername.text = user.username
-        user.downloadUrl.let {
-            if (it != null) {
-                Log.d(TAG, "Photo download url: $it")
-                Picasso.get().load(it).into(changeEmailBinding.fEmailChangeIvProfilePicture)
-            }
-            else {
-                Log.d(TAG, "no photo")
-            }
-        }
-
         changeEmailBinding.fEmailChangeBtnBack.backButton.setOnClickListener {
             findNavController().popBackStack()
         }

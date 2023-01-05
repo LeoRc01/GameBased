@@ -5,9 +5,14 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -24,7 +29,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var navController: NavController
     lateinit var bottomNavigationView : BottomNavigationView
+    lateinit var root : View
+    lateinit var containerView: FragmentContainerView
     private val TAG = "MainActivity"
+    private var bottomMargin = 0
+    private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        val heightDiff = (root.rootView.height - root.height) * 100 / root.rootView.height
+        if (heightDiff > 15) { // if more than 100 pixels, its probably a keyboard...
+            bottomNavigationView.visibility = View.GONE
+            if (bottomMargin == 0)
+                bottomMargin = (containerView.layoutParams as MarginLayoutParams).bottomMargin
+            (containerView.layoutParams as MarginLayoutParams).bottomMargin = 0
+        } else {
+            if (bottomMargin == 0)
+                bottomMargin = (containerView.layoutParams as MarginLayoutParams).bottomMargin
+            bottomNavigationView.visibility = View.VISIBLE
+            (containerView.layoutParams as MarginLayoutParams).bottomMargin = bottomMargin
+
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +58,11 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.a_main_cv_container) as NavHostFragment
         navController = navHostFragment.navController
+
+        root = findViewById<View>(R.id.a_main_cl_rootLayout)
+        root.viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener)
+
+        containerView = findViewById<FragmentContainerView>(R.id.a_main_cv_container)
 
         bottomNavigationView = findViewById<BottomNavigationView>(R.id.a_main_bnv_bottom_navigation)
 

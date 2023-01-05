@@ -28,58 +28,26 @@
                 android:layout_height="wrap_content">
 
                 <include
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/f_email_change_btn_back"
                     layout="@layout/back_button"
-                    />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/f_email_change_cw_profilePicture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="200dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.14"
+                    app:layout_constraintBottom_toBottomOf="@+id/f_email_change_tv_title"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/f_email_change_btn_back">
-
-                    <ImageView
-                        android:id="@+id/f_email_change_iv_profilePicture"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:contentDescription="@string/profile_picture"
-                        app:srcCompat="@drawable/userpfp" />
-
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/f_email_change_tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="75dp"
-                    android:text="Username"
-                    android:maxEms="12"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/f_email_change_cw_profilePicture"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <TextView
-                    android:id="@+id/f_email_change_tv_email"
+                    android:id="@+id/f_email_change_tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Email"
-                    android:maxEms="12"
+                    android:text="@string/change_email"
+                    style="@style/CipTitleMedium"
+                    android:layout_marginStart="15dp"
+                    android:textSize="25sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/f_email_change_cw_profilePicture"
-                    app:layout_constraintTop_toBottomOf="@+id/f_email_change_tv_username" />
+                    app:layout_constraintStart_toEndOf="@+id/f_email_change_btn_back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/f_email_change_layout_email"
@@ -87,13 +55,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="125dp"
                     android:layout_marginEnd="12dp"
                     android:hint="@string/new_mail"
                     app:errorEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/f_email_change_cw_profilePicture"
+                    app:layout_constraintTop_toBottomOf="@+id/f_email_change_tv_title"
                     app:startIconDrawable="@drawable/ic_user">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -136,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:layout_marginTop="73dp"
+                    android:layout_marginTop="85dp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/change_email"
                     style="@style/CipButton"

@@ -57,7 +57,7 @@ class UserFragment : Fragment() {
 
 
         userBinding.fUserTvUsername.text = user.username
-        userBinding.fUserTvEmail.text = user.email
+        userBinding.fUserTvEmail.text = user.email?.lowercase()
 
         user.downloadUrl.let {
             if (it != null) {
@@ -200,6 +200,8 @@ class UserFragment : Fragment() {
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     userViewModel.deleteHistory()
                     Toast.makeText(requireContext(), getString(R.string.search_history_deleted), Toast.LENGTH_SHORT).show()
+                    userBinding.fUserTvDeleteSearchHistory.visibility = View.GONE
+                    userBinding.fUserDividerHistorySearchHistory.visibility = View.GONE
                 }
                 .setNegativeButton(getString(R.string.no)) { _, _ -> }
                 .show()

@@ -2,7 +2,6 @@ package com.cip.cipstudio.adapters
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -87,7 +86,7 @@ class SuggestionRecyclerViewAdapter (val context : Context,
                 val query = queries[position]
 
                 GlobalScope.launch {
-                    User.deleteQueryFromSearchHistory(query, searchDB)
+                    User.deleteQueryFromRecentSearches(query, searchDB)
                 }
                 queries.removeAt(position)
                 notifyItemRemoved(position)

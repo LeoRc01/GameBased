@@ -99,7 +99,7 @@ class SearchFragment : Fragment() {
             else
                 false
 
-        if (isSearchStart)
+        if (isSearchStart && searchBinding.fSearchSearchBox.query.isNotEmpty())
             initializeResults(searchBinding.fSearchSearchBox.query.toString() ,offsetStartResult, positionStartResult)
         else if (searchBinding.fSearchSearchBox.query.isNotEmpty())
             setSuggestions(searchBinding.fSearchSearchBox.query.toString())
@@ -242,17 +242,19 @@ class SearchFragment : Fragment() {
 
     private fun initializeResults(query: String, offsetStart: Int = 0, positionStartResult: Int = -1) {
         checkIfFragmentAttached {
+            setVisible("fSearchResults")
             val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
-            shimmerLayout.visibility = View.VISIBLE
-            shimmerLayout.startShimmer()
-
+            if (query.isNotEmpty()) {
+                Log.d(TAG, "initializeResults: $query")
+                shimmerLayout.visibility = View.VISIBLE
+                shimmerLayout.startShimmer()
+            }
 
             val adapter = GamesBigRecyclerViewAdapter(
                 requireContext(),
                 ArrayList(),
                 ActionGameDetailsEnum.SEARCH
             )
-
 
             val linearLayoutManager = LinearLayoutManager(requireContext())
             linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -269,7 +271,7 @@ class SearchFragment : Fragment() {
                 adapter.addItems(it)
 
 
-                if (adapter.itemCount == 0) {
+                if (adapter.itemCount == 0 && query.isNotEmpty()) {
                     shimmerLayout.stopShimmer()
                     shimmerLayout.visibility = View.GONE
                     setVisible("fSearchNotFound")
@@ -387,10 +389,20 @@ class SearchFragment : Fragment() {
             }
         }
         else {
-            searchBinding.fSearchShimmerLayoutResults.visibility = View.GONE
-            searchBinding.fSearchShimmerLayoutResults.stopShimmer()
-            setVisible("fSearchResults")
-            searchBinding.fSearchResults.scrollToPosition(positionStartResult)
+
+            if (searchBinding.fSearchSearchBox.query.isNotEmpty()) {
+                searchBinding.fSearchShimmerLayoutResults.visibility = View.GONE
+                searchBinding.fSearchShimmerLayoutResults.stopShimmer()
+                setVisible("fSearchResults")
+                searchBinding.fSearchResults.scrollToPosition(positionStartResult)
+            }else{
+                searchBinding.fSearchShimmerLayoutResults.visibility = View.GONE
+                searchBinding.fSearchShimmerLayoutResults.stopShimmer()
+                setVisible("fSearchHistory")
+            }
+
+
+
         }
     }
 

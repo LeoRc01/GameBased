@@ -166,7 +166,7 @@
     <string name="themes">Themes:</string>
     <string name="sort_by">Sort by</string>
     <string name="default_sort" translatable="false">Default</string>
-    <string name="delete_search_history">Delete search history</string>
+    <string name="delete_search_history">Delete Search History</string>
     <string name="delete_search_history_message">Are you sure you want to clear history search?</string>
     <string name="search_history_deleted">Search history deleted</string>
 </resources>

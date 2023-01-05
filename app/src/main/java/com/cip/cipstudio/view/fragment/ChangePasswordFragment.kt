@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.cip.cipstudio.R
 import com.cip.cipstudio.databinding.FragmentPasswordChangeBinding
 import com.cip.cipstudio.model.User
+import com.cip.cipstudio.utils.AuthErrorEnum
 import com.cip.cipstudio.utils.AuthTypeErrorEnum
 import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.viewmodel.ChangePasswordViewModel
@@ -41,20 +42,6 @@ class ChangePasswordFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-
-        changePasswordBinding.fPasswordChangeTvUsername.text = user.username
-        changePasswordBinding.fPasswordChangeTvEmail.text = user.email
-
-        user.downloadUrl.let {
-            if (it != null) {
-                Log.d(TAG, "Photo download url: $it")
-                Picasso.get().load(it).into(changePasswordBinding.fPasswordChangeIvProfilePicture)
-            }
-            else {
-                Log.d(TAG, "no photo")
-            }
-        }
-
         initializeChangePasswordButton()
 
         return changePasswordBinding.root
@@ -75,7 +62,12 @@ class ChangePasswordFragment : Fragment() {
                 onFailure = {
                     when(it.getErrorType()){
                         AuthTypeErrorEnum.PASSWORD -> {
-                            changePasswordBinding.fPasswordChangeLayoutNewpwd.error = getString(it.getErrorId())
+                            if (it == AuthErrorEnum.WRONG_PASSWORD) {
+                                changePasswordBinding.fPasswordChangeLayoutOldpwd.error = getString(it.getErrorId())
+                            } else {
+                                changePasswordBinding.fPasswordChangeLayoutNewpwd.error = getString(it.getErrorId())
+                            }
+
                         }
                         AuthTypeErrorEnum.CONFIRM_PASSWORD -> {
                             changePasswordBinding.fPasswordChangeLayoutConfirmpwd.error = getString(it.getErrorId())
@@ -83,7 +75,7 @@ class ChangePasswordFragment : Fragment() {
                         AuthTypeErrorEnum.UNKNOWN, AuthTypeErrorEnum.LOGIN  -> {
                             Toast.makeText(context, getString(it.getErrorId()), Toast.LENGTH_SHORT).show()
                         }
-                        else -> {}
+                        else -> {Log.d(TAG, "Unknown error type")}
                     }
                 }
             )
