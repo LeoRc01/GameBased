@@ -242,6 +242,7 @@ class SearchFragment : Fragment() {
 
     private fun initializeResults(query: String, offsetStart: Int = 0, positionStartResult: Int = -1) {
         checkIfFragmentAttached {
+            setVisible("fSearchResults")
             val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
             if (query.isNotEmpty()) {
                 Log.d(TAG, "initializeResults: $query")
@@ -249,15 +250,11 @@ class SearchFragment : Fragment() {
                 shimmerLayout.startShimmer()
             }
 
-
-
-
             val adapter = GamesBigRecyclerViewAdapter(
                 requireContext(),
                 ArrayList(),
                 ActionGameDetailsEnum.SEARCH
             )
-
 
             val linearLayoutManager = LinearLayoutManager(requireContext())
             linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
