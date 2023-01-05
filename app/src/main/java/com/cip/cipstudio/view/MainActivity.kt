@@ -32,14 +32,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var root : View
     lateinit var containerView: FragmentContainerView
     private val TAG = "MainActivity"
+    private var bottomMargin = 0
     private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
         val heightDiff = (root.rootView.height - root.height) * 100 / root.rootView.height
         if (heightDiff > 15) { // if more than 100 pixels, its probably a keyboard...
             bottomNavigationView.visibility = View.GONE
+            if (bottomMargin == 0)
+                bottomMargin = (containerView.layoutParams as MarginLayoutParams).bottomMargin
             (containerView.layoutParams as MarginLayoutParams).bottomMargin = 0
         } else {
+            if (bottomMargin == 0)
+                bottomMargin = (containerView.layoutParams as MarginLayoutParams).bottomMargin
             bottomNavigationView.visibility = View.VISIBLE
-            (containerView.layoutParams as MarginLayoutParams).bottomMargin = 200
+            (containerView.layoutParams as MarginLayoutParams).bottomMargin = bottomMargin
+
         }
     }
 
