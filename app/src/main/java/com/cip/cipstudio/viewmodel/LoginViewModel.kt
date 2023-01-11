@@ -29,8 +29,6 @@ class LoginViewModel(val binding: FragmentLoginBinding) : ViewModel(){
         val email = this.email.value.toString().trim()
         val password = this.password.value.toString()
 
-        Log.e(TAG,"email: $email")
-        Log.e(TAG,"password: $password")
 
         if(!isValidEmail(email)) {
             onFailure(AuthErrorEnum.EMAIL_NOT_VALID)

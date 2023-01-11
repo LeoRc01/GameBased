@@ -124,7 +124,6 @@ class Filter(private val binding : ReusableFilterLayoutBinding,
                 sliderFilterCriticsRating.contains(event.x.toInt(), event.y.toInt()) ) { // if the touch event is within the slider
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 drawerLayout.requestDisallowInterceptTouchEvent(true)
-                Log.i("Filter", "Drawer locked")
                 binding.fFilterFilterScroll.dispatchTouchEvent(event) // dispatch the touch event scrollview
             }
             else {

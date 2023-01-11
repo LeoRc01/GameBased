@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var bottomMargin = 0
     private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
         val heightDiff = (root.rootView.height - root.height) * 100 / root.rootView.height
-        if (heightDiff > 15) { // if more than 100 pixels, its probably a keyboard...
+        if (heightDiff > 15) {
             bottomNavigationView.visibility = View.GONE
             if (bottomMargin == 0)
                 bottomMargin = (containerView.layoutParams as MarginLayoutParams).bottomMargin
@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity() {
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData: PendingDynamicLinkData? ->
-                // Get deep link from result (may be null if no link is found)
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
@@ -141,11 +140,6 @@ class MainActivity : AppCompatActivity() {
                     bundle.putString("game_id", gameId)
                     navController.navigate(R.id.action_homeScreen_to_game_details_home, bundle)
                 }
-
-                // Handle the deep link. For example, open the linked
-                // content, or apply promotional credit to the user's
-                // account.
-                // ...
             }
             .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
 

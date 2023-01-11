@@ -26,8 +26,6 @@ class ChangeEmailViewModel(changeEmailBinding: FragmentEmailChangeBinding) {
 
         val newEmail = this.email.value.toString().trim()
         val password = this.password.value.toString()
-        Log.e(TAG, "newEmail: $newEmail")
-        Log.e(TAG, "password: $password")
 
 
         if(!isValidEmail(newEmail)) {

@@ -24,9 +24,6 @@ class ChangePasswordViewModel() : ViewModel(){
         val newPassword = this.newPassword.value.toString()
         val newPasswordConfirm = this.newPasswordConfirm.value.toString()
 
-        Log.e(TAG, "oldPassword: $oldPassword")
-        Log.e(TAG, "newPassword: $newPassword")
-        Log.e(TAG, "newPasswordConfirm: $newPasswordConfirm")
 
         if (isValidPassword(newPassword) != null) {
             onFailure(isValidPassword(newPassword)!!)
