@@ -37,10 +37,6 @@ class SuggestionRecyclerViewAdapter (val context : Context,
 
     }
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvQuery : TextView
         val btnDelete : TextView
@@ -53,7 +49,6 @@ class SuggestionRecyclerViewAdapter (val context : Context,
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.search_history_item, viewGroup, false)
         return ViewHolder(view)

@@ -39,10 +39,6 @@ class GamesBigRecyclerViewAdapter (val context : Context,
         notifyDataSetChanged()
     }
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivBlurBackground : ImageView
         val ivGameCoverForeground : ImageView
@@ -67,7 +63,6 @@ class GamesBigRecyclerViewAdapter (val context : Context,
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.game_big_item, viewGroup, false)
         return ViewHolder(view)

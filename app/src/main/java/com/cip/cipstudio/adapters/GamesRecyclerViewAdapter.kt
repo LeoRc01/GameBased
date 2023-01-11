@@ -36,10 +36,6 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
         notifyDataSetChanged()
     }
 
-    /**
-    * Provide a reference to the type of views that you are using
-    * (custom ViewHolder).
-    */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val tvGameName : TextView
@@ -55,8 +51,6 @@ class GamesRecyclerViewAdapter (var games : List<GameDetails>,
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
-
          val view = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.game_item, viewGroup, false)
 
