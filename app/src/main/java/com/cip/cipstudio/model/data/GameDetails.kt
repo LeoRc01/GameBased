@@ -92,7 +92,6 @@ data class GameDetails(val id: String,
         }
     }
 
-    // TODO: trovare qualcosa di meglio per il format della data
     fun setFirstReleaseDate(timestamp: Long) {
         val date = Date(timestamp * 1000)
         val simpleDateFormat = java.text.SimpleDateFormat("dd MMM yyyy")

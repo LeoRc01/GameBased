@@ -46,7 +46,6 @@ object IGDBRepositoryRemote : IGDBRepository {
             if(!isInitialized) {
                 Log.i(TAG, "init: Initializing IGDBWrapper")
                 val token = TwitchAuthenticator.requestTwitchToken(CLIENT_ID, CLIENT_SECRET)
-                Log.d(TAG, "Token: $token")
                 IGDBWrapper.setCredentials(CLIENT_ID, token?.access_token.toString())
                 isInitialized = true
             }

@@ -32,10 +32,6 @@ class RegisterViewModel() : ViewModel() {
         val confirmPassword = this.confirmPassword.value.toString()
         val username = this.username.value.toString()
 
-        Log.e(TAG, "email: $email")
-        Log.e(TAG, "password: $password")
-        Log.e(TAG, "confirmPassword: $confirmPassword")
-        Log.e(TAG, "username: $username")
 
         if (isValidUsername(username) != null) {
             onFailure(isValidUsername(username)!!)
