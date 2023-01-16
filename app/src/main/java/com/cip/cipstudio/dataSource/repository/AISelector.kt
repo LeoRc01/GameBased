@@ -72,6 +72,25 @@ object AISelector {
         return result
     }
 
+    fun getUntilThreeHighestWeightModels() : ArrayList<AIModel>{
+        var result = arrayListOf<AIModel>()
+        var temp = weightedItems
+        temp.sortByDescending {
+            it.weight
+        }
+        if(weightedItems.size >= 3){
+            result.add(temp[0])
+            result.add(temp[1])
+            result.add(temp[2])
+        }else if(weightedItems.size == 2){
+            result.add(temp[0])
+            result.add(temp[1])
+        }else if(weightedItems.size == 1){
+            result.add(temp[0])
+        }
+        return result
+    }
+
     private fun containsAiModel(list : ArrayList<AIModel>,model : AIModel) : Boolean{
         for (item in list){
             if(item == model)

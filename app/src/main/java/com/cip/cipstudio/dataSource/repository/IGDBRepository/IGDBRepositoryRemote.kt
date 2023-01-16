@@ -220,7 +220,10 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     private suspend fun getForYouGames(refresh: Boolean, pageSize: Int, pageIndex: Int, filterCriteria: Criteria): List<GameDetails> = withContext(Dispatchers.IO) {
-        val models = AISelector.getOnlyPositiveWeightsModels()
+        var models = AISelector.getOnlyPositiveWeightsModels()
+        if(models.isEmpty()){
+            models = AISelector.getUntilThreeHighestWeightModels()
+        }
         val genreIds = models.subList(0,
                 if (models.size < 3)
                     models.size
