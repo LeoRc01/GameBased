@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content">
 
                 <com.facebook.shimmer.ShimmerFrameLayout
+                    android:paddingHorizontal="20dp"
                     android:layout_marginTop="110dp"
                     android:clipChildren="false"
                     android:id="@+id/f_search_shimmerLayout_results"
