@@ -128,4 +128,7 @@
     <string name="category">Categorie</string>
     <string name="themes">Tema:</string>
     <string name="sort_by">Ordina per</string>
+    <string name="delete_search_history">Elimina cronologia delle ricerche</string>
+    <string name="delete_search_history_message">Sei sicuro di voler eliminare la cronologia delle ricerche?</string>
+    <string name="search_history_deleted">Cronologia delle ricerche eliminata.</string>
 </resources>
