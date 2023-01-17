@@ -239,7 +239,6 @@ object IGDBRepositoryRemote : IGDBRepository {
         val idListString = buildIdsForRequest(genreIds)
         val apicalypse = APICalypse().fields("name, id, cover.url")
             .where("cover != n & total_rating_count >= 10 &  " +
-                    "aggregated_rating_count >= 10 &" +
                     " genres = $idListString ${filterCriteria.concatCriteria()} ")
             .sort("total_rating", Sort.DESCENDING)
             .limit(pageSize)
