@@ -99,8 +99,9 @@ class SearchFragment : Fragment() {
             else
                 false
 
-        if (isSearchStart && searchBinding.fSearchSearchBox.query.isNotEmpty())
+        if (isSearchStart && searchBinding.fSearchSearchBox.query.isNotEmpty()){
             initializeResults(searchBinding.fSearchSearchBox.query.toString() ,offsetStartResult, positionStartResult)
+        }
         else if (searchBinding.fSearchSearchBox.query.isNotEmpty())
             setSuggestions(searchBinding.fSearchSearchBox.query.toString())
         else
@@ -242,7 +243,7 @@ class SearchFragment : Fragment() {
 
     private fun initializeResults(query: String, offsetStart: Int = 0, positionStartResult: Int = -1) {
         checkIfFragmentAttached {
-            setVisible("fSearchResults")
+            searchBinding.fSearchResults.visibility = View.GONE
             val shimmerLayout = searchBinding.fSearchShimmerLayoutResults
             if (query.isNotEmpty()) {
                 Log.d(TAG, "initializeResults: $query")
@@ -270,7 +271,6 @@ class SearchFragment : Fragment() {
             searchViewModel.addGameResults(resultsOffset, query, filter) {
                 adapter.addItems(it)
 
-
                 if (adapter.itemCount == 0 && query.isNotEmpty()) {
                     shimmerLayout.stopShimmer()
                     shimmerLayout.visibility = View.GONE
@@ -282,6 +282,7 @@ class SearchFragment : Fragment() {
                     else {
                         shimmerLayout.stopShimmer()
                         shimmerLayout.visibility = View.GONE
+                        searchBinding.fSearchResults.visibility = View.VISIBLE
                     }
             }
         }
