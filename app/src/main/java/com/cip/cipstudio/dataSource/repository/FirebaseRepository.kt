@@ -1,12 +1,11 @@
 package com.cip.cipstudio.dataSource.repository
 
-import android.util.Log
 import com.cip.cipstudio.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import android.util.Base64
 
 object FirebaseRepository {
     private var db : FirebaseDatabase? = null
@@ -60,12 +59,14 @@ object FirebaseRepository {
             .get()
     }
 
-    fun addQueryToRecentlySearch(gameIdToAdd : String, gameIdToDelete : String? = null) : Task<Void> {
+    fun addQueryToRecentlySearch(queryToAdd : String, queryToDelete : String? = null) : Task<Void> {
         val data : Map<String, Any> = hashMapOf("dateTime" to System.currentTimeMillis())
         val ref = db!!.getReference("users/$userId/recentlySearch")
-        val task = ref.child(gameIdToAdd).setValue(data)
-        if(gameIdToDelete != null){
-            ref.child(gameIdToDelete).removeValue()
+        val encodedQueryToAdd = Base64.encodeToString(queryToAdd.toByteArray(), Base64.NO_WRAP)
+        val task = ref.child(encodedQueryToAdd).setValue(data)
+        if(queryToDelete != null) {
+            val encodedQueryToDelete = Base64.encodeToString(queryToDelete.toByteArray(), Base64.NO_WRAP)
+            ref.child(encodedQueryToDelete).removeValue()
         }
         return task
     }
@@ -75,7 +76,8 @@ object FirebaseRepository {
     }
 
     fun deleteQueryFromRecentlySearch(query : String) : Task<Void> {
-        return db!!.getReference("users/${User.uid}/recentlySearch/$query").removeValue()
+        val encodedQuery = Base64.encodeToString(query.toByteArray(), Base64.NO_WRAP)
+        return db!!.getReference("users/${User.uid}/recentlySearch/$encodedQuery").removeValue()
     }
 
     fun getRecentlySearchesQueries() : Task<DataSnapshot>{
