@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.util.Base64
 
 object User {
     private val TAG = User::class.java.simpleName
@@ -131,7 +132,14 @@ object User {
                 val queries = (it.value as Map<*, *>).map { el ->
                     val a = el.value as Map<*,*>
                     val query = el.key as String
-                    RecentSearchesHistoryEntry(query, uid, a["dateTime"] as Long)
+
+                    try {
+                        val decodedQuery = String(Base64.decode(query, Base64.NO_WRAP))
+                        RecentSearchesHistoryEntry(decodedQuery, uid, a["dateTime"] as Long)
+                    }
+                    catch (iae : IllegalArgumentException) {
+                        RecentSearchesHistoryEntry(query, uid, a["dateTime"] as Long)
+                    }
                 }
 
                 GlobalScope.launch(Dispatchers.IO) {
