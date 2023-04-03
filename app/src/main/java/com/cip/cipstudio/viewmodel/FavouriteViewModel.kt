@@ -35,20 +35,17 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
                    notLoggedInUI: () -> Unit = {}) {
         user.getFavouriteGames().addOnSuccessListener {
             if (it.value != null) {
-                if(((it.value as Map<*, *>).size - 10*offset) > 0) {
-                    (it.value as Map<*, *>).forEach {
-                        favouriteGamesIds.add(it.value.toString())
-                    }
-                    viewModelScope.launch(Dispatchers.Main) {
-                        favouriteGames = withContext(Dispatchers.IO){
-                            IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh, offset) as ArrayList<GameDetails>
-                        }
-                        isMoreDataAvailable.postValue(favouriteGames.isNotEmpty())
-                        updateUI.invoke(favouriteGames)
-                        isPageLoading.postValue(false)
-                    }
+                (it.value as Map<*, *>).forEach {
+                    favouriteGamesIds.add(it.value.toString())
                 }
-
+                viewModelScope.launch(Dispatchers.Main) {
+                    favouriteGames = withContext(Dispatchers.IO){
+                        IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh, offset) as ArrayList<GameDetails>
+                    }
+                    isMoreDataAvailable.postValue(favouriteGames.isNotEmpty())
+                    updateUI.invoke(favouriteGames)
+                    isPageLoading.postValue(false)
+                }
             }
             else {
                 noFavouriteUI.invoke()
