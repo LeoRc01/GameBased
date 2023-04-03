@@ -248,13 +248,15 @@ object IGDBRepositoryRemote : IGDBRepository {
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
 
-    override suspend fun getGamesByIds(gameIds: List<String>, refresh: Boolean): List<GameDetails> = withContext(Dispatchers.IO) {
+    override suspend fun getGamesByIds(gameIds: List<String>, refresh: Boolean, pageIndex: Int, pageSize: Int): List<GameDetails> = withContext(Dispatchers.IO) {
         if (gameIds.isEmpty())
             return@withContext arrayListOf()
         val idListString = buildIdsForRequest(gameIds)
         val apicalypse = APICalypse()
             .fields("name, id, cover.url, genres.name, rating, platforms.name, first_release_date")
             .where("id = $idListString")
+            .limit(pageSize)
+            .offset(pageIndex * pageSize)
         val json = makeRequest ({ IGDBWrapper.jsonGames(apicalypse) }, "getGamesByIds${idListString}", refresh)
         return@withContext Converter.fromJsonArrayToGameDetailsArrayList(json)
     }
@@ -439,7 +441,7 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     private fun buildIdsForRequest(ids : List<Any>) : String {
-        return ids.toString().replace("[", "(").replace("]", ")");
+        return ids.toString().replace("[", "(").replace("]", ")")
     }
 
 }
