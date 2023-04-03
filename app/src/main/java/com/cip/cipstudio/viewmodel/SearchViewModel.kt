@@ -25,9 +25,6 @@ class SearchViewModel(val binding : FragmentSearchBinding) : ViewModel() {
     val isPageLoading : MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
     }
-    val isMoreDataAvailable : MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>(true)
-    }
 
     fun addGameResults(offset: Int, query: String, filter: Filter, onSuccess: (List<GameDetails>) -> Unit) {
         isPageLoading.postValue(true)

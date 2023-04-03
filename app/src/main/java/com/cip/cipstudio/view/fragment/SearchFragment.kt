@@ -1,22 +1,15 @@
 package com.cip.cipstudio.view.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
-import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -115,7 +108,7 @@ class SearchFragment : Fragment() {
         super.onPause()
         val map = filter.getMap() as HashMap<String, Any>
         map[tagOffsetResult] = resultsOffset
-        val isSearch = searchBinding.fSearchResults.visibility == View.VISIBLE;
+        val isSearch = searchBinding.fSearchResults.visibility == View.VISIBLE
         map[tagIsSearch] = isSearch
         if (isSearch)
             map[tagPositionResult] = (searchBinding.fSearchResults.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
@@ -333,7 +326,7 @@ class SearchFragment : Fragment() {
 
         }
 
-        searchBinding.fSearchResults.clearOnScrollListeners()
+        searchBinding.fSearchHistory.clearOnScrollListeners()
 
         searchBinding.fSearchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

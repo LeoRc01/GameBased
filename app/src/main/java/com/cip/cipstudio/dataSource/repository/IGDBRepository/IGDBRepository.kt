@@ -35,7 +35,7 @@ interface IGDBRepository {
                         ): List<GameDetails>
 
     suspend fun getSearchSuggestions(searchText: String,
-                                     limit: Int = 3,
+                                     number: Int = 3,
                                      refresh: Boolean = false,
                                      filterCriteria: Criteria= OperatorCriteria(OperatorEnum.AND)
                         ): List<GameDetails>
