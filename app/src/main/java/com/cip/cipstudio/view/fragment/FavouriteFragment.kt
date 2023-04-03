@@ -3,14 +3,12 @@ package com.cip.cipstudio.view.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.AbsListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -25,6 +23,7 @@ class FavouriteFragment : Fragment() {
 
     private lateinit var favouriteBinding: FragmentFavouriteBinding
     private lateinit var favouriteViewModel: FavouriteViewModel
+    private var offset : Int = 0
 
     private lateinit var preferences : android.content.SharedPreferences
 
@@ -53,7 +52,10 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun initializeFavourites(refresh: Boolean = false) {
-        favouriteViewModel.initialize (refresh,
+
+        offset = 0
+
+        favouriteViewModel.initialize (refresh, offset,
             updateUI = {
                 checkIfFragmentAttached() {
                     val gvAdapter = FavouriteGridViewAdapter(requireContext(),
@@ -77,6 +79,31 @@ class FavouriteFragment : Fragment() {
                     startActivity(intent)
                 }
             })
+
+        favouriteBinding.gvFavoriteGames.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScroll(
+                view: AbsListView?,
+                firstVisibleItem: Int,
+                visibleItemCount: Int,
+                totalItemCount: Int
+            ) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount &&
+                    favouriteViewModel.isPageLoading.value == false &&
+                    favouriteViewModel.isMoreDataAvailable.value == true) {
+                    offset++
+
+                    favouriteViewModel.initialize (refresh, offset,
+                        updateUI = {
+                            checkIfFragmentAttached() {
+                                (favouriteBinding.gvFavoriteGames.adapter as FavouriteGridViewAdapter)
+                                    .addMoreGames(it)
+                            }
+                        })
+                }
+            }
+
+            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
+        })
     }
 
     private fun checkIfFragmentAttached(operation: Context.() -> Unit) {

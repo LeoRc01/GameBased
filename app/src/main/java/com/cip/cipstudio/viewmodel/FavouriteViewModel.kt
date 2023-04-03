@@ -1,5 +1,6 @@
 package com.cip.cipstudio.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,29 +18,37 @@ class FavouriteViewModel(val binding : FragmentFavouriteBinding) : ViewModel() {
         MutableLiveData<Boolean>(true)
     }
 
+    val isMoreDataAvailable : MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(true)
+    }
+
     private val favouriteGamesIds : ArrayList<String> by lazy {
         arrayListOf()
     }
 
-    lateinit var favouriteGames : ArrayList<GameDetails>
+    private lateinit var favouriteGames : ArrayList<GameDetails>
 
     fun initialize(refresh : Boolean,
+                   offset: Int,
                    updateUI: (ArrayList<GameDetails>) -> Unit,
-                   noFavouriteUI: () -> Unit,
-                   notLoggedInUI: () -> Unit) {
-        isPageLoading.postValue(true)
+                   noFavouriteUI: () -> Unit = {},
+                   notLoggedInUI: () -> Unit = {}) {
         user.getFavouriteGames().addOnSuccessListener {
             if (it.value != null) {
-                (it.value as Map<*, *>).forEach {
-                    favouriteGamesIds.add(it.value.toString())
-                }
-                viewModelScope.launch(Dispatchers.Main) {
-                    favouriteGames = withContext(Dispatchers.IO){
-                        IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh) as ArrayList<GameDetails>
+                if(((it.value as Map<*, *>).size - 10*offset) > 0) {
+                    (it.value as Map<*, *>).forEach {
+                        favouriteGamesIds.add(it.value.toString())
                     }
-                    updateUI.invoke(favouriteGames)
-                    isPageLoading.postValue(false)
+                    viewModelScope.launch(Dispatchers.Main) {
+                        favouriteGames = withContext(Dispatchers.IO){
+                            IGDBRepositoryRemote.getGamesByIds(favouriteGamesIds, refresh, offset) as ArrayList<GameDetails>
+                        }
+                        isMoreDataAvailable.postValue(favouriteGames.isNotEmpty())
+                        updateUI.invoke(favouriteGames)
+                        isPageLoading.postValue(false)
+                    }
                 }
+
             }
             else {
                 noFavouriteUI.invoke()
