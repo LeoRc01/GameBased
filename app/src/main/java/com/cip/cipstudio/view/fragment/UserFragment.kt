@@ -1,12 +1,9 @@
 package com.cip.cipstudio.view.fragment
 
-
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,8 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -27,8 +24,6 @@ import com.cip.cipstudio.view.AuthActivity
 import com.cip.cipstudio.view.MainActivity
 import com.cip.cipstudio.viewmodel.UserViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -66,6 +61,16 @@ class UserFragment : Fragment() {
             }
             else {
                 Log.d(TAG, "no photo")
+            }
+        }
+
+        val onImagePickedLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val selectedPhotoUri = data?.data
+                val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedPhotoUri)
+                userBinding.fUserIwProfilePicture.setImageBitmap(bitmap)
+                user.uploadImage(selectedPhotoUri)
             }
         }
 
@@ -135,7 +140,7 @@ class UserFragment : Fragment() {
             if (user.isLogged()) {
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.type = "image/*"
-                startActivityForResult(intent, 0)
+                onImagePickedLauncher.launch(intent)
             }
             else {
                 Toast.makeText(requireContext(), getString(R.string.invalid_operation_must_logged), Toast.LENGTH_SHORT).show()
@@ -216,18 +221,4 @@ class UserFragment : Fragment() {
         return userBinding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            Log.d(TAG, "Photo was selected")
-
-
-            val selectedPhotoUri = data.data
-            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedPhotoUri)
-            userBinding.fUserIwProfilePicture.setImageBitmap(bitmap)
-            user.uploadImage(selectedPhotoUri)
-
-        }
-    }
 }

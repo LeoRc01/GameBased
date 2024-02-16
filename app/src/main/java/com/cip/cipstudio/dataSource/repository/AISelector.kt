@@ -1,12 +1,7 @@
 package com.cip.cipstudio.dataSource.repository
 
-import android.util.Log
 import com.cip.cipstudio.model.data.AIModel
 import com.google.firebase.database.DataSnapshot
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.internal.notifyAll
 import org.json.JSONObject
 
 
