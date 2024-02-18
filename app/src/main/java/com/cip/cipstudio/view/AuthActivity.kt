@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.cip.cipstudio.exception.NotLoggedException
@@ -23,6 +24,9 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var preferences : android.content.SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
 
 

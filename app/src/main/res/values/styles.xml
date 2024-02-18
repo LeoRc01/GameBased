@@ -178,4 +178,14 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
+
+    <style name="Theme.App" parent="@style/Theme.CIPStudio" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/primary_color</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <item name="postSplashScreenTheme">@style/Theme.App</item>
+    </style>
+
 </resources>

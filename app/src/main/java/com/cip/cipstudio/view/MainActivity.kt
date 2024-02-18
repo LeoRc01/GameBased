@@ -10,6 +10,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -51,6 +52,9 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
