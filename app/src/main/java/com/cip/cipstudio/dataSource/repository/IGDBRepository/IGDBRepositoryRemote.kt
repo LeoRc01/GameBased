@@ -441,7 +441,7 @@ object IGDBRepositoryRemote : IGDBRepository {
     }
 
     private fun buildIdsForRequest(ids : List<Any>) : String {
-        return ids.toString().replace("[", "(").replace("]", ")")
+        return ArrayList(ids).toString().replace("[", "(").replace("]", ")")
     }
 
 }
